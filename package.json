@@ -1,19 +1,25 @@
 {
-  "name": "plasmastrapi-v2",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/obi-wan-jacobi/plasmastrapi-v2.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/obi-wan-jacobi/plasmastrapi-v2/issues"
-  },
-  "homepage": "https://github.com/obi-wan-jacobi/plasmastrapi-v2#readme"
+    "name": "plasmastrapi-v2",
+    "version": "1.0.0",
+    "description": "",
+    "main": "build/index.js",
+    "scripts": {
+        "lint": "tslint --fix ./src/**/*.ts && tslint --project tsconfig.json",
+        "prebuild": "npm run lint && rimraf ./build",
+        "build": "./node_modules/.bin/tsc"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/obi-wan-jacobi/plasmastrapi-v2.git"
+    },
+    "license": "ISC",
+    "devDependencies": {
+        "@types/jest": "^23.3.7",
+        "jest": "^23.6.0",
+        "rimraf": "^2.6.2",
+        "ts-jest": "^23.10.4",
+        "tslint": "^5.11.0",
+        "tslint-consistent-codestyle": "^1.13.3",
+        "typescript": "^3.1.3"
+    }
 }
