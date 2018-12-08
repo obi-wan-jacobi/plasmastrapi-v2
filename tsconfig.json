@@ -3,16 +3,26 @@
         "outDir": "./build",
         "rootDir": "./src",
         "allowJs": false,
-        "target": "es5",
+        "target": "esnext",
+        "module": "esnext",
         "sourceMap": true,
-        "module": "commonjs",
         "baseUrl": ".",
         "noImplicitAny": true,
         "strictNullChecks": true,
         "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "types": [
+            "jest"
+        ]
     },
     "include": [
-        "src/**/*.ts"
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue",
+        "tests/**/*.ts",
+        "tests/**/*.tsx"
     ],
     "exclude": [
         "node_modules"
