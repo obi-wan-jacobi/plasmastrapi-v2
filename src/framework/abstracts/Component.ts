@@ -1,4 +1,7 @@
+import IComponent from '../interfaces/IComponent';
 
-export default class Component {
+export default abstract class Component implements IComponent {
+
+    public abstract set(): void;
 
 }

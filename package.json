@@ -6,7 +6,8 @@
     "scripts": {
         "lint": "tslint --fix src/**/*.ts tests/**/*.ts && tslint --project tsconfig.json",
         "prebuild": "npm run lint && rimraf ./build",
-        "build": "./node_modules/.bin/tsc"
+        "build": "./node_modules/.bin/tsc",
+        "test": "./node_modules/.bin/jest"
     },
     "repository": {
         "type": "git",

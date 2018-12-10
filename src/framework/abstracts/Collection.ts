@@ -1,8 +1,7 @@
-import IComponent from '../interfaces/IComponent';
 import IIterable from '../interfaces/IIterable';
 import Invocable from './Invocable';
 
-export default abstract class System<T extends IComponent> extends Invocable<void> {
+export default abstract class System<T> extends Invocable<void> {
 
     private __iterable: IIterable<T>;
 
@@ -11,10 +10,8 @@ export default abstract class System<T extends IComponent> extends Invocable<voi
         this.__iterable = iterable;
     }
 
-    public abstract once({ component }: { component: T }): void;
-
-    private __invokeOnceForEach(): void {
-        this.__iterable.forEach(this.once);
+    private __invokeOnceForEach(fn: (payload: T) => void): void {
+        this.__iterable.forEach(fn);
     }
 
 }
