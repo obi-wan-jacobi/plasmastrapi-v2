@@ -1,6 +1,7 @@
-import IIterable from '../templates/IIterable';
+import IIterable from '../interfaces/IIterable';
 import Component from './Component';
 import Invocable from './Invocable';
+
 export default abstract class System<T extends Component> extends Invocable<void> {
 
     private __iterable: IIterable<T>;
