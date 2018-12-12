@@ -1,7 +1,7 @@
 import IIterable from '../interfaces/IIterable';
 import Invocable from './Invocable';
 
-export default abstract class System<T> extends Invocable<void> {
+export default abstract class Collection<T> {
 
     private __iterable: IIterable<T>;
 

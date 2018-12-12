@@ -28,6 +28,7 @@
             "call-signature",
             "property-declaration"
         ],
-        "quotemark": [true, "single"]
+        "quotemark": [true, "single"],
+        "max-classes-per-file": 5
     }
 }
