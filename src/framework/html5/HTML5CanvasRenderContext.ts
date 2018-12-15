@@ -7,7 +7,7 @@ const DEFAULT_RADIUS = 5;
 export default class HTML5CanvasRenderContext extends RenderContext<CanvasRenderingContext2D> {
 
     constructor({ canvas }: { canvas: HTMLCanvasElement }) {
-        super({ payload: canvas.getContext('2d') as CanvasRenderingContext2D });
+        super({ target: canvas.getContext('2d') as CanvasRenderingContext2D });
     }
 
     @atomic

@@ -1,8 +1,9 @@
+import IComponent from '../interfaces/IComponent';
 import IIterable from '../templates/IIterable';
 import IRenderContext from '../templates/IRenderContext';
 import System from './System';
 
-export default abstract class RenderSystem<T> extends System<T> {
+export default abstract class RenderSystem<T> extends System<IComponent<T>> {
 
     protected _context: IRenderContext;
 

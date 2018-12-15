@@ -2,7 +2,7 @@ import IComponent from '../interfaces/IComponent';
 import IIterable from '../interfaces/IIterable';
 import Invocable from './Invocable';
 
-export default abstract class System<T extends IComponent> extends Invocable<void> {
+export default abstract class System<T extends IComponent<any>> extends Invocable<void> {
 
     private __iterable: IIterable<T>;
 

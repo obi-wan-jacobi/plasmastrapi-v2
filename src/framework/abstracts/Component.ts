@@ -1,7 +1,21 @@
+import DataWrapper from '../wrappers/DataWrapper';
 import IComponent from '../interfaces/IComponent';
+import { Optional } from '../types/Optional';
 
-export default abstract class Component<T> implements IComponent<T> {
+export default abstract class Component<T extends {}> implements IComponent<T> {
 
-    public abstract set(data: T): void;
+    private __data: DataWrapper<T>;
+
+    constructor(data: T) {
+        this.__data = new DataWrapper<T>(data);
+    }
+
+    public set(data: T): void {
+        Object.assign(this.__data.unwrap(), data);
+    }
+
+    public get(): T {
+        return this.__data.unwrap();
+    }
 
 }

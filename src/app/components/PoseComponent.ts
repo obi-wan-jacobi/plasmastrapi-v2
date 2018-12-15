@@ -7,14 +7,7 @@ export default class PoseComponent extends Component<{ x: number, y: number, a: 
     public a: number;
 
     constructor({ x, y, a }: { x: number, y: number, a: number }) {
-        super();
-        this.set({ x, y, a });
-    }
-
-    public set({ x, y, a }: { x: number, y: number, a: number }): void {
-        this.x = x;
-        this.y = y;
-        this.a = a;
+        super({ x, y, a });
     }
 
 }
