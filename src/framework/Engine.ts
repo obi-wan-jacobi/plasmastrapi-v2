@@ -1,18 +1,26 @@
 import IComponent from './interfaces/IComponent';
 import Invocable from './abstracts/Invocable';
 import System from './abstracts/System';
+import IRenderContext from './templates/IRenderContext';
+import RenderSystem from './abstracts/RenderSystem';
 
 export default class Engine extends Invocable<void> {
 
-    private __systems: Array<System<IComponent<any>>>;
+    private __renderSystems: { [key: string]: RenderSystem<IComponent<any>> };
+    private __systems: { [key: string]: System<IComponent<any>> };
 
-    constructor() {
+    constructor(renderContext: IRenderContext) {
         super({ method: () => { return; } });
-        this.__systems = [];
+        this.__renderSystems = {};
+        this.__systems = {};
     }
 
     public add(system: System<IComponent<any>>): void {
-        this.__systems.push(system);
+        if (system instanceof RenderSystem) {
+            this.__renderSystems[system.constructor.name] = system;
+        } else {
+            this.__systems[system.constructor.name] = system;
+        }
     }
 
 }
