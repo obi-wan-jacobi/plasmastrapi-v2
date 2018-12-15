@@ -1,5 +1,4 @@
-
-export type Optional<T> = T | undefined;
+import { Optional } from '../types/Optional';
 
 export type OptionalLink<T> = Optional<Link<T>>;
 

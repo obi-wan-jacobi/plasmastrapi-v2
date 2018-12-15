@@ -4,9 +4,13 @@
     "description": "",
     "main": "build/index.js",
     "scripts": {
+        "compile-typescript": "./node_modules/.bin/tsc",
+        "purge-build-directory": "rimraf ./build",
         "lint": "tslint --fix src/**/*.ts && tslint --project tsconfig.json",
-        "prebuild": "npm run lint && rimraf ./build",
-        "build": "./node_modules/.bin/tsc"
+        "test-only": "./node_modules/.bin/jest" ,
+        "test": "npm run lint && npm run test-only",
+        "prebuild": "npm run test && npm run purge-build-directory",
+        "build": "npm run compile-typescript"
     },
     "repository": {
         "type": "git",
