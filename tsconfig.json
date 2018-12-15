@@ -13,8 +13,9 @@
         "strictNullChecks": true,
         "moduleResolution": "node",
         "types": [
+            "jest",
+            "jquery",
             "node",
-            "jest"
         ]
     },
     "include": [
