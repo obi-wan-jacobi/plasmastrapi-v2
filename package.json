@@ -4,14 +4,18 @@
     "description": "",
     "main": "build/index.js",
     "scripts": {
-        "compile-typescript": "./node_modules/.bin/tsc",
-        "purge-build-directory": "./node_modules/.bin/rimraf ./build",
+        "webpack": "./node_modules/.bin/webpack",
+        "webpack-dev-server": "./node_modules/.bin/webpack-dev-server --open",
+        "purge-dist-directory": "./node_modules/.bin/rimraf ./dist",
         "lint-fix": "./node_modules/.bin/tslint --fix src/**/*.ts",
         "lint": "./node_modules/.bin/tslint --project tsconfig.json",
-        "test-only": "./node_modules/.bin/jest" ,
-        "test": "npm run lint && npm run lint-fix && npm run test-only",
-        "prebuild": "npm run test && npm run purge-build-directory",
-        "build": "npm run compile-typescript"
+        "jest": "./node_modules/.bin/jest",
+        "test": "npm run lint-fix && npm run lint &&  npm run jest",
+        "bundle": "npm run purge-dist-directory && npm run webpack",
+        "prebuild": "npm run test",
+        "build": "npm run bundle",
+        "serve": "npm run build && npm run webpack-dev-server",
+        "go": "npm run webpack-dev-server"
     },
     "repository": {
         "type": "git",
@@ -20,11 +24,21 @@
     "license": "ISC",
     "devDependencies": {
         "@types/jest": "^23.3.7",
+        "cp-cli": "^1.1.2",
+        "html-webpack-plugin": "^3.2.0",
         "jest": "^23.6.0",
+        "raw-loader": "^1.0.0",
         "rimraf": "^2.6.2",
         "ts-jest": "^23.10.4",
+        "ts-loader": "^5.3.1",
         "tslint": "^5.11.0",
         "tslint-consistent-codestyle": "^1.13.3",
-        "typescript": "^3.1.3"
+        "typescript": "^3.1.3",
+        "webpack": "^4.27.1",
+        "webpack-cli": "^3.1.2",
+        "webpack-dev-server": "^3.1.10"
+    },
+    "dependencies": {
+        "@types/node": "^10.12.15"
     }
 }
