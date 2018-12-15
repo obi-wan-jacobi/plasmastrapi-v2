@@ -1,5 +1,7 @@
 {
     "compilerOptions": {
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
         "outDir": "./build",
         "rootDir": "./src",
         "allowJs": false,
@@ -10,19 +12,14 @@
         "noImplicitAny": true,
         "strictNullChecks": true,
         "moduleResolution": "node",
-        "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true,
         "types": [
             "jest"
         ]
     },
     "include": [
         "src/**/*.ts",
-        "src/**/*.tsx",
-        "src/**/*.vue",
     ],
     "exclude": [
-        "node_modules",
         "src/tests"
     ]
 }
