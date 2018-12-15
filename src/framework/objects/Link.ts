@@ -1,27 +1,35 @@
 
+export type Optional<T> = T | undefined;
+
+export type OptionalLink<T> = Optional<Link<T>>;
+
 export default class Link<T> {
 
-    public static conjoin <T>(first: Link<T>, second: Link<T>): Array<Link<T>> {
-        first.__next = second;
-        second.__previous = first;
+    public static conjoin <T>(first: OptionalLink<T>, second: OptionalLink<T>): Array<OptionalLink<T>> {
+        if (first !== undefined) {
+            first.__next = second;
+        }
+        if (second !== undefined) {
+            second.__previous = first;
+        }
         return [first, second];
     }
 
-    private __value: T | null;
-    private __next: Link<T>;
-    private __previous: Link<T>;
+    private __value: Optional<T>;
+    private __next: OptionalLink<T>;
+    private __previous: OptionalLink<T>;
 
-    constructor(value: T | null) {
+    constructor(value: Optional<T>) {
         this.__value = value;
-        this.__next = this;
-        this.__previous = this;
+        this.__next = undefined;
+        this.__previous = undefined;
     }
 
-    public get next(): Link<T> {
+    public get next(): OptionalLink<T> {
         return this.__next;
     }
 
-    public get previous(): Link<T> {
+    public get previous(): OptionalLink<T> {
         return this.__previous;
     }
 
@@ -30,43 +38,37 @@ export default class Link<T> {
     }
 
     public get isStart(): boolean {
-        return this.previous === this;
+        return this.previous === undefined;
     }
 
-    public get isMiddle(): boolean {
+    public get isInterior(): boolean {
         return !(this.isStart || this.isEnd);
     }
 
     public get isEnd(): boolean {
-        return this.next === this;
+        return this.next === undefined;
     }
 
-    public before(next: Link<T>): Array<Link<T>> {
-        return (next.isStart)
-            ? Link.conjoin(this, next)
-            : this.between(next.previous, next);
+    public before(next: OptionalLink<T>): Array<OptionalLink<T>> {
+        this.__validateNotSelf(next);
+        return Link.conjoin(this, next);
     }
 
-    public between(previous: Link<T>, next: Link<T>): Array<Link<T>> {
-        __validateLinksAreMutuallyConnected(previous, next);
+    public between(previous: OptionalLink<T>, next: OptionalLink<T>): Array<OptionalLink<T>> {
+        this.__validateNotSelf(previous);
+        this.__validateNotSelf(next);
         Link.conjoin(previous, this);
         Link.conjoin(this, next);
         return [previous, this, next];
     }
 
-    public after(previous: Link<T>): Array<Link<T>> {
-        return (previous.isEnd)
-            ? Link.conjoin(previous, this)
-            : this.between(previous, previous.next);
+    public after(previous: OptionalLink<T>): Array<OptionalLink<T>> {
+        return Link.conjoin(previous, this);
     }
 
+    private __validateNotSelf(target: OptionalLink<T>): void {
+        if (this === target) {
+            throw new Error('Attempted circular link to self');
+        }
+    }
 }
-
-const __validateLinksAreMutuallyConnected = <T>(first: Link<T>, second: Link<T>): void => {
-    if (first === second) {
-        throw new Error('message');
-    }
-    if (first.next !== second || second.previous !== first) {
-        throw new Error('message');
-    }
-};
