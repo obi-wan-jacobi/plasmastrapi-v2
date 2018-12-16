@@ -1,4 +1,4 @@
-import IIterable from '../templates/IIterable';
+import IIterable from '../interfaces/IIterable';
 import IWrapper from '../interfaces/IWrapper';
 import Link, { OptionalLink } from './Link';
 import { Optional } from '../types/Optional';

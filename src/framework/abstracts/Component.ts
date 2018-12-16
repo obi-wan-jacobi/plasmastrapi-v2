@@ -1,6 +1,5 @@
 import DataWrapper from '../wrappers/DataWrapper';
 import IComponent from '../interfaces/IComponent';
-import { Optional } from '../types/Optional';
 
 export default abstract class Component<T extends {}> implements IComponent<T> {
 

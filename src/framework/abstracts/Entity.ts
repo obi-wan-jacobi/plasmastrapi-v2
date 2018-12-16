@@ -20,4 +20,12 @@ export default class Entity {
         return this.components[ComponentSubclass.name];
     }
 
+    public load(): void {
+        return;
+    }
+
+    public unload(): void {
+        return;
+    }
+
 }

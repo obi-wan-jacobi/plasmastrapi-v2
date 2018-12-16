@@ -1,4 +1,4 @@
-import IWrapper from '../templates/IWrapper';
+import IWrapper from '../interfaces/IWrapper';
 
 export default abstract class Wrapper<T> implements IWrapper<T> {
 
