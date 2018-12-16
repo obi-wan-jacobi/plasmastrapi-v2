@@ -1,11 +1,14 @@
+import Engine from '../Engine';
+import Entity from '../Entity';
 import LinkedList from '../objects/LinkedList';
-import Entity from './Entity';
 
 export default class Scene {
 
+    private __engine: Engine;
     private __entities: LinkedList<Entity>;
 
-    constructor() {
+    constructor(engine: Engine) {
+        this.__engine = engine;
         this.__entities = new LinkedList<Entity>();
     }
 
