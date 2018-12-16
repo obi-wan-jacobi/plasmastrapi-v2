@@ -9,9 +9,8 @@ export default class ComponentFactory {
         this.__componentCacheManager = componentCacheManager;
     }
 
-    public create(ComponentSubclass: new() => IComponent<any>, data: any): IComponent<any> {
-        const component = new ComponentSubclass();
-        component.set(data);
+    public create<T extends {}>(ComponentSubclass: new(data: T) => IComponent<T>, data: T): IComponent<T> {
+        const component = new ComponentSubclass(data);
         this.__componentCacheManager.load(component);
         return component;
     }

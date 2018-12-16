@@ -4,7 +4,7 @@ export default abstract class Wrapper<T> implements IWrapper<T> {
 
     private __target: T;
 
-    constructor({ target }: { target: T }) {
+    constructor(target: T) {
         this.__target = target;
     }
 

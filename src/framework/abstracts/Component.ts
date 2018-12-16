@@ -9,14 +9,17 @@ export default abstract class Component<T extends {}> extends Unique implements 
     constructor(data: T) {
         super();
         this.__data = new DataWrapper<T>(data);
+        this.set(data);
+    }
+
+    public get data(): T {
+        return this.__data.unwrap();
     }
 
     public set(data: T): void {
+        console.log('what is my data ' + JSON.stringify(data));
         Object.assign(this.__data.unwrap(), data);
-    }
-
-    public get(): T {
-        return this.__data.unwrap();
+        console.log('did it assign? ' + JSON.stringify(this.__data.unwrap()));
     }
 
 }

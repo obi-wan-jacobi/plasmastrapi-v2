@@ -1,31 +1,22 @@
-import RenderContext from 'src/framework/abstracts/RenderContext';
-/* tslint:disable:no-magic-numbers */
+import RenderContext from '../../abstracts/RenderContext';
+import { Atomic } from './decorators/Atomic';
 
-const TWO_PI_RADIANS = (2) * Math.PI;
+const TWO = 2;
+const TWO_PI_RADIANS = TWO * Math.PI;
 const DEFAULT_RADIUS = 5;
 
 export default class HTML5CanvasRenderContext extends RenderContext<CanvasRenderingContext2D> {
 
-    constructor({ canvas }: { canvas: HTMLCanvasElement }) {
-        super({ target: canvas.getContext('2d') as CanvasRenderingContext2D });
+    constructor($canvas: HTMLCanvasElement) {
+        super($canvas.getContext('2d') as CanvasRenderingContext2D);
     }
 
-    @atomic
+    @Atomic
     public drawPoint({ x, y}: { x: number, y: number }): void {
+        this.ctx.strokeStyle = 'white';
         this.ctx.arc(x, y, DEFAULT_RADIUS, 0, TWO_PI_RADIANS);
+        this.ctx.stroke();
+        console.log('do a thing!');
     }
 
 }
-
-const atomic = (
-    target: HTML5CanvasRenderContext,
-    propertyKey: string | symbol,
-    descriptor: PropertyDescriptor,
-) => {
-    const method = descriptor.value;
-    descriptor.value = function(...args: any[]): void {
-        this.ctx.save();
-        method.call(this, ...args);
-        this.ctx.restore();
-    };
-};

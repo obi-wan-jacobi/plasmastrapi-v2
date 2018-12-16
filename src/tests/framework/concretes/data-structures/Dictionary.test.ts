@@ -20,7 +20,7 @@ describe(Dictionary, () => {
         expect(dictionary.read(thirdTuple.id)).toBeUndefined();
         expect(dictionary.length).toBe(0);
         done();
-    })
+    });
 
     it('can read + write + delete values', (done) => {
         const expectedDictionaryLengthAfterThreeAdditions = 3;

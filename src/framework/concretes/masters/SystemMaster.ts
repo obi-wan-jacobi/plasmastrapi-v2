@@ -7,19 +7,19 @@ import System from '../../abstracts/System';
 export default class SystemMaster {
 
     private __engine: Engine;
-    private __basicSystemsDictionary: Dictionary<System<IComponent<any>>>;
-    private __renderSystemsDictionary: Dictionary<RenderSystem<IComponent<any>>>;
+    private __basicSystems: Dictionary<System<IComponent<any>>>;
+    private __renderSystems: Dictionary<RenderSystem<IComponent<any>>>;
 
     constructor(engine: Engine) {
         this.__engine = engine;
-        this.__basicSystemsDictionary = new Dictionary<System<IComponent<any>>>();
-        this.__renderSystemsDictionary = new Dictionary<RenderSystem<IComponent<any>>>();
+        this.__basicSystems = new Dictionary<System<IComponent<any>>>();
+        this.__renderSystems = new Dictionary<RenderSystem<IComponent<any>>>();
     }
 
     public add(system: System<IComponent<any>>): void {
         ((system instanceof RenderSystem)
-            ? this.__renderSystemsDictionary
-            : this.__basicSystemsDictionary
+            ? this.__renderSystems
+            : this.__basicSystems
         ).write({
             key: system.constructor.name,
             value: system,
@@ -27,22 +27,17 @@ export default class SystemMaster {
     }
 
     public loopOnce(): void {
-        this.__loopOnceForBasicSystems();
-        this.__loopOnceForRenderSystems();
+        console.log('loop once master');
+        this.__loopOnceForEachSystem(this.__basicSystems);
+        this.__loopOnceForEachSystem(this.__renderSystems);
     }
 
-    private __loopOnceForBasicSystems(): void {
-        Object.keys(this.__basicSystemsDictionary).forEach((key) => {
-            this.__engine.cache.components.getCollection(key).forEach((component) => {
-                this.__basicSystemsDictionary.read(key).once(component);
-            });
-        });
-    }
-
-    private __loopOnceForRenderSystems(): void {
-        Object.keys(this.__renderSystemsDictionary).forEach((key) => {
-            this.__engine.cache.components.getCollection(key).forEach((component) => {
-                this.__renderSystemsDictionary.read(key).once(component);
+    private __loopOnceForEachSystem(systemsDictionary: Dictionary<System<IComponent<any>>>): void {
+        console.log('render once');
+        systemsDictionary.forEach((system) => {
+            console.log('what is the system ' + system.constructor.name);
+            this.__engine.cache.components.getCollection(system.id).forEach((component) => {
+                system.once(component);
             });
         });
     }
