@@ -1,5 +1,5 @@
-import Entity from '../Entity';
 import EntityCacheManager from '../cache/EntityCacheManager';
+import Entity from '../Entity';
 
 export default class EntityFactory {
 

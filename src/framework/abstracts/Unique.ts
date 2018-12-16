@@ -1,5 +1,5 @@
-import IUnique from '../interfaces/IUnique';
 import uuidv1 from 'uuid/v1';
+import IUnique from '../interfaces/IUnique';
 
 export default abstract class Unique implements IUnique {
 

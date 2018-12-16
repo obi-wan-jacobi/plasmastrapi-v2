@@ -1,5 +1,5 @@
-import ComponentCacheManager from './ComponentCacheManager';
 import Entity from '../Entity';
+import ComponentCacheManager from './ComponentCacheManager';
 
 export default class EntityCacheManager {
 

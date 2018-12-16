@@ -1,5 +1,5 @@
-import RenderSystem from 'src/framework/abstracts/RenderSystem';
 import PoseComponent from '../components/PoseComponent';
+import RenderSystem from 'src/framework/abstracts/RenderSystem';
 
 export default class RenderPoseSystem extends RenderSystem<PoseComponent> {
 

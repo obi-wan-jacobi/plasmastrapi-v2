@@ -1,7 +1,7 @@
-import Dictionary from './objects/Dictionary';
+import Unique from './abstracts/Unique';
 import IComponent from './interfaces/IComponent';
 import IEntity from './interfaces/IEntity';
-import Unique from './abstracts/Unique';
+import Dictionary from './objects/Dictionary';
 
 export default class Entity extends Unique implements IEntity {
 

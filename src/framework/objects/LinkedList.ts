@@ -1,7 +1,7 @@
 import IIterable from '../interfaces/IIterable';
 import IWrapper from '../interfaces/IWrapper';
-import Link, { OptionalLink } from './Link';
 import { Optional } from '../types/Optional';
+import Link, { OptionalLink } from './Link';
 
 export default class LinkedList<T> implements IIterable<Optional<T>>, IWrapper<OptionalLink<T>> {
 

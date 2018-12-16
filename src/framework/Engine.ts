@@ -1,62 +1,29 @@
-import ComponentCacheManager from './cache/ComponentCacheManager';
-import ComponentFactory from './factories/ComponentFactory';
-import Dictionary from './objects/Dictionary';
-import EntityCacheManager from './cache/EntityCacheManager';
-import IComponent from './interfaces/IComponent';
-import Invocable from './abstracts/Invocable';
-import RenderSystem from './abstracts/RenderSystem';
-import System from './abstracts/System';
+import CacheMaster from './masters/CacheMaster';
+import FactoryMaster from './masters/FactoryMaster';
+import SystemMaster from './masters/SystemMaster';
 
-export default class Engine extends Invocable<void> {
+export default class Engine {
 
-    private __componentFactory: ComponentFactory;
-    private __systemsDictionary: Dictionary<System<IComponent<any>>>;
-    private __renderSystemsDictionary: Dictionary<RenderSystem<IComponent<any>>>;
-    private __componentCacheManager: ComponentCacheManager;
-    private __entityCacheManager: EntityCacheManager;
+    private __cacheMaster: CacheMaster;
+    private __factoryMaster: FactoryMaster;
+    private __systemMaster: SystemMaster;
 
     constructor() {
-        super({ method: () => { this.__invokeOnceForEach(); } });
-        this.__componentFactory = new ComponentFactory(this);
-        this.__systemsDictionary = new Dictionary<System<IComponent<any>>>();
-        this.__renderSystemsDictionary = new Dictionary<RenderSystem<IComponent<any>>>();
-        this.__componentCacheManager = new ComponentCacheManager();
-        this.__entityCacheManager = new EntityCacheManager(this.__componentCacheManager);
+        this.__cacheMaster = new CacheMaster();
+        this.__factoryMaster = new FactoryMaster(this);
+        this.__systemMaster = new SystemMaster(this);
     }
 
-    get componentFactory(): ComponentFactory {
-        return this.__componentFactory;
+    public get cache(): CacheMaster {
+        return this.__cacheMaster;
     }
 
-    get componentCacheManager(): ComponentCacheManager {
-        return this.__componentCacheManager;
+    public get factory(): FactoryMaster {
+        return this.__factoryMaster;
     }
 
-    get entityCacheManager(): EntityCacheManager {
-        return this.__entityCacheManager;
-    }
-
-    public add(system: System<IComponent<any>>): void {
-        ((system instanceof RenderSystem)
-            ? this.__renderSystemsDictionary
-            : this.__systemsDictionary
-        ).write({
-            key: system.constructor.name,
-            value: system,
-        });
-    }
-
-    private __invokeOnceForEach(): void {
-        Object.keys(this.__systemsDictionary).forEach((key) => {
-            this.__componentCacheManager.getCollection(key).forEach((component) => {
-                this.__systemsDictionary.read(key).once(component);
-            });
-        });
-        Object.keys(this.__renderSystemsDictionary).forEach((key) => {
-            this.__componentCacheManager.getCollection(key).forEach((component) => {
-                this.__renderSystemsDictionary.read(key).once(component);
-            });
-        });
+    public get systems(): SystemMaster {
+        return this.__systemMaster;
     }
 
 }

@@ -7,8 +7,8 @@ export default abstract class RenderSystem<T> extends System<IComponent<T>> {
 
     protected _context: IRenderContext;
 
-    constructor({ context, iterable }: { context: IRenderContext, iterable: IIterable<T> }) {
-        super({ iterable });
+    constructor(context: IRenderContext) {
+        super();
         this._context = context;
     }
 
