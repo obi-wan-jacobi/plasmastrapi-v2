@@ -1,6 +1,6 @@
-import Unique from './abstracts/Unique';
-import IComponent from './interfaces/IComponent';
-import DataWrapper from './wrappers/DataWrapper';
+import DataWrapper from '../concretes/data-structures/DataWrapper';
+import IComponent from '../interfaces/IComponent';
+import Unique from './Unique';
 
 export default abstract class Component<T extends {}> extends Unique implements IComponent<T> {
 

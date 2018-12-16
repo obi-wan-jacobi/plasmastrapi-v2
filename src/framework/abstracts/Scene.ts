@@ -1,6 +1,6 @@
 import Engine from '../Engine';
-import Entity from '../Entity';
-import LinkedList from '../objects/LinkedList';
+import Entity from '../concretes/Entity';
+import LinkedList from '../concretes/data-structures/LinkedList';
 
 export default class Scene {
 

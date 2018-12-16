@@ -1,5 +1,5 @@
 import ComponentCacheManager from '../cache/ComponentCacheManager';
-import IComponent from '../interfaces/IComponent';
+import IComponent from '../../interfaces/IComponent';
 
 export default class ComponentFactory {
 

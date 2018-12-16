@@ -1,4 +1,4 @@
-import Wrapper from '../abstracts/Wrapper';
+import Wrapper from '../../abstracts/Wrapper';
 
 export default class DataWrapper<T extends {}> extends Wrapper<T> {
 

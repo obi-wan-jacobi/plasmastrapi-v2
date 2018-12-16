@@ -1,8 +1,8 @@
-import Dictionary from '../objects/Dictionary';
-import Engine from '../Engine';
-import IComponent from '../interfaces/IComponent';
-import RenderSystem from '../abstracts/RenderSystem';
-import System from '../abstracts/System';
+import Dictionary from '../data-structures/Dictionary';
+import Engine from '../../Engine';
+import IComponent from '../../interfaces/IComponent';
+import RenderSystem from '../../abstracts/RenderSystem';
+import System from '../../abstracts/System';
 
 export default class SystemMaster {
 

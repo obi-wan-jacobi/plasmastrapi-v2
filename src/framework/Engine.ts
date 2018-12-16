@@ -1,6 +1,6 @@
-import CacheMaster from './masters/CacheMaster';
-import FactoryMaster from './masters/FactoryMaster';
-import SystemMaster from './masters/SystemMaster';
+import CacheMaster from './concretes/masters/CacheMaster';
+import FactoryMaster from './concretes/masters/FactoryMaster';
+import SystemMaster from './concretes/masters/SystemMaster';
 
 export default class Engine {
 

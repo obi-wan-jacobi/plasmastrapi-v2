@@ -1,5 +1,5 @@
-import Dictionary from '../objects/Dictionary';
-import IComponent from '../interfaces/IComponent';
+import Dictionary from '../data-structures/Dictionary';
+import IComponent from '../../interfaces/IComponent';
 
 export default class ComponentCacheManager {
 

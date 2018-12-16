@@ -1,7 +1,7 @@
-import Unique from './abstracts/Unique';
-import IComponent from './interfaces/IComponent';
-import IEntity from './interfaces/IEntity';
-import Dictionary from './objects/Dictionary';
+import Dictionary from './data-structures/Dictionary';
+import IComponent from '../interfaces/IComponent';
+import IEntity from '../interfaces/IEntity';
+import Unique from '../abstracts/Unique';
 
 export default class Entity extends Unique implements IEntity {
 

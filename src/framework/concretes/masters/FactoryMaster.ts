@@ -1,5 +1,5 @@
 import ComponentFactory from '../factories/ComponentFactory';
-import Engine from '../Engine';
+import Engine from '../../Engine';
 import EntityFactory from '../factories/EntityFactory';
 
 export default class FactoryMaster {

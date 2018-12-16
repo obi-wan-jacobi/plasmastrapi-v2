@@ -1,4 +1,4 @@
-import Component from 'src/framework/Component';
+import Component from 'src/framework/abstracts/Component';
 
 export default class PoseComponent extends Component<{ x: number, y: number, a: number }> {
 

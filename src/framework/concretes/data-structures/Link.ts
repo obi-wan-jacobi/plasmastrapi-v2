@@ -1,4 +1,4 @@
-import { Optional } from '../types/Optional';
+import { Optional } from '../../types/Optional';
 
 export type OptionalLink<T> = Optional<Link<T>>;
 

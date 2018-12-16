@@ -1,4 +1,4 @@
-import Link from '../../../framework/objects/Link';
+import Link from '../../../../framework/concretes/data-structures/Link';
 
 describe(Link.name, () => {
 
