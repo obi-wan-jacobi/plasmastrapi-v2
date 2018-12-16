@@ -3,6 +3,11 @@
     "version": "1.0.0",
     "description": "",
     "main": "build/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/obi-wan-jacobi/plasmastrapi-v2.git"
+    },
+    "license": "ISC",
     "scripts": {
         "webpack": "./node_modules/.bin/webpack",
         "webpack-dev-server": "./node_modules/.bin/webpack-dev-server --open",
@@ -17,14 +22,13 @@
         "serve": "npm run build && npm run webpack-dev-server",
         "go": "npm run webpack-dev-server"
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/obi-wan-jacobi/plasmastrapi-v2.git"
+    "dependencies": {
+        "uuid": "^3.3.2"
     },
-    "license": "ISC",
     "devDependencies": {
         "@types/jest": "^23.3.7",
         "@types/node": "^10.12.15",
+        "@types/uuid": "^3.4.4",
         "html-webpack-plugin": "^3.2.0",
         "jest": "^23.6.0",
         "raw-loader": "^1.0.0",
@@ -37,9 +41,5 @@
         "webpack": "^4.27.1",
         "webpack-cli": "^3.1.2",
         "webpack-dev-server": "^3.1.10"
-    },
-    "dependencies": {
-        "@types/uuid": "^3.4.4",
-        "uuid": "^3.3.2"
     }
 }

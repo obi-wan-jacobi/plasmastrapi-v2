@@ -15,7 +15,7 @@ export default class Engine extends Invocable<void> {
     private __componentCacheManager: ComponentCacheManager;
     private __entityCacheManager: EntityCacheManager;
 
-    constructor(componentSubclassToSystemMap: Dictionary<string>) {
+    constructor() {
         super({ method: () => { this.__invokeOnceForEach(); } });
         this.__componentFactory = new ComponentFactory(this);
         this.__systemsDictionary = new Dictionary<System<IComponent<any>>>();
