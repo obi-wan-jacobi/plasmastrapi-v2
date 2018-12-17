@@ -1,16 +1,15 @@
 import IInvocable from '../interfaces/IInvocable';
-import { Optional } from '../types/Optional';
 
-export default abstract class Invocable<T> implements IInvocable<T> {
+export default abstract class Invocable<TPayload, TResult> implements IInvocable<TPayload, TResult> {
 
-    private __method: (payload: Optional<any>) => Optional<T>;
+    protected _method: (payload: TPayload) => TResult;
 
-    constructor({ method }: { method: (payload: Optional<any>) => Optional<T> }) {
-        this.__method = method;
+    constructor({ method }: { method: (payload: TPayload) => TResult }) {
+        this._method = method;
     }
 
-    public invoke(payload: Optional<any>): Optional<T> {
-        return this.__method(payload);
+    public invoke(payload: TPayload): TResult {
+        return this._method(payload);
     }
 
 }

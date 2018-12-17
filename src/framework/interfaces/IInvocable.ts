@@ -1,7 +1,7 @@
 import { Optional } from '../types/Optional';
 
-export default interface IInvocable<T> {
+export default interface IInvocable<TPayload, TResult> {
 
-    invoke({ method }: { method: (payload: Optional<any>) => Optional<T>}): Optional<T>;
+    invoke(payload: TPayload): TResult;
 
 }

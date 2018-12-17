@@ -1,6 +1,7 @@
+import IPosition2D from './IPosition2D';
 
 export default interface IRenderContext {
 
-    drawPoint({ x, y }: { x: number, y: number }): void;
+    drawPoint(point: IPosition2D): void;
 
 }

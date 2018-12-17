@@ -1,5 +1,6 @@
-import IRenderContext from '../interfaces/IRenderContext';
 import Context from './Context';
+import IPosition2D from '../interfaces/IPosition2D';
+import IRenderContext from '../interfaces/IRenderContext';
 
 export default abstract class RenderContext<T> extends Context<T> implements IRenderContext {
 
@@ -7,6 +8,6 @@ export default abstract class RenderContext<T> extends Context<T> implements IRe
         return this.unwrap();
     }
 
-    public abstract drawPoint({ x, y }: { x: number, y: number }): void;
+    public abstract drawPoint(point: IPosition2D): void;
 
 }

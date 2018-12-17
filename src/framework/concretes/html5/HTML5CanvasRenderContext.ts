@@ -1,3 +1,4 @@
+import IPosition2D from '../../interfaces/IPosition2D';
 import RenderContext from '../../abstracts/RenderContext';
 import { Atomic } from './decorators/Atomic';
 
@@ -12,7 +13,7 @@ export default class HTML5CanvasRenderContext extends RenderContext<CanvasRender
     }
 
     @Atomic
-    public drawPoint({ x, y}: { x: number, y: number }): void {
+    public drawPoint({ x, y}: IPosition2D): void {
         this.ctx.strokeStyle = 'white';
         this.ctx.arc(x, y, DEFAULT_RADIUS, 0, TWO_PI_RADIANS);
         this.ctx.stroke();
