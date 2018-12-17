@@ -4,11 +4,11 @@ import RenderPoseSystem from './systems/RenderPoseSystem';
 
 export default class HTML5CanvasGame {
 
-    private __$canvas: HTMLCanvasElement;
+    private __canvas: HTMLCanvasElement;
     private __engine: Engine;
 
-    constructor($canvas: HTMLCanvasElement) {
-        this.__$canvas = $canvas;
+    constructor(canvas: HTMLCanvasElement) {
+        this.__canvas = canvas;
         this.__engine = new Engine();
         this.__init();
     }
@@ -18,7 +18,7 @@ export default class HTML5CanvasGame {
     }
 
     public getRenderContext(): HTML5CanvasRenderContext {
-        return new HTML5CanvasRenderContext(this.__$canvas);
+        return new HTML5CanvasRenderContext(this.__canvas);
     }
 
     private __init(): void {

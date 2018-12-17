@@ -7,8 +7,8 @@ const DEFAULT_RADIUS = 5;
 
 export default class HTML5CanvasRenderContext extends RenderContext<CanvasRenderingContext2D> {
 
-    constructor($canvas: HTMLCanvasElement) {
-        super($canvas.getContext('2d') as CanvasRenderingContext2D);
+    constructor(canvas: HTMLCanvasElement) {
+        super(canvas.getContext('2d') as CanvasRenderingContext2D);
     }
 
     @Atomic
@@ -16,7 +16,6 @@ export default class HTML5CanvasRenderContext extends RenderContext<CanvasRender
         this.ctx.strokeStyle = 'white';
         this.ctx.arc(x, y, DEFAULT_RADIUS, 0, TWO_PI_RADIANS);
         this.ctx.stroke();
-        console.log('do a thing!');
     }
 
 }

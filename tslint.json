@@ -1,6 +1,7 @@
 {
     "extends": ["tslint:recommended", "tslint-consistent-codestyle"],
     "rules": {
+        "no-var-requires": false,
         "ordered-imports": false,
         "semicolon": [true, "always"],
         "variable-name": [false, "always"],

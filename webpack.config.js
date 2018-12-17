@@ -18,11 +18,16 @@ module.exports = {
         rules: [
             {
                 test: /\.html$/,
-                use: 'raw-loader',
+                loader: 'raw-loader',
             },
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
+                loader: 'ts-loader',
+                exclude: /node_modules/
+            },
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
                 exclude: /node_modules/
             }
         ]

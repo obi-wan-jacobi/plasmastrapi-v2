@@ -16,6 +16,7 @@
             "jest",
             "jquery",
             "node",
+            "sinon",
             "uuid",
         ]
     },

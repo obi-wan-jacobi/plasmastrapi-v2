@@ -17,9 +17,7 @@ export default abstract class Component<T extends {}> extends Unique implements 
     }
 
     public set(data: T): void {
-        console.log('what is my data ' + JSON.stringify(data));
         Object.assign(this.__data.unwrap(), data);
-        console.log('did it assign? ' + JSON.stringify(this.__data.unwrap()));
     }
 
 }

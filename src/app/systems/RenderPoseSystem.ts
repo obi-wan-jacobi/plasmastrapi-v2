@@ -9,7 +9,6 @@ export default class RenderPoseSystem extends RenderSystem<PoseComponent> {
     }
 
     public once(component: PoseComponent): void {
-        console.log('render pose component ' + JSON.stringify(component.data));
         this._context.drawPoint({
             x: component.data.x,
             y: component.data.y,

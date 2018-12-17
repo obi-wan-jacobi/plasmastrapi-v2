@@ -1,5 +1,5 @@
-import uuidv1 from 'uuid/v1';
 import IUnique from '../interfaces/IUnique';
+const uuidv1 = require('uuid/v1');
 
 export default abstract class Unique implements IUnique {
 
