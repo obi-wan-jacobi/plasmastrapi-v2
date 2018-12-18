@@ -1,6 +1,7 @@
 {
     "extends": ["tslint:recommended", "tslint-consistent-codestyle"],
     "rules": {
+        "one-line": false,
         "object-literal-sort-keys": false,
         "no-empty-interface": false,
         "no-var-requires": false,

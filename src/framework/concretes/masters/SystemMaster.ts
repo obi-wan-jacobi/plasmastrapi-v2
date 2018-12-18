@@ -28,7 +28,16 @@ export default class SystemMaster {
     }
 
     public loopOnce(): void {
+        this.__loopOnceForBasicSystems();
+        this.__loopOnceForRenderSystems();
+    }
+
+    private __loopOnceForBasicSystems(): void {
         this.__loopOnceForEachSystem(this.__basicSystems);
+    }
+
+    private __loopOnceForRenderSystems(): void {
+        this.__engine.viewport.refreshRenderContext();
         this.__loopOnceForEachSystem(this.__renderSystems);
     }
 

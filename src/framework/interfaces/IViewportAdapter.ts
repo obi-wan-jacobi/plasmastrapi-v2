@@ -1,7 +1,10 @@
 import Engine from '../Engine';
 import IComponent from './IComponent';
+import IRenderContext from './IRenderContext';
 
 export default interface IViewportAdapter<TComponent extends IComponent<any>> {
+
+    bind(engine: Engine<IViewportAdapter<IComponent<any>>>): void;
 
     onCursorEnable(component: TComponent): void;
 
@@ -15,6 +18,8 @@ export default interface IViewportAdapter<TComponent extends IComponent<any>> {
 
     onCursorCompleteActuation(component: TComponent): void;
 
-    bind(engine: Engine<IViewportAdapter<IComponent<any>>>): void;
+    getRenderContext(): IRenderContext;
+
+    refreshRenderContext(): void;
 
 }

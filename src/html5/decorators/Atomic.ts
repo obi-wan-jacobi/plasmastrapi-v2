@@ -8,7 +8,11 @@ export function Atomic(
     const method = descriptor.value;
     descriptor.value = function(...args: any[]): void {
         this.ctx.save();
+        this.ctx.strokeStyle = 'white';
+        this.ctx.beginPath();
         method.call(this, ...args);
+        this.ctx.closePath();
+        this.ctx.stroke();
         this.ctx.restore();
     };
 }

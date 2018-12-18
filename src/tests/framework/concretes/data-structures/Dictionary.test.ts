@@ -75,6 +75,29 @@ describe(Dictionary, () => {
         done();
     });
 
+    it('flush removes all elements', (done) => {
+        dictionary.write({
+            key: firstTuple.id,
+            value: firstTuple.data,
+        });
+        dictionary.write({
+            key: secondTuple.id,
+            value: secondTuple.data,
+        });
+        dictionary.write({
+            key: thirdTuple.id,
+            value: thirdTuple.data,
+        });
+        //
+        dictionary.flush();
+        //
+        expect(dictionary.read(firstTuple.id)).toBeUndefined();
+        expect(dictionary.read(secondTuple.id)).toBeUndefined();
+        expect(dictionary.read(thirdTuple.id)).toBeUndefined();
+        expect(dictionary.length).toBe(0);
+        done();
+    });
+
     it('forEach iterates through all elements', (done) => {
         dictionary.write({
             key: firstTuple.id,

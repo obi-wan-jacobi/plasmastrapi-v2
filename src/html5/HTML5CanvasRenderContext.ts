@@ -4,7 +4,7 @@ import RenderContext from '../framework/abstracts/RenderContext';
 
 const TWO = 2;
 const TWO_PI_RADIANS = TWO * Math.PI;
-const DEFAULT_RADIUS = 5;
+const DEFAULT_RADIUS = 50;
 
 export default class HTML5CanvasRenderContext extends RenderContext<CanvasRenderingContext2D> {
 
@@ -14,9 +14,7 @@ export default class HTML5CanvasRenderContext extends RenderContext<CanvasRender
 
     @Atomic
     public drawPoint({ x, y}: IPosition2D): void {
-        this.ctx.strokeStyle = 'white';
         this.ctx.arc(x, y, DEFAULT_RADIUS, 0, TWO_PI_RADIANS);
-        this.ctx.stroke();
     }
 
 }

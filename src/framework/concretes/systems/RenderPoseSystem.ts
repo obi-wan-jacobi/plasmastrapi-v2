@@ -1,6 +1,6 @@
-import IRenderContext from '../../framework/interfaces/IRenderContext';
+import IRenderContext from '../../interfaces/IRenderContext';
 import PoseComponent from '../components/PoseComponent';
-import RenderSystem from '../../framework/abstracts/RenderSystem';
+import RenderSystem from '../../abstracts/RenderSystem';
 
 export default class RenderPoseSystem extends RenderSystem<PoseComponent> {
 
