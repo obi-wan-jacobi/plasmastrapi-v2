@@ -1,5 +1,5 @@
-import IPosition2D from '../../interfaces/IPosition2D';
-import RenderContext from '../../abstracts/RenderContext';
+import IPosition2D from '../framework/interfaces/IPosition2D';
+import RenderContext from '../framework/abstracts/RenderContext';
 import { Atomic } from './decorators/Atomic';
 
 const TWO = 2;

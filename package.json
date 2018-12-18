@@ -20,7 +20,7 @@
         "prebuild": "npm run test",
         "build": "npm run bundle",
         "serve": "npm run build && npm run webpack-dev-server",
-        "go": "npm run webpack-dev-server"
+        "quick-serve": "npm run bundle && npm run webpack-dev-server"
     },
     "dependencies": {
         "jquery": "^3.3.1",

@@ -1,19 +1,20 @@
 import Engine from '../framework/Engine';
-import HTML5CanvasRenderContext from '../framework/concretes/html5/HTML5CanvasRenderContext';
+import HTML5CanvasRenderContext from '../html5/HTML5CanvasRenderContext';
+import HTML5CanvasViewportAdapter from '../html5/HTML5CanvasViewportAdapter';
 import RenderPoseSystem from './systems/RenderPoseSystem';
 
 export default class HTML5CanvasGame {
 
     private __canvas: HTMLCanvasElement;
-    private __engine: Engine;
+    private __engine: Engine<HTML5CanvasViewportAdapter>;
 
     constructor(canvas: HTMLCanvasElement) {
         this.__canvas = canvas;
-        this.__engine = new Engine();
+        this.__engine = new Engine(new HTML5CanvasViewportAdapter(this.__canvas));
         this.__init();
     }
 
-    public get engine(): Engine {
+    public get engine(): Engine<HTML5CanvasViewportAdapter> {
         return this.__engine;
     }
 

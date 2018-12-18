@@ -1,19 +1,19 @@
-import IComponent from '../interfaces/IComponent';
 import Unique from './Unique';
 
-export default abstract class System<T extends IComponent<any>> extends Unique {
+export default abstract class System<TPayload extends {}> extends Unique {
 
-    private __componentSubclass: new (data: {}) => T;
+    /* tslint:disable:naming-convention */
+    private __PayloadSubclass: new (data: {}) => TPayload;
 
-    constructor(ComponentSubclass: new (data: {}) => T) {
+    constructor(PayloadSubclass: new (data: {}) => TPayload) {
         super();
-        this.__componentSubclass = ComponentSubclass;
+        this.__PayloadSubclass = PayloadSubclass;
     }
 
-    public abstract once(component: T): void;
+    public abstract once(payload: TPayload): void;
 
     public get id(): string {
-        return this.__componentSubclass.name;
+        return this.__PayloadSubclass.name;
     }
 
 }

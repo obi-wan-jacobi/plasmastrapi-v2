@@ -1,16 +1,17 @@
 import Dictionary from '../data-structures/Dictionary';
 import Engine from '../../Engine';
 import IComponent from '../../interfaces/IComponent';
+import IViewportAdapter from '../../interfaces/IViewportAdapter';
 import RenderSystem from '../../abstracts/RenderSystem';
 import System from '../../abstracts/System';
 
 export default class SystemMaster {
 
-    private __engine: Engine;
+    private __engine: Engine<IViewportAdapter<IComponent<any>>>;
     private __basicSystems: Dictionary<System<IComponent<any>>>;
     private __renderSystems: Dictionary<RenderSystem<IComponent<any>>>;
 
-    constructor(engine: Engine) {
+    constructor(engine: Engine<IViewportAdapter<IComponent<any>>>) {
         this.__engine = engine;
         this.__basicSystems = new Dictionary<System<IComponent<any>>>();
         this.__renderSystems = new Dictionary<RenderSystem<IComponent<any>>>();

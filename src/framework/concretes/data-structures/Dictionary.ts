@@ -4,7 +4,7 @@ export default class Dictionary<T> {
     private __data: { [key: string]: T };
 
     constructor() {
-        this.__data = {};
+        this.flush();
     }
 
     public get length(): number {
@@ -21,6 +21,10 @@ export default class Dictionary<T> {
 
     public delete(key: string): void {
         delete this.__data[key];
+    }
+
+    public flush(): void {
+        this.__data = {};
     }
 
     public forEach(fn: (value: T) => void): void {
