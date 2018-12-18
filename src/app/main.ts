@@ -1,6 +1,6 @@
-import $ from 'jquery';
 import HTML5CanvasGame from './HTML5CanvasGame';
 import PoseComponent from './components/PoseComponent';
+import $ from 'jquery';
 
 /* tslint:disable:no-var-requires */
 

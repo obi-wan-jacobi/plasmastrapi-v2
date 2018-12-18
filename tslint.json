@@ -4,7 +4,11 @@
         "object-literal-sort-keys": false,
         "no-empty-interface": false,
         "no-var-requires": false,
-        "ordered-imports": false,
+        "ordered-imports": [true, {
+            "named-imports-order": "lowercase-last",
+            "import-sources-order": "lowercase-last",
+            "module-source-path": "basename"
+        }],
         "semicolon": [true, "always"],
         "variable-name": [false, "always"],
         "naming-convention": [true,

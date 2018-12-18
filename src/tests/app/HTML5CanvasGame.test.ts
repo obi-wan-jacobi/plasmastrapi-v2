@@ -1,6 +1,6 @@
-import * as sinon from 'sinon';
 import HTML5CanvasGame from '../../app/HTML5CanvasGame';
 import PoseComponent from '../../app/components/PoseComponent';
+import * as sinon from 'sinon';
 
 describe(HTML5CanvasGame.name, () => {
 

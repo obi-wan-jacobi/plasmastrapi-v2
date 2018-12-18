@@ -1,6 +1,6 @@
+import { Atomic } from './decorators/Atomic';
 import IPosition2D from '../framework/interfaces/IPosition2D';
 import RenderContext from '../framework/abstracts/RenderContext';
-import { Atomic } from './decorators/Atomic';
 
 const TWO = 2;
 const TWO_PI_RADIANS = TWO * Math.PI;

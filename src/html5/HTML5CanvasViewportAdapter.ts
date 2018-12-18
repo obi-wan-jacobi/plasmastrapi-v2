@@ -1,8 +1,8 @@
 import Engine from '../framework/Engine';
 import HTML5CanvasMouseInputComponent from './components/HTML5CanvasMouseInputComponent';
 import HTML5CanvasMouseInputSystem from './systems/HTML5CanvasMouseInputSystem';
-import IViewportAdapter from '../framework/interfaces/IViewportAdapter';
 import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from './enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
+import IViewportAdapter from '../framework/interfaces/IViewportAdapter';
 
 export default class HTML5CanvasViewportAdapter implements IViewportAdapter<HTML5CanvasMouseInputComponent> {
 
