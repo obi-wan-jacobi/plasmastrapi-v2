@@ -15,7 +15,7 @@
         "lint-fix": "./node_modules/.bin/tslint --fix src/**/*.ts",
         "lint": "./node_modules/.bin/tslint --project tsconfig.json",
         "jest": "./node_modules/.bin/jest",
-        "test": "npm run lint-fix && npm run lint &&  npm run jest",
+        "test": "npm run lint-fix && npm run lint && npm run jest",
         "bundle": "npm run purge-dist-directory && npm run webpack",
         "prebuild": "npm run test",
         "build": "npm run bundle",

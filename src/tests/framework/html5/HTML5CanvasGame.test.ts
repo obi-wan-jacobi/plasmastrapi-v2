@@ -1,4 +1,5 @@
 import HTML5CanvasGame from '../../../html5/HTML5CanvasGame';
+import Impostor from '../../Impostor';
 import PoseComponent from '../../../framework/concretes/components/PoseComponent';
 import * as sinon from 'sinon';
 
@@ -6,50 +7,41 @@ describe(HTML5CanvasGame.name, () => {
 
     it('render-able component is rendered once on first engine loop', (done) => {
         // mocks
-        const fakeRenderingContext = {
-            clearRect: (): void => undefined,
-            save: (): void => undefined,
-            beginPath: () => undefined,
-            arc: (): void => undefined,
-            stroke: (): void => undefined,
-            closePath: (): void => undefined,
-            restore: (): void => undefined,
-        } as unknown as CanvasRenderingContext2D;
-        const fakeHTMLCanvasElement = {
-            getContext: (): void => undefined,
-            getBoundingClientRect: (): void => undefined,
-        } as unknown as HTMLCanvasElement;
-        const mockCanvas = sinon.mock(fakeHTMLCanvasElement);
-        const mockContext = sinon.mock(fakeRenderingContext);
+        const imposterRenderingContext = new Impostor<CanvasRenderingContext2D>([
+            'clearRect',
+            'save',
+            'beginPath',
+            'arc',
+            'stroke',
+            'closePath',
+            'restore',
+        ]);
+        const imposterHTMLCanvasElement = new Impostor<HTMLCanvasElement>([
+            'getContext',
+            'getBoundingClientRect',
+        ]);
         // expectations
-        const expectGetContext = mockCanvas.expects('getContext')
+        imposterHTMLCanvasElement.expects('getContext')
             .twice()
             .withExactArgs('2d')
-            .returns(fakeRenderingContext);
-        const expectClearRect = mockContext.expects('clearRect').once();
-        const expectSave = mockContext.expects('save').once();
-        const expectBeginPath = mockContext.expects('beginPath').once();
-        const expectArc = mockContext.expects('arc').once();
-        const expectClosePath = mockContext.expects('closePath').once();
-        const expectStroke = mockContext.expects('stroke').once();
-        const expectRestore = mockContext.expects('restore').once();
+            .returns(imposterRenderingContext.invoke());
+        imposterRenderingContext.expects('clearRect').once();
+        imposterRenderingContext.expects('save').once();
+        imposterRenderingContext.expects('beginPath').once();
+        imposterRenderingContext.expects('arc').once();
+        imposterRenderingContext.expects('closePath').once();
+        imposterRenderingContext.expects('stroke').once();
+        imposterRenderingContext.expects('restore').once();
         //
-        const game = new HTML5CanvasGame(fakeHTMLCanvasElement);
+        const game = new HTML5CanvasGame(imposterHTMLCanvasElement.invoke());
         game.factory.components.create(PoseComponent, { x: 50, y: 50, a: 0 });
         game.systems.loopOnce();
         //
-        mockCanvas.verify();
-        mockContext.verify();
-        sinon.assert.callOrder(
-            expectGetContext,
-            expectClearRect,
-            expectSave,
-            expectBeginPath,
-            expectArc,
-            expectClosePath,
-            expectStroke,
-            expectRestore,
-        );
+        imposterHTMLCanvasElement.verify();
+        imposterHTMLCanvasElement.assertMethodsCalledInOrder();
+        imposterRenderingContext.verify();
+        imposterRenderingContext.assertMethodsCalledInOrder();
+
         done();
     });
 
