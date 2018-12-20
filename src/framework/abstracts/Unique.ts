@@ -5,8 +5,8 @@ export default abstract class Unique implements IUnique {
 
     private __id: string;
 
-    constructor() {
-        this.__id = uuidv1();
+    constructor(id?: string) {
+        this.__id = id || uuidv1();
     }
 
     get id(): string {

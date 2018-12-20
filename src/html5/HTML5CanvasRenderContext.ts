@@ -8,8 +8,17 @@ const DEFAULT_RADIUS = 50;
 
 export default class HTML5CanvasRenderContext extends RenderContext<CanvasRenderingContext2D> {
 
+    private __canvas: HTMLCanvasElement;
+
     constructor(canvas: HTMLCanvasElement) {
         super(canvas.getContext('2d') as CanvasRenderingContext2D);
+        this.__canvas = canvas;
+    }
+
+    public refresh(): void {
+        const width = this.__canvas.clientWidth;
+        const height = this.__canvas.clientHeight;
+        this.ctx.clearRect(0, 0, width, height);
     }
 
     @Atomic

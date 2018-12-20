@@ -8,6 +8,8 @@ export default abstract class RenderContext<T> extends Context<T> implements IRe
         return this.unwrap();
     }
 
+    public abstract refresh(): void;
+
     public abstract drawPoint(point: IPosition2D): void;
 
 }

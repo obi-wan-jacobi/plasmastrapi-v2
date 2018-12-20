@@ -1,20 +1,15 @@
 import Dictionary from '../../framework/concretes/data-structures/Dictionary';
-import Engine from '../../framework/Engine';
 import HTML5CanvasMouseInputComponent from '../components/HTML5CanvasMouseInputComponent';
 import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from '../enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
-import IComponent from '../../framework/interfaces/IComponent';
 import IHTML5CanvasMouseInputCommand from '../interfaces/IHTML5CanvasMouseInputCommand';
-import IViewportAdapter from '../../framework/interfaces/IViewportAdapter';
 import System from '../../framework/abstracts/System';
 
 export default class HTML5CanvasMouseInputSystem extends System<HTML5CanvasMouseInputComponent> {
 
     private __strategies: Dictionary<IHTML5CanvasMouseInputCommand>;
-    private __engine: Engine<IViewportAdapter<IComponent<any>>>;
 
-    constructor(engine: Engine<IViewportAdapter<IComponent<any>>>) {
+    constructor() {
         super(HTML5CanvasMouseInputComponent);
-        this.__engine = engine;
         this.__strategies = new Dictionary<IHTML5CanvasMouseInputCommand>();
     }
 
@@ -35,11 +30,13 @@ export default class HTML5CanvasMouseInputSystem extends System<HTML5CanvasMouse
             throw new Error(`${this.constructor.name} has no matching input command!`);
         }
         command.invoke(component.data.cursor);
-        this.__flushLastCapturedMouseInput(component.id);
     }
 
-    private __flushLastCapturedMouseInput(key: string): void {
-        this.__engine.cache.components.getCollection(this.id).delete(key);
+    private __dispatchHTML5CanvasMouseInputEvent(component: HTML5CanvasMouseInputComponent): void {
+        this.cache.components.getCollection(this.__system.id).write({
+            key: component.id,
+            value: component,
+        });
     }
 
 }

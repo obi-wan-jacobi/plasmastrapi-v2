@@ -5,11 +5,11 @@ import Unique from '../abstracts/Unique';
 
 export default class Entity extends Unique implements IEntity {
 
-    private __componentsDictionary: Dictionary<IComponent<{}>>;
+    private __componentsDictionary: Dictionary<IComponent<any>>;
 
     constructor() {
         super();
-        this.__componentsDictionary = new Dictionary<IComponent<{}>>();
+        this.__componentsDictionary = new Dictionary<IComponent<any>>();
     }
 
     public add<T>(component: IComponent<T>): void {

@@ -1,17 +1,15 @@
+import CacheMaster from './CacheMaster';
 import ComponentFactory from '../factories/ComponentFactory';
-import Engine from '../../Engine';
 import EntityFactory from '../factories/EntityFactory';
-import IComponent from '../../interfaces/IComponent';
-import IViewportAdapter from '../../interfaces/IViewportAdapter';
 
 export default class FactoryMaster {
 
     private __componentFactory: ComponentFactory;
     private __entityFactory: EntityFactory;
 
-    constructor(engine: Engine<IViewportAdapter<IComponent<any>>>) {
-        this.__componentFactory = new ComponentFactory(engine.cache.components);
-        this.__entityFactory = new EntityFactory(engine.cache.entities);
+    constructor(cache: CacheMaster) {
+        this.__componentFactory = new ComponentFactory(cache.components);
+        this.__entityFactory = new EntityFactory(cache.entities);
     }
 
     get components(): ComponentFactory {

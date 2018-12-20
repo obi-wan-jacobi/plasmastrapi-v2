@@ -1,29 +1,22 @@
-import Engine from '../Engine';
 import Entity from '../concretes/Entity';
-import IComponent from '../interfaces/IComponent';
-import IViewportAdapter from '../interfaces/IViewportAdapter';
 import LinkedList from '../concretes/data-structures/LinkedList';
+import Unique from './Unique';
 
-export default class Scene {
+export default class Scene extends Unique {
 
-    private __engine: Engine<IViewportAdapter<IComponent<any>>>;
     private __entities: LinkedList<Entity>;
 
-    constructor(engine: Engine<IViewportAdapter<IComponent<any>>>) {
-        this.__engine = engine;
+    constructor() {
+        super();
         this.__entities = new LinkedList<Entity>();
     }
 
     public load(): void {
-        this.__entities.forEach((entity) => {
-            entity.load();
-        });
+        return;
     }
 
     public unload(): void {
-        this.__entities.forEach((entity) => {
-            entity.unload();
-        });
+        return;
     }
 
 }

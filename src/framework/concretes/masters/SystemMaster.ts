@@ -1,18 +1,16 @@
+import CacheMaster from './CacheMaster';
 import Dictionary from '../data-structures/Dictionary';
-import Engine from '../../Engine';
 import IComponent from '../../interfaces/IComponent';
 import IViewportAdapter from '../../interfaces/IViewportAdapter';
 import RenderSystem from '../../abstracts/RenderSystem';
 import System from '../../abstracts/System';
 
-export default class SystemMaster {
+export default class SystemMaster<TViewportAdapter extends IViewportAdapter<IComponent<any>>> {
 
-    private __engine: Engine<IViewportAdapter<IComponent<any>>>;
     private __basicSystems: Dictionary<System<IComponent<any>>>;
     private __renderSystems: Dictionary<RenderSystem<IComponent<any>>>;
 
-    constructor(engine: Engine<IViewportAdapter<IComponent<any>>>) {
-        this.__engine = engine;
+    constructor() {
         this.__basicSystems = new Dictionary<System<IComponent<any>>>();
         this.__renderSystems = new Dictionary<RenderSystem<IComponent<any>>>();
     }
@@ -27,23 +25,23 @@ export default class SystemMaster {
         });
     }
 
-    public loopOnce(): void {
-        this.__loopOnceForBasicSystems();
-        this.__loopOnceForRenderSystems();
+    public loopOnce(viewport: TViewportAdapter, cache: CacheMaster): void {
+        this.__loopOnceForBasicSystems(cache);
+        this.__loopOnceForRenderSystems(viewport, cache);
     }
 
-    private __loopOnceForBasicSystems(): void {
-        this.__loopOnceForEachSystem(this.__basicSystems);
+    private __loopOnceForBasicSystems(cache: CacheMaster): void {
+        this.__loopOnceForEachSystem(cache, this.__basicSystems);
     }
 
-    private __loopOnceForRenderSystems(): void {
-        this.__engine.viewport.refreshRenderContext();
-        this.__loopOnceForEachSystem(this.__renderSystems);
+    private __loopOnceForRenderSystems(viewport: TViewportAdapter, cache: CacheMaster): void {
+        viewport.getRenderContext().refresh();
+        this.__loopOnceForEachSystem(cache, this.__renderSystems);
     }
 
-    private __loopOnceForEachSystem(systemsDictionary: Dictionary<System<IComponent<any>>>): void {
+    private __loopOnceForEachSystem(cache: CacheMaster, systemsDictionary: Dictionary<System<IComponent<any>>>): void {
         systemsDictionary.forEach((system) => {
-            this.__engine.cache.components.getCollection(system.id).forEach((component) => {
+            cache.components.getCollection(system.id).forEach((component) => {
                 system.once(component);
             });
         });

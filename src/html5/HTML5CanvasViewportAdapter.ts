@@ -9,16 +9,9 @@ export default class HTML5CanvasViewportAdapter implements IViewportAdapter<HTML
 
     private __canvas: HTMLCanvasElement;
     private __system: HTML5CanvasMouseInputSystem;
-    private __engine: Engine<HTML5CanvasViewportAdapter>;
 
     constructor(canvas: HTMLCanvasElement) {
         this.__canvas = canvas;
-    }
-
-    public bind(engine: Engine<HTML5CanvasViewportAdapter>): void {
-        this.__engine = engine;
-        this.__system = new HTML5CanvasMouseInputSystem(this.__engine);
-        this.__engine.systems.add(this.__system);
         this.__bindMouseEventsToViewportAdapter();
     }
 
@@ -50,17 +43,6 @@ export default class HTML5CanvasViewportAdapter implements IViewportAdapter<HTML
         return new HTML5CanvasRenderContext(this.__canvas);
     }
 
-    public getMouseInputSystem(): HTML5CanvasMouseInputSystem {
-        return this.__system;
-    }
-
-    public refreshRenderContext(): void {
-        const width = this.__canvas.clientWidth;
-        const height = this.__canvas.clientHeight;
-        const ctx = this.getRenderContext().ctx;
-        ctx.clearRect(0, 0, width, height);
-    }
-
     private __bindMouseEventsToViewportAdapter(): void {
         Object.keys(__canvasOnEventToViewportAdaptedMethodMap)
         .forEach((key) => {
@@ -83,16 +65,6 @@ export default class HTML5CanvasViewportAdapter implements IViewportAdapter<HTML
             });
             return target(event);
         };
-    }
-
-    private __dispatchHTML5CanvasMouseInputEvent(component: HTML5CanvasMouseInputComponent): void {
-        if (!this.__engine) {
-            throw new Error(`${this.constructor.name} no bind call was made on an engine instance!`);
-        }
-        this.__engine.cache.components.getCollection(this.__system.id).write({
-            key: component.id,
-            value: component,
-        });
     }
 
 }
