@@ -1,11 +1,10 @@
-import HTML5CanvasGame from '../../../html5/HTML5CanvasGame';
-import Impostor from '../../Impostor';
-import PoseComponent from '../../../framework/concretes/components/PoseComponent';
-import * as sinon from 'sinon';
+import HTML5CanvasGame from '../../html5/HTML5CanvasGame';
+import Impostor from '../Impostor';
+import PoseComponent from '../../framework/concretes/components/PoseComponent';
 
 describe(HTML5CanvasGame.name, () => {
 
-    it('render-able component is rendered once on first engine loop', (done) => {
+    it('renderable component is rendered once on first engine loop', (done) => {
         // mocks
         const imposterRenderingContext = new Impostor<CanvasRenderingContext2D>([
             'clearRect',
@@ -21,8 +20,7 @@ describe(HTML5CanvasGame.name, () => {
             'getBoundingClientRect',
         ]);
         // expectations
-        imposterHTMLCanvasElement.expects('getContext')
-            .twice()
+        imposterHTMLCanvasElement.expects('getContext').once()
             .withExactArgs('2d')
             .returns(imposterRenderingContext.invoke());
         imposterRenderingContext.expects('clearRect').once();
@@ -35,7 +33,7 @@ describe(HTML5CanvasGame.name, () => {
         //
         const game = new HTML5CanvasGame(imposterHTMLCanvasElement.invoke());
         game.factory.components.create(PoseComponent, { x: 50, y: 50, a: 0 });
-        game.systems.loopOnce();
+        game.once();
         //
         imposterHTMLCanvasElement.verify();
         imposterHTMLCanvasElement.assertMethodsCalledInOrder();

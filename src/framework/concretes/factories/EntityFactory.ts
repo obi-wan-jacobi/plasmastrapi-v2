@@ -1,17 +1,17 @@
 import Entity from '../Entity';
-import EntityCacheManager from '../cache/EntityCacheManager';
+import EntityStoreManager from '../store/EntityStoreManager';
 
 export default class EntityFactory {
 
-    private __entityCacheManager: EntityCacheManager;
+    private __entityStoreManager: EntityStoreManager;
 
-    constructor(entityCacheManager: EntityCacheManager) {
-        this.__entityCacheManager = entityCacheManager;
+    constructor(entityStoreManager: EntityStoreManager) {
+        this.__entityStoreManager = entityStoreManager;
     }
 
     public create(): Entity {
         const entity = new Entity();
-        this.__entityCacheManager.load(entity);
+        this.__entityStoreManager.load(entity);
         return entity;
     }
 

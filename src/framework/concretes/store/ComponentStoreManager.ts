@@ -1,7 +1,7 @@
 import Dictionary from '../data-structures/Dictionary';
 import IComponent from '../../interfaces/IComponent';
 
-export default class ComponentCacheManager {
+export default class ComponentStoreManager {
 
     private __componentsMap: Dictionary<Dictionary<IComponent<any>>>;
 

@@ -1,9 +1,9 @@
 import IPosition2D from '../interfaces/IPosition2D';
 import IShape from '../interfaces/IShape';
 
-export default abstract class Shape2D implements IShape {
+export default abstract class Shape2D<TColorType> implements IShape<TColorType> {
 
-    public colour: string;
+    public colour: TColorType;
 
     private __vertices: IPosition2D[];
 

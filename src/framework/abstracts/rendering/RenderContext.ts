@@ -1,6 +1,6 @@
-import Context from './Context';
-import IPosition2D from '../interfaces/IPosition2D';
-import IRenderContext from '../interfaces/IRenderContext';
+import Context from '../Context';
+import IPosition2D from '../../interfaces/IPosition2D';
+import IRenderContext from '../../interfaces/IRenderContext';
 
 export default abstract class RenderContext<T> extends Context<T> implements IRenderContext {
 

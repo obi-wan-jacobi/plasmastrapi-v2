@@ -1,5 +1,6 @@
 import Command from '../framework/concretes/commands/Command';
 import HTML5CanvasGame from '../html5/HTML5CanvasGame';
+import HTML5CanvasMouseInputSystem from '../html5/systems/HTML5CanvasMouseInputSystem';
 import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from '../html5/enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
 import ICursorPosition from '../framework/interfaces/ICursorPosition';
 import PoseComponent from '../framework/concretes/components/PoseComponent';
@@ -17,32 +18,34 @@ $(() => {
         (cursor: ICursorPosition) => console.log(`{ x: ${cursor.x}, y: ${cursor.y} }`),
     });
 
-    game.viewport.getMouseInputSystem().set(
+    const inputSystem = game.systems.getInputReceiver(HTML5CanvasMouseInputSystem);
+
+    inputSystem.set(
         HTML5_CANVAS_MOUSE_INPUT_EVENT.MOUSE_ENTER,
         printCursorPositionCommand,
     );
 
-    game.viewport.getMouseInputSystem().set(
+    inputSystem.set(
         HTML5_CANVAS_MOUSE_INPUT_EVENT.MOUSE_MOVE,
         printCursorPositionCommand,
     );
 
-    game.viewport.getMouseInputSystem().set(
+    inputSystem.set(
         HTML5_CANVAS_MOUSE_INPUT_EVENT.MOUSE_LEAVE,
         printCursorPositionCommand,
     );
 
-    game.viewport.getMouseInputSystem().set(
+    inputSystem.set(
         HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_DOWN,
         printCursorPositionCommand,
     );
 
-    game.viewport.getMouseInputSystem().set(
+    inputSystem.set(
         HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_UP,
         printCursorPositionCommand,
     );
 
-    game.viewport.getMouseInputSystem().set(
+    inputSystem.set(
         HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_CLICK,
         new Command({
             method: (cursor: ICursorPosition) => {

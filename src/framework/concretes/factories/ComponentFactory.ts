@@ -1,17 +1,17 @@
-import ComponentCacheManager from '../cache/ComponentCacheManager';
+import ComponentStoreManager from '../store/ComponentStoreManager';
 import IComponent from '../../interfaces/IComponent';
 
 export default class ComponentFactory {
 
-    private __componentCacheManager: ComponentCacheManager;
+    private __componentStoreManager: ComponentStoreManager;
 
-    constructor(componentCacheManager: ComponentCacheManager) {
-        this.__componentCacheManager = componentCacheManager;
+    constructor(componentStoreManager: ComponentStoreManager) {
+        this.__componentStoreManager = componentStoreManager;
     }
 
     public create<T extends {}>(ComponentSubclass: new(data: T) => IComponent<T>, data: T): IComponent<T> {
         const component = new ComponentSubclass(data);
-        this.__componentCacheManager.load(component);
+        this.__componentStoreManager.load(component);
         return component;
     }
 

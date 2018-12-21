@@ -2,7 +2,7 @@ import Shape2D from '../../abstracts/Shape2D';
 
 const HALF = 0.5;
 
-export default class Rectangle extends Shape2D {
+export default class Rectangle<TColorType> extends Shape2D<TColorType> {
 
     constructor(width: number, height: number) {
         const x = width * HALF;

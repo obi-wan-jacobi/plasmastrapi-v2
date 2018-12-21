@@ -16,11 +16,11 @@ export default class HTML5CanvasGame extends Engine<HTML5CanvasViewportAdapter> 
     }
 
     private __initInputSystems(): void {
-        this.systems.add(new HTML5CanvasMouseInputSystem());
+        this.systems.addInputReceiver(new HTML5CanvasMouseInputSystem());
     }
 
     private __initRenderSystems(): void {
-        this.systems.add(new RenderPoseSystem(this.viewport.getRenderContext()));
+        this.systems.addRenderer(new RenderPoseSystem(this.viewport.getRenderContext()));
     }
 
 }

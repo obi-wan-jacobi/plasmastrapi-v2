@@ -32,11 +32,4 @@ export default class HTML5CanvasMouseInputSystem extends System<HTML5CanvasMouse
         command.invoke(component.data.cursor);
     }
 
-    private __dispatchHTML5CanvasMouseInputEvent(component: HTML5CanvasMouseInputComponent): void {
-        this.cache.components.getCollection(this.__system.id).write({
-            key: component.id,
-            value: component,
-        });
-    }
-
 }

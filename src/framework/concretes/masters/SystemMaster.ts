@@ -1,47 +1,53 @@
-import CacheMaster from './CacheMaster';
 import Dictionary from '../data-structures/Dictionary';
-import IComponent from '../../interfaces/IComponent';
-import IViewportAdapter from '../../interfaces/IViewportAdapter';
-import RenderSystem from '../../abstracts/RenderSystem';
+import InputSystem from '../../abstracts/InputSystem';
+import RenderSystem from '../../abstracts/rendering/RenderSystem';
+import StoreMaster from './StoreMaster';
 import System from '../../abstracts/System';
 
-export default class SystemMaster<TViewportAdapter extends IViewportAdapter<IComponent<any>>> {
+export default class SystemMaster {
 
-    private __basicSystems: Dictionary<System<IComponent<any>>>;
-    private __renderSystems: Dictionary<RenderSystem<IComponent<any>>>;
+    private __inputSystems: Dictionary<InputSystem<any>>;
+    private __renderSystems: Dictionary<RenderSystem<any>>;
 
     constructor() {
-        this.__basicSystems = new Dictionary<System<IComponent<any>>>();
-        this.__renderSystems = new Dictionary<RenderSystem<IComponent<any>>>();
+        this.__inputSystems = new Dictionary<InputSystem<any>>();
+        this.__renderSystems = new Dictionary<RenderSystem<any>>();
     }
 
-    public add(system: System<IComponent<any>>): void {
-        ((system instanceof RenderSystem)
-            ? this.__renderSystems
-            : this.__basicSystems
-        ).write({
+    public getInputReceiver<TInputSystem extends InputSystem<any>>(SystemClass: new () => TInputSystem): TInputSystem {
+        return this.__inputSystems.read(SystemClass.name) as TInputSystem;
+    }
+
+    public addInputReceiver(system: InputSystem<any>): void {
+        this.__inputSystems.write({
             key: system.constructor.name,
             value: system,
         });
     }
 
-    public loopOnce(viewport: TViewportAdapter, cache: CacheMaster): void {
-        this.__loopOnceForBasicSystems(cache);
-        this.__loopOnceForRenderSystems(viewport, cache);
+    public addRenderer(system: RenderSystem<any>): void {
+        this.__renderSystems.write({
+            key: system.constructor.name,
+            value: system,
+        });
     }
 
-    private __loopOnceForBasicSystems(cache: CacheMaster): void {
-        this.__loopOnceForEachSystem(cache, this.__basicSystems);
+    public loopOnce(store: StoreMaster): void {
+        this.__loopOnceForInputSystems(store);
+        this.__loopOnceForRenderSystems(store);
     }
 
-    private __loopOnceForRenderSystems(viewport: TViewportAdapter, cache: CacheMaster): void {
-        viewport.getRenderContext().refresh();
-        this.__loopOnceForEachSystem(cache, this.__renderSystems);
+    private __loopOnceForInputSystems(store: StoreMaster): void {
+        this.__loopOnceForEachSystem(store, this.__inputSystems);
     }
 
-    private __loopOnceForEachSystem(cache: CacheMaster, systemsDictionary: Dictionary<System<IComponent<any>>>): void {
+    private __loopOnceForRenderSystems(store: StoreMaster): void {
+        this.__loopOnceForEachSystem(store, this.__renderSystems);
+    }
+
+    private __loopOnceForEachSystem<T>(store: StoreMaster, systemsDictionary: Dictionary<System<any>>): void {
         systemsDictionary.forEach((system) => {
-            cache.components.getCollection(system.id).forEach((component) => {
+            store.components.getCollection(system.id).forEach((component) => {
                 system.once(component);
             });
         });

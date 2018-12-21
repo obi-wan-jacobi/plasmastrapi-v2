@@ -1,6 +1,6 @@
 
-export default interface IRenderable {
+export default interface IRenderable<TColourType> {
 
-    colour: string;
+    colour: TColourType;
 
 }

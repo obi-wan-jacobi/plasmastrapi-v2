@@ -1,6 +1,6 @@
 import { Atomic } from './decorators/Atomic';
 import IPosition2D from '../framework/interfaces/IPosition2D';
-import RenderContext from '../framework/abstracts/RenderContext';
+import RenderContext from '../framework/abstracts/rendering/RenderContext';
 
 const TWO = 2;
 const TWO_PI_RADIANS = TWO * Math.PI;
@@ -13,6 +13,10 @@ export default class HTML5CanvasRenderContext extends RenderContext<CanvasRender
     constructor(canvas: HTMLCanvasElement) {
         super(canvas.getContext('2d') as CanvasRenderingContext2D);
         this.__canvas = canvas;
+    }
+
+    public get bounds(): ClientRect | DOMRect {
+        return this.__canvas.getBoundingClientRect();
     }
 
     public refresh(): void {

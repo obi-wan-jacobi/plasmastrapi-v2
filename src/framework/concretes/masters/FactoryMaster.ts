@@ -1,15 +1,15 @@
-import CacheMaster from './CacheMaster';
 import ComponentFactory from '../factories/ComponentFactory';
 import EntityFactory from '../factories/EntityFactory';
+import StoreMaster from './StoreMaster';
 
 export default class FactoryMaster {
 
     private __componentFactory: ComponentFactory;
     private __entityFactory: EntityFactory;
 
-    constructor(cache: CacheMaster) {
-        this.__componentFactory = new ComponentFactory(cache.components);
-        this.__entityFactory = new EntityFactory(cache.entities);
+    constructor(store: StoreMaster) {
+        this.__componentFactory = new ComponentFactory(store.components);
+        this.__entityFactory = new EntityFactory(store.entities);
     }
 
     get components(): ComponentFactory {

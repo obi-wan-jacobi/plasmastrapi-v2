@@ -1,5 +1,6 @@
-import Component from '../../abstracts/Component';
+import RenderableComponent from '../../abstracts/rendering/RenderableComponent';
 
-export default class PoseComponent extends Component<{ x: number, y: number, a: number }> {
+export default class PoseComponent<TColourType>
+extends RenderableComponent<{ x: number, y: number, a: number }, TColourType> {
 
 }
