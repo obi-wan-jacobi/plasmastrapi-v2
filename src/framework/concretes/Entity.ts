@@ -17,14 +17,15 @@ export default class Entity extends Unique implements IEntity {
             key: component.constructor.name,
             value: component,
         });
+        component.bind(this);
     }
 
     public remove<T>(ComponentSubclass: new () => IComponent<T>): void {
         this.__componentsDictionary.delete(ComponentSubclass.name);
     }
 
-    public get<T>(ComponentSubclass: new () => IComponent<T>): IComponent<T> {
-        return this.__componentsDictionary.read(ComponentSubclass.name);
+    public get<TComponent>(componentName: string): TComponent {
+        return this.__componentsDictionary.read(componentName) as unknown as TComponent;
     }
 
     public forEach(fn: (component: IComponent<any>) => void): void {

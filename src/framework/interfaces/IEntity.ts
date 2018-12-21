@@ -7,6 +7,4 @@ export default interface IEntity extends IUnique {
 
     remove<T>(ComponentSubclass: new () => IComponent<T>): void;
 
-    get<T>(ComponentSubclass: new () => IComponent<T>): IComponent<T>;
-
 }

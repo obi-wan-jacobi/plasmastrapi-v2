@@ -9,7 +9,9 @@ export default class ComponentFactory {
         this.__componentStoreManager = componentStoreManager;
     }
 
-    public create<T extends {}>(ComponentSubclass: new(data: T) => IComponent<T>, data: T): IComponent<T> {
+    public create<TComponent extends IComponent<{}>>(
+        ComponentSubclass: new(data: {}) => TComponent, data: {}
+    ): IComponent<TComponent> {
         const component = new ComponentSubclass(data);
         this.__componentStoreManager.load(component);
         return component;

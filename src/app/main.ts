@@ -3,6 +3,7 @@ import HTML5CanvasGame from '../html5/HTML5CanvasGame';
 import HTML5CanvasMouseInputSystem from '../html5/systems/HTML5CanvasMouseInputSystem';
 import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from '../html5/enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
 import ICursorPosition from '../framework/interfaces/ICursorPosition';
+import PoseComponent from '../framework/concretes/components/PoseComponent';
 import Rectangle from '../framework/concretes/geometry/shapes/Rectangle';
 import ShapeComponent from '../framework/concretes/components/ShapeComponent';
 import $ from 'jquery';
@@ -50,7 +51,14 @@ $(() => {
         HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_CLICK,
         new Command({
             method: (cursor: ICursorPosition) => {
-                game.factory.components.create(ShapeComponent, new Rectangle(20, 20));
+                const entity = game.factory.entities.create();
+                const poseArgs = { x: cursor.x, y: cursor.y, colour: 'red' };
+                const pose = game.factory.components.create<PoseComponent<string>>(PoseComponent, poseArgs);
+                const shapeArgs = new Rectangle(50, 50);
+                const shape = game.factory.components.create(ShapeComponent, shapeArgs);
+                shapeArgs.colour = 'blue';
+                entity.add(pose);
+                entity.add(shape);
             },
         }),
     );

@@ -3,9 +3,8 @@ import IRenderable from '../framework/interfaces/IRenderable';
 import IShape from '../framework/interfaces/IShape';
 import RenderContext from '../framework/abstracts/rendering/RenderContext';
 
-const TWO = 2;
-const TWO_PI_RADIANS = TWO * Math.PI;
-const DEFAULT_RADIUS = 50;
+const TWO_PI_RADIANS = 2 * Math.PI;
+const DEFAULT_RADIUS = 2;
 
 export default class HTML5CanvasRenderContext extends RenderContext<CanvasRenderingContext2D> {
 
