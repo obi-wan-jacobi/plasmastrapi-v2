@@ -1,9 +1,8 @@
-import IComponent from '../../interfaces/IComponent';
 import IRenderContext from '../../interfaces/IRenderContext';
-import IRenderable from '../../interfaces/IRenderable';
+import RenderableComponent from './RenderableComponent';
 import System from '../System';
 
-export default abstract class RenderSystem<TComponent extends IComponent<any> & IRenderable<any>>
+export default abstract class RenderSystem<TComponent extends RenderableComponent<any>>
 extends System<TComponent> {
 
     protected _context: IRenderContext;

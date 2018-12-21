@@ -1,5 +1,6 @@
 import { Atomic } from './decorators/Atomic';
-import IPosition2D from '../framework/interfaces/IPosition2D';
+import IRenderable from '../framework/interfaces/IRenderable';
+import IShape from '../framework/interfaces/IShape';
 import RenderContext from '../framework/abstracts/rendering/RenderContext';
 
 const TWO = 2;
@@ -26,8 +27,15 @@ export default class HTML5CanvasRenderContext extends RenderContext<CanvasRender
     }
 
     @Atomic
-    public drawPoint({ x, y}: IPosition2D): void {
-        this.ctx.arc(x, y, DEFAULT_RADIUS, 0, TWO_PI_RADIANS);
+    public drawPoint(point: { x: number, y: number } & IRenderable<any>): void {
+        this.ctx.arc(point.x, point.y, DEFAULT_RADIUS, 0, TWO_PI_RADIANS);
+    }
+
+    @Atomic
+    public drawShape(shape: IShape<any>): void {
+        shape.vertices.forEach((point) => {
+            this.ctx.lineTo(point.x, point.y);
+        });
     }
 
 }

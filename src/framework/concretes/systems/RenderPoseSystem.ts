@@ -9,10 +9,7 @@ export default class RenderPoseSystem<TColourType> extends RenderSystem<PoseComp
     }
 
     public once(component: PoseComponent<TColourType>): void {
-        this._context.drawPoint({
-            x: component.data.x,
-            y: component.data.y,
-        });
+        this._context.drawPoint(component.data);
     }
 
 }

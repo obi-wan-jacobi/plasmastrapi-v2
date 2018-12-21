@@ -1,6 +1,6 @@
-import Component from '../../abstracts/Component';
 import IShape from '../../interfaces/IShape';
+import RenderableComponent from '../../abstracts/rendering/RenderableComponent';
 
-export default class ShapeComponent<TColorType> extends Component<IShape<TColorType>> {
+export default class ShapeComponent<TColorType> extends RenderableComponent<IShape<TColorType>> {
 
 }

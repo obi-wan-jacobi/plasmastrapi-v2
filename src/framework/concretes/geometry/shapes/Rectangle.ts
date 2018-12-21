@@ -1,4 +1,4 @@
-import Shape2D from '../../abstracts/Shape2D';
+import Shape2D from '../../../abstracts/Shape2D';
 
 const HALF = 0.5;
 
