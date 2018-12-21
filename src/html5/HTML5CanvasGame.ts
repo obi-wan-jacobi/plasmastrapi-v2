@@ -2,6 +2,7 @@ import Engine from '../framework/Engine';
 import HTML5CanvasMouseInputSystem from './systems/HTML5CanvasMouseInputSystem';
 import HTML5CanvasViewportAdapter from './HTML5CanvasViewportAdapter';
 import RenderPoseSystem from '../framework/concretes/systems/RenderPoseSystem';
+import RenderShapeSystem from '../framework/concretes/systems/RenderShapeSystem';
 
 export default class HTML5CanvasGame extends Engine<HTML5CanvasViewportAdapter> {
 
@@ -21,6 +22,7 @@ export default class HTML5CanvasGame extends Engine<HTML5CanvasViewportAdapter> 
 
     private __initRenderSystems(): void {
         this.systems.addRenderer(new RenderPoseSystem(this.viewport.getRenderContext()));
+        this.systems.addRenderer(new RenderShapeSystem(this.viewport.getRenderContext()));
     }
 
 }

@@ -3,7 +3,8 @@ import HTML5CanvasGame from '../html5/HTML5CanvasGame';
 import HTML5CanvasMouseInputSystem from '../html5/systems/HTML5CanvasMouseInputSystem';
 import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from '../html5/enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
 import ICursorPosition from '../framework/interfaces/ICursorPosition';
-import PoseComponent from '../framework/concretes/components/PoseComponent';
+import Rectangle from '../framework/concretes/geometry/shapes/Rectangle';
+import ShapeComponent from '../framework/concretes/components/ShapeComponent';
 import $ from 'jquery';
 
 if (process.env.NODE_ENV === 'development') {
@@ -49,8 +50,7 @@ $(() => {
         HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_CLICK,
         new Command({
             method: (cursor: ICursorPosition) => {
-                game.factory.components.create(PoseComponent, { x: cursor.x, y: cursor.y, a: 0 });
-                console.log(`{ x: ${cursor.x}, y: ${cursor.y} }`);
+                game.factory.components.create(ShapeComponent, new Rectangle(20, 20));
             },
         }),
     );
