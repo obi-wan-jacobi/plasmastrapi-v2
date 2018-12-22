@@ -1,9 +1,9 @@
-import Dictionary from '../data-structures/Dictionary';
 import IViewportAdapter from '../../interfaces/IViewportAdapter';
 import StoreManager from '../../abstracts/StoreManager';
 import StoreMaster from './StoreMaster';
 import System from '../../abstracts/System';
 import SystemMaster from './SystemMaster';
+import TypeCollection from '../data-structures/TypeCollection';
 
 const ONE_SECOND_IN_MS = 1000.00;
 const LOOPS_PER_SECOND = 60.0;
@@ -41,10 +41,14 @@ export default class SystemLoopMaster {
     }
 
     private __once<TStoreManager extends StoreManager<any>>(
-        store: TStoreManager, systems: Dictionary<System<any>>
+        store: TStoreManager, systems: TypeCollection<System<any>>
     ): void {
         systems.forEach((system) => {
-            store.getCollection(system.key).forEach((component) => {
+            const collection = store.get(system.PayloadConstructor);
+            if (!collection) {
+                return;
+            }
+            collection.forEach((component) => {
                 system.once(component);
             });
         });

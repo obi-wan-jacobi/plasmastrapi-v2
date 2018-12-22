@@ -5,8 +5,6 @@ import StoreMaster from '../concretes/masters/StoreMaster';
 
 export default interface IViewportAdapter<TComponent extends IComponent<IInputEvent<any>>> {
 
-    inputSystemKey: string;
-
     onCursorEnable(component: TComponent): void;
 
     onCursorDisable(component: TComponent): void;

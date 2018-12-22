@@ -10,7 +10,7 @@ export default class RenderShapeSystem<TColourType> extends RenderSystem<ShapeCo
     }
 
     public once(component: ShapeComponent<TColourType>): void {
-        const pose = component.entity.get<PoseComponent<any>>(PoseComponent.name);
+        const pose = component.entity.components.get<PoseComponent<any>>(PoseComponent);
         this._context.drawShape({
             vertices: component.data.vertices.map((vertex) => {
                 return { x: vertex.x + pose.data.x, y: vertex.y + pose.data.y };

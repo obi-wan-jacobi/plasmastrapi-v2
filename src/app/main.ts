@@ -3,6 +3,7 @@ import HTML5CanvasGame from '../html5/HTML5CanvasGame';
 import HTML5CanvasMouseInputSystem from '../html5/systems/HTML5CanvasMouseInputSystem';
 import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from '../html5/enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
 import ICursorPosition from '../framework/interfaces/ICursorPosition';
+import Plasmastrapi from './Plasmastrapi';
 import PoseComponent from '../framework/concretes/components/PoseComponent';
 import Rectangle from '../framework/concretes/geometry/shapes/Rectangle';
 import ShapeComponent from '../framework/concretes/components/ShapeComponent';
@@ -14,7 +15,7 @@ if (process.env.NODE_ENV === 'development') {
 
 $(() => {
     const canvas = $('#app-target').get(0) as HTMLCanvasElement;
-    const game = new HTML5CanvasGame(canvas);
+    const game = new Plasmastrapi(canvas);
 
     const printCursorPositionCommand = new Command({ method:
         (cursor: ICursorPosition) => console.log(`{ x: ${cursor.x}, y: ${cursor.y} }`),
@@ -57,8 +58,8 @@ $(() => {
                 const shapeArgs = new Rectangle(50, 50);
                 const shape = game.factory.components.create(ShapeComponent, shapeArgs);
                 shapeArgs.colour = 'blue';
-                entity.add(pose);
-                entity.add(shape);
+                entity.components.add(pose);
+                entity.components.add(shape);
             },
         }),
     );

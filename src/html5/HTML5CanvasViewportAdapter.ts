@@ -8,17 +8,11 @@ export default class HTML5CanvasViewportAdapter implements IViewportAdapter<HTML
 
     private __renderContext: HTML5CanvasRenderContext;
     private __inputBuffer: HTML5CanvasMouseInputComponent[];
-    private __inputSystemKey: string;
 
     constructor(canvas: HTMLCanvasElement) {
         this.__renderContext = new HTML5CanvasRenderContext(canvas);
         this.__inputBuffer = [];
-        this.__inputSystemKey = HTML5CanvasMouseInputComponent.name;
         this.__bindMouseEventsToViewportAdapter(canvas);
-    }
-
-    public get inputSystemKey(): string {
-        return this.__inputSystemKey;
     }
 
     public onCursorEnable(component: HTML5CanvasMouseInputComponent): void {
@@ -48,17 +42,21 @@ export default class HTML5CanvasViewportAdapter implements IViewportAdapter<HTML
     public storeInputs(store: StoreMaster): void {
         const buffer = this.__inputBuffer;
         this.__inputBuffer = [];
-        const collection = store.components.getCollection(this.inputSystemKey);
+        const collection = store.components.get(HTML5CanvasMouseInputComponent);
+        if (!collection) {
+            throw new Error('No component collection exists for viewport\'s input component type');
+        }
         buffer.forEach((component) => {
-            collection.write({
-                key: component.id,
-                value: component,
-            });
+            collection.add(component);
         });
     }
 
     public clearStoredInputs(store: StoreMaster): void {
-        store.components.getCollection(this.inputSystemKey).flush();
+        const collection = store.components.get(HTML5CanvasMouseInputComponent);
+        if (!collection) {
+            throw new Error('No component collection exists for viewport\'s input component type');
+        }
+        collection.purge();
     }
 
     public getRenderContext(): HTML5CanvasRenderContext {

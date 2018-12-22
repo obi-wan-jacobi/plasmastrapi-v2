@@ -1,40 +1,35 @@
-import { Ctor } from '../types/Ctor';
-import Dictionary from './data-structures/Dictionary';
 import IComponent from '../interfaces/IComponent';
-import IEntity from '../interfaces/IEntity';
+import TypeCollection from './data-structures/TypeCollection';
 import Unique from '../abstracts/Unique';
 
-export default class Entity extends Unique implements IEntity {
+export default class Entity extends Unique {
 
-    private __componentsDictionary: Dictionary<IComponent<any>>;
+    private __components: ComponentCollectionEntityInjector;
 
     constructor() {
         super();
-        this.__componentsDictionary = new Dictionary<IComponent<any>>();
+        this.__components = new ComponentCollectionEntityInjector(this);
     }
 
-    public add<T>(component: IComponent<T>): void {
-        this.__componentsDictionary.write({
-            key: component.constructor.name,
-            value: component,
-        });
-        component.bind(this);
+    public get components(): TypeCollection<IComponent<any>> {
+        return this.__components;
     }
 
-    public remove<T>(ComponentSubclass: Ctor<IComponent<T>, void>): void {
-        this.__componentsDictionary.delete(ComponentSubclass.name);
+}
+
+class ComponentCollectionEntityInjector extends TypeCollection<IComponent<any>> {
+
+    private __entity: Entity;
+
+    constructor(entity: Entity) {
+        super();
+        this.__entity = entity;
     }
 
-    public get<TComponent>(componentName: string): TComponent {
-        return this.__componentsDictionary.read(componentName) as unknown as TComponent;
-    }
-
-    public forEach(fn: (component: IComponent<any>) => void): void {
-        this.__componentsDictionary.forEach(fn);
-    }
-
-    public map(fn: (component: IComponent<any>) => any): any[] {
-        return this.__componentsDictionary.map(fn);
+    public add(component: IComponent<any>): boolean {
+        const isAdded = super.add(component);
+        component.bind(this.__entity);
+        return isAdded;
     }
 
 }
