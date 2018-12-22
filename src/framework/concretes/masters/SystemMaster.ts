@@ -1,55 +1,49 @@
+import { Ctor } from '../../types/Ctor';
 import Dictionary from '../data-structures/Dictionary';
+import IRenderContext from '../../interfaces/IRenderContext';
 import InputSystem from '../../abstracts/InputSystem';
 import RenderSystem from '../../abstracts/rendering/RenderSystem';
-import StoreMaster from './StoreMaster';
-import System from '../../abstracts/System';
 
 export default class SystemMaster {
 
+    private __renderContext: IRenderContext;
     private __inputSystems: Dictionary<InputSystem<any>>;
     private __renderSystems: Dictionary<RenderSystem<any>>;
 
-    constructor() {
+    constructor(renderContext: IRenderContext) {
+        this.__renderContext = renderContext;
         this.__inputSystems = new Dictionary<InputSystem<any>>();
         this.__renderSystems = new Dictionary<RenderSystem<any>>();
     }
 
-    public getInputReceiver<TInputSystem extends InputSystem<any>>(SystemClass: new () => TInputSystem): TInputSystem {
+    public get inputs(): Dictionary<InputSystem<any>> {
+        return this.__inputSystems;
+    }
+
+    public get renderers(): Dictionary<RenderSystem<any>> {
+        return this.__renderSystems;
+    }
+
+    public getInputReceiver<TInputSystem extends InputSystem<any>>(SystemClass: Ctor<TInputSystem, void>)
+    : TInputSystem {
         return this.__inputSystems.read(SystemClass.name) as TInputSystem;
     }
 
-    public addInputReceiver(system: InputSystem<any>): void {
+    public addInputReceiver<TInputSystem extends InputSystem<any>>(
+        InputSystemSubclass: Ctor<TInputSystem, void>
+    ): void {
         this.__inputSystems.write({
-            key: system.constructor.name,
-            value: system,
+            key: InputSystemSubclass.name,
+            value: new InputSystemSubclass(),
         });
     }
 
-    public addRenderer(system: RenderSystem<any>): void {
+    public addRenderer<TRenderSystem extends RenderSystem<any>>(
+        RenderSystemSubclass: Ctor<TRenderSystem, IRenderContext>
+    ): void {
         this.__renderSystems.write({
-            key: system.constructor.name,
-            value: system,
-        });
-    }
-
-    public loopOnce(store: StoreMaster): void {
-        this.__loopOnceForInputSystems(store);
-        this.__loopOnceForRenderSystems(store);
-    }
-
-    private __loopOnceForInputSystems(store: StoreMaster): void {
-        this.__loopOnceForEachSystem(store, this.__inputSystems);
-    }
-
-    private __loopOnceForRenderSystems(store: StoreMaster): void {
-        this.__loopOnceForEachSystem(store, this.__renderSystems);
-    }
-
-    private __loopOnceForEachSystem<T>(store: StoreMaster, systemsDictionary: Dictionary<System<any>>): void {
-        systemsDictionary.forEach((system) => {
-            store.components.getCollection(system.id).forEach((component) => {
-                system.once(component);
-            });
+            key: RenderSystemSubclass.name,
+            value: new RenderSystemSubclass(this.__renderContext),
         });
     }
 

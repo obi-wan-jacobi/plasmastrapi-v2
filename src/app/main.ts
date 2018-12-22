@@ -63,5 +63,5 @@ $(() => {
         }),
     );
 
-    game.start();
+    game.loop.start();
 });

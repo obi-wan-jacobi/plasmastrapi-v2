@@ -1,3 +1,4 @@
+import { Ctor } from '../types/Ctor';
 import Dictionary from './data-structures/Dictionary';
 import IComponent from '../interfaces/IComponent';
 import IEntity from '../interfaces/IEntity';
@@ -20,7 +21,7 @@ export default class Entity extends Unique implements IEntity {
         component.bind(this);
     }
 
-    public remove<T>(ComponentSubclass: new () => IComponent<T>): void {
+    public remove<T>(ComponentSubclass: Ctor<IComponent<T>, void>): void {
         this.__componentsDictionary.delete(ComponentSubclass.name);
     }
 

@@ -1,3 +1,4 @@
+import { Ctor } from '../../types/Ctor';
 import IRenderContext from '../../interfaces/IRenderContext';
 import RenderableComponent from './RenderableComponent';
 import System from '../System';
@@ -7,7 +8,7 @@ extends System<TComponent> {
 
     protected _context: IRenderContext;
 
-    constructor(context: IRenderContext, ComponentSubclass: new (data: {}) => TComponent) {
+    constructor(context: IRenderContext, ComponentSubclass: Ctor<TComponent, {}>) {
         super(ComponentSubclass);
         this._context = context;
 

@@ -1,6 +1,9 @@
 import HTML5CanvasGame from '../../html5/HTML5CanvasGame';
+import HTML5CanvasMouseInputSystem from '../../html5/systems/HTML5CanvasMouseInputSystem';
 import Impostor from '../Impostor';
 import PoseComponent from '../../framework/concretes/components/PoseComponent';
+import RenderPoseSystem from '../../framework/concretes/systems/RenderPoseSystem';
+import RenderShapeSystem from '../../framework/concretes/systems/RenderShapeSystem';
 
 describe(HTML5CanvasGame.name, () => {
 
@@ -32,8 +35,11 @@ describe(HTML5CanvasGame.name, () => {
         imposterRenderingContext.expects('restore').once();
         //
         const game = new HTML5CanvasGame(imposterHTMLCanvasElement.invoke());
+        game.systems.addInputReceiver(HTML5CanvasMouseInputSystem);
+        game.systems.addRenderer(RenderPoseSystem);
+        game.systems.addRenderer(RenderShapeSystem);
         game.factory.components.create(PoseComponent, { x: 50, y: 50, a: 0 });
-        game.once();
+        game.loop.once();
         //
         imposterHTMLCanvasElement.verify();
         imposterHTMLCanvasElement.assertMethodsCalledInOrder();

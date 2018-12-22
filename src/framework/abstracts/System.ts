@@ -1,9 +1,15 @@
-import Unique from './Unique';
+import { Ctor } from '../types/Ctor';
 
-export default abstract class System<TPayload extends {}> extends Unique {
+export default abstract class System<TPayload extends {}> {
 
-    constructor(PayloadSubclass: new (data: {}) => TPayload) {
-        super(PayloadSubclass.name);
+    private __key: string;
+
+    constructor(PayloadSubclass: Ctor<TPayload, {}>) {
+        this.__key = PayloadSubclass.name;
+    }
+
+    public get key(): string {
+        return this.__key;
     }
 
     public abstract once(payload: TPayload): void;
