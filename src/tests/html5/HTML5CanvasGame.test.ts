@@ -1,9 +1,7 @@
 import Command from '../../framework/concretes/commands/Command';
 import HTML5CanvasGame from '../../html5/HTML5CanvasGame';
 import HTML5CanvasMouseInputComponent from '../../html5/components/HTML5CanvasMouseInputComponent';
-import HTML5CanvasMouseInputSystem from '../../html5/systems/HTML5CanvasMouseInputSystem';
 import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from '../../html5/enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
-import ICursorPosition from '../../framework/interfaces/ICursorPosition';
 import IVerifiable from '../src/interfaces/IVerifiable';
 import Impostor from '../src/concretes/Impostor';
 import PoseComponent from '../../framework/concretes/components/PoseComponent';
@@ -45,7 +43,6 @@ describe(HTML5CanvasGame.name, () => {
             .withExactArgs('2d')
             .returns(impostorRenderingContext.unwrap());
         game = new HTML5CanvasGame(impostorHTMLCanvasElement.unwrap());
-        __bindInputPassthroughCommands(game.systems.addInputReceiver(HTML5CanvasMouseInputSystem));
     });
 
     afterEach(() => {
@@ -62,7 +59,7 @@ describe(HTML5CanvasGame.name, () => {
         impostorRenderingContext.expects('stroke').once();
         impostorRenderingContext.expects('restore').once();
         //
-        game.systems.addRenderer(RenderPoseSystem);
+        game.systems.add(RenderPoseSystem);
         game.store.components.load(new PoseComponent({ x: 50, y: 50, a: 0, colour: 'blue' }));
         game.loop.once();
         //
@@ -90,48 +87,6 @@ describe(HTML5CanvasGame.name, () => {
 
 const __simulateClick = (): void => {
     return;
-};
-
-const __bindInputPassthroughCommands = (inputSystem: HTML5CanvasMouseInputSystem): void => {
-    const inputPassthroughCommand = new Command({ method:
-        (cursor: ICursorPosition) => {
-            return;
-        },
-    });
-
-    inputSystem.set(
-        HTML5_CANVAS_MOUSE_INPUT_EVENT.MOUSE_ENTER,
-        inputPassthroughCommand,
-    );
-
-    inputSystem.set(
-        HTML5_CANVAS_MOUSE_INPUT_EVENT.MOUSE_MOVE,
-        inputPassthroughCommand,
-    );
-
-    inputSystem.set(
-        HTML5_CANVAS_MOUSE_INPUT_EVENT.MOUSE_LEAVE,
-        inputPassthroughCommand,
-    );
-
-    inputSystem.set(
-        HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_DOWN,
-        inputPassthroughCommand,
-    );
-
-    inputSystem.set(
-        HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_UP,
-        inputPassthroughCommand,
-    );
-
-    inputSystem.set(
-        HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_CLICK,
-        new Command({
-            method: (cursor: ICursorPosition) => {
-                return;
-            }
-        }),
-    );
 };
 
 class FakeCanvas implements IVerifiable {

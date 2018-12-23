@@ -1,9 +1,7 @@
 import IViewportAdapter from '../../interfaces/IViewportAdapter';
 import StoreManager from '../../abstracts/StoreManager';
 import StoreMaster from './StoreMaster';
-import System from '../../abstracts/System';
 import SystemMaster from './SystemMaster';
-import TypeCollection from '../data-structures/TypeCollection';
 
 const ONE_SECOND_IN_MS = 1000.00;
 const LOOPS_PER_SECOND = 60.0;
@@ -35,14 +33,12 @@ export default class SystemLoopMaster {
     public once(): void {
         this.__viewport.getRenderContext().refresh();
         this.__viewport.storeInputs(this.__store);
-        this.__once(this.__store.components, this.__systems.inputs);
-        this.__once(this.__store.components, this.__systems.basic);
-        this.__once(this.__store.components, this.__systems.renderers);
+        this.__once(this.__store.components, this.__systems);
         this.__viewport.clearStoredInputs(this.__store);
     }
 
     private __once<TStoreManager extends StoreManager<any>>(
-        store: TStoreManager, systems: TypeCollection<System<any>>
+        store: TStoreManager, systems: SystemMaster
     ): void {
         systems.forEach((system) => {
             const collection = store.get(system.ComponentCtor);
