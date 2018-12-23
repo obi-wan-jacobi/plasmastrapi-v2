@@ -1,34 +1,6 @@
 import TypeManifold from '../../../../framework/concretes/data-structures/TypeManifold';
 import Unique from '../../../../framework/abstracts/Unique';
 
-class TestType1 extends Unique {
-
-    constructor(id: string) {
-        super(id);
-    }
-
-}
-
-class TestType2 extends Unique {
-
-    constructor(id: string) {
-        super(id);
-    }
-
-}
-
-class TestType3 extends Unique {
-
-    constructor(id: string) {
-        super(id);
-    }
-
-}
-
-class TestType4 extends Unique {
-
-}
-
 describe(TypeManifold.name, () => {
 
     let addedTestType1Ids: string[];
@@ -156,3 +128,31 @@ describe(TypeManifold.name, () => {
     };
 
 });
+
+class TestType1 extends Unique {
+
+    constructor(id: string) {
+        super(id);
+    }
+
+}
+
+class TestType2 extends Unique {
+
+    constructor(id: string) {
+        super(id);
+    }
+
+}
+
+class TestType3 extends Unique {
+
+    constructor(id: string) {
+        super(id);
+    }
+
+}
+
+class TestType4 extends Unique {
+
+}

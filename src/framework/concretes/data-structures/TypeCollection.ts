@@ -14,8 +14,8 @@ implements IIterable<TBaseType> {
         return this.unwrap().length;
     }
 
-    public get<TType extends TBaseType>(InstanceConstructor: Ctor<TType, any>): TType {
-        return this.unwrap().read(InstanceConstructor.name) as TType;
+    public get<TType extends TBaseType>(InstanceCtor: Ctor<TType, any>): TType {
+        return this.unwrap().read(InstanceCtor.name) as TType;
     }
 
     public add<TType extends TBaseType>(instance: TType): boolean {
@@ -30,12 +30,12 @@ implements IIterable<TBaseType> {
         return true;
     }
 
-    public remove<TType extends TBaseType>(InstanceConstructor: Ctor<TType, any>): boolean {
+    public remove<TType extends TBaseType>(InstanceCtor: Ctor<TType, any>): boolean {
         const inner = this.unwrap();
-        if (!inner.read(InstanceConstructor.name)) {
+        if (!inner.read(InstanceCtor.name)) {
             return false;
         }
-        inner.delete(InstanceConstructor.name);
+        inner.delete(InstanceCtor.name);
         return true;
     }
 

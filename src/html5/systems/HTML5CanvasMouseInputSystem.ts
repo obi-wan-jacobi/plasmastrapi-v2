@@ -2,9 +2,9 @@ import Dictionary from '../../framework/concretes/data-structures/Dictionary';
 import HTML5CanvasMouseInputComponent from '../components/HTML5CanvasMouseInputComponent';
 import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from '../enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
 import IHTML5CanvasMouseInputCommand from '../interfaces/IHTML5CanvasMouseInputCommand';
-import System from '../../framework/abstracts/System';
+import InputSystem from '../../framework/abstracts/InputSystem';
 
-export default class HTML5CanvasMouseInputSystem extends System<HTML5CanvasMouseInputComponent> {
+export default class HTML5CanvasMouseInputSystem extends InputSystem<HTML5CanvasMouseInputComponent> {
 
     private __strategies: Dictionary<IHTML5CanvasMouseInputCommand>;
 

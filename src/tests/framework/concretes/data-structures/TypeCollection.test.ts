@@ -1,34 +1,6 @@
 import TypeCollection from '../../../../framework/concretes/data-structures/TypeCollection';
 import Unique from '../../../../framework/abstracts/Unique';
 
-class TestType1 extends Unique {
-
-    constructor(id: string) {
-        super(id);
-    }
-
-}
-
-class TestType2 extends Unique {
-
-    constructor(id: string) {
-        super(id);
-    }
-
-}
-
-class TestType3 extends Unique {
-
-    constructor(id: string) {
-        super(id);
-    }
-
-}
-
-class TestType4 extends Unique {
-
-}
-
 describe(TypeCollection.name, () => {
 
     let collection: TypeCollection<Unique>;
@@ -111,3 +83,31 @@ describe(TypeCollection.name, () => {
     };
 
 });
+
+class TestType1 extends Unique {
+
+    constructor(id: string) {
+        super(id);
+    }
+
+}
+
+class TestType2 extends Unique {
+
+    constructor(id: string) {
+        super(id);
+    }
+
+}
+
+class TestType3 extends Unique {
+
+    constructor(id: string) {
+        super(id);
+    }
+
+}
+
+class TestType4 extends Unique {
+
+}

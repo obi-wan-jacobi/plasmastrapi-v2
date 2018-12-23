@@ -5,12 +5,12 @@ import TypeUnifold from '../concretes/data-structures/TypeUnifold';
 
 export default interface ITypeManifold<TType extends IUnique> extends IIterable<TType> {
 
-    get(InstanceConstructor: Ctor<TType, any>): TypeUnifold<TType>;
+    get(InstanceCtor: Ctor<TType, any>): TypeUnifold<TType>;
 
     add(instance: TType): void;
 
     remove(instance: TType): void;
 
-    prune(InstanceConstructor: Ctor<TType, any>): void;
+    prune(InstanceCtor: Ctor<TType, any>): void;
 
 }

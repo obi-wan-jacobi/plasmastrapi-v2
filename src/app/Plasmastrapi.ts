@@ -1,3 +1,4 @@
+import ButtonSystem from './systems/ButtonSystem';
 import HTML5CanvasGame from '../html5/HTML5CanvasGame';
 import HTML5CanvasMouseInputSystem from '../html5/systems/HTML5CanvasMouseInputSystem';
 import RenderPoseSystem from '../framework/concretes/systems/RenderPoseSystem';
@@ -12,11 +13,16 @@ export default class Plasmastrapi extends HTML5CanvasGame {
 
     private __init(): void {
         this.__initInputSystems();
+        this.__initBasicSystems();
         this.__initRenderSystems();
     }
 
     private __initInputSystems(): void {
         this.systems.addInputReceiver(HTML5CanvasMouseInputSystem);
+    }
+
+    private __initBasicSystems(): void {
+        this.systems.add(ButtonSystem);
     }
 
     private __initRenderSystems(): void {

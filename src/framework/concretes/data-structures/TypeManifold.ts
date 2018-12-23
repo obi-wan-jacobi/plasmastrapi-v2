@@ -12,14 +12,14 @@ implements ITypeManifold<TType> {
         super(new Dictionary<TypeUnifold<TType>>());
     }
 
-    public get(InstanceConstructor: Ctor<TType, any>): TypeUnifold<TType> {
-        if (!this.unwrap().read(InstanceConstructor.name)) {
+    public get(InstanceCtor: Ctor<TType, any>): TypeUnifold<TType> {
+        if (!this.unwrap().read(InstanceCtor.name)) {
             this.unwrap().write({
-                key: InstanceConstructor.name,
+                key: InstanceCtor.name,
                 value: new TypeUnifold<TType>()
             });
         }
-        return this.unwrap().read(InstanceConstructor.name);
+        return this.unwrap().read(InstanceCtor.name);
     }
 
     public getById(id: string): TypeUnifold<TType> {
@@ -42,13 +42,13 @@ implements ITypeManifold<TType> {
         return this.unwrap().read(instance.constructor.name).remove(instance.id);
     }
 
-    public prune(InstanceConstructor: Ctor<TType, any>): boolean {
-        const inner = this.unwrap().read(InstanceConstructor.name);
+    public prune(InstanceCtor: Ctor<TType, any>): boolean {
+        const inner = this.unwrap().read(InstanceCtor.name);
         if (!inner) {
             return false;
         }
         inner.purge();
-        this.unwrap().delete(InstanceConstructor.name);
+        this.unwrap().delete(InstanceCtor.name);
         return true;
     }
 

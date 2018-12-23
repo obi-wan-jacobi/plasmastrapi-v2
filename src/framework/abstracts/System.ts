@@ -1,21 +1,21 @@
 import { Ctor } from '../types/Ctor';
 
-export default abstract class System<TPayload extends {}> {
+export default abstract class System<TComponent extends {}> {
 
     /* tslint:disable:naming-convention */
-    private __PayloadConstructor: Ctor<TPayload, any>;
+    private __ComponentCtor: Ctor<TComponent, any>;
     /* tslint:enable:naming-convention */
 
-    constructor(PayloadSubclass: Ctor<TPayload, {}>) {
-        this.__PayloadConstructor = PayloadSubclass;
+    constructor(ComponentCtor: Ctor<TComponent, {}>) {
+        this.__ComponentCtor = ComponentCtor;
     }
 
     /* tslint:disable:naming-convention */
-    public get PayloadConstructor(): Ctor<TPayload, any> {
-        return this.__PayloadConstructor;
+    public get ComponentCtor(): Ctor<TComponent, any> {
+        return this.__ComponentCtor;
     }
     /* tslint:enable:naming-convention */
 
-    public abstract once(payload: TPayload): void;
+    public abstract once(payload: TComponent): void;
 
 }

@@ -8,8 +8,8 @@ extends System<TComponent> {
 
     protected _context: IRenderContext;
 
-    constructor(context: IRenderContext, ComponentSubclass: Ctor<TComponent, {}>) {
-        super(ComponentSubclass);
+    constructor(context: IRenderContext, ComponentCtor: Ctor<TComponent, {}>) {
+        super(ComponentCtor);
         this._context = context;
 
     }

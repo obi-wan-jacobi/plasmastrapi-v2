@@ -36,6 +36,7 @@ export default class SystemLoopMaster {
         this.__viewport.getRenderContext().refresh();
         this.__viewport.storeInputs(this.__store);
         this.__once(this.__store.components, this.__systems.inputs);
+        this.__once(this.__store.components, this.__systems.basic);
         this.__once(this.__store.components, this.__systems.renderers);
         this.__viewport.clearStoredInputs(this.__store);
     }
@@ -44,7 +45,7 @@ export default class SystemLoopMaster {
         store: TStoreManager, systems: TypeCollection<System<any>>
     ): void {
         systems.forEach((system) => {
-            const collection = store.get(system.PayloadConstructor);
+            const collection = store.get(system.ComponentCtor);
             if (!collection) {
                 return;
             }

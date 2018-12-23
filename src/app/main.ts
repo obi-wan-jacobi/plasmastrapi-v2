@@ -1,3 +1,4 @@
+import Button from './Button';
 import Command from '../framework/concretes/commands/Command';
 import Entity from '../framework/concretes/Entity';
 import HTML5CanvasGame from '../html5/HTML5CanvasGame';
@@ -55,15 +56,13 @@ $(() => {
         HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_CLICK,
         new Command({
             method: (cursor: ICursorPosition) => {
-                const entity = new Entity(); // game.factory.entities.create();
-                const poseArgs = { x: cursor.x, y: cursor.y, a: 0, colour: 'red' };
-                const shapeArgs = new Rectangle({ width: 50, height: 50, colour: 'blue' });
-                entity.components.add(new PoseComponent(poseArgs));
-                entity.components.add(new ShapeComponent(shapeArgs));
-                game.store.entities.load(entity);
-            },
+                return;
+            }
         }),
     );
+
+    const button = new Button({ x: 50, y: 50, width: 50, height: 50, colour: 'red' });
+    game.store.entities.load(button);
 
     game.loop.start();
 });

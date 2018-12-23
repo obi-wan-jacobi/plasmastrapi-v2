@@ -19,8 +19,8 @@ export default abstract class StoreManager<T extends IUnique> {
         this.__store.remove(target);
     }
 
-    public get(TargetConstructor: Ctor<T, any>): TypeUnifold<T> {
-        return this.__store.get(TargetConstructor);
+    public get(TargetCtor: Ctor<T, any>): TypeUnifold<T> {
+        return this.__store.get(TargetCtor);
     }
 
 }
