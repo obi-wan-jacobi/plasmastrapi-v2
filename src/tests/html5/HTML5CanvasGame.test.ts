@@ -38,7 +38,7 @@ describe(HTML5CanvasGame.name, () => {
         game.systems.addInputReceiver(HTML5CanvasMouseInputSystem);
         game.systems.addRenderer(RenderPoseSystem);
         game.systems.addRenderer(RenderShapeSystem);
-        game.factory.components.create(PoseComponent, { x: 50, y: 50, a: 0 });
+        game.store.components.load(new PoseComponent({ x: 50, y: 50, a: 0, colour: 'blue' }));
         game.loop.once();
         //
         imposterHTMLCanvasElement.verify();

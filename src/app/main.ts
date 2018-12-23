@@ -1,4 +1,5 @@
 import Command from '../framework/concretes/commands/Command';
+import Entity from '../framework/concretes/Entity';
 import HTML5CanvasGame from '../html5/HTML5CanvasGame';
 import HTML5CanvasMouseInputSystem from '../html5/systems/HTML5CanvasMouseInputSystem';
 import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from '../html5/enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
@@ -18,7 +19,9 @@ $(() => {
     const game = new Plasmastrapi(canvas);
 
     const printCursorPositionCommand = new Command({ method:
-        (cursor: ICursorPosition) => console.log(`{ x: ${cursor.x}, y: ${cursor.y} }`),
+        (cursor: ICursorPosition) => {
+            // console.log(`{ x: ${cursor.x}, y: ${cursor.y} }`);
+        },
     });
 
     const inputSystem = game.systems.getInputReceiver(HTML5CanvasMouseInputSystem);
@@ -52,14 +55,12 @@ $(() => {
         HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_CLICK,
         new Command({
             method: (cursor: ICursorPosition) => {
-                const entity = game.factory.entities.create();
-                const poseArgs = { x: cursor.x, y: cursor.y, colour: 'red' };
-                const pose = game.factory.components.create<PoseComponent<string>>(PoseComponent, poseArgs);
-                const shapeArgs = new Rectangle(50, 50);
-                const shape = game.factory.components.create(ShapeComponent, shapeArgs);
-                shapeArgs.colour = 'blue';
-                entity.components.add(pose);
-                entity.components.add(shape);
+                const entity = new Entity(); // game.factory.entities.create();
+                const poseArgs = { x: cursor.x, y: cursor.y, a: 0, colour: 'red' };
+                const shapeArgs = new Rectangle({ width: 50, height: 50, colour: 'blue' });
+                entity.components.add(new PoseComponent(poseArgs));
+                entity.components.add(new ShapeComponent(shapeArgs));
+                game.store.entities.load(entity);
             },
         }),
     );
