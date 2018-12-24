@@ -13,8 +13,10 @@ export default class SystemMaster {
         this.__systems = new TypeCollection<System<any>>();
     }
 
-    public add<TSystem extends System<any>>(SystemCtor: Ctor<TSystem, any>): TSystem {
-        const system = new SystemCtor(this.__renderContext);
+    public add<TSystem extends System<any>, TArg extends any>(
+        SystemCtor: Ctor<TSystem, TArg>, arg: TArg
+    ): TSystem {
+        const system = new SystemCtor(arg);
         this.__systems.add(system);
         return system;
     }

@@ -1,18 +1,18 @@
-import HTML5CanvasMouseInputComponent from '../../html5/components/HTML5CanvasMouseInputComponent';
-import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from '../../html5/enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
+import { CURSOR_EVENT } from '../../framework/enums/CURSOR_EVENT';
+import CursorComponent from '../../framework/concretes/components/CursorComponent';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import IPosition2D from '../../framework/interfaces/IPosition2D';
 import IShape from '../../framework/interfaces/IShape';
 import InputSystem from '../../framework/abstracts/InputSystem';
 
-export default class ButtonSystem extends InputSystem<HTML5CanvasMouseInputComponent> {
+export default class ButtonSystem extends InputSystem<CursorComponent> {
 
     constructor() {
-        super(HTML5CanvasMouseInputComponent);
+        super(CursorComponent);
     }
 
-    public once(component: HTML5CanvasMouseInputComponent): void {
-        if (component.data.eventName === HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_CLICK) {
+    public once(component: CursorComponent): void {
+        if (component.data.eventName === CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION) {
             console.log('click!');
         }
     }

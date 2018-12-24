@@ -1,35 +1,35 @@
-import Dictionary from '../../framework/concretes/data-structures/Dictionary';
-import HTML5CanvasMouseInputComponent from '../components/HTML5CanvasMouseInputComponent';
+import { CURSOR_EVENT } from '../../framework/enums/CURSOR_EVENT';
+import CursorComponent from '../../framework/concretes/components/CursorComponent';
+import HTML5CanvasMouseInputEvent from '../events/HTML5CanvasMouseInputEvent';
 import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from '../enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
-import IHTML5CanvasMouseInputCommand from '../interfaces/IHTML5CanvasMouseInputCommand';
 import InputSystem from '../../framework/abstracts/InputSystem';
+import StoreMaster from '../../framework/concretes/masters/StoreMaster';
 
-export default class HTML5CanvasMouseInputSystem extends InputSystem<HTML5CanvasMouseInputComponent> {
+export default class HTML5CanvasMouseInputSystem extends InputSystem<HTML5CanvasMouseInputEvent> {
 
-    private __strategies: Dictionary<IHTML5CanvasMouseInputCommand>;
+    private __store: StoreMaster;
 
-    constructor() {
-        super(HTML5CanvasMouseInputComponent);
-        this.__strategies = new Dictionary<IHTML5CanvasMouseInputCommand>();
+    constructor(store: StoreMaster) {
+        super(HTML5CanvasMouseInputEvent);
+        this.__store = store;
     }
 
-    public set(event: HTML5_CANVAS_MOUSE_INPUT_EVENT, command: IHTML5CanvasMouseInputCommand): void {
-        this.__strategies.write({
-            key: event,
-            value: command,
+    public once(event: HTML5CanvasMouseInputEvent): void {
+        this.__store.components.get(CursorComponent).forEach((component) => {
+            component.set({
+                eventName: __eventMap[event.data.eventName],
+                cursor: event.data.cursor
+            });
         });
     }
 
-    public reset(): void {
-        this.__strategies.flush();
-    }
-
-    public once(component: HTML5CanvasMouseInputComponent): void {
-        const command = this.__strategies.read(component.data.eventName);
-        if (!command) {
-            throw new Error(`${this.constructor.name} has no matching input command!`);
-        }
-        command.invoke(component.data.cursor);
-    }
-
 }
+
+const __eventMap: { [key: string]: string} = {
+    [HTML5_CANVAS_MOUSE_INPUT_EVENT.MOUSE_ENTER]: CURSOR_EVENT.CURSOR_ENABLE,
+    [HTML5_CANVAS_MOUSE_INPUT_EVENT.MOUSE_MOVE]: CURSOR_EVENT.CURSOR_TRANSLATE,
+    [HTML5_CANVAS_MOUSE_INPUT_EVENT.MOUSE_LEAVE]: CURSOR_EVENT.CURSOR_DISABLE,
+    [HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_DOWN]: CURSOR_EVENT.CURSOR_BEGIN_ACTUATION,
+    [HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_UP]: CURSOR_EVENT.CURSOR_END_ACTUATION,
+    [HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_CLICK]: CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION,
+};

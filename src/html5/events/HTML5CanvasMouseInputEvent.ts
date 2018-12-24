@@ -2,7 +2,7 @@ import Component from '../../framework/abstracts/Component';
 import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from '../enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
 import ICursorPosition from '../../framework/interfaces/ICursorPosition';
 
-export default class HTML5CanvasMouseInputComponent
+export default class HTML5CanvasMouseInputEvent
 extends Component<{ eventName: HTML5_CANVAS_MOUSE_INPUT_EVENT, cursor: ICursorPosition }> {
 
     constructor({ eventName, cursor }:

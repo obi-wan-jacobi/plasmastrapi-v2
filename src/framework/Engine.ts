@@ -1,4 +1,6 @@
 import IViewportAdapter from './interfaces/IViewportAdapter';
+import RenderPoseSystem from './concretes/systems/RenderPoseSystem';
+import RenderShapeSystem from './concretes/systems/RenderShapeSystem';
 import StoreMaster from './concretes/masters/StoreMaster';
 import SystemLoopMaster from './concretes/masters/SystemLoopMaster';
 import SystemMaster from './concretes/masters/SystemMaster';
@@ -19,6 +21,7 @@ export default class Engine<TViewportAdapter extends IViewportAdapter<any>> {
             this.__storeMaster,
             this.__systemMaster
         );
+        this.__initSystems();
     }
 
     public get viewport(): TViewportAdapter {
@@ -35,6 +38,11 @@ export default class Engine<TViewportAdapter extends IViewportAdapter<any>> {
 
     public get loop(): SystemLoopMaster {
         return this.__loopMaster;
+    }
+
+    private __initSystems(): void {
+        this.systems.add(RenderPoseSystem, this.__viewport.getRenderContext());
+        this.systems.add(RenderShapeSystem, this.__viewport.getRenderContext());
     }
 
 }

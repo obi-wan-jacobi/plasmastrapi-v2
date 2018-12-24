@@ -1,13 +1,13 @@
-import HTML5CanvasMouseInputComponent from './components/HTML5CanvasMouseInputComponent';
+import HTML5CanvasMouseInputEvent from './events/HTML5CanvasMouseInputEvent';
 import HTML5CanvasRenderContext from './HTML5CanvasRenderContext';
 import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from './enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
 import IViewportAdapter from '../framework/interfaces/IViewportAdapter';
 import StoreMaster from '../framework/concretes/masters/StoreMaster';
 
-export default class HTML5CanvasViewportAdapter implements IViewportAdapter<HTML5CanvasMouseInputComponent> {
+export default class HTML5CanvasViewportAdapter implements IViewportAdapter<HTML5CanvasMouseInputEvent> {
 
     private __renderContext: HTML5CanvasRenderContext;
-    private __inputBuffer: HTML5CanvasMouseInputComponent[];
+    private __inputBuffer: HTML5CanvasMouseInputEvent[];
 
     constructor(canvas: HTMLCanvasElement) {
         this.__renderContext = new HTML5CanvasRenderContext(canvas);
@@ -15,34 +15,34 @@ export default class HTML5CanvasViewportAdapter implements IViewportAdapter<HTML
         this.__bindMouseEventsToViewportAdapter(canvas);
     }
 
-    public onCursorEnable(component: HTML5CanvasMouseInputComponent): void {
+    public onCursorEnable(component: HTML5CanvasMouseInputEvent): void {
         this.__inputBuffer.push(component);
     }
 
-    public onCursorDisable(component: HTML5CanvasMouseInputComponent): void {
+    public onCursorDisable(component: HTML5CanvasMouseInputEvent): void {
         this.__inputBuffer.push(component);
     }
 
-    public onCursorTranslate(component: HTML5CanvasMouseInputComponent): void {
+    public onCursorTranslate(component: HTML5CanvasMouseInputEvent): void {
         this.__inputBuffer.push(component);
     }
 
-    public onCursorBeginActuation(component: HTML5CanvasMouseInputComponent): void {
+    public onCursorBeginActuation(component: HTML5CanvasMouseInputEvent): void {
         this.__inputBuffer.push(component);
     }
 
-    public onCursorEndActuation(component: HTML5CanvasMouseInputComponent): void {
+    public onCursorEndActuation(component: HTML5CanvasMouseInputEvent): void {
         this.__inputBuffer.push(component);
     }
 
-    public onCursorCompleteActuation(component: HTML5CanvasMouseInputComponent): void {
+    public onCursorCompleteActuation(component: HTML5CanvasMouseInputEvent): void {
         this.__inputBuffer.push(component);
     }
 
     public storeInputs(store: StoreMaster): void {
         const buffer = this.__inputBuffer;
         this.__inputBuffer = [];
-        const collection = store.components.get(HTML5CanvasMouseInputComponent);
+        const collection = store.components.get(HTML5CanvasMouseInputEvent);
         if (!collection) {
             throw new Error('No component collection exists for viewport\'s input component type');
         }
@@ -52,7 +52,7 @@ export default class HTML5CanvasViewportAdapter implements IViewportAdapter<HTML
     }
 
     public clearStoredInputs(store: StoreMaster): void {
-        const collection = store.components.get(HTML5CanvasMouseInputComponent);
+        const collection = store.components.get(HTML5CanvasMouseInputEvent);
         if (!collection) {
             throw new Error('No component collection exists for viewport\'s input component type');
         }
@@ -72,11 +72,11 @@ export default class HTML5CanvasViewportAdapter implements IViewportAdapter<HTML
     }
 
     private __adaptCallbackToViewportMethod(
-        target: (component: HTML5CanvasMouseInputComponent) => void): (ev: MouseEvent
+        target: (component: HTML5CanvasMouseInputEvent) => void): (ev: MouseEvent
     ) => void{
         return (ev: MouseEvent): void => {
             const boundingClientRect = this.__renderContext.bounds;
-            const event = new HTML5CanvasMouseInputComponent({
+            const event = new HTML5CanvasMouseInputEvent({
                 eventName: __mouseEventToHTML5CanvasMouseInputEventMap[ev.type],
                 cursor: {
                     x: ev.clientX - boundingClientRect.left,
@@ -99,7 +99,7 @@ const __mouseEventToHTML5CanvasMouseInputEventMap: { [key: string]: HTML5_CANVAS
 };
 
 const __canvasOnEventToViewportAdaptedMethodMap
-: { [key: string]: (component: HTML5CanvasMouseInputComponent) => void } = {
+: { [key: string]: (component: HTML5CanvasMouseInputEvent) => void } = {
     onmouseenter: HTML5CanvasViewportAdapter.prototype.onCursorEnable,
     onmouseleave: HTML5CanvasViewportAdapter.prototype.onCursorDisable,
     onmousemove: HTML5CanvasViewportAdapter.prototype.onCursorTranslate,
