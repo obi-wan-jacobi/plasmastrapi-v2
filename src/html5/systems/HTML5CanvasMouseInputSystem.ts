@@ -2,10 +2,10 @@ import { CURSOR_EVENT } from '../../framework/enums/CURSOR_EVENT';
 import CursorComponent from '../../framework/concretes/components/CursorComponent';
 import HTML5CanvasMouseInputEvent from '../events/HTML5CanvasMouseInputEvent';
 import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from '../enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
-import InputSystem from '../../framework/abstracts/InputSystem';
 import StoreMaster from '../../framework/concretes/masters/StoreMaster';
+import System from '../../framework/abstracts/System';
 
-export default class HTML5CanvasMouseInputSystem extends InputSystem<HTML5CanvasMouseInputEvent> {
+export default class HTML5CanvasMouseInputSystem extends System<HTML5CanvasMouseInputEvent> {
 
     private __store: StoreMaster;
 

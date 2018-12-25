@@ -1,9 +1,8 @@
 import IComponent from './IComponent';
-import IInputEvent from './IInputEvent';
 import IRenderContext from './IRenderContext';
 import StoreMaster from '../concretes/masters/StoreMaster';
 
-export default interface IViewportAdapter<TComponent extends IComponent<IInputEvent<any>>> {
+export default interface IViewportAdapter<TComponent extends IComponent<any>> {
 
     onCursorEnable(component: TComponent): void;
 
@@ -21,6 +20,6 @@ export default interface IViewportAdapter<TComponent extends IComponent<IInputEv
 
     clearStoredInputs(store: StoreMaster): void;
 
-    getRenderContext(): IRenderContext;
+    getRenderContext(): IRenderContext<any>;
 
 }

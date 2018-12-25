@@ -5,10 +5,10 @@ import TypeCollection from '../data-structures/TypeCollection';
 
 export default class SystemMaster {
 
-    private __renderContext: IRenderContext;
+    private __renderContext: IRenderContext<any>;
     private __systems: TypeCollection<System<any>>;
 
-    constructor(renderContext: IRenderContext) {
+    constructor(renderContext: IRenderContext<any>) {
         this.__renderContext = renderContext;
         this.__systems = new TypeCollection<System<any>>();
     }

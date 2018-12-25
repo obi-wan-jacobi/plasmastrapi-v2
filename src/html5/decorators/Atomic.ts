@@ -1,5 +1,7 @@
 import HTML5CanvasRenderContext from '../HTML5CanvasRenderContext';
-import IRenderable from '../../framework/interfaces/IRenderable';
+import { HTML5_COLOUR } from '../enums/HTML5_COLOUR';
+import IComponent from '../../framework/interfaces/IComponent';
+import RenderingComponent from '../../framework/concretes/components/RenderingComponent';
 
 export function Atomic(
     target: HTML5CanvasRenderContext,
@@ -7,11 +9,13 @@ export function Atomic(
     descriptor: PropertyDescriptor,
 ): any {
     const method = descriptor.value;
-    descriptor.value = function(renderable: IRenderable<any>): void {
+    descriptor.value = function<TComponent extends IComponent<any>>(
+        component: TComponent, renderProfile: RenderingComponent<{ colour: HTML5_COLOUR }>
+    ): void {
         this.ctx.save();
-        this.ctx.strokeStyle = renderable.colour;
+        this.ctx.strokeStyle = renderProfile.data.colour;
         this.ctx.beginPath();
-        method.call(this, renderable);
+        method.call(this, component, renderProfile);
         this.ctx.closePath();
         this.ctx.stroke();
         this.ctx.restore();

@@ -1,26 +1,71 @@
-import { CURSOR_EVENT } from '../../framework/enums/CURSOR_EVENT';
 import CursorComponent from '../../framework/concretes/components/CursorComponent';
+import CursorSystem from '../../framework/abstracts/CursorSystem';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import IPosition2D from '../../framework/interfaces/IPosition2D';
-import IShape from '../../framework/interfaces/IShape';
-import InputSystem from '../../framework/abstracts/InputSystem';
+import PoseComponent from '../../framework/concretes/components/PoseComponent';
+import RenderingComponent from '../../framework/concretes/components/RenderingComponent';
+import ShapeComponent from '../../framework/concretes/components/ShapeComponent';
 
-export default class ButtonSystem extends InputSystem<CursorComponent> {
+export default class ButtonSystem extends CursorSystem {
 
-    constructor() {
-        super(CursorComponent);
+    protected _onCursorEnable(component: CursorComponent): void {
+        return;
     }
 
-    public once(component: CursorComponent): void {
-        if (component.data.eventName === CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION) {
+    protected _onCursorTranslate(component: CursorComponent): void {
+        const pose = component.entity.components.get(PoseComponent).data;
+        const shape = component.entity.components.get(ShapeComponent).data;
+        const vertices = shape.vertices.map((vertex) => {
+            return { x: vertex.x + pose.x, y: vertex.y + pose.y };
+        });
+        if (__isPointContained(component.data.cursor, vertices)) {
+            component.entity.components.get(RenderingComponent).data.colour = HTML5_COLOUR.BLUE;
+        } else {
+            component.entity.components.get(RenderingComponent).data.colour = HTML5_COLOUR.RED;
+        }
+    }
+
+    protected _onCursorDisable(component: CursorComponent): void {
+        return;
+    }
+
+    protected _onCursorBeginActuation(component: CursorComponent): void {
+        const pose = component.entity.components.get(PoseComponent).data;
+        const shape = component.entity.components.get(ShapeComponent).data;
+        const vertices = shape.vertices.map((vertex) => {
+            return { x: vertex.x + pose.x, y: vertex.y + pose.y };
+        });
+        if (__isPointContained(component.data.cursor, vertices)) {
+            component.entity.components.get(RenderingComponent).data.colour = HTML5_COLOUR.GREEN;
+        }
+    }
+
+    protected _onCursorEndActuation(component: CursorComponent): void {
+        const pose = component.entity.components.get(PoseComponent).data;
+        const shape = component.entity.components.get(ShapeComponent).data;
+        const vertices = shape.vertices.map((vertex) => {
+            return { x: vertex.x + pose.x, y: vertex.y + pose.y };
+        });
+        if (__isPointContained(component.data.cursor, vertices)) {
+            component.entity.components.get(RenderingComponent).data.colour = HTML5_COLOUR.BLUE;
+        }
+    }
+
+    protected _onCursorCompleteActuation(component: CursorComponent): void {
+        const pose = component.entity.components.get(PoseComponent).data;
+        const shape = component.entity.components.get(ShapeComponent).data;
+        const vertices = shape.vertices.map((vertex) => {
+            return { x: vertex.x + pose.x, y: vertex.y + pose.y };
+        });
+        if (__isPointContained(component.data.cursor, vertices)) {
             console.log('click!');
         }
     }
 
 }
 
-const __isPointContained = (point: IPosition2D, shape: IShape<HTML5_COLOUR>): boolean => {
-    const bounds = __getMinMaxBounds(this);
+const __isPointContained = (point: IPosition2D, vertices: IPosition2D[]): boolean => {
+    const bounds = __getMinMaxBounds(vertices);
     if (!__isPointWithinMinMaxBounds(point, bounds)) {
         return false;
     }
@@ -30,7 +75,6 @@ const __isPointContained = (point: IPosition2D, shape: IShape<HTML5_COLOUR>): bo
         minY: bounds.minY - 1,
         maxY: bounds.maxY + 1,
     };
-
     return true;
 };
 
@@ -47,12 +91,12 @@ class MinMaxBounds {
 
 }
 
-const __getMinMaxBounds = (shape: IShape<any>): MinMaxBounds => {
+const __getMinMaxBounds = (vertices: IPosition2D[]): MinMaxBounds => {
     let minX = Infinity;
     let maxX = -Infinity;
     let minY = Infinity;
     let maxY = -Infinity;
-    shape.vertices.forEach((vertex) => {
+    vertices.forEach((vertex) => {
         if (vertex.x < minX) {
             minX = vertex.x;
         }

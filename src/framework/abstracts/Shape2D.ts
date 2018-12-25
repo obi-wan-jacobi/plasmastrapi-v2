@@ -1,15 +1,12 @@
 import IPosition2D from '../interfaces/IPosition2D';
 import IShape from '../interfaces/IShape';
 
-export default abstract class Shape2D<TColorType> implements IShape<TColorType> {
-
-    public colour: TColorType;
+export default abstract class Shape2D implements IShape {
 
     private __vertices: IPosition2D[];
 
-    constructor({ vertices, colour }: { vertices: IPosition2D[], colour: TColorType }) {
+    constructor(vertices: IPosition2D[]) {
         this.__vertices = vertices;
-        this.colour = colour;
     }
 
     public get vertices(): IPosition2D[] {

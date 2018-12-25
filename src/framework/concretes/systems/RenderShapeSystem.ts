@@ -1,22 +1,23 @@
 import IRenderContext from '../../interfaces/IRenderContext';
 import PoseComponent from '../components/PoseComponent';
 import RenderSystem from '../../abstracts/rendering/RenderSystem';
+import RenderingComponent from '../components/RenderingComponent';
 import ShapeComponent from '../components/ShapeComponent';
 
-export default class RenderShapeSystem<TColourType> extends RenderSystem<ShapeComponent<TColourType>> {
+export default class RenderShapeSystem extends RenderSystem<ShapeComponent> {
 
-    constructor(context: IRenderContext) {
+    constructor(context: IRenderContext<any>) {
         super(context, ShapeComponent);
     }
 
-    public once(component: ShapeComponent<TColourType>): void {
-        const pose = component.entity.components.get<PoseComponent<any>>(PoseComponent);
-        this._context.drawShape({
-            vertices: component.data.vertices.map((vertex) => {
-                return { x: vertex.x + pose.data.x, y: vertex.y + pose.data.y };
-            }),
-            colour: component.data.colour
+    public once(component: ShapeComponent): void {
+        const pose = component.entity.components.get(PoseComponent);
+        const renderProfile = component.entity.components.get(RenderingComponent);
+        const vertices = component.data.vertices.map((vertex) => {
+            return { x: vertex.x + pose.data.x, y: vertex.y + pose.data.y };
         });
+        const shape = { vertices };
+        this._context.drawShape(shape, renderProfile);
     }
 
 }

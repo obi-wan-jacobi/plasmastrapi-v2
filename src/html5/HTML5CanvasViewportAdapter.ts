@@ -15,46 +15,45 @@ export default class HTML5CanvasViewportAdapter implements IViewportAdapter<HTML
         this.__bindMouseEventsToViewportAdapter(canvas);
     }
 
-    public onCursorEnable(component: HTML5CanvasMouseInputEvent): void {
-        this.__inputBuffer.push(component);
+    public onCursorEnable(event: HTML5CanvasMouseInputEvent): void {
+        this.__inputBuffer.push(event);
     }
 
-    public onCursorDisable(component: HTML5CanvasMouseInputEvent): void {
-        this.__inputBuffer.push(component);
+    public onCursorDisable(event: HTML5CanvasMouseInputEvent): void {
+        this.__inputBuffer.push(event);
     }
 
-    public onCursorTranslate(component: HTML5CanvasMouseInputEvent): void {
-        this.__inputBuffer.push(component);
+    public onCursorTranslate(event: HTML5CanvasMouseInputEvent): void {
+        this.__inputBuffer.push(event);
     }
 
-    public onCursorBeginActuation(component: HTML5CanvasMouseInputEvent): void {
-        this.__inputBuffer.push(component);
+    public onCursorBeginActuation(event: HTML5CanvasMouseInputEvent): void {
+        this.__inputBuffer.push(event);
     }
 
-    public onCursorEndActuation(component: HTML5CanvasMouseInputEvent): void {
-        this.__inputBuffer.push(component);
+    public onCursorEndActuation(event: HTML5CanvasMouseInputEvent): void {
+        this.__inputBuffer.push(event);
     }
 
-    public onCursorCompleteActuation(component: HTML5CanvasMouseInputEvent): void {
-        this.__inputBuffer.push(component);
+    public onCursorCompleteActuation(event: HTML5CanvasMouseInputEvent): void {
+        this.__inputBuffer.push(event);
     }
 
     public storeInputs(store: StoreMaster): void {
-        const buffer = this.__inputBuffer;
-        this.__inputBuffer = [];
+        const one = this.__inputBuffer.shift();
         const collection = store.components.get(HTML5CanvasMouseInputEvent);
         if (!collection) {
-            throw new Error('No component collection exists for viewport\'s input component type');
+            throw new Error('No event collection exists for viewport\'s input event type');
         }
-        buffer.forEach((component) => {
-            collection.add(component);
-        });
+        if (one) {
+            collection.add(one);
+        }
     }
 
     public clearStoredInputs(store: StoreMaster): void {
         const collection = store.components.get(HTML5CanvasMouseInputEvent);
         if (!collection) {
-            throw new Error('No component collection exists for viewport\'s input component type');
+            throw new Error('No event collection exists for viewport\'s input event type');
         }
         collection.purge();
     }
@@ -64,16 +63,16 @@ export default class HTML5CanvasViewportAdapter implements IViewportAdapter<HTML
     }
 
     private __bindMouseEventsToViewportAdapter(canvas: HTMLCanvasElement): void {
-        Object.keys(__canvasOnEventToViewportAdaptedMethodMap)
+        Object.keys(__mouseEventToViewportMethodMap)
         .forEach((key) => {
             (canvas as unknown as { [key: string]: (ev: MouseEvent) => void })[key]
-            = this.__adaptCallbackToViewportMethod(__canvasOnEventToViewportAdaptedMethodMap[key].bind(this));
+            = this.__getMouseEventHandler(__mouseEventToViewportMethodMap[key].bind(this));
         });
     }
 
-    private __adaptCallbackToViewportMethod(
-        target: (component: HTML5CanvasMouseInputEvent) => void): (ev: MouseEvent
-    ) => void{
+    private __getMouseEventHandler(
+        target: (event: HTML5CanvasMouseInputEvent) => void
+    ): (ev: MouseEvent) => void {
         return (ev: MouseEvent): void => {
             const boundingClientRect = this.__renderContext.bounds;
             const event = new HTML5CanvasMouseInputEvent({
@@ -98,8 +97,8 @@ const __mouseEventToHTML5CanvasMouseInputEventMap: { [key: string]: HTML5_CANVAS
     click: HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_CLICK,
 };
 
-const __canvasOnEventToViewportAdaptedMethodMap
-: { [key: string]: (component: HTML5CanvasMouseInputEvent) => void } = {
+const __mouseEventToViewportMethodMap
+: { [key: string]: (event: HTML5CanvasMouseInputEvent) => void } = {
     onmouseenter: HTML5CanvasViewportAdapter.prototype.onCursorEnable,
     onmouseleave: HTML5CanvasViewportAdapter.prototype.onCursorDisable,
     onmousemove: HTML5CanvasViewportAdapter.prototype.onCursorTranslate,

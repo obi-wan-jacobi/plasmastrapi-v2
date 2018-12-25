@@ -1,3 +1,4 @@
+import ButtonSystem from '../../../app/systems/ButtonSystem';
 import IViewportAdapter from '../../interfaces/IViewportAdapter';
 import StoreManager from '../../abstracts/StoreManager';
 import StoreMaster from './StoreMaster';
@@ -32,9 +33,9 @@ export default class SystemLoopMaster {
 
     public once(): void {
         this.__viewport.getRenderContext().refresh();
+        this.__viewport.clearStoredInputs(this.__store);
         this.__viewport.storeInputs(this.__store);
         this.__once(this.__store.components, this.__systems);
-        this.__viewport.clearStoredInputs(this.__store);
     }
 
     private __once<TStoreManager extends StoreManager<any>>(

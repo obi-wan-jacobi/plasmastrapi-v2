@@ -1,6 +1,7 @@
 var path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: 'development',
@@ -29,6 +30,10 @@ module.exports = {
                 test: /\.js$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/
+            },
+            { 
+                test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3)$/, 
+                loader: "file-loader" 
             }
         ]
     },
@@ -40,6 +45,7 @@ module.exports = {
             filename: 'index.html',
             template: './src/app/index.html'
         }),
+        new CopyWebpackPlugin(['./static']),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin()
     ]

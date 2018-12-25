@@ -1,11 +1,14 @@
 import { CURSOR_EVENT } from '../../framework/enums/CURSOR_EVENT';
 import CursorComponent from '../../framework/concretes/components/CursorComponent';
+import Entity from '../../framework/concretes/Entity';
 import HTML5CanvasGame from '../../html5/HTML5CanvasGame';
 import HTML5CanvasMouseInputEvent from '../../html5/events/HTML5CanvasMouseInputEvent';
 import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from '../../html5/enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
+import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import IVerifiable from '../src/interfaces/IVerifiable';
 import Impostor from '../src/concretes/Impostor';
 import PoseComponent from '../../framework/concretes/components/PoseComponent';
+import RenderingComponent from '../../framework/concretes/components/RenderingComponent';
 import VerifiableSystem from '../src/abstracts/VerifiableSystem';
 import * as sinon from 'sinon';
 
@@ -59,7 +62,10 @@ describe(HTML5CanvasGame.name, () => {
         impostorRenderingContext.expects('stroke').once();
         impostorRenderingContext.expects('restore').once();
         //
-        game.store.components.load(new PoseComponent({ x: 50, y: 50, a: 0, colour: 'blue' }));
+        const entity = new Entity();
+        entity.components.add(new PoseComponent({ x: 50, y: 50, a: 0 }));
+        entity.components.add(new RenderingComponent({ colour: HTML5_COLOUR.NONE }));
+        game.store.entities.load(entity);
         game.loop.once();
         //
         impostorRenderingContext.verify();
@@ -96,13 +102,7 @@ describe(HTML5CanvasGame.name, () => {
         impostorHTMLCanvasElement.expects('getBoundingClientRect').once()
             .returns({ left: BOUNDING_CLIENT_RECT_LEFT, top: BOUNDING_CLIENT_RECT_TOP });
         //
-        game.store.components.load(new CursorComponent({
-            eventName: CURSOR_EVENT.UNDEFINED,
-            cursor: {
-                x: -1,
-                y: -1
-            }
-        }));
+        game.store.components.load(new CursorComponent());
         fakeCanvas.simulateClick(50, 50);
         game.loop.once();
         //
