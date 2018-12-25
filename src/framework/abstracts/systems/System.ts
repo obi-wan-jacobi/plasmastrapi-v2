@@ -1,4 +1,4 @@
-import { Ctor } from '../types/Ctor';
+import { Ctor } from '../../types/Ctor';
 
 export default abstract class System<TComponent extends {}> {
 

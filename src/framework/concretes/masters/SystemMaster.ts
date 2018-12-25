@@ -1,6 +1,6 @@
 import { Ctor } from '../../types/Ctor';
 import IRenderContext from '../../interfaces/IRenderContext';
-import System from '../../abstracts/System';
+import System from '../../abstracts/systems/System';
 import TypeCollection from '../data-structures/TypeCollection';
 
 export default class SystemMaster {

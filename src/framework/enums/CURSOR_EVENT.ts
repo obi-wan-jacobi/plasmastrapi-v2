@@ -1,7 +1,7 @@
 
 /* tslint:disable:naming-convention */
 export enum CURSOR_EVENT {
-    UNDEFINED = '',
+    UNDEFINED = 'undefined',
     CURSOR_ENABLE = 'cursor-enable',
     CURSOR_TRANSLATE = 'cursor-translate',
     CURSOR_DISABLE = 'cursor-disable',

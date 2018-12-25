@@ -1,3 +1,4 @@
+import ICursorAdapter from './interfaces/ICursorAdapter';
 import IViewportAdapter from './interfaces/IViewportAdapter';
 import RenderPoseSystem from './concretes/systems/RenderPoseSystem';
 import RenderShapeSystem from './concretes/systems/RenderShapeSystem';
@@ -5,27 +6,34 @@ import StoreMaster from './concretes/masters/StoreMaster';
 import SystemLoopMaster from './concretes/masters/SystemLoopMaster';
 import SystemMaster from './concretes/masters/SystemMaster';
 
-export default class Engine<TViewportAdapter extends IViewportAdapter<any>> {
+export default class Engine {
 
-    private __viewport: TViewportAdapter;
+    private __viewport: IViewportAdapter<any, any>;
+    private __cursor: ICursorAdapter;
     private __storeMaster: StoreMaster;
     private __systemMaster: SystemMaster;
     private __loopMaster: SystemLoopMaster;
 
-    constructor(viewport: TViewportAdapter) {
+    constructor(viewport: IViewportAdapter<any, any>, cursor: ICursorAdapter) {
         this.__viewport = viewport;
+        this.__cursor = cursor;
         this.__storeMaster = new StoreMaster();
-        this.__systemMaster = new SystemMaster(this.viewport.getRenderContext());
+        this.__systemMaster = new SystemMaster(this.viewport);
         this.__loopMaster = new SystemLoopMaster(
             this.__viewport,
+            this.__cursor,
             this.__storeMaster,
             this.__systemMaster
-        );
+            );
         this.__initSystems();
     }
 
-    public get viewport(): TViewportAdapter {
+    public get viewport(): IViewportAdapter<any, any> {
         return this.__viewport;
+    }
+
+    public get cursor(): ICursorAdapter {
+        return this.__cursor;
     }
 
     public get store(): StoreMaster {
@@ -41,8 +49,8 @@ export default class Engine<TViewportAdapter extends IViewportAdapter<any>> {
     }
 
     private __initSystems(): void {
-        this.systems.add(RenderPoseSystem, this.__viewport.getRenderContext());
-        this.systems.add(RenderShapeSystem, this.__viewport.getRenderContext());
+        this.systems.add(RenderPoseSystem, this.viewport);
+        this.systems.add(RenderShapeSystem, this.viewport);
     }
 
 }

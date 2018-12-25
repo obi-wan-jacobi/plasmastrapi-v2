@@ -1,9 +1,7 @@
 import { CURSOR_EVENT } from '../../framework/enums/CURSOR_EVENT';
-import CursorComponent from '../../framework/concretes/components/CursorComponent';
+import CursorEventComponent from '../../framework/concretes/components/CursorEventComponent';
 import Entity from '../../framework/concretes/Entity';
 import HTML5CanvasGame from '../../html5/HTML5CanvasGame';
-import HTML5CanvasMouseInputEvent from '../../html5/events/HTML5CanvasMouseInputEvent';
-import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from '../../html5/enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import IVerifiable from '../src/interfaces/IVerifiable';
 import Impostor from '../src/concretes/Impostor';
@@ -73,36 +71,14 @@ describe(HTML5CanvasGame.name, () => {
         done();
     });
 
-    it('click listening system detects clicks', (done) => {
-        const fakeClickWatchingSystem = game.systems.add(FakeClickWatchingSystem, undefined);
-        const impostorClickWatchingSystem = new Impostor({ fake: fakeClickWatchingSystem });
-        const spy = sinon.spy(fakeClickWatchingSystem, 'once');
-        impostorHTMLCanvasElement.expects('getBoundingClientRect').once()
-            .returns({ left: BOUNDING_CLIENT_RECT_LEFT, top: BOUNDING_CLIENT_RECT_TOP });
-        //
-        fakeCanvas.simulateClick(50, 50);
-        game.loop.once();
-        //
-        expect(spy.calledOnce).toBe(true);
-        expect(spy.firstCall.args[0].data).toEqual({
-            eventName: HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_CLICK,
-            cursor: {
-                x: 50,
-                y: 50
-            }
-        });
-        impostorClickWatchingSystem.verify();
-        done();
-    });
-
     it('click events are converted to cursor actuations', (done) => {
-        const fakeCursorSystem = game.systems.add(FakeCursorSystem, undefined);
+        const fakeCursorSystem = game.systems.add(FakeCursorEventSystem, undefined);
         const impostorCursorSystem = new Impostor({ fake: fakeCursorSystem });
         const spy = sinon.spy(fakeCursorSystem, 'once');
         impostorHTMLCanvasElement.expects('getBoundingClientRect').once()
             .returns({ left: BOUNDING_CLIENT_RECT_LEFT, top: BOUNDING_CLIENT_RECT_TOP });
         //
-        game.store.components.load(new CursorComponent());
+        game.store.components.load(new CursorEventComponent());
         fakeCanvas.simulateClick(50, 50);
         game.loop.once();
         //
@@ -119,10 +95,6 @@ describe(HTML5CanvasGame.name, () => {
     });
 
 });
-
-const __simulateClick = (): void => {
-    return;
-};
 
 class FakeCanvas implements IVerifiable {
 
@@ -141,27 +113,13 @@ class FakeCanvas implements IVerifiable {
 
 }
 
-class FakeClickWatchingSystem extends VerifiableSystem<HTML5CanvasMouseInputEvent> {
+class FakeCursorEventSystem extends VerifiableSystem<CursorEventComponent> {
 
     constructor() {
-        super(HTML5CanvasMouseInputEvent);
+        super(CursorEventComponent);
     }
 
-    public once(event: HTML5CanvasMouseInputEvent): void {
-        if (event.data.eventName === HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_CLICK) {
-            this._validate();
-        }
-    }
-
-}
-
-class FakeCursorSystem extends VerifiableSystem<CursorComponent> {
-
-    constructor() {
-        super(CursorComponent);
-    }
-
-    public once(event: CursorComponent): void {
+    public once(event: CursorEventComponent): void {
         if (event.data.eventName === CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION) {
             this._validate();
         }

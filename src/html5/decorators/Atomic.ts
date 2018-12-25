@@ -1,10 +1,10 @@
-import HTML5CanvasRenderContext from '../HTML5CanvasRenderContext';
+import HTML5CanvasViewportAdapter from '../HTML5CanvasViewportAdapter';
 import { HTML5_COLOUR } from '../enums/HTML5_COLOUR';
 import IComponent from '../../framework/interfaces/IComponent';
 import RenderingComponent from '../../framework/concretes/components/RenderingComponent';
 
 export function Atomic(
-    target: HTML5CanvasRenderContext,
+    target: HTML5CanvasViewportAdapter,
     propertyKey: string | symbol,
     descriptor: PropertyDescriptor,
 ): any {

@@ -1,25 +1,9 @@
-import IComponent from './IComponent';
 import IRenderContext from './IRenderContext';
-import StoreMaster from '../concretes/masters/StoreMaster';
+import IRenderingProfile from './IRenderingProfile';
 
-export default interface IViewportAdapter<TComponent extends IComponent<any>> {
+export default interface IViewportAdapter<TContext, TRenderingProfile extends IRenderingProfile<any>>
+extends IRenderContext<TRenderingProfile> {
 
-    onCursorEnable(component: TComponent): void;
-
-    onCursorDisable(component: TComponent): void;
-
-    onCursorTranslate(component: TComponent): void;
-
-    onCursorBeginActuation(component: TComponent): void;
-
-    onCursorEndActuation(component: TComponent): void;
-
-    onCursorCompleteActuation(component: TComponent): void;
-
-    storeInputs(store: StoreMaster): void;
-
-    clearStoredInputs(store: StoreMaster): void;
-
-    getRenderContext(): IRenderContext<any>;
+    refresh(): void;
 
 }

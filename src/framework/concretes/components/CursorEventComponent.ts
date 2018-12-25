@@ -2,7 +2,7 @@ import { CURSOR_EVENT } from '../../enums/CURSOR_EVENT';
 import Component from '../../abstracts/Component';
 import IPosition2D from '../../interfaces/IPosition2D';
 
-export default class CursorComponent
+export default class CursorEventComponent
 extends Component<{ eventName: CURSOR_EVENT, cursor: IPosition2D }> {
 
     constructor() {

@@ -1,108 +1,47 @@
-import HTML5CanvasMouseInputEvent from './events/HTML5CanvasMouseInputEvent';
-import HTML5CanvasRenderContext from './HTML5CanvasRenderContext';
-import { HTML5_CANVAS_MOUSE_INPUT_EVENT } from './enums/HTML5_CANVAS_MOUSE_INPUT_EVENT';
+import { Atomic } from './decorators/Atomic';
+import { HTML5_COLOUR } from './enums/HTML5_COLOUR';
+import IRenderingProfile from '../framework/interfaces/IRenderingProfile';
+import IShape from '../framework/interfaces/IShape';
 import IViewportAdapter from '../framework/interfaces/IViewportAdapter';
-import StoreMaster from '../framework/concretes/masters/StoreMaster';
 
-export default class HTML5CanvasViewportAdapter implements IViewportAdapter<HTML5CanvasMouseInputEvent> {
+const TWO_PI_RADIANS = 2 * Math.PI;
+const DEFAULT_RADIUS = 2;
 
-    private __renderContext: HTML5CanvasRenderContext;
-    private __inputBuffer: HTML5CanvasMouseInputEvent[];
+export default class HTML5CanvasViewportAdapter implements
+ IViewportAdapter<CanvasRenderingContext2D, IRenderingProfile<HTML5_COLOUR>> {
+
+    private __canvas: HTMLCanvasElement;
+    private __ctx: CanvasRenderingContext2D;
 
     constructor(canvas: HTMLCanvasElement) {
-        this.__renderContext = new HTML5CanvasRenderContext(canvas);
-        this.__inputBuffer = [];
-        this.__bindMouseEventsToViewportAdapter(canvas);
+        this.__canvas = canvas;
+        this.__ctx = this.__canvas.getContext('2d') as CanvasRenderingContext2D;
     }
 
-    public onCursorEnable(event: HTML5CanvasMouseInputEvent): void {
-        this.__inputBuffer.push(event);
+    public get ctx(): CanvasRenderingContext2D {
+        return this.__ctx;
     }
 
-    public onCursorDisable(event: HTML5CanvasMouseInputEvent): void {
-        this.__inputBuffer.push(event);
+    public get bounds(): ClientRect | DOMRect {
+        return this.__canvas.getBoundingClientRect();
     }
 
-    public onCursorTranslate(event: HTML5CanvasMouseInputEvent): void {
-        this.__inputBuffer.push(event);
+    public refresh(): void {
+        const width = this.__canvas.clientWidth;
+        const height = this.__canvas.clientHeight;
+        this.ctx.clearRect(0, 0, width, height);
     }
 
-    public onCursorBeginActuation(event: HTML5CanvasMouseInputEvent): void {
-        this.__inputBuffer.push(event);
+    @Atomic
+    public drawPoint(point: { x: number, y: number }): void {
+        this.ctx.arc(point.x, point.y, DEFAULT_RADIUS, 0, TWO_PI_RADIANS);
     }
 
-    public onCursorEndActuation(event: HTML5CanvasMouseInputEvent): void {
-        this.__inputBuffer.push(event);
-    }
-
-    public onCursorCompleteActuation(event: HTML5CanvasMouseInputEvent): void {
-        this.__inputBuffer.push(event);
-    }
-
-    public storeInputs(store: StoreMaster): void {
-        const one = this.__inputBuffer.shift();
-        const collection = store.components.get(HTML5CanvasMouseInputEvent);
-        if (!collection) {
-            throw new Error('No event collection exists for viewport\'s input event type');
-        }
-        if (one) {
-            collection.add(one);
-        }
-    }
-
-    public clearStoredInputs(store: StoreMaster): void {
-        const collection = store.components.get(HTML5CanvasMouseInputEvent);
-        if (!collection) {
-            throw new Error('No event collection exists for viewport\'s input event type');
-        }
-        collection.purge();
-    }
-
-    public getRenderContext(): HTML5CanvasRenderContext {
-        return this.__renderContext;
-    }
-
-    private __bindMouseEventsToViewportAdapter(canvas: HTMLCanvasElement): void {
-        Object.keys(__mouseEventToViewportMethodMap)
-        .forEach((key) => {
-            (canvas as unknown as { [key: string]: (ev: MouseEvent) => void })[key]
-            = this.__getMouseEventHandler(__mouseEventToViewportMethodMap[key].bind(this));
+    @Atomic
+    public drawShape(shape: IShape): void {
+        shape.vertices.forEach((point) => {
+            this.ctx.lineTo(point.x, point.y);
         });
     }
 
-    private __getMouseEventHandler(
-        target: (event: HTML5CanvasMouseInputEvent) => void
-    ): (ev: MouseEvent) => void {
-        return (ev: MouseEvent): void => {
-            const boundingClientRect = this.__renderContext.bounds;
-            const event = new HTML5CanvasMouseInputEvent({
-                eventName: __mouseEventToHTML5CanvasMouseInputEventMap[ev.type],
-                cursor: {
-                    x: ev.clientX - boundingClientRect.left,
-                    y: ev.clientY - boundingClientRect.top,
-                },
-            });
-            return target(event);
-        };
-    }
-
 }
-
-const __mouseEventToHTML5CanvasMouseInputEventMap: { [key: string]: HTML5_CANVAS_MOUSE_INPUT_EVENT } = {
-    mouseenter: HTML5_CANVAS_MOUSE_INPUT_EVENT.MOUSE_ENTER,
-    mouseleave: HTML5_CANVAS_MOUSE_INPUT_EVENT.MOUSE_LEAVE,
-    mousemove: HTML5_CANVAS_MOUSE_INPUT_EVENT.MOUSE_MOVE,
-    mousedown: HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_DOWN,
-    mouseup: HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_UP,
-    click: HTML5_CANVAS_MOUSE_INPUT_EVENT.LEFT_MOUSE_CLICK,
-};
-
-const __mouseEventToViewportMethodMap
-: { [key: string]: (event: HTML5CanvasMouseInputEvent) => void } = {
-    onmouseenter: HTML5CanvasViewportAdapter.prototype.onCursorEnable,
-    onmouseleave: HTML5CanvasViewportAdapter.prototype.onCursorDisable,
-    onmousemove: HTML5CanvasViewportAdapter.prototype.onCursorTranslate,
-    onmousedown: HTML5CanvasViewportAdapter.prototype.onCursorBeginActuation,
-    onmouseup: HTML5CanvasViewportAdapter.prototype.onCursorEndActuation,
-    onclick: HTML5CanvasViewportAdapter.prototype.onCursorCompleteActuation,
-};

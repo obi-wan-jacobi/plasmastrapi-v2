@@ -1,4 +1,4 @@
-import Button from './Button';
+import Button from './entities/Button';
 import Plasmastrapi from './Plasmastrapi';
 import $ from 'jquery';
 

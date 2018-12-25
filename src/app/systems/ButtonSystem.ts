@@ -1,18 +1,18 @@
-import CursorComponent from '../../framework/concretes/components/CursorComponent';
-import CursorSystem from '../../framework/abstracts/CursorSystem';
+import CursorEventComponent from '../../framework/concretes/components/CursorEventComponent';
+import CursorEventSystem from '../../framework/abstracts/systems/CursorEventSystem';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import IPosition2D from '../../framework/interfaces/IPosition2D';
 import PoseComponent from '../../framework/concretes/components/PoseComponent';
 import RenderingComponent from '../../framework/concretes/components/RenderingComponent';
 import ShapeComponent from '../../framework/concretes/components/ShapeComponent';
 
-export default class ButtonSystem extends CursorSystem {
+export default class ButtonSystem extends CursorEventSystem {
 
-    protected _onCursorEnable(component: CursorComponent): void {
+    protected _onCursorEnable(component: CursorEventComponent): void {
         return;
     }
 
-    protected _onCursorTranslate(component: CursorComponent): void {
+    protected _onCursorTranslate(component: CursorEventComponent): void {
         const pose = component.entity.components.get(PoseComponent).data;
         const shape = component.entity.components.get(ShapeComponent).data;
         const vertices = shape.vertices.map((vertex) => {
@@ -25,11 +25,11 @@ export default class ButtonSystem extends CursorSystem {
         }
     }
 
-    protected _onCursorDisable(component: CursorComponent): void {
+    protected _onCursorDisable(component: CursorEventComponent): void {
         return;
     }
 
-    protected _onCursorBeginActuation(component: CursorComponent): void {
+    protected _onCursorBeginActuation(component: CursorEventComponent): void {
         const pose = component.entity.components.get(PoseComponent).data;
         const shape = component.entity.components.get(ShapeComponent).data;
         const vertices = shape.vertices.map((vertex) => {
@@ -40,7 +40,7 @@ export default class ButtonSystem extends CursorSystem {
         }
     }
 
-    protected _onCursorEndActuation(component: CursorComponent): void {
+    protected _onCursorEndActuation(component: CursorEventComponent): void {
         const pose = component.entity.components.get(PoseComponent).data;
         const shape = component.entity.components.get(ShapeComponent).data;
         const vertices = shape.vertices.map((vertex) => {
@@ -51,7 +51,7 @@ export default class ButtonSystem extends CursorSystem {
         }
     }
 
-    protected _onCursorCompleteActuation(component: CursorComponent): void {
+    protected _onCursorCompleteActuation(component: CursorEventComponent): void {
         const pose = component.entity.components.get(PoseComponent).data;
         const shape = component.entity.components.get(ShapeComponent).data;
         const vertices = shape.vertices.map((vertex) => {
