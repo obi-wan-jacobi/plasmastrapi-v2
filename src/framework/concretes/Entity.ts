@@ -1,18 +1,35 @@
+import ComponentStoreManager from './store/ComponentStoreManager';
+import { Ctor } from '../types/Ctor';
 import IComponent from '../interfaces/IComponent';
+import StoreMaster from './masters/StoreMaster';
 import TypeCollection from './data-structures/TypeCollection';
 import Unique from '../abstracts/Unique';
 
 export default class Entity extends Unique {
 
     private __components: ComponentCollectionEntityInjector;
+    private __store: StoreMaster;
 
     constructor() {
         super();
         this.__components = new ComponentCollectionEntityInjector(this);
     }
 
+    public bind(store: StoreMaster): void {
+        this.__store = store;
+        this.__components.bind(this.__store.components);
+    }
+
     public get components(): TypeCollection<IComponent<any>> {
         return this.__components;
+    }
+
+    public load(): void {
+        this.__store.entities.load(this);
+    }
+
+    public unload(): void {
+        this.__store.entities.unload(this);
     }
 
 }
@@ -20,16 +37,37 @@ export default class Entity extends Unique {
 class ComponentCollectionEntityInjector extends TypeCollection<IComponent<any>> {
 
     private __entity: Entity;
+    private __store: ComponentStoreManager;
 
     constructor(entity: Entity) {
         super();
         this.__entity = entity;
     }
 
+    public bind(store: ComponentStoreManager): void {
+        this.__store = store;
+        this.forEach((component) => {
+            this.__store.load(component);
+        });
+    }
+
     public add(component: IComponent<any>): boolean {
         const isAdded = super.add(component);
         component.bind(this.__entity);
+        if (this.__store) {
+            this.__store.load(component);
+        }
         return isAdded;
+    }
+
+    public remove<TComponent extends IComponent<any>>(ComponentCtor: Ctor<TComponent, any>): boolean {
+        const component = this.get(ComponentCtor);
+        if (!component) {
+            return false;
+        }
+        super.remove(ComponentCtor);
+        this.__store.unload(component);
+        return true;
     }
 
 }

@@ -5,6 +5,7 @@ import IPosition2D from '../../framework/interfaces/IPosition2D';
 import PoseComponent from '../../framework/concretes/components/PoseComponent';
 import RenderingComponent from '../../framework/concretes/components/RenderingComponent';
 import ShapeComponent from '../../framework/concretes/components/ShapeComponent';
+import TranslatableComponent from '../components/TranslatableComponent';
 
 export default class ButtonSystem extends CursorEventSystem {
 
@@ -37,7 +38,12 @@ export default class ButtonSystem extends CursorEventSystem {
         });
         if (__isPointContained(component.data.cursor, vertices)) {
             component.entity.components.get(RenderingComponent).data.colour = HTML5_COLOUR.GREEN;
+            if (!component.entity.components.get(TranslatableComponent)) {
+                component.entity.components.add(new TranslatableComponent());
+                return;
+            }
         }
+        component.entity.components.remove(TranslatableComponent);
     }
 
     protected _onCursorEndActuation(component: CursorEventComponent): void {
@@ -52,14 +58,7 @@ export default class ButtonSystem extends CursorEventSystem {
     }
 
     protected _onCursorCompleteActuation(component: CursorEventComponent): void {
-        const pose = component.entity.components.get(PoseComponent).data;
-        const shape = component.entity.components.get(ShapeComponent).data;
-        const vertices = shape.vertices.map((vertex) => {
-            return { x: vertex.x + pose.x, y: vertex.y + pose.y };
-        });
-        if (__isPointContained(component.data.cursor, vertices)) {
-            console.log('click!');
-        }
+        return;
     }
 
 }

@@ -8,7 +8,7 @@ export default class StoreMaster {
 
     constructor() {
         this.__componentStoreManager = new ComponentStoreManager();
-        this.__entityStoreManager = new EntityStoreManager(this.__componentStoreManager);
+        this.__entityStoreManager = new EntityStoreManager(this);
     }
 
     get components(): ComponentStoreManager {

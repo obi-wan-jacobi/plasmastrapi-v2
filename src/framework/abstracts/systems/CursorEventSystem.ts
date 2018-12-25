@@ -1,5 +1,4 @@
 import { CURSOR_EVENT } from '../../enums/CURSOR_EVENT';
-import { CursorComponentIsResetAfter } from '../decorators/CursorComponentIsResetAfter';
 import CursorEventComponent from '../../concretes/components/CursorEventComponent';
 import System from './System';
 
@@ -31,16 +30,15 @@ export default abstract class CursorEventSystem extends System<CursorEventCompon
         super(CursorEventComponent);
     }
 
-    @CursorComponentIsResetAfter
     public once(component: CursorEventComponent): void {
         this.__responseMap[component.data.eventName](component);
     }
 
-    protected abstract _onCursorEnable(component: CursorEventComponent): void;
-    protected abstract _onCursorTranslate(component: CursorEventComponent): void;
-    protected abstract _onCursorDisable(component: CursorEventComponent): void;
-    protected abstract _onCursorBeginActuation(component: CursorEventComponent): void;
-    protected abstract _onCursorEndActuation(component: CursorEventComponent): void;
-    protected abstract _onCursorCompleteActuation(component: CursorEventComponent): void;
+    protected _onCursorEnable(component: CursorEventComponent): void { return; }
+    protected _onCursorTranslate(component: CursorEventComponent): void { return; }
+    protected _onCursorDisable(component: CursorEventComponent): void { return; }
+    protected _onCursorBeginActuation(component: CursorEventComponent): void { return; }
+    protected _onCursorEndActuation(component: CursorEventComponent): void { return; }
+    protected _onCursorCompleteActuation(component: CursorEventComponent): void { return; }
 
 }

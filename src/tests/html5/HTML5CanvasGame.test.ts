@@ -60,10 +60,9 @@ describe(HTML5CanvasGame.name, () => {
         impostorRenderingContext.expects('stroke').once();
         impostorRenderingContext.expects('restore').once();
         //
-        const entity = new Entity();
+        const entity = game.store.entities.create(Entity, undefined);
         entity.components.add(new PoseComponent({ x: 50, y: 50, a: 0 }));
         entity.components.add(new RenderingComponent({ colour: HTML5_COLOUR.NONE }));
-        game.store.entities.load(entity);
         game.loop.once();
         //
         impostorRenderingContext.verify();

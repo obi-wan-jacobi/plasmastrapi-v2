@@ -11,6 +11,14 @@ export default abstract class StoreManager<T extends IUnique> {
         this.__store = new TypeManifold<T>();
     }
 
+    public create<TInstance extends T, TData>(
+        InstanceCtor: Ctor<TInstance, TData>, data: TData
+    ): TInstance {
+        const instance = new InstanceCtor(data);
+        this.load(instance);
+        return instance;
+    }
+
     public load(target: T): void {
         this.__store.add(target);
     }

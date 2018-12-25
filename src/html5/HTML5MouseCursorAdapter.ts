@@ -15,10 +15,15 @@ export default class HTML5MouseCursorAdapter implements ICursorAdapter {
     }
 
     public once(components: ComponentStoreManager): void {
-        const next = this.__buffer.pop();
-        if (!next) {
-            return;
-        }
+        const next = this.__buffer.pop() || {
+            data: {
+               eventName: CURSOR_EVENT.UNDEFINED,
+               cursor: {
+                   x: -1,
+                   y: -1
+               }
+           }
+       };
         components.get(CursorEventComponent).forEach((component) => {
             component.set(next.data);
         });
