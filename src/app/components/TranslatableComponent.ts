@@ -5,16 +5,20 @@ import { Optional } from '../../framework/types/Optional';
 export default class TranslatableComponent
 extends Component<{
     previous: {
-        x: Optional<number>,
-        y: Optional<number>
+        cursor: {
+            x: number,
+            y: number
+        },
     }
 }> {
 
     constructor() {
         super({
             previous: {
-                x: undefined,
-                y: undefined
+                cursor: {
+                    x: 0,
+                    y: 0
+                },
             }
         });
     }

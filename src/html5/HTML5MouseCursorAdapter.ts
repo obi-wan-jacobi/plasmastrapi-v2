@@ -43,10 +43,8 @@ export default class HTML5MouseCursorAdapter implements ICursorAdapter {
             const component = new CursorEventComponent();
             component.set({
                 eventName: __mouseEventToCursorEventMap[ev.type],
-                cursor: {
-                    x: ev.clientX - boundingClientRect.left,
-                    y: ev.clientY - boundingClientRect.top,
-                }
+                x: ev.clientX - boundingClientRect.left,
+                y: ev.clientY - boundingClientRect.top,
             });
             this.__buffer.unshift(component);
         };

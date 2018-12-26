@@ -19,7 +19,7 @@ export default class ButtonSystem extends CursorEventSystem {
         const vertices = shape.vertices.map((vertex) => {
             return { x: vertex.x + pose.x, y: vertex.y + pose.y };
         });
-        if (__isPointContained(component.data.cursor, vertices)) {
+        if (__isPointContained(component.data, vertices)) {
             component.entity.components.get(RenderingComponent).data.colour = HTML5_COLOUR.BLUE;
         } else {
             component.entity.components.get(RenderingComponent).data.colour = HTML5_COLOUR.RED;
@@ -36,7 +36,7 @@ export default class ButtonSystem extends CursorEventSystem {
         const vertices = shape.vertices.map((vertex) => {
             return { x: vertex.x + pose.x, y: vertex.y + pose.y };
         });
-        if (__isPointContained(component.data.cursor, vertices)) {
+        if (__isPointContained(component.data, vertices)) {
             component.entity.components.get(RenderingComponent).data.colour = HTML5_COLOUR.GREEN;
             if (!component.entity.components.get(TranslatableComponent)) {
                 component.entity.components.add(new TranslatableComponent());
@@ -52,7 +52,7 @@ export default class ButtonSystem extends CursorEventSystem {
         const vertices = shape.vertices.map((vertex) => {
             return { x: vertex.x + pose.x, y: vertex.y + pose.y };
         });
-        if (__isPointContained(component.data.cursor, vertices)) {
+        if (__isPointContained(component.data, vertices)) {
             component.entity.components.get(RenderingComponent).data.colour = HTML5_COLOUR.BLUE;
         }
     }

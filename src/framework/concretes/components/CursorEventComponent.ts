@@ -3,15 +3,13 @@ import Component from '../../abstracts/Component';
 import IPosition2D from '../../interfaces/IPosition2D';
 
 export default class CursorEventComponent
-extends Component<{ eventName: CURSOR_EVENT, cursor: IPosition2D }> {
+extends Component<{ eventName: CURSOR_EVENT, x: number, y: number }> {
 
     constructor() {
         super({
             eventName: CURSOR_EVENT.UNDEFINED,
-            cursor: {
-                x: -1,
-                y: -1
-            }
+            x: -1,
+            y: -1
         });
     }
 

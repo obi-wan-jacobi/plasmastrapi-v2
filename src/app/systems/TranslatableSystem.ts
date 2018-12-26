@@ -15,11 +15,13 @@ export default class TranslatableSystem extends System<TranslatableComponent> {
         if (!cursor || cursor.data.eventName !== CURSOR_EVENT.CURSOR_TRANSLATE) {
             return;
         }
-        const pose = component.entity.components.get(PoseComponent);
-        component.set({
-            previous: pose.data
-        });
-        pose.set(cursor.data.cursor);
+        if (component.data.previous.cursor.x && component.data.previous.cursor.y) {
+            const pose = component.entity.components.get(PoseComponent);
+            pose.data.x = pose.data.x + (cursor.data.x - component.data.previous.cursor.x);
+            pose.data.y = pose.data.y + (cursor.data.y - component.data.previous.cursor.y);
+        }
+        component.data.previous.cursor.x = cursor.data.x;
+        component.data.previous.cursor.y = cursor.data.y;
     }
 
 }

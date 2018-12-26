@@ -84,10 +84,8 @@ describe(HTML5CanvasGame.name, () => {
         expect(spy.calledOnce).toBe(true);
         expect(spy.firstCall.args[0].data).toEqual({
             eventName: CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION,
-            cursor: {
-                x: 50,
-                y: 50
-            }
+            x: 50,
+            y: 50
         });
         impostorCursorSystem.verify();
         done();
