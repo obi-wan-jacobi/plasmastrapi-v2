@@ -1,7 +1,7 @@
-import Component from '../../framework/abstracts/Component';
-import CursorEventComponent from '../../framework/concretes/components/CursorEventComponent';
-import ICommand from '../../framework/interfaces/ICommand';
-import { Optional } from '../../framework/types/Optional';
+import Command from '../commands/Command';
+import Component from '../../abstracts/Component';
+import CursorEventComponent from './CursorEventComponent';
+import ICommand from '../../interfaces/ICommand';
 
 export default class TranslatableComponent
 extends Component<{
@@ -11,7 +11,7 @@ extends Component<{
             y: number
         },
     },
-    onTranslate: Optional<ICommand<CursorEventComponent, void>>
+    onTranslate: ICommand<CursorEventComponent, void>
 }> {
 
     constructor({ onTranslate }: { onTranslate?: ICommand<CursorEventComponent, void> }) {
@@ -22,7 +22,7 @@ extends Component<{
                     y: 0
                 },
             },
-            onTranslate
+            onTranslate: onTranslate || new Command({ method: (component: CursorEventComponent): void => undefined }),
         });
     }
 

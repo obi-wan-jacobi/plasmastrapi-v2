@@ -1,7 +1,7 @@
 import { Ctor } from '../../types/Ctor';
 import IRenderContext from '../../interfaces/IRenderContext';
 import RenderingComponent from '../../concretes/components/RenderingComponent';
-import System from './System';
+import System from '../System';
 
 export default abstract class RenderSystem<TComponent extends RenderingComponent<any>>
 extends System<TComponent> {

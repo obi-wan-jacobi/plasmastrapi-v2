@@ -1,6 +1,7 @@
-import { Ctor } from '../../types/Ctor';
+import { Ctor } from '../types/Ctor';
+import ISystem from '../interfaces/ISystem';
 
-export default abstract class System<TComponent extends {}> {
+export default abstract class System<TComponent extends {}> implements ISystem<TComponent> {
 
     /* tslint:disable:naming-convention */
     private __ComponentCtor: Ctor<TComponent, any>;

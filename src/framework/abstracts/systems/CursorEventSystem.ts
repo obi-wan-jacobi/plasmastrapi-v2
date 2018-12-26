@@ -1,34 +1,34 @@
 import { CURSOR_EVENT } from '../../enums/CURSOR_EVENT';
 import CursorEventComponent from '../../concretes/components/CursorEventComponent';
-import { HTML5_COLOUR } from '../../../html5/enums/HTML5_COLOUR';
+import { EntityMustPossess } from '../../concretes/Entity';
 import IPosition2D from '../../interfaces/IPosition2D';
+import Invocable from '../Invocable';
 import PoseComponent from '../../concretes/components/PoseComponent';
-import RenderingComponent from '../../concretes/components/RenderingComponent';
+import { MinMaxBounds } from '../Shape2D';
 import ShapeComponent from '../../concretes/components/ShapeComponent';
-import System from './System';
-import TranslatableComponent from '../../../app/components/TranslatableComponent';
+import System from '../System';
 
 export default abstract class CursorEventSystem extends System<CursorEventComponent> {
 
     private __responseMap: { [key: string]: (component: CursorEventComponent) => void} = {
         [CURSOR_EVENT.UNDEFINED]: () => undefined,
         [CURSOR_EVENT.CURSOR_ENABLE]: (component: CursorEventComponent): void => {
-            this.__onCursorEnable(component);
+            this._onCursorEnable(component);
         },
         [CURSOR_EVENT.CURSOR_TRANSLATE]: (component: CursorEventComponent): void => {
-            this.__onCursorTranslate(component);
+            this._onCursorTranslate(component);
         },
         [CURSOR_EVENT.CURSOR_DISABLE]: (component: CursorEventComponent): void => {
-            this.__onCursorDisable(component);
+            this._onCursorDisable(component);
         },
         [CURSOR_EVENT.CURSOR_BEGIN_ACTUATION]: (component: CursorEventComponent): void => {
-            this.__onCursorBeginActuation(component);
+            this._onCursorBeginActuation(component);
         },
         [CURSOR_EVENT.CURSOR_END_ACTUATION]: (component: CursorEventComponent): void => {
-            this.__onCursorEndActuation(component);
+            this._onCursorEndActuation(component);
         },
         [CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION]: (component: CursorEventComponent): void => {
-            this.__onCursorCompleteActuation(component);
+            this._onCursorCompleteActuation(component);
         },
     };
 
@@ -40,57 +40,60 @@ export default abstract class CursorEventSystem extends System<CursorEventCompon
         this.__responseMap[component.data.eventName](component);
     }
 
-    private __onCursorEnable(component: CursorEventComponent): void {
+    protected _onCursorEnable(component: CursorEventComponent): void {
         return;
     }
 
-    private __onCursorTranslate(component: CursorEventComponent): void {
-        const translatable = component.entity.components.get(TranslatableComponent);
-        if (!translatable) {
+    protected _onCursorTranslate(component: CursorEventComponent): void {
+        return;
+    }
+
+    protected _onCursorDisable(component: CursorEventComponent): void {
+        return;
+    }
+
+    protected _onCursorBeginActuation(component: CursorEventComponent): void {
+        return;
+    }
+
+    protected _onCursorEndActuation(component: CursorEventComponent): void {
+        return;
+    }
+
+    protected _onCursorCompleteActuation(component: CursorEventComponent): void {
+        return;
+    }
+
+}
+
+export function CursorMustIntersectEntity<TComponent>(
+    target: System<TComponent>,
+    propertyKey: string | symbol,
+    descriptor: PropertyDescriptor,
+): any {
+    const method = descriptor.value;
+    descriptor.value = function(component: CursorEventComponent): any {
+        if (!CursorIntersectsEntityValidator.invoke(component)) {
             return;
         }
-        if (translatable.data.previous.cursor.x && translatable.data.previous.cursor.y) {
-            const pose = component.entity.components.get(PoseComponent);
-            pose.data.x = pose.data.x + (component.data.x - translatable.data.previous.cursor.x);
-            pose.data.y = pose.data.y + (component.data.y - translatable.data.previous.cursor.y);
-        }
-        translatable.data.previous.cursor.x = component.data.x;
-        translatable.data.previous.cursor.y = component.data.y;
-    }
+        method.apply(this, arguments);
+    };
+}
 
-    private __onCursorDisable(component: CursorEventComponent): void {
-        return;
-    }
+class CursorIntersectsEntityValidator extends Invocable<CursorEventComponent, boolean> {
 
-    private __onCursorBeginActuation(component: CursorEventComponent): void {
+    @EntityMustPossess(PoseComponent)
+    @EntityMustPossess(ShapeComponent)
+    public static invoke(component: CursorEventComponent): boolean {
         const pose = component.entity.components.get(PoseComponent).data;
         const shape = component.entity.components.get(ShapeComponent).data;
         const vertices = shape.vertices.map((vertex) => {
             return { x: vertex.x + pose.x, y: vertex.y + pose.y };
         });
-        if (__isPointContained(component.data, vertices)) {
-            component.entity.components.get(RenderingComponent).data.colour = HTML5_COLOUR.GREEN;
-            if (!component.entity.components.get(TranslatableComponent)) {
-                component.entity.components.add(new TranslatableComponent({}));
-                return;
-            }
+        if (!__isPointContained(component.data, vertices)) {
+            return false;
         }
-        component.entity.components.remove(TranslatableComponent);
-    }
-
-    private __onCursorEndActuation(component: CursorEventComponent): void {
-        const pose = component.entity.components.get(PoseComponent).data;
-        const shape = component.entity.components.get(ShapeComponent).data;
-        const vertices = shape.vertices.map((vertex) => {
-            return { x: vertex.x + pose.x, y: vertex.y + pose.y };
-        });
-        if (__isPointContained(component.data, vertices)) {
-            component.entity.components.get(RenderingComponent).data.colour = HTML5_COLOUR.BLUE;
-        }
-    }
-
-    private __onCursorCompleteActuation(component: CursorEventComponent): void {
-        return;
+        return true;
     }
 
 }
@@ -106,21 +109,8 @@ const __isPointContained = (point: IPosition2D, vertices: IPosition2D[]): boolea
         minY: bounds.minY - 1,
         maxY: bounds.maxY + 1,
     };
-    return true;
+    return __isRayTraceIntersectionDetected(outerBounds);
 };
-
-class MinMaxBounds {
-
-    public minX: number;
-    public maxX: number;
-    public minY: number;
-    public maxY: number;
-
-    constructor({ minX, maxX, minY, maxY }: { minX: number, maxX: number, minY: number, maxY: number}) {
-        Object.assign(this, arguments);
-    }
-
-}
 
 const __getMinMaxBounds = (vertices: IPosition2D[]): MinMaxBounds => {
     let minX = Infinity;
@@ -149,7 +139,6 @@ const __isPointWithinMinMaxBounds = (point: IPosition2D, bounds: MinMaxBounds): 
     return point.x >= minX && point.x <= maxX && point.y >= minY && point.y <= maxY;
 };
 
-const __isRayTraceIntersectionDetected = (): boolean => {
-
+const __isRayTraceIntersectionDetected = (bounds: MinMaxBounds): boolean => {
     return true;
 };

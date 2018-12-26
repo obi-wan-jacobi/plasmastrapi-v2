@@ -1,31 +1,28 @@
 import { Ctor } from '../../types/Ctor';
-import IRenderContext from '../../interfaces/IRenderContext';
-import System from '../../abstracts/systems/System';
+import ISystem from '../../interfaces/ISystem';
 import TypeCollection from '../data-structures/TypeCollection';
 
 export default class SystemMaster {
 
-    private __renderContext: IRenderContext<any>;
-    private __systems: TypeCollection<System<any>>;
+    private __systems: TypeCollection<ISystem<any>>;
 
-    constructor(renderContext: IRenderContext<any>) {
-        this.__renderContext = renderContext;
-        this.__systems = new TypeCollection<System<any>>();
+    constructor() {
+        this.__systems = new TypeCollection<ISystem<any>>();
     }
 
-    public add<TSystem extends System<any>, TArg extends any>(
-        SystemCtor: Ctor<TSystem, TArg>, arg: TArg
+    public add<TSystem extends ISystem<any>>(
+        SystemCtor: Ctor<TSystem, any>, arg?: any
     ): TSystem {
         const system = new SystemCtor(arg);
         this.__systems.add(system);
         return system;
     }
 
-    public get<TSystem extends System<any>>(SystemCtor: Ctor<TSystem, any>): TSystem {
+    public get<TSystem extends ISystem<any>>(SystemCtor: Ctor<TSystem, any>): TSystem {
         return this.__systems.get(SystemCtor);
     }
 
-    public forEach(method: (system: System<any>) => void): void {
+    public forEach(method: (system: ISystem<any>) => void): void {
         this.__systems.forEach(method);
     }
 

@@ -1,4 +1,3 @@
-import CursorEventComponent from '../../framework/concretes/components/CursorEventComponent';
 import Entity from '../../framework/concretes/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import PoseComponent from '../../framework/concretes/components/PoseComponent';
@@ -14,7 +13,6 @@ export default class Button extends Entity {
         super();
         this.components.add(new PoseComponent({ x, y }));
         this.components.add(new ShapeComponent(new Rectangle({ width, height })));
-        this.components.add(new CursorEventComponent());
         this.components.add(new RenderingComponent({ colour: HTML5_COLOUR.RED }));
     }
 

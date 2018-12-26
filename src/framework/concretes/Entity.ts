@@ -2,6 +2,7 @@ import ComponentStoreManager from './store/ComponentStoreManager';
 import { Ctor } from '../types/Ctor';
 import IComponent from '../interfaces/IComponent';
 import StoreMaster from './masters/StoreMaster';
+import System from '../abstracts/System';
 import TypeCollection from './data-structures/TypeCollection';
 import Unique from '../abstracts/Unique';
 
@@ -70,4 +71,21 @@ class ComponentCollectionEntityInjector extends TypeCollection<IComponent<any>> 
         return true;
     }
 
+}
+
+export function EntityMustPossess<TComponent extends IComponent<any>>(ComponentCtor: Ctor<TComponent, any>)
+: (target: any, propertyKey: string, descriptor: PropertyDescriptor) => any {
+    return function(
+        target: System<TComponent>,
+        propertyKey: string | symbol,
+        descriptor: PropertyDescriptor,
+    ): any {
+        const method = descriptor.value;
+        descriptor.value = function(component: IComponent<any>): any {
+            if (!component.entity.components.get(ComponentCtor)) {
+                return;
+            }
+            method.apply(this, arguments);
+        };
+    };
 }

@@ -1,3 +1,4 @@
+import HoverableSystem from './concretes/systems/HoverableSystem';
 import ICursorAdapter from './interfaces/ICursorAdapter';
 import IViewportAdapter from './interfaces/IViewportAdapter';
 import RenderPoseSystem from './concretes/systems/RenderPoseSystem';
@@ -5,6 +6,7 @@ import RenderShapeSystem from './concretes/systems/RenderShapeSystem';
 import StoreMaster from './concretes/masters/StoreMaster';
 import SystemLoopMaster from './concretes/masters/SystemLoopMaster';
 import SystemMaster from './concretes/masters/SystemMaster';
+import TranslatableSystem from './concretes/systems/TranslatableSystem';
 
 export default class Engine {
 
@@ -18,7 +20,7 @@ export default class Engine {
         this.__viewport = viewport;
         this.__cursor = cursor;
         this.__storeMaster = new StoreMaster();
-        this.__systemMaster = new SystemMaster(this.viewport);
+        this.__systemMaster = new SystemMaster();
         this.__loopMaster = new SystemLoopMaster(
             this.__viewport,
             this.__cursor,
@@ -49,6 +51,8 @@ export default class Engine {
     }
 
     private __initSystems(): void {
+        this.systems.add(TranslatableSystem);
+        this.systems.add(HoverableSystem);
         this.systems.add(RenderPoseSystem, this.viewport);
         this.systems.add(RenderShapeSystem, this.viewport);
     }
