@@ -1,5 +1,6 @@
 import Component from '../../framework/abstracts/Component';
-import IPosition2D from '../../framework/interfaces/IPosition2D';
+import CursorEventComponent from '../../framework/concretes/components/CursorEventComponent';
+import ICommand from '../../framework/interfaces/ICommand';
 import { Optional } from '../../framework/types/Optional';
 
 export default class TranslatableComponent
@@ -9,17 +10,19 @@ extends Component<{
             x: number,
             y: number
         },
-    }
+    },
+    onTranslate: Optional<ICommand<CursorEventComponent, void>>
 }> {
 
-    constructor() {
+    constructor({ onTranslate }: { onTranslate?: ICommand<CursorEventComponent, void> }) {
         super({
             previous: {
                 cursor: {
                     x: 0,
                     y: 0
                 },
-            }
+            },
+            onTranslate
         });
     }
 

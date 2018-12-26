@@ -1,5 +1,5 @@
 import CursorEventSystem from '../../framework/abstracts/systems/CursorEventSystem';
 
-export default class TranslatableSystem extends CursorEventSystem {
+export default class ActuatableSystem extends CursorEventSystem {
 
 }
