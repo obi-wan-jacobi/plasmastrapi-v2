@@ -1,7 +1,6 @@
-import ComponentStoreManager from './ComponentStoreManager';
 import { Ctor } from '../../types/Ctor';
-import Engine from '../../Engine';
 import Entity from '../Entity';
+import { Optional } from '../../types/Optional';
 import StoreManager from '../../abstracts/StoreManager';
 import StoreMaster from '../masters/StoreMaster';
 
@@ -14,7 +13,7 @@ export default class EntityStoreManager extends StoreManager<Entity> {
         this.__master = master;
     }
 
-    public create<TEntity extends Entity, TData>(EntityCtor: Ctor<TEntity, TData>, data: TData): TEntity {
+    public create<TEntity extends Entity, TData>(EntityCtor: Ctor<TEntity, Optional<TData>>, data?: TData): TEntity {
         const entity = super.create(EntityCtor, data);
         entity.bind(this.__master);
         return entity;
