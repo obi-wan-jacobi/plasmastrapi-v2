@@ -5,43 +5,24 @@ import FakeCanvas from '../../../src/fakes/FakeHTMLCanvasElement';
 import FakeSystem from '../../../src/fakes/FakeSystem';
 import HTML5CanvasGame from '../../../../html5/HTML5CanvasGame';
 import Impostor from '../../../src/helpers/Impostor';
+import ImpostorCanvasRenderingContext2D from '../../../src/impostors/ImpostorCanvasRenderingContext2D';
+import ImpostorHTMLCanvasElement from '../../../src/impostors/ImpostorHTMLCanvasElement';
 import * as sinon from 'sinon';
-
-const BOUNDING_CLIENT_RECT_LEFT = 0;
-const BOUNDING_CLIENT_RECT_TOP = 0;
 
 describe(`systems operating against ${CursorEventComponent.name}`, () => {
 
+    let impostorRenderingContext: ImpostorCanvasRenderingContext2D;
+    let impostorHTMLCanvasElement: ImpostorHTMLCanvasElement;
     let game: HTML5CanvasGame;
 
-    // fakes
-    let fakeCanvas: FakeCanvas;
-
-    // mocks
-    let impostorHTMLCanvasElement: Impostor<HTMLCanvasElement>;
-    let impostorRenderingContext: Impostor<CanvasRenderingContext2D>;
-
     beforeEach(() => {
-        fakeCanvas = new FakeCanvas();
-        impostorHTMLCanvasElement = new Impostor<HTMLCanvasElement>({ methods: [
-            'getContext',
-            'getBoundingClientRect',
-            'onclick'
-        ], fake: fakeCanvas });
-        impostorRenderingContext = new Impostor<CanvasRenderingContext2D>({ methods: [
-            'clearRect',
-            'save',
-            'beginPath',
-            'arc',
-            'stroke',
-            'closePath',
-            'restore',
-        ]});
+        impostorRenderingContext = new ImpostorCanvasRenderingContext2D();
+        impostorHTMLCanvasElement = new ImpostorHTMLCanvasElement();
         impostorHTMLCanvasElement.expects('getContext').once()
             .withExactArgs('2d')
             .returns(impostorRenderingContext.unwrap());
         impostorHTMLCanvasElement.expects('getBoundingClientRect').once()
-            .returns({ left: BOUNDING_CLIENT_RECT_LEFT, top: BOUNDING_CLIENT_RECT_TOP });
+            .returns({ left: 0, top: 0 });
         game = new HTML5CanvasGame(impostorHTMLCanvasElement.unwrap());
     });
 
@@ -122,7 +103,7 @@ describe(`systems operating against ${CursorEventComponent.name}`, () => {
         //
         const entity = game.store.entities.create(Entity);
         entity.components.add(new CursorEventComponent());
-        fakeCanvas[simulateWhat](clientX, clientY);
+        (impostorHTMLCanvasElement.unwrap() as unknown as FakeCanvas)[simulateWhat](clientX, clientY);
         game.loop.once();
         //
         expect(spy.calledOnce).toBe(true);

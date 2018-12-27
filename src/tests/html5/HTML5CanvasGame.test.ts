@@ -1,38 +1,20 @@
 import Entity from '../../framework/concretes/Entity';
-import FakeCanvas from '../src/fakes/FakeHTMLCanvasElement';
 import HTML5CanvasGame from '../../html5/HTML5CanvasGame';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
-import Impostor from '../src/helpers/Impostor';
+import ImpostorCanvasRenderingContext2D from '../src/impostors/ImpostorCanvasRenderingContext2D';
+import ImpostorHTMLCanvasElement from '../src/impostors/ImpostorHTMLCanvasElement';
 import PoseComponent from '../../framework/concretes/components/PoseComponent';
 import RenderingComponent from '../../framework/concretes/components/RenderingComponent';
 
 describe(HTML5CanvasGame.name, () => {
 
+    let impostorRenderingContext: ImpostorCanvasRenderingContext2D;
+    let impostorHTMLCanvasElement: ImpostorHTMLCanvasElement;
     let game: HTML5CanvasGame;
 
-    // fakes
-    let fakeCanvas: FakeCanvas;
-
-    // mocks
-    let impostorHTMLCanvasElement: Impostor<HTMLCanvasElement>;
-    let impostorRenderingContext: Impostor<CanvasRenderingContext2D>;
-
     beforeEach(() => {
-        fakeCanvas = new FakeCanvas();
-        impostorHTMLCanvasElement = new Impostor<HTMLCanvasElement>({ methods: [
-            'getContext',
-            'getBoundingClientRect',
-            'onclick'
-        ], fake: fakeCanvas });
-        impostorRenderingContext = new Impostor<CanvasRenderingContext2D>({ methods: [
-            'clearRect',
-            'save',
-            'beginPath',
-            'arc',
-            'stroke',
-            'closePath',
-            'restore',
-        ]});
+        impostorRenderingContext = new ImpostorCanvasRenderingContext2D();
+        impostorHTMLCanvasElement = new ImpostorHTMLCanvasElement();
         impostorHTMLCanvasElement.expects('getContext').once()
             .withExactArgs('2d')
             .returns(impostorRenderingContext.unwrap());
