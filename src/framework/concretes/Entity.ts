@@ -16,13 +16,17 @@ export default class Entity extends Unique {
         this.__components = new ComponentCollectionEntityInjector(this);
     }
 
-    public bind(store: StoreMaster): void {
-        this.__store = store;
-        this.__components.bind(this.__store.components);
+    public get $(): StoreMaster {
+        return this.__store;
     }
 
     public get components(): TypeCollection<IComponent<any>> {
         return this.__components;
+    }
+
+    public bind(store: StoreMaster): void {
+        this.__store = store;
+        this.__components.bind(this.__store.components);
     }
 
     public load(): void {

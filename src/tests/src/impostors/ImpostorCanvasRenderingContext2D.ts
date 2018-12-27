@@ -8,8 +8,9 @@ export default class ImpostorCanvasRenderingContext2D extends Impostor<CanvasRen
             'save',
             'beginPath',
             'arc',
-            'stroke',
+            'lineTo',
             'closePath',
+            'stroke',
             'restore',
         ]});
     }

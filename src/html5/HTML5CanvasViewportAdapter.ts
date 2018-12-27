@@ -3,7 +3,6 @@ import IComponent from '../framework/interfaces/IComponent';
 import IRenderingProfile from '../framework/interfaces/IRenderingProfile';
 import IShape from '../framework/interfaces/IShape';
 import IViewportAdapter from '../framework/interfaces/IViewportAdapter';
-import RenderingComponent from '../framework/concretes/components/RenderingComponent';
 
 const TWO_PI_RADIANS = 2 * Math.PI;
 const DEFAULT_RADIUS = 2;
@@ -21,10 +20,6 @@ export default class HTML5CanvasViewportAdapter implements
 
     public get ctx(): CanvasRenderingContext2D {
         return this.__ctx;
-    }
-
-    public get bounds(): ClientRect | DOMRect {
-        return this.__canvas.getBoundingClientRect();
     }
 
     public refresh(): void {
@@ -54,7 +49,7 @@ function Atomic(
 ): any {
     const method = descriptor.value;
     descriptor.value = function<TComponent extends IComponent<any>>(
-        component: TComponent, renderProfile: RenderingComponent<{ colour: HTML5_COLOUR }>
+        component: TComponent, renderProfile: IComponent<IRenderingProfile<HTML5_COLOUR>>
     ): void {
         this.ctx.save();
         this.ctx.strokeStyle = renderProfile.data.colour;

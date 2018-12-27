@@ -1,6 +1,6 @@
 import IVerifiable from '../interfaces/IVerifiable';
 
-export default class FakeCanvas implements IVerifiable {
+export default class FakeHTMLCanvasElement implements IVerifiable {
 
     [key: string]: any
 
