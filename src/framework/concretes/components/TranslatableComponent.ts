@@ -2,6 +2,7 @@ import Command from '../commands/Command';
 import Component from '../../abstracts/Component';
 import CursorEventComponent from './CursorEventComponent';
 import ICommand from '../../interfaces/ICommand';
+import PoseComponent from './PoseComponent';
 
 export default class TranslatableComponent
 extends Component<{
@@ -18,12 +19,14 @@ extends Component<{
         super({
             previous: {
                 cursor: {
-                    x: 0,
-                    y: 0
+                    x: -Infinity,
+                    y: -Infinity
                 },
             },
             onTranslate: onTranslate || new Command({ method: (component: CursorEventComponent): void => undefined }),
         });
+        this._dependsOn(PoseComponent);
+        this._dependsOn(CursorEventComponent);
     }
 
 }

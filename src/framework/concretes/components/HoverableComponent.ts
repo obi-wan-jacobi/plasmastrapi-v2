@@ -20,6 +20,7 @@ extends Component<{
             onDisable: onDisable || new Command({ method: (component: CursorEventComponent): void => undefined }),
             onTranslate: onTranslate || new Command({ method: (component: CursorEventComponent): void => undefined })
         });
+        this._dependsOn(CursorEventComponent);
     }
 
 }

@@ -1,3 +1,4 @@
+import { EntityMustPossess } from '../Entity';
 import IRenderContext from '../../interfaces/IRenderContext';
 import PoseComponent from '../components/PoseComponent';
 import RenderSystem from '../../abstracts/systems/RenderSystem';
@@ -9,6 +10,7 @@ export default class RenderPoseSystem extends RenderSystem<PoseComponent> {
         super(context, PoseComponent);
     }
 
+    @EntityMustPossess(RenderingComponent)
     public once(component: PoseComponent): void {
         const renderProfile = component.entity.components.get(RenderingComponent);
         this._context.drawPoint(component.data, renderProfile);

@@ -4,6 +4,7 @@ import PoseComponent from '../../framework/concretes/components/PoseComponent';
 import Rectangle from '../../framework/concretes/geometry/shapes/Rectangle';
 import RenderingComponent from '../../framework/concretes/components/RenderingComponent';
 import ShapeComponent from '../../framework/concretes/components/ShapeComponent';
+import TranslatableComponent from '../../framework/concretes/components/TranslatableComponent';
 
 export default class Button extends Entity {
 
@@ -14,6 +15,7 @@ export default class Button extends Entity {
         this.components.add(new PoseComponent({ x, y }));
         this.components.add(new ShapeComponent(new Rectangle({ width, height })));
         this.components.add(new RenderingComponent({ colour: HTML5_COLOUR.RED }));
+        this.components.add(new TranslatableComponent({}));
     }
 
 }

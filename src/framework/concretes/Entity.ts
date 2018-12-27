@@ -52,6 +52,7 @@ class ComponentCollectionEntityInjector extends TypeCollection<IComponent<any>> 
         });
     }
 
+    @InjectComponentDependencies
     public add(component: IComponent<any>): boolean {
         const isAdded = super.add(component);
         component.bind(this.__entity);
@@ -87,5 +88,21 @@ export function EntityMustPossess<TComponent extends IComponent<any>>(ComponentC
             }
             method.apply(this, arguments);
         };
+    };
+}
+
+function InjectComponentDependencies(
+    target: ComponentCollectionEntityInjector,
+    propertyKey: string | symbol,
+    descriptor: PropertyDescriptor,
+): any {
+    const method = descriptor.value;
+    descriptor.value = function(component: IComponent<void>): any {
+        method.apply(this, arguments);
+        if (component.dependencies.length > 0) {
+            component.dependencies.forEach((DependencyCtor) => {
+                component.entity.components.add(new DependencyCtor({}));
+            });
+        }
     };
 }

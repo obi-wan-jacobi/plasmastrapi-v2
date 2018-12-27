@@ -6,10 +6,11 @@ import TranslatableComponent from '../components/TranslatableComponent';
 
 export default class TranslatableSystem extends CursorEventSystem {
 
+    @EntityMustPossess(PoseComponent)
     @EntityMustPossess(TranslatableComponent)
     protected _onCursorTranslate(component: CursorEventComponent): void {
         const translatable = component.entity.components.get(TranslatableComponent);
-        if (translatable.data.previous.cursor.x && translatable.data.previous.cursor.y) {
+        if (translatable.data.previous.cursor.x > -Infinity && translatable.data.previous.cursor.y > -Infinity) {
             const pose = component.entity.components.get(PoseComponent);
             pose.data.x = pose.data.x + (component.data.x - translatable.data.previous.cursor.x);
             pose.data.y = pose.data.y + (component.data.y - translatable.data.previous.cursor.y);

@@ -16,6 +16,10 @@ export default class Impostor<T> extends Wrapper<T> implements IVerifiable {
         this.__initMock();
     }
 
+    public get fake(): T {
+        return this.fake;
+    }
+
     public expects(method: string): sinon.SinonExpectation {
         const expectation = this.__mock.expects(method);
         this.__expectations.push(expectation);
