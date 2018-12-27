@@ -7,6 +7,9 @@ import HTML5CanvasGame from '../../../../html5/HTML5CanvasGame';
 import Impostor from '../../../src/helpers/Impostor';
 import ImpostorCanvasRenderingContext2D from '../../../src/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../../src/impostors/ImpostorHTMLCanvasElement';
+import PoseComponent from '../../../../framework/concretes/components/PoseComponent';
+import Rectangle from '../../../../framework/concretes/geometry/shapes/Rectangle';
+import ShapeComponent from '../../../../framework/concretes/components/ShapeComponent';
 import * as sinon from 'sinon';
 
 describe(`systems operating against ${CursorEventComponent.name}`, () => {
@@ -102,6 +105,8 @@ describe(`systems operating against ${CursorEventComponent.name}`, () => {
         const spy = sinon.spy(fakeCursorSystem, 'once');
         //
         const entity = game.store.entities.create(Entity);
+        entity.components.add(new PoseComponent({ x: clientX, y: clientY }));
+        entity.components.add(new ShapeComponent(new Rectangle({ width: 50, height: 50 })));
         entity.components.add(new CursorEventComponent());
         (impostorHTMLCanvasElement.unwrap() as unknown as FakeCanvas)[simulateWhat](clientX, clientY);
         game.loop.once();

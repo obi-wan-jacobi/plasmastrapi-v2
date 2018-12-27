@@ -56,7 +56,6 @@ class ComponentCollectionEntityInjector extends TypeCollection<IComponent<any>> 
         });
     }
 
-    @InjectComponentDependencies
     public add(component: IComponent<any>): boolean {
         const isAdded = super.add(component);
         component.bind(this.__entity);
@@ -88,25 +87,19 @@ export function EntityMustPossess<TComponent extends IComponent<any>>(ComponentC
         const method = descriptor.value;
         descriptor.value = function(component: IComponent<any>): any {
             if (!component.entity.components.get(ComponentCtor)) {
+                console.log([
+                    `${target.constructor.name}`,
+                    '::',
+                    EntityMustPossess.name,
+                    '::',
+                    `${component.entity.constructor.name}`,
+                    `(${ComponentCtor.name}`,
+                    '-->',
+                    `${component.constructor.name})`,
+                ].join(' '));
                 return;
             }
-            method.apply(this, arguments);
+            return method.apply(this, arguments);
         };
-    };
-}
-
-function InjectComponentDependencies(
-    target: ComponentCollectionEntityInjector,
-    propertyKey: string | symbol,
-    descriptor: PropertyDescriptor,
-): any {
-    const method = descriptor.value;
-    descriptor.value = function(component: IComponent<void>): any {
-        method.apply(this, arguments);
-        if (component.dependencies.length > 0) {
-            component.dependencies.forEach((DependencyCtor) => {
-                component.entity.components.add(new DependencyCtor({}));
-            });
-        }
     };
 }

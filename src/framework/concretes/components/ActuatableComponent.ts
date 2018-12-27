@@ -20,7 +20,6 @@ export default class ActuatableComponent
             onEnd: onEnd || new Command({ method: (component: CursorEventComponent): void => undefined }),
             onComplete: onComplete || new Command({ method: (component: CursorEventComponent): void => undefined }),
         });
-        this._dependsOn(CursorEventComponent);
     }
 
 }

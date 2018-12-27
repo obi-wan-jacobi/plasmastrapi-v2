@@ -9,7 +9,6 @@ extends Component<{ eventName: CURSOR_EVENT, x: number, y: number }> {
             eventName: CURSOR_EVENT.UNDEFINED,
             x: -Infinity,
             y: -Infinity
-
         });
     }
 

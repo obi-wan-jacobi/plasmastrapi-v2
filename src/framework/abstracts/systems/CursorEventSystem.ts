@@ -76,7 +76,7 @@ export function CursorMustIntersectEntity<TComponent>(
         if (!CursorIntersectsEntityValidator.invoke(component)) {
             return;
         }
-        method.apply(this, arguments);
+        return method.call(this, ...arguments);
     };
 }
 

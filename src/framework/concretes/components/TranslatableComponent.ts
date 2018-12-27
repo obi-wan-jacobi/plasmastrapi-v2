@@ -25,8 +25,6 @@ extends Component<{
             },
             onTranslate: onTranslate || new Command({ method: (component: CursorEventComponent): void => undefined }),
         });
-        this._dependsOn(PoseComponent);
-        this._dependsOn(CursorEventComponent);
     }
 
 }
