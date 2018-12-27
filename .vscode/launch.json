@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch localhost:8080",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}/dist"
+        },
+        {
             "type": "node",
             "request": "launch",
             "name": "Debug Jest Tests",
@@ -18,11 +25,11 @@
             ],
             "windows": {
                 "args": [
-                "--inspect-brk",
-                "${workspaceRoot}/node_modules/jest/bin/jest.js",
-                "--runInBand",
-                "--config",
-                "${workspaceRoot}/jest.config.js"          
+                    "--inspect-brk",
+                    "${workspaceRoot}/node_modules/jest/bin/jest.js",
+                    "--runInBand",
+                    "--config",
+                    "${workspaceRoot}/jest.config.js"          
                 ],
             },
             "console": "integratedTerminal",
