@@ -1,8 +1,9 @@
+import IImpostor from '../interfaces/IImpostor';
 import IVerifiable from '../interfaces/IVerifiable';
 import Wrapper from '../../../framework/abstracts/Wrapper';
 import * as sinon from 'sinon';
 
-export default class Impostor<T> extends Wrapper<T> implements IVerifiable {
+export default class Impostor<T> extends Wrapper<T> implements IImpostor {
 
     private __fake: T;
     private __mock: sinon.SinonMock;

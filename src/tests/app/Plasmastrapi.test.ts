@@ -1,7 +1,6 @@
 import FakeHTMLCanvasElement from '../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../app/entities/Gate';
 import GateFactoryButton from '../../app/entities/GateFactoryButton';
-import HTML5CanvasGame from '../../html5/HTML5CanvasGame';
 import ImpostorCanvasRenderingContext2D from '../src/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../src/impostors/ImpostorHTMLCanvasElement';
 import Plasmastrapi from '../../app/Plasmastrapi';
@@ -27,7 +26,7 @@ describe(Plasmastrapi.name, () => {
         impostorHTMLCanvasElement.assertMethodsCalledInOrder();
     });
 
-    it('clicking button creates gate that is immediately translatable', (done) => {
+    it('clicking button creates gate that is immediately draggable', (done) => {
         impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(7)
             .returns({ left: 0, top: 0 });
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
