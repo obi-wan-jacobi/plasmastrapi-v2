@@ -2,7 +2,7 @@ import { CURSOR_EVENT } from '../../enums/CURSOR_EVENT';
 import CursorEventComponent from '../components/CursorEventComponent';
 import CursorEventSystem, { OnCursorEvent, OnCursorIntersection } from '../../abstracts/systems/CursorEventSystem';
 import DraggableComponent from '../components/DraggableComponent';
-import { EntityMustPossess } from '../Entity';
+import { OnlyIfEntityHas } from '../Entity';
 import TranslatableComponent from '../components/TranslatableComponent';
 
 export default class DraggableSystem extends CursorEventSystem {
@@ -14,13 +14,13 @@ export default class DraggableSystem extends CursorEventSystem {
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
     @OnCursorIntersection
-    @EntityMustPossess(DraggableComponent)
+    @OnlyIfEntityHas(DraggableComponent)
     private __onCursorBeginActuation(component: CursorEventComponent): void {
         component.entity.components.add(new TranslatableComponent());
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
-    @EntityMustPossess(DraggableComponent)
+    @OnlyIfEntityHas(DraggableComponent)
     private __onCursorEndActuation(component: CursorEventComponent): void {
         component.entity.components.remove(TranslatableComponent);
     }

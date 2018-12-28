@@ -10,7 +10,7 @@ $(() => {
     const canvas = $('#app-target').get(0) as HTMLCanvasElement;
     const game = new Plasmastrapi(canvas);
 
-    game.store.entities.create(GateFactoryButton, { x: 50, y: 50, width: 50, height: 50 });
+    game.store.entities.create(GateFactoryButton, { x: 40, y: 40, width: 40, height: 40 });
 
     game.loop.start();
 });

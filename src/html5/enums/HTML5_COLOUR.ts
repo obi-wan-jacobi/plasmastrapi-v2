@@ -6,4 +6,7 @@ export enum HTML5_COLOUR {
     RED = 'red',
     BLUE = 'blue',
     GREEN = 'green',
+    YELLOW = 'yellow',
+    ORANGE = 'orange',
+    LIGHTGREEN = 'lightgreen'
 }

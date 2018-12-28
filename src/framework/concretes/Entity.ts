@@ -77,7 +77,7 @@ class ComponentCollectionEntityInjector extends TypeCollection<IComponent<any>> 
 
 }
 
-export function EntityMustPossess<TComponent extends IComponent<any>>(ComponentCtor: Ctor<TComponent, any>)
+export function OnlyIfEntityHas<TComponent extends IComponent<any>>(ComponentCtor: Ctor<TComponent, any>)
 : (target: any, propertyKey: string, descriptor: PropertyDescriptor) => any {
     return function(
         target: System<TComponent>,

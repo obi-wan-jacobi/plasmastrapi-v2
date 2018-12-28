@@ -1,6 +1,6 @@
 import { CURSOR_EVENT } from '../../enums/CURSOR_EVENT';
 import CursorEventComponent from '../../concretes/components/CursorEventComponent';
-import { EntityMustPossess } from '../../concretes/Entity';
+import { OnlyIfEntityHas } from '../../concretes/Entity';
 import IPosition2D from '../../interfaces/IPosition2D';
 import Invocable from '../Invocable';
 import PoseComponent from '../../concretes/components/PoseComponent';
@@ -53,8 +53,8 @@ export function OnCursorIntersection<TComponent>(
 
 class CursorIntersectsEntityValidator extends Invocable<CursorEventComponent, boolean> {
 
-    @EntityMustPossess(PoseComponent)
-    @EntityMustPossess(ShapeComponent)
+    @OnlyIfEntityHas(PoseComponent)
+    @OnlyIfEntityHas(ShapeComponent)
     public static invoke(component: CursorEventComponent): boolean {
         const pose = component.entity.components.get(PoseComponent).data;
         const shape = component.entity.components.get(ShapeComponent).data;
