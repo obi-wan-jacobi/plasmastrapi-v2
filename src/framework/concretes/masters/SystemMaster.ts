@@ -1,12 +1,15 @@
 import { Ctor } from '../../types/Ctor';
 import ISystem from '../../interfaces/ISystem';
+import StoreMaster from './StoreMaster';
 import TypeCollection from '../data-structures/TypeCollection';
 
 export default class SystemMaster {
 
+    private __store: StoreMaster;
     private __systems: TypeCollection<ISystem<any>>;
 
-    constructor() {
+    constructor(store: StoreMaster) {
+        this.__store = store;
         this.__systems = new TypeCollection<ISystem<any>>();
     }
 
@@ -15,6 +18,7 @@ export default class SystemMaster {
     ): TSystem {
         const system = new SystemCtor(arg);
         this.__systems.add(system);
+        system.bind(this.__store);
         return system;
     }
 

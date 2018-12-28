@@ -3,7 +3,7 @@ import Entity from '../concretes/Entity';
 import IComponent from '../interfaces/IComponent';
 import Unique from './Unique';
 
-export default abstract class Component<TData extends {}> extends Unique implements IComponent<TData> {
+export default abstract class Component<TData> extends Unique implements IComponent<TData> {
 
     private __data: DataWrapper<TData>;
     private __entity: Entity;

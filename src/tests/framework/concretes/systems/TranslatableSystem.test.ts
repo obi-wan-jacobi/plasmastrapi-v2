@@ -34,7 +34,7 @@ describe(TranslatableSystem.name, () => {
         const entity = game.store.entities.create(Entity);
         entity.components.add(new PoseComponent({ x: 0, y: 0 }));
         entity.components.add(new CursorEventComponent());
-        const translatable = new TranslatableComponent({});
+        const translatable = new TranslatableComponent();
         translatable.data.previous.cursor.x = 0;
         translatable.data.previous.cursor.y = 0;
         entity.components.add(translatable);

@@ -1,6 +1,5 @@
-import ActuatableComponent from '../../framework/concretes/components/ActuatableComponent';
-import Command from '../../framework/concretes/commands/Command';
 import CursorEventComponent from '../../framework/concretes/components/CursorEventComponent';
+import DraggableComponent from '../../framework/concretes/components/DraggableComponent';
 import Entity from '../../framework/concretes/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import PoseComponent from '../../framework/concretes/components/PoseComponent';
@@ -15,17 +14,10 @@ export default class Gate extends Entity {
         super();
         this.components.add(new PoseComponent({ x, y }));
         this.components.add(new ShapeComponent(new Rectangle({ width: 50, height: 50 })));
-        this.components.add(new RenderableShapeComponent({ colour: HTML5_COLOUR.WHITE }));
+        this.components.add(new RenderableShapeComponent({ colour: HTML5_COLOUR.RED }));
         this.components.add(new CursorEventComponent());
-        this.components.add(new TranslatableComponent({}));
-        this.components.add(new ActuatableComponent({
-            onBegin: new Command({ method: () => {
-                this.components.add(new TranslatableComponent({}));
-            }}),
-            onEnd: new Command({ method: () => {
-                this.components.remove(TranslatableComponent);
-            }}),
-        }));
+        this.components.add(new TranslatableComponent());
+        this.components.add(new DraggableComponent());
     }
 
 }

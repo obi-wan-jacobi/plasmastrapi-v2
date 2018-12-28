@@ -1,4 +1,3 @@
-import Button from '../../app/entities/Button';
 import FakeHTMLCanvasElement from '../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../app/entities/Gate';
 import HTML5CanvasGame from '../../html5/HTML5CanvasGame';

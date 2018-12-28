@@ -1,14 +1,20 @@
+import { CURSOR_EVENT } from '../../enums/CURSOR_EVENT';
 import CursorEventComponent from '../components/CursorEventComponent';
-import CursorEventSystem from '../../abstracts/systems/CursorEventSystem';
+import CursorEventSystem, { OnCursorEvent, OnCursorIntersection } from '../../abstracts/systems/CursorEventSystem';
 import { EntityMustPossess } from '../Entity';
 import PoseComponent from '../components/PoseComponent';
 import TranslatableComponent from '../components/TranslatableComponent';
 
 export default class TranslatableSystem extends CursorEventSystem {
 
+    public once(component: CursorEventComponent): void {
+        this.__onCursorTranslation(component);
+    }
+
+    @OnCursorEvent(CURSOR_EVENT.CURSOR_TRANSLATE)
     @EntityMustPossess(PoseComponent)
     @EntityMustPossess(TranslatableComponent)
-    protected _onCursorTranslate(component: CursorEventComponent): void {
+    private __onCursorTranslation(component: CursorEventComponent): void {
         const translatable = component.entity.components.get(TranslatableComponent);
         if (translatable.data.previous.cursor.x > -Infinity && translatable.data.previous.cursor.y > -Infinity) {
             const pose = component.entity.components.get(PoseComponent);
@@ -17,7 +23,6 @@ export default class TranslatableSystem extends CursorEventSystem {
         }
         translatable.data.previous.cursor.x = component.data.x;
         translatable.data.previous.cursor.y = component.data.y;
-        translatable.data.onTranslate.invoke(component);
     }
 
 }
