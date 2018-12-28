@@ -2,7 +2,7 @@ import CursorEventComponent from '../../../../framework/concretes/components/Cur
 import DraggableComponent from '../../../../framework/concretes/components/DraggableComponent';
 import DraggableSystem from '../../../../framework/concretes/systems/DraggableSystem';
 import Entity from '../../../../framework/concretes/Entity';
-import FakeCanvas from '../../../src/fakes/FakeHTMLCanvasElement';
+import FakeHTMLCanvasElement from '../../../src/fakes/FakeHTMLCanvasElement';
 import HTML5CanvasGame from '../../../../html5/HTML5CanvasGame';
 import ImpostorCanvasRenderingContext2D from '../../../src/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../../src/impostors/ImpostorHTMLCanvasElement';
@@ -24,7 +24,7 @@ describe(DraggableSystem.name, () => {
             .withExactArgs('2d')
             .returns(impostorRenderingContext.unwrap());
         impostorHTMLCanvasElement.expects('getBoundingClientRect').thrice()
-            .returns({ left: 0, top: 0 });
+        .returns({ left: 0, top: 0 });
         game = new HTML5CanvasGame(impostorHTMLCanvasElement.unwrap());
     });
 
@@ -40,9 +40,9 @@ describe(DraggableSystem.name, () => {
         entity.components.add(new CursorEventComponent());
         entity.components.add(new DraggableComponent());
         //
-        (impostorHTMLCanvasElement.unwrap() as unknown as FakeCanvas).simulateMouseDown(51, 52);
-        (impostorHTMLCanvasElement.unwrap() as unknown as FakeCanvas).simulateMouseMove(51, 52);
-        (impostorHTMLCanvasElement.unwrap() as unknown as FakeCanvas).simulateMouseMove(155, 173);
+        (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement).simulateMouseDown(51, 52);
+        (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement).simulateMouseMove(51, 52);
+        (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement).simulateMouseMove(155, 173);
         game.loop.once();
         game.loop.once();
         game.loop.once();
@@ -54,14 +54,15 @@ describe(DraggableSystem.name, () => {
     });
 
     it('non-draggable entity is not dragged by actuated cursor translation', (done) => {
+        const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
         const entity = game.store.entities.create(Entity);
         entity.components.add(new PoseComponent({ x: 50, y: 50 }));
         entity.components.add(new ShapeComponent(new Rectangle({ width: 50, height: 50 })));
         entity.components.add(new CursorEventComponent());
         //
-        (impostorHTMLCanvasElement.unwrap() as unknown as FakeCanvas).simulateMouseDown(51, 52);
-        (impostorHTMLCanvasElement.unwrap() as unknown as FakeCanvas).simulateMouseMove(51, 52);
-        (impostorHTMLCanvasElement.unwrap() as unknown as FakeCanvas).simulateMouseMove(155, 173);
+        fakeCanvas.simulateMouseDown(51, 52);
+        fakeCanvas.simulateMouseMove(51, 52);
+        fakeCanvas.simulateMouseMove(155, 173);
         game.loop.once();
         game.loop.once();
         game.loop.once();

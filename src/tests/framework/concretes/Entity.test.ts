@@ -36,7 +36,7 @@ describe(Entity.name, () => {
         entity.components.add(new ShapeComponent(new Rectangle({ width: 50, height: 50 })));
         entity.components.add(new RenderablePoseComponent({ colour: HTML5_COLOUR.RED }));
         entity.components.add(new CursorEventComponent());
-        entity.components.add(new TranslatableComponent({}));
+        entity.components.add(new TranslatableComponent());
         //
         game.loop.once();
         //

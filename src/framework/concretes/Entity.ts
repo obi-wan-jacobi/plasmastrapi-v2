@@ -87,16 +87,16 @@ export function EntityMustPossess<TComponent extends IComponent<any>>(ComponentC
         const method = descriptor.value;
         descriptor.value = function(component: IComponent<any>): any {
             if (!component.entity.components.get(ComponentCtor)) {
-                console.log([
-                    `${target.constructor.name}`,
-                    '::',
-                    EntityMustPossess.name,
-                    '::',
-                    `${component.entity.constructor.name}`,
-                    `(${ComponentCtor.name}`,
-                    '-->',
-                    `${component.constructor.name})`,
-                ].join(' '));
+                // console.log([
+                //     `${target.constructor.name}`,
+                //     '::',
+                //     EntityMustPossess.name,
+                //     '::',
+                //     `${component.entity.constructor.name}`,
+                //     `(${ComponentCtor.name}`,
+                //     '-->',
+                //     `${component.constructor.name})`,
+                // ].join(' '));
                 return;
             }
             return method.apply(this, arguments);

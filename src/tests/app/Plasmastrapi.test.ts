@@ -1,5 +1,6 @@
 import FakeHTMLCanvasElement from '../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../app/entities/Gate';
+import GateFactoryButton from '../../app/entities/GateFactoryButton';
 import HTML5CanvasGame from '../../html5/HTML5CanvasGame';
 import ImpostorCanvasRenderingContext2D from '../src/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../src/impostors/ImpostorHTMLCanvasElement';
@@ -10,7 +11,7 @@ describe(Plasmastrapi.name, () => {
 
     let impostorRenderingContext: ImpostorCanvasRenderingContext2D;
     let impostorHTMLCanvasElement: ImpostorHTMLCanvasElement;
-    let game: HTML5CanvasGame;
+    let game: Plasmastrapi;
 
     beforeEach(() => {
         impostorRenderingContext = new ImpostorCanvasRenderingContext2D();
@@ -18,9 +19,7 @@ describe(Plasmastrapi.name, () => {
         impostorHTMLCanvasElement.expects('getContext').once()
             .withExactArgs('2d')
             .returns(impostorRenderingContext.unwrap());
-        impostorHTMLCanvasElement.expects('getBoundingClientRect').thrice()
-            .returns({ left: 0, top: 0 });
-        game = new HTML5CanvasGame(impostorHTMLCanvasElement.unwrap());
+        game = new Plasmastrapi(impostorHTMLCanvasElement.unwrap());
     });
 
     afterEach(() => {
@@ -29,29 +28,37 @@ describe(Plasmastrapi.name, () => {
     });
 
     it('clicking button creates gate that is immediately translatable', (done) => {
+        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(7)
+            .returns({ left: 0, top: 0 });
+        const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
         //
-        game.store.entities.create(Button, { x: 51, y: 52, width: 50, height: 50 });
-        (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement)
-            .simulateClick(50, 50);
+        game.store.entities.create(GateFactoryButton, { x: 50, y: 50, width: 50, height: 50 });
+        fakeCanvas.simulateMouseDown(54, 45);
+        fakeCanvas.simulateMouseMove(101, 102);
+        fakeCanvas.simulateMouseMove(201, 202);
+        fakeCanvas.simulateMouseUp(201, 202);
+        fakeCanvas.simulateClick(201, 202);
+        fakeCanvas.simulateMouseMove(222, 222);
+        fakeCanvas.simulateMouseMove(350, 144);
         game.loop.once();
-        (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement)
-            .simulateMouseMove(101, 102);
         game.loop.once();
-        (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement)
-            .simulateMouseMove(201, 202);
+        game.loop.once();
+        game.loop.once();
+        game.loop.once();
+        game.loop.once();
         game.loop.once();
         //
-        expect(game.store.entities.get(Button).length).toBe(1);
-        game.store.entities.get(Button).forEach((instance) => {
+        expect(game.store.entities.get(GateFactoryButton).length).toBe(1);
+        game.store.entities.get(GateFactoryButton).forEach((instance) => {
             const pose = instance.components.get(PoseComponent);
-            expect(pose.data.x).toBe(51);
-            expect(pose.data.y).toBe(52);
+            expect(pose.data.x).toBe(50);
+            expect(pose.data.y).toBe(50);
         });
         expect(game.store.entities.get(Gate).length).toBe(1);
         game.store.entities.get(Gate).forEach((instance) => {
             const pose = instance.components.get(PoseComponent);
-            expect(pose.data.x).toBe(151);
-            expect(pose.data.y).toBe(152);
+            expect(pose.data.x).toBe(154);
+            expect(pose.data.y).toBe(145);
         });
         done();
     });
