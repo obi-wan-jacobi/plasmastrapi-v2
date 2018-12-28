@@ -1,10 +1,11 @@
 import { Ctor } from '../../types/Ctor';
 import DataWrapper from './DataWrapper';
 import Dictionary from './Dictionary';
-import IIterable from '../../interfaces/IIterable';
+import ITypeCollection from '../../interfaces/ITypeCollection';
+import { Optional } from '../../types/Optional';
 
 export default class TypeCollection<TBaseType> extends DataWrapper<Dictionary<TBaseType>>
-implements IIterable<TBaseType> {
+implements ITypeCollection<TBaseType> {
 
     constructor() {
         super(new Dictionary<TBaseType>());
@@ -18,25 +19,27 @@ implements IIterable<TBaseType> {
         return this.unwrap().read(InstanceCtor.name) as TType;
     }
 
-    public add<TType extends TBaseType>(instance: TType): boolean {
+    public add<TType extends TBaseType, TData>(InstanceCtore: Ctor<TType, Optional<TData>>, data?: TData): TType {
         const inner = this.unwrap();
-        if (inner.read(instance.constructor.name)) {
-            return false;
+        if (inner.read(InstanceCtore.name)) {
+            return inner.read(InstanceCtore.name) as TType;
         }
+        const instance = new InstanceCtore(data);
         inner.write({
             key: instance.constructor.name,
             value: instance
         });
-        return true;
+        return instance;
     }
 
-    public remove<TType extends TBaseType>(InstanceCtor: Ctor<TType, any>): boolean {
+    public remove<TType extends TBaseType>(InstanceCtor: Ctor<TType, any>): Optional<TType> {
         const inner = this.unwrap();
-        if (!inner.read(InstanceCtor.name)) {
-            return false;
+        const instance = inner.read(InstanceCtor.name);
+        if (!instance) {
+            return undefined;
         }
         inner.delete(InstanceCtor.name);
-        return true;
+        return instance as TType;
     }
 
     public purge(): boolean {

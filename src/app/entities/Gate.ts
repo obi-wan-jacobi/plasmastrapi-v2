@@ -20,12 +20,12 @@ export default class Gate extends Entity {
         super();
         this.__output = new OutputTerminal(this);
         this.__input = new InputTerminal(this);
-        this.components.add(new PoseComponent({ x, y }));
-        this.components.add(new ShapeComponent(new Rectangle({ width: 40, height: 40 })));
-        this.components.add(new RenderableShapeComponent({ colour: HTML5_COLOUR.ORANGE }));
-        this.components.add(new CursorEventComponent());
-        this.components.add(new TranslatableComponent());
-        this.components.add(new DraggableComponent());
+        this.add(PoseComponent, { x, y });
+        this.add(ShapeComponent, new Rectangle({ width: 40, height: 40 }));
+        this.add(RenderableShapeComponent, { colour: HTML5_COLOUR.ORANGE });
+        this.add(CursorEventComponent);
+        this.add(TranslatableComponent);
+        this.add(DraggableComponent);
     }
 
     public get output(): OutputTerminal {
@@ -38,20 +38,20 @@ export default class Gate extends Entity {
 
     public bind(store: StoreMaster): void {
         super.bind(store);
-        this.$.entities.load(this.output);
-        this.$.entities.load(this.input);
+        this._store.entities.load(this.output);
+        this._store.entities.load(this.input);
     }
 
     public load(): void {
         super.load();
-        this.$.entities.load(this.output);
-        this.$.entities.load(this.input);
+        this._store.entities.load(this.output);
+        this._store.entities.load(this.input);
     }
 
     public unload(): void {
         super.unload();
-        this.$.entities.unload(this.output);
-        this.$.entities.unload(this.input);
+        this._store.entities.unload(this.output);
+        this._store.entities.unload(this.input);
     }
 
 }

@@ -16,8 +16,7 @@ export default class SystemMaster {
     public add<TSystem extends ISystem<any>>(
         SystemCtor: Ctor<TSystem, any>, arg?: any
     ): TSystem {
-        const system = new SystemCtor(arg);
-        this.__systems.add(system);
+        const system = this.__systems.add(SystemCtor, arg);
         system.bind(this.__store);
         return system;
     }

@@ -32,17 +32,16 @@ describe(TranslatableSystem.name, () => {
 
     it('translatable entity is translated with cursor movement', (done) => {
         const entity = game.store.entities.create(Entity);
-        entity.components.add(new PoseComponent({ x: 0, y: 0 }));
-        entity.components.add(new CursorEventComponent());
-        const translatable = new TranslatableComponent();
+        entity.add(PoseComponent, { x: 0, y: 0 });
+        entity.add(CursorEventComponent);
+        const translatable = entity.add(TranslatableComponent);
         translatable.data.previous.cursor.x = 0;
         translatable.data.previous.cursor.y = 0;
-        entity.components.add(translatable);
         //
         (impostorHTMLCanvasElement.unwrap() as unknown as FakeCanvas).simulateMouseMove(50, 50);
         game.loop.once();
         //
-        const pose = entity.components.get(PoseComponent);
+        const pose = entity.get(PoseComponent);
         expect(pose.data.x).toBe(50);
         expect(pose.data.y).toBe(50);
         done();

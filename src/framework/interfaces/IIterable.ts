@@ -1,6 +1,8 @@
 
 export default interface IIterable<T> {
 
-    forEach(method: (payload: {}) => void): void;
+    length: number;
+
+    forEach(method: (payload: T) => void): void;
 
 }

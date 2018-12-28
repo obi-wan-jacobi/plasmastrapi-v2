@@ -15,13 +15,9 @@ describe(TypeCollection.name, () => {
         expect(collection.get(TestType3)).toBeUndefined();
         expect(collection.get(TestType4)).toBeUndefined();
 
-        testType1 = new TestType1('1');
-        testType2 = new TestType2('one');
-        testType3 = new TestType3('un');
-
-        collection.add(testType1);
-        collection.add(testType2);
-        collection.add(testType3);
+        testType1 = collection.add(TestType1, '1');
+        testType2 = collection.add(TestType2, 'one');
+        testType3 = collection.add(TestType3, 'un');
     });
 
     it('Add multiple instance types', (done) => {
@@ -46,8 +42,8 @@ describe(TypeCollection.name, () => {
         done();
     });
 
-    it ('Remove fails when nothing has been added', (done) => {
-        expect(collection.remove(TestType4)).toBe(false);
+    it ('Remove yields undefined when nothing has been added', (done) => {
+        expect(collection.remove(TestType4)).toBeUndefined();
         __validate(
             true,
             true,

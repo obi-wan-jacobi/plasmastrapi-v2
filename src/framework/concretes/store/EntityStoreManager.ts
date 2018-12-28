@@ -20,14 +20,14 @@ export default class EntityStoreManager extends StoreManager<Entity> {
     }
 
     public load(entity: Entity): void {
-        entity.components.forEach((component) => {
+        entity.forEach((component) => {
             this.__master.components.load(component);
         });
         super.load(entity);
     }
 
     public unload(entity: Entity): void {
-        entity.components.forEach((component) => {
+        entity.forEach((component) => {
             this.__master.components.unload(component);
         });
         super.unload(entity);

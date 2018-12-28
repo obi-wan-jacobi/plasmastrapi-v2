@@ -1,78 +1,60 @@
 import ComponentStoreManager from './store/ComponentStoreManager';
 import { Ctor } from '../types/Ctor';
 import IComponent from '../interfaces/IComponent';
+import IUnique from '../interfaces/IUnique';
+import { Optional } from '../types/Optional';
 import StoreMaster from './masters/StoreMaster';
 import System from '../abstracts/System';
 import TypeCollection from './data-structures/TypeCollection';
 import Unique from '../abstracts/Unique';
 
-export default class Entity extends Unique {
+export default class Entity extends TypeCollection<IComponent<any>> implements IUnique {
 
-    private __components: ComponentCollectionEntityInjector;
-    private __store: StoreMaster;
+    protected _store: StoreMaster;
+
+    private __id: string;
 
     constructor() {
         super();
-        this.__components = new ComponentCollectionEntityInjector(this);
+        this.__id = Unique.generateUuid();
     }
 
-    public get $(): StoreMaster {
-        return this.__store;
-    }
-
-    public get components(): TypeCollection<IComponent<any>> {
-        return this.__components;
+    public get id(): string {
+        return this.__id;
     }
 
     public bind(store: StoreMaster): void {
-        this.__store = store;
-        this.__components.bind(this.__store.components);
-    }
-
-    public load(): void {
-        this.__store.entities.load(this);
-    }
-
-    public unload(): void {
-        this.__store.entities.unload(this);
-    }
-
-}
-
-class ComponentCollectionEntityInjector extends TypeCollection<IComponent<any>> {
-
-    private __entity: Entity;
-    private __store: ComponentStoreManager;
-
-    constructor(entity: Entity) {
-        super();
-        this.__entity = entity;
-    }
-
-    public bind(store: ComponentStoreManager): void {
-        this.__store = store;
+        this._store = store;
         this.forEach((component) => {
-            this.__store.load(component);
+            this._store.components.load(component);
         });
     }
 
-    public add(component: IComponent<any>): boolean {
-        const isAdded = super.add(component);
-        component.bind(this.__entity);
-        if (this.__store) {
-            this.__store.load(component);
+    public add<TComponent extends IComponent<TData>, TData>(
+        ComponentCtor: Ctor<TComponent, Optional<TData>>, data?: TData
+    ): TComponent {
+        const component = super.add(ComponentCtor, data);
+        component.bind(this);
+        if (this._store) {
+            this._store.components.load(component);
         }
-        return isAdded;
+        return component;
     }
 
-    public remove<TComponent extends IComponent<any>>(ComponentCtor: Ctor<TComponent, any>): boolean {
-        const component = this.get(ComponentCtor);
-        if (!component) {
-            return false;
+    public remove<TComponent extends IComponent<any>>(ComponentCtor: Ctor<TComponent, any>): Optional<TComponent> {
+        const component =  super.remove(ComponentCtor);
+        if (this._store && component) {
+            this._store.components.unload(component);
         }
-        super.remove(ComponentCtor);
-        this.__store.unload(component);
-        return true;
+        return component;
+    }
+
+    public load(): void {
+        this._store.entities.load(this);
+    }
+
+    public unload(): void {
+        this._store.entities.unload(this);
     }
 
 }
@@ -86,7 +68,7 @@ export function OnlyIfEntityHas<TComponent extends IComponent<any>>(ComponentCto
     ): any {
         const method = descriptor.value;
         descriptor.value = function(component: IComponent<any>): any {
-            if (!component.entity.components.get(ComponentCtor)) {
+            if (!component.entity.get(ComponentCtor)) {
                 // console.log([
                 //     `${target.constructor.name}`,
                 //     '::',

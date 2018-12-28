@@ -37,8 +37,8 @@ describe(RenderablePoseSystem.name, () => {
         impostorRenderingContext.expects('restore').once();
         //
         const entity = game.store.entities.create(Entity);
-        entity.components.add(new PoseComponent({ x: 50, y: 50, a: 0 }));
-        entity.components.add(new RenderablePoseComponent({ colour: HTML5_COLOUR.NONE }));
+        entity.add(PoseComponent, { x: 50, y: 50, a: 0 });
+        entity.add(RenderablePoseComponent, { colour: HTML5_COLOUR.NONE });
         game.loop.once();
         //
         impostorRenderingContext.verify();

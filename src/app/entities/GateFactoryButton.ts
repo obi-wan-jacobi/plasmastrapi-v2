@@ -1,5 +1,4 @@
 import CursorEventComponent from '../../framework/concretes/components/CursorEventComponent';
-import DraggableComponent from '../../framework/concretes/components/DraggableComponent';
 import Entity from '../../framework/concretes/Entity';
 import Gate from './Gate';
 import GateFactoryComponent from '../components/GateFactoryComponent';
@@ -15,11 +14,11 @@ export default class GateFactoryButton extends Entity {
         { x, y, width, height }: {x: number, y: number, width: number, height: number }
     ) {
         super();
-        this.components.add(new PoseComponent({ x, y }));
-        this.components.add(new ShapeComponent(new Rectangle({ width, height })));
-        this.components.add(new RenderableShapeComponent({ colour: HTML5_COLOUR.WHITE }));
-        this.components.add(new CursorEventComponent());
-        this.components.add(new GateFactoryComponent(Gate));
+        this.add(PoseComponent, { x, y });
+        this.add(ShapeComponent, new Rectangle({ width, height }));
+        this.add(RenderableShapeComponent, { colour: HTML5_COLOUR.WHITE });
+        this.add(CursorEventComponent);
+        this.add(GateFactoryComponent, { GateCtor: Gate });
     }
 
 }

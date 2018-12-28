@@ -56,8 +56,8 @@ class CursorIntersectsEntityValidator extends Invocable<CursorEventComponent, bo
     @OnlyIfEntityHas(PoseComponent)
     @OnlyIfEntityHas(ShapeComponent)
     public static invoke(component: CursorEventComponent): boolean {
-        const pose = component.entity.components.get(PoseComponent).data;
-        const shape = component.entity.components.get(ShapeComponent).data;
+        const pose = component.entity.get(PoseComponent).data;
+        const shape = component.entity.get(ShapeComponent).data;
         const vertices = shape.vertices.map((vertex) => {
             return { x: vertex.x + pose.x, y: vertex.y + pose.y };
         });

@@ -35,10 +35,10 @@ describe(DraggableSystem.name, () => {
 
     it('draggable entity is dragged by actuated cursor translation', (done) => {
         const entity = game.store.entities.create(Entity);
-        entity.components.add(new PoseComponent({ x: 50, y: 50 }));
-        entity.components.add(new ShapeComponent(new Rectangle({ width: 50, height: 50 })));
-        entity.components.add(new CursorEventComponent());
-        entity.components.add(new DraggableComponent());
+        entity.add(PoseComponent, { x: 50, y: 50 });
+        entity.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
+        entity.add(CursorEventComponent);
+        entity.add(DraggableComponent);
         //
         (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement).simulateMouseDown(51, 52);
         (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement).simulateMouseMove(51, 52);
@@ -47,7 +47,7 @@ describe(DraggableSystem.name, () => {
         game.loop.once();
         game.loop.once();
         //
-        const pose = entity.components.get(PoseComponent);
+        const pose = entity.get(PoseComponent);
         expect(pose.data.x).toBe(154);
         expect(pose.data.y).toBe(171);
         done();
@@ -56,9 +56,9 @@ describe(DraggableSystem.name, () => {
     it('non-draggable entity is not dragged by actuated cursor translation', (done) => {
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
         const entity = game.store.entities.create(Entity);
-        entity.components.add(new PoseComponent({ x: 50, y: 50 }));
-        entity.components.add(new ShapeComponent(new Rectangle({ width: 50, height: 50 })));
-        entity.components.add(new CursorEventComponent());
+        entity.add(PoseComponent, { x: 50, y: 50 });
+        entity.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
+        entity.add(CursorEventComponent);
         //
         fakeCanvas.simulateMouseDown(51, 52);
         fakeCanvas.simulateMouseMove(51, 52);
@@ -67,7 +67,7 @@ describe(DraggableSystem.name, () => {
         game.loop.once();
         game.loop.once();
         //
-        const pose = entity.components.get(PoseComponent);
+        const pose = entity.get(PoseComponent);
         expect(pose.data.x).toBe(50);
         expect(pose.data.y).toBe(50);
         done();

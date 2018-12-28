@@ -13,7 +13,7 @@ export default class RenderablePoseSystem
     }
 
     public once(component: RenderablePoseComponent<IRenderingProfile<HTML5_COLOUR>>): void {
-        const pose = component.entity.components.get(PoseComponent);
+        const pose = component.entity.get(PoseComponent);
         this._context.drawPoint(pose.data, component);
     }
 

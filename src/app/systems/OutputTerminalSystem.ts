@@ -11,8 +11,8 @@ export default class OutputTerminalSystem extends System<OutputTerminalComponent
 
     public once(component: OutputTerminalComponent): void {
         const parent = (component.entity as OutputTerminal).parent;
-        const parentPose = parent.components.get(PoseComponent);
-        const terminalPose = component.entity.components.get(PoseComponent).data;
+        const parentPose = parent.get(PoseComponent);
+        const terminalPose = component.entity.get(PoseComponent).data;
         terminalPose.x = parentPose.data.x + component.data.offsetX;
         terminalPose.y = parentPose.data.y + component.data.offsetY;
     }

@@ -15,9 +15,9 @@ export default class TranslatableSystem extends CursorEventSystem {
     @OnlyIfEntityHas(PoseComponent)
     @OnlyIfEntityHas(TranslatableComponent)
     private __onCursorTranslation(component: CursorEventComponent): void {
-        const translatable = component.entity.components.get(TranslatableComponent);
+        const translatable = component.entity.get(TranslatableComponent);
         if (translatable.data.previous.cursor.x > -Infinity && translatable.data.previous.cursor.y > -Infinity) {
-            const pose = component.entity.components.get(PoseComponent);
+            const pose = component.entity.get(PoseComponent);
             pose.data.x = pose.data.x + (component.data.x - translatable.data.previous.cursor.x);
             pose.data.y = pose.data.y + (component.data.y - translatable.data.previous.cursor.y);
         }

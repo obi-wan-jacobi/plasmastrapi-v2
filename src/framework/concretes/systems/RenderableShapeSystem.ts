@@ -14,8 +14,8 @@ extends RenderSystem<RenderableShapeComponent<IRenderingProfile<HTML5_COLOUR>>> 
     }
 
     public once(component: RenderableShapeComponent<IRenderingProfile<HTML5_COLOUR>>): void {
-        const pose = component.entity.components.get(PoseComponent);
-        const shape = component.entity.components.get(ShapeComponent);
+        const pose = component.entity.get(PoseComponent);
+        const shape = component.entity.get(ShapeComponent);
         const vertices = shape.data.vertices.map((vertex) => {
             return { x: vertex.x + pose.data.x, y: vertex.y + pose.data.y };
         });

@@ -12,6 +12,10 @@ implements ITypeManifold<TType> {
         super(new Dictionary<TypeUnifold<TType>>());
     }
 
+    public get length(): number {
+        return this.unwrap().length;
+    }
+
     public get(InstanceCtor: Ctor<TType, any>): TypeUnifold<TType> {
         if (!this.unwrap().read(InstanceCtor.name)) {
             this.unwrap().write({

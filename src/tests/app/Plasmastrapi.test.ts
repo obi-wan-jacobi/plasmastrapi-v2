@@ -49,13 +49,13 @@ describe(Plasmastrapi.name, () => {
         //
         expect(game.store.entities.get(GateFactoryButton).length).toBe(1);
         game.store.entities.get(GateFactoryButton).forEach((instance) => {
-            const pose = instance.components.get(PoseComponent);
+            const pose = instance.get(PoseComponent);
             expect(pose.data.x).toBe(50);
             expect(pose.data.y).toBe(50);
         });
         expect(game.store.entities.get(Gate).length).toBe(1);
         game.store.entities.get(Gate).forEach((instance) => {
-            const pose = instance.components.get(PoseComponent);
+            const pose = instance.get(PoseComponent);
             expect(pose.data.x).toBe(154);
             expect(pose.data.y).toBe(145);
         });

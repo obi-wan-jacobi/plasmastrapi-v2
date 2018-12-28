@@ -8,7 +8,7 @@ extends Component<{
     GateCtor: Ctor<TGate, IPosition2D>
 }> {
 
-    constructor(GateCtor: Ctor<TGate, IPosition2D>) {
+    constructor({ GateCtor }: { GateCtor: Ctor<TGate, IPosition2D> }) {
         super({ GateCtor });
     }
 

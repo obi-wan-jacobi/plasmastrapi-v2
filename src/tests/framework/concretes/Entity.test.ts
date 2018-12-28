@@ -32,15 +32,15 @@ describe(Entity.name, () => {
 
     it('load multiple components with dependencies', (done) => {
         const entity = game.store.entities.create(Entity);
-        entity.components.add(new PoseComponent({ x: 50, y: 50 }));
-        entity.components.add(new ShapeComponent(new Rectangle({ width: 50, height: 50 })));
-        entity.components.add(new RenderablePoseComponent({ colour: HTML5_COLOUR.RED }));
-        entity.components.add(new CursorEventComponent());
-        entity.components.add(new TranslatableComponent());
+        entity.add(PoseComponent, { x: 50, y: 50 });
+        entity.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
+        entity.add(RenderablePoseComponent, { colour: HTML5_COLOUR.RED });
+        entity.add(CursorEventComponent);
+        entity.add(TranslatableComponent);
         //
         game.loop.once();
         //
-        expect(entity.components.length).toBe(5);
+        expect(entity.length).toBe(5);
         done();
     });
 

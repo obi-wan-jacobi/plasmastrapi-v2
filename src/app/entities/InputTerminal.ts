@@ -13,10 +13,10 @@ export default class InputTerminal extends Entity {
     constructor(parent: Entity) {
         super();
         this.__parent = parent;
-        this.components.add(new PoseComponent({ x: - Infinity, y: -Infinity }));
-        this.components.add(new ShapeComponent(new Rectangle({ width: 10, height: 10 })));
-        this.components.add(new RenderableShapeComponent({ colour: HTML5_COLOUR.YELLOW }));
-        this.components.add(new InputTerminalComponent());
+        this.add(PoseComponent, { x: - Infinity, y: -Infinity });
+        this.add(ShapeComponent, new Rectangle({ width: 10, height: 10 }));
+        this.add(RenderableShapeComponent, { colour: HTML5_COLOUR.YELLOW });
+        this.add(InputTerminalComponent);
     }
 
     public get parent(): Entity {

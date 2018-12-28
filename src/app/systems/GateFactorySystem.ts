@@ -16,7 +16,7 @@ export default class GateFactorySystem extends CursorEventSystem {
     @OnCursorIntersection
     @OnlyIfEntityHas(GateFactoryComponent)
     private __onCursorBeginActuation(component: CursorEventComponent): void {
-        const factory = component.entity.components.get(GateFactoryComponent);
+        const factory = component.entity.get(GateFactoryComponent);
         this.store.entities.create(factory.data.GateCtor, {
             x: component.data.x,
             y: component.data.y,

@@ -2,7 +2,6 @@ import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../app/entities/Gate';
 import ImpostorCanvasRenderingContext2D from '../../src/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../src/impostors/ImpostorHTMLCanvasElement';
-import OutputTerminalComponent from '../../../app/components/OutputTerminalComponent';
 import OutputTerminalSystem from '../../../app/systems/OutputTerminalSystem';
 import Plasmastrapi from '../../../app/Plasmastrapi';
 import PoseComponent from '../../../framework/concretes/components/PoseComponent';
@@ -38,8 +37,8 @@ describe(OutputTerminalSystem.name, () => {
         game.loop.once();
         game.loop.once();
         //
-        expect(gate.components.get(PoseComponent).data).toEqual({ x: 100, y: 100, a: 0 });
-        expect(gate.output.components.get(PoseComponent).data).toEqual({ x: 100, y: 72, a: 0 });
+        expect(gate.get(PoseComponent).data).toEqual({ x: 100, y: 100, a: 0 });
+        expect(gate.output.get(PoseComponent).data).toEqual({ x: 100, y: 72, a: 0 });
         done();
     });
 
