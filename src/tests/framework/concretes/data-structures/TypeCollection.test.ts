@@ -24,7 +24,7 @@ describe(TypeCollection.name, () => {
         __validate(
             true,
             true,
-            true
+            true,
         );
         done();
     });
@@ -37,7 +37,7 @@ describe(TypeCollection.name, () => {
         __validate(
             false,
             false,
-            true
+            true,
         );
         done();
     });
@@ -47,7 +47,7 @@ describe(TypeCollection.name, () => {
         __validate(
             true,
             true,
-            true
+            true,
         );
         done();
     });
@@ -57,7 +57,7 @@ describe(TypeCollection.name, () => {
         __validate(
             false,
             false,
-            false
+            false,
         );
         done();
     });

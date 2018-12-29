@@ -20,7 +20,7 @@ export default class SystemLoopMaster {
         viewport: IViewportAdapter<any, any>,
         cursor: ICursorAdapter,
         store: StoreMaster,
-        systems: SystemMaster
+        systems: SystemMaster,
     ) {
         this.__viewport = viewport;
         this.__cursor = cursor;
@@ -45,7 +45,7 @@ export default class SystemLoopMaster {
     }
 
     private __once<TStoreManager extends StoreManager<any>>(
-        store: TStoreManager, systems: SystemMaster
+        store: TStoreManager, systems: SystemMaster,
     ): void {
         systems.forEach((system) => {
             const collection = store.get(system.ComponentCtor);

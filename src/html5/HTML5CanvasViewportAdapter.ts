@@ -49,7 +49,7 @@ function Atomic(
 ): any {
     const method = descriptor.value;
     descriptor.value = function<TComponent extends IComponent<any>>(
-        component: TComponent, renderProfile: IComponent<IRenderingProfile<HTML5_COLOUR>>
+        component: TComponent, renderProfile: IComponent<IRenderingProfile<HTML5_COLOUR>>,
     ): void {
         this.ctx.save();
         this.ctx.strokeStyle = renderProfile.data.colour;

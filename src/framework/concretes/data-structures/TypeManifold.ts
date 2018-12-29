@@ -20,7 +20,7 @@ implements ITypeManifold<TType> {
         if (!this.unwrap().read(InstanceCtor.name)) {
             this.unwrap().write({
                 key: InstanceCtor.name,
-                value: new TypeUnifold<TType>()
+                value: new TypeUnifold<TType>(),
             });
         }
         return this.unwrap().read(InstanceCtor.name);
@@ -34,7 +34,7 @@ implements ITypeManifold<TType> {
         if (!this.unwrap().read(instance.constructor.name)) {
             this.unwrap().write({
                 key: instance.constructor.name,
-                value: new TypeUnifold<TType>()
+                value: new TypeUnifold<TType>(),
             });
         }
         return this.unwrap()

@@ -31,7 +31,7 @@ export default class Entity extends TypeCollection<IComponent<any>> implements I
     }
 
     public add<TComponent extends IComponent<TData>, TData>(
-        ComponentCtor: Ctor<TComponent, Optional<TData>>, data?: TData
+        ComponentCtor: Ctor<TComponent, Optional<TData>>, data?: TData,
     ): TComponent {
         const component = super.add(ComponentCtor, data);
         component.bind(this);

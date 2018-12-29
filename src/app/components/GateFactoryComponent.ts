@@ -5,7 +5,7 @@ import IPosition2D from '../../framework/interfaces/IPosition2D';
 
 export default class GateFactoryComponent<TGate extends Entity>
 extends Component<{
-    GateCtor: Ctor<TGate, IPosition2D>
+    GateCtor: Ctor<TGate, IPosition2D>,
 }> {
 
     constructor({ GateCtor }: { GateCtor: Ctor<TGate, IPosition2D> }) {

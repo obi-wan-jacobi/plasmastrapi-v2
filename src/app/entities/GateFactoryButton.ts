@@ -11,11 +11,11 @@ import ShapeComponent from '../../framework/concretes/components/ShapeComponent'
 export default class GateFactoryButton extends Entity {
 
     constructor(
-        { x, y, width, height }: {x: number, y: number, width: number, height: number }
+        { x, y }: {x: number, y: number },
     ) {
         super();
         this.add(PoseComponent, { x, y });
-        this.add(ShapeComponent, new Rectangle({ width, height }));
+        this.add(ShapeComponent, new Rectangle({ width: 40, height: 40 }));
         this.add(RenderableShapeComponent, { colour: HTML5_COLOUR.WHITE });
         this.add(CursorEventComponent);
         this.add(GateFactoryComponent, { GateCtor: Gate });

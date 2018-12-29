@@ -12,7 +12,7 @@ export default abstract class StoreManager<T extends IUnique> {
     }
 
     public create<TInstance extends T, TData>(
-        InstanceCtor: Ctor<TInstance, TData>, data: TData
+        InstanceCtor: Ctor<TInstance, TData>, data: TData,
     ): TInstance {
         const instance = new InstanceCtor(data);
         this.load(instance);

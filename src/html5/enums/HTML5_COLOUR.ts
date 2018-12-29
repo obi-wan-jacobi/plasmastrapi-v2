@@ -8,5 +8,5 @@ export enum HTML5_COLOUR {
     GREEN = 'green',
     YELLOW = 'yellow',
     ORANGE = 'orange',
-    LIGHTGREEN = 'lightgreen'
+    LIGHTGREEN = 'lightgreen',
 }

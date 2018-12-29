@@ -39,7 +39,7 @@ describe(`systems operating against ${CursorEventComponent.name}`, () => {
             simulateWhat: 'simulateMouseEnter',
             clientX: 10,
             clientY: 10,
-            expectedCursorEvent: CURSOR_EVENT.CURSOR_ENABLE
+            expectedCursorEvent: CURSOR_EVENT.CURSOR_ENABLE,
         });
         done();
     });
@@ -49,7 +49,7 @@ describe(`systems operating against ${CursorEventComponent.name}`, () => {
             simulateWhat: 'simulateMouseMove',
             clientX: 20,
             clientY: 20,
-            expectedCursorEvent: CURSOR_EVENT.CURSOR_TRANSLATE
+            expectedCursorEvent: CURSOR_EVENT.CURSOR_TRANSLATE,
         });
         done();
     });
@@ -59,7 +59,7 @@ describe(`systems operating against ${CursorEventComponent.name}`, () => {
             simulateWhat: 'simulateMouseLeave',
             clientX: 30,
             clientY: 30,
-            expectedCursorEvent: CURSOR_EVENT.CURSOR_DISABLE
+            expectedCursorEvent: CURSOR_EVENT.CURSOR_DISABLE,
         });
         done();
     });
@@ -69,7 +69,7 @@ describe(`systems operating against ${CursorEventComponent.name}`, () => {
             simulateWhat: 'simulateMouseDown',
             clientX: 40,
             clientY: 40,
-            expectedCursorEvent: CURSOR_EVENT.CURSOR_BEGIN_ACTUATION
+            expectedCursorEvent: CURSOR_EVENT.CURSOR_BEGIN_ACTUATION,
         });
         done();
     });
@@ -79,7 +79,7 @@ describe(`systems operating against ${CursorEventComponent.name}`, () => {
             simulateWhat: 'simulateMouseUp',
             clientX: 50,
             clientY: 50,
-            expectedCursorEvent: CURSOR_EVENT.CURSOR_END_ACTUATION
+            expectedCursorEvent: CURSOR_EVENT.CURSOR_END_ACTUATION,
         });
         done();
     });
@@ -89,7 +89,7 @@ describe(`systems operating against ${CursorEventComponent.name}`, () => {
             simulateWhat: 'simulateClick',
             clientX: 60,
             clientY: 60,
-            expectedCursorEvent: CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION
+            expectedCursorEvent: CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION,
         });
         done();
     });
@@ -98,7 +98,7 @@ describe(`systems operating against ${CursorEventComponent.name}`, () => {
         simulateWhat: string,
         clientX: number,
         clientY: number,
-        expectedCursorEvent: CURSOR_EVENT
+        expectedCursorEvent: CURSOR_EVENT,
     }) => {
         const fakeCursorSystem = game.systems.add(FakeSystem, CursorEventComponent);
         const impostorCursorSystem = new Impostor({ fake: fakeCursorSystem });
@@ -115,7 +115,7 @@ describe(`systems operating against ${CursorEventComponent.name}`, () => {
         expect(spy.firstCall.args[0].data).toEqual({
             eventName: expectedCursorEvent,
             x: clientX,
-            y: clientY
+            y: clientY,
         });
         impostorCursorSystem.verify();
     };

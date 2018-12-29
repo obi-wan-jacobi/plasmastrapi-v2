@@ -10,8 +10,8 @@ import WireComponent from '../components/WireComponent';
 
 export default class Wire extends Entity {
 
-    public head: OutputTerminal;
-    public tail: InputTerminal;
+    public head: InputTerminal;
+    public tail: OutputTerminal;
 
     constructor() {
         super();

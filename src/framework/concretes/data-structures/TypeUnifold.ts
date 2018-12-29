@@ -22,7 +22,7 @@ export default class TypeUnifold<TType extends IUnique> extends DataWrapper<Dict
         }
         this.unwrap().write({
             key: instance.id,
-            value: instance
+            value: instance,
         });
         return true;
     }

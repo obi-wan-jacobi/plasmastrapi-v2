@@ -27,7 +27,7 @@ implements ITypeCollection<TBaseType> {
         const instance = new InstanceCtore(data);
         inner.write({
             key: instance.constructor.name,
-            value: instance
+            value: instance,
         });
         return instance;
     }

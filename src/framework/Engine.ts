@@ -25,7 +25,7 @@ export default class Engine {
             this.__viewport,
             this.__cursor,
             this.__storeMaster,
-            this.__systemMaster
+            this.__systemMaster,
             );
         this.__initSystems();
     }

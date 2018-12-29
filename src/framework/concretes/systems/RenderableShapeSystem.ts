@@ -1,4 +1,5 @@
 import { HTML5_COLOUR } from '../../../html5/enums/HTML5_COLOUR';
+import IPosition2D from '../../interfaces/IPosition2D';
 import IRenderContext from '../../interfaces/IRenderContext';
 import IRenderingProfile from '../../interfaces/IRenderingProfile';
 import PoseComponent from '../components/PoseComponent';
@@ -17,9 +18,21 @@ extends RenderSystem<RenderableShapeComponent<IRenderingProfile<HTML5_COLOUR>>> 
         const pose = component.entity.get(PoseComponent);
         const shape = component.entity.get(ShapeComponent);
         const vertices = shape.data.vertices.map((vertex) => {
-            return { x: vertex.x + pose.data.x, y: vertex.y + pose.data.y };
+            const { x, y } = __rotatePointAboutOrigin(vertex, pose.data.a || 0);
+            return {
+                x: x + pose.data.x,
+                y: y + pose.data.y,
+            };
         });
         this._context.drawShape({ vertices }, component);
     }
 
 }
+
+const __rotatePointAboutOrigin = (point: IPosition2D, angleInRadians: number): IPosition2D => {
+    const c = Math.cos(angleInRadians);
+    const s = Math.sin(angleInRadians);
+    const x = point.x * c - point.y * s;
+    const y = point.x * s + point.y * c;
+    return { x, y };
+};

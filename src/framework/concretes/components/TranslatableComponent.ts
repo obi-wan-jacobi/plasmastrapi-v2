@@ -5,9 +5,9 @@ extends Component<{
     previous: {
         cursor: {
             x: number,
-            y: number
+            y: number,
         },
-    }
+    },
 }> {
 
     constructor() {
@@ -15,9 +15,9 @@ extends Component<{
             previous: {
                 cursor: {
                     x: -Infinity,
-                    y: -Infinity
+                    y: -Infinity,
                 },
-            }
+            },
         });
     }
 

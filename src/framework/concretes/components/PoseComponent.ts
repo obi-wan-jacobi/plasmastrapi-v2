@@ -7,7 +7,7 @@ extends Component<{ x: number, y: number, a?: number }> {
         super({
             x: x || 0,
             y: y || 0,
-            a: a || 0
+            a: a || 0,
         });
     }
 

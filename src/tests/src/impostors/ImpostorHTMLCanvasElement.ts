@@ -6,7 +6,7 @@ export default class ImpostorHTMLCanvasElement extends Impostor<HTMLCanvasElemen
     constructor() {
         super({ methods: [
             'getContext',
-            'getBoundingClientRect'
+            'getBoundingClientRect',
         ], fake: new FakeHTMLCanvasElement() });
     }
 

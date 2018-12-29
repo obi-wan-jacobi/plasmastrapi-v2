@@ -3,7 +3,7 @@ import Component from '../../framework/abstracts/Component';
 export default class InputTerminalComponent
  extends Component<{
     offsetX: number,
-    offsetY: number
+    offsetY: number,
 }> {
 
     constructor() {

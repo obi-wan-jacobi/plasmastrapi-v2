@@ -11,7 +11,7 @@ export default class Rectangle extends Shape2D {
             { x, y },
             { x: -x, y },
             { x: -x, y: -y },
-            { x, y: -y }
+            { x, y: -y },
         ]);
     }
 

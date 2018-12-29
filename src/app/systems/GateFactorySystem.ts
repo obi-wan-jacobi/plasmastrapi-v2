@@ -1,7 +1,7 @@
 import { CURSOR_EVENT } from '../../framework/enums/CURSOR_EVENT';
 import CursorEventComponent from '../../framework/concretes/components/CursorEventComponent';
 import CursorEventSystem, {
-    OnCursorEvent, OnCursorIntersection
+    OnCursorEvent, OnCursorIntersection,
 } from '../../framework/abstracts/systems/CursorEventSystem';
 import { OnlyIfEntityHas } from '../../framework/concretes/Entity';
 import GateFactoryComponent from '../components/GateFactoryComponent';

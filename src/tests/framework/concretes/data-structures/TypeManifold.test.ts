@@ -57,7 +57,7 @@ describe(TypeManifold.name, () => {
         __validate(
             ['1', '2', '3', '4', '5'],
             ['one', 'two', 'three'],
-            ['un', 'deux', 'trois', 'quatre']
+            ['un', 'deux', 'trois', 'quatre'],
         );
         done();
     });
@@ -72,7 +72,7 @@ describe(TypeManifold.name, () => {
         __validate(
             ['1', '2', '3', '5'],
             ['one', 'two', 'three'],
-            ['deux', 'trois', 'quatre']
+            ['deux', 'trois', 'quatre'],
         );
         done();
     });
@@ -85,7 +85,7 @@ describe(TypeManifold.name, () => {
         __validate(
             ['1', '2', '3', '4', '5'],
             [],
-            ['un', 'deux', 'trois', 'quatre']
+            ['un', 'deux', 'trois', 'quatre'],
         );
         done();
     });
@@ -95,7 +95,7 @@ describe(TypeManifold.name, () => {
         __validate(
             ['1', '2', '3', '4', '5'],
             ['one', 'two', 'three'],
-            ['un', 'deux', 'trois', 'quatre']
+            ['un', 'deux', 'trois', 'quatre'],
         );
         done();
     });

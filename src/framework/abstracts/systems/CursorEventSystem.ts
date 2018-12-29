@@ -20,7 +20,7 @@ export function OnCursorEvent<TSystem extends CursorEventSystem>(event: CURSOR_E
 : (
     target: TSystem,
     propertyKey: string | symbol,
-    descriptor: PropertyDescriptor
+    descriptor: PropertyDescriptor,
 ) => void {
     return function(
         target: TSystem,

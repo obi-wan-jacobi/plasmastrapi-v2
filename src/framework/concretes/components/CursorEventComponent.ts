@@ -8,7 +8,7 @@ extends Component<{ eventName: CURSOR_EVENT, x: number, y: number }> {
         super({
             eventName: CURSOR_EVENT.UNDEFINED,
             x: -Infinity,
-            y: -Infinity
+            y: -Infinity,
         });
     }
 
