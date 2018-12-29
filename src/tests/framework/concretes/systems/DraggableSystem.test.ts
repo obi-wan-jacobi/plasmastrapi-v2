@@ -23,7 +23,7 @@ describe(DraggableSystem.name, () => {
         impostorHTMLCanvasElement.expects('getContext').once()
             .withExactArgs('2d')
             .returns(impostorRenderingContext.unwrap());
-        impostorHTMLCanvasElement.expects('getBoundingClientRect').thrice()
+        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(3)
         .returns({ left: 0, top: 0 });
         game = new HTML5CanvasGame(impostorHTMLCanvasElement.unwrap());
     });

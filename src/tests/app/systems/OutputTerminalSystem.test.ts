@@ -27,7 +27,7 @@ describe(OutputTerminalSystem.name, () => {
     });
 
     it('terminal moves relative to parent', (done) => {
-        impostorHTMLCanvasElement.expects('getBoundingClientRect').twice()
+        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(2)
             .returns({ left: 0, top: 0 });
         //
         const gate = game.store.entities.create(Gate, { x: 50, y: 50 });

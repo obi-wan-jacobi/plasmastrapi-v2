@@ -31,7 +31,7 @@ describe(Plasmastrapi.name, () => {
             .returns({ left: 0, top: 0 });
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
         //
-        game.store.entities.create(GateFactoryButton, { x: 50, y: 50, width: 50, height: 50 });
+        game.store.entities.create(GateFactoryButton, { x: 50, y: 50 });
         fakeCanvas.simulateMouseDown(54, 45);
         fakeCanvas.simulateMouseMove(101, 102);
         fakeCanvas.simulateMouseMove(201, 202);

@@ -62,7 +62,7 @@ describe(WireSystem.name, () => {
     });
 
     it('wire resizes when connected terminals are moved', (done) => {
-        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(4)
+        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(3)
             .returns({ left: 0, top: 0 });
         //
         const gate1 = game.store.entities.create(Gate, { x: 50, y: 50 });
@@ -75,9 +75,7 @@ describe(WireSystem.name, () => {
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
         fakeCanvas.simulateMouseDown(50, 50);
         fakeCanvas.simulateMouseMove(77, 118);
-        fakeCanvas.simulateMouseMove(123, 439);
         fakeCanvas.simulateMouseUp(123, 439);
-        game.loop.once();
         game.loop.once();
         game.loop.once();
         game.loop.once();
@@ -87,18 +85,18 @@ describe(WireSystem.name, () => {
         expect(game.store.entities.get(Wire).length).toBe(1);
         game.store.entities.get(Wire).forEach((instance) => {
             expect(instance.get(PoseComponent).data).toEqual({
-                a: 0.747441718209134,
-                x: 219,
-                y: 457,
+                x: 209.5,
+                y: 330.5,
+                a: 1.0672351263613737,
             });
         });
         expect(spyDrawWire.calledOnce).toBe(true);
         expect(spyDrawWire.firstCall.args[0]).toEqual({
             vertices: [
-                { x: 341.32023533484005, y: 571.7334302966199 },
-                { x: 95.32023533484006, y: 343.73343029661993 },
-                { x: 96.67976466515994, y: 342.26656970338007 },
-                { x: 342.67976466515995, y: 570.2665697033801 },
+                { x: 341.1241303297471, y: 571.4825477393285 },
+                { x: 76.12413032974706, y: 90.48254773932851 },
+                { x: 77.87586967025288, y: 89.51745226067149 },
+                { x: 342.87586967025294, y: 570.5174522606715 },
             ]});
         done();
     });

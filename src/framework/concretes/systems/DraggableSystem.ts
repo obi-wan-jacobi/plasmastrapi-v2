@@ -16,7 +16,9 @@ export default class DraggableSystem extends CursorEventSystem {
     @OnCursorIntersection
     @OnlyIfEntityHas(DraggableComponent)
     private __onCursorBeginActuation(component: CursorEventComponent): void {
-        component.entity.add(TranslatableComponent);
+        const translatable = component.entity.add(TranslatableComponent);
+        translatable.data.previous.cursor.x = component.data.x;
+        translatable.data.previous.cursor.y = component.data.y;
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
