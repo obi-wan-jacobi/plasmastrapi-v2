@@ -10,6 +10,10 @@ export default class InputTerminalSystem extends System<InputTerminalComponent> 
     }
 
     public once(component: InputTerminalComponent): void {
+        this.__moveRelativeToParent(component);
+    }
+
+    private __moveRelativeToParent(component: InputTerminalComponent): void {
         const parent = (component.entity as InputTerminal).parent;
         const parentPose = parent.get(PoseComponent);
         const terminalPose = component.entity.get(PoseComponent).data;

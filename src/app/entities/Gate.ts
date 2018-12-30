@@ -1,4 +1,3 @@
-import CursorEventComponent from '../../framework/concretes/components/CursorEventComponent';
 import DraggableComponent from '../../framework/concretes/components/DraggableComponent';
 import Entity from '../../framework/concretes/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
@@ -9,7 +8,6 @@ import Rectangle from '../../framework/concretes/geometry/shapes/Rectangle';
 import RenderableShapeComponent from '../../framework/concretes/components/RenderableShapeComponent';
 import ShapeComponent from '../../framework/concretes/components/ShapeComponent';
 import StoreMaster from '../../framework/concretes/masters/StoreMaster';
-import TranslatableComponent from '../../framework/concretes/components/TranslatableComponent';
 
 export default class Gate extends Entity {
 
@@ -23,8 +21,6 @@ export default class Gate extends Entity {
         this.add(PoseComponent, { x, y });
         this.add(ShapeComponent, new Rectangle({ width: 40, height: 40 }));
         this.add(RenderableShapeComponent, { colour: HTML5_COLOUR.ORANGE });
-        this.add(CursorEventComponent);
-        this.add(TranslatableComponent);
         this.add(DraggableComponent);
     }
 

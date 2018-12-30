@@ -1,5 +1,5 @@
-import ComponentStoreManager from './store/ComponentStoreManager';
 import { Ctor } from '../types/Ctor';
+import CursorEventComponent from './components/CursorEventComponent';
 import IComponent from '../interfaces/IComponent';
 import IUnique from '../interfaces/IUnique';
 import { Optional } from '../types/Optional';
@@ -17,6 +17,7 @@ export default class Entity extends TypeCollection<IComponent<any>> implements I
     constructor() {
         super();
         this.__id = Unique.generateUuid();
+        this.add(CursorEventComponent);
     }
 
     public get id(): string {

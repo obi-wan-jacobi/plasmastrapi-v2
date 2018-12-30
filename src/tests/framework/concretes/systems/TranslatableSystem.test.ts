@@ -1,4 +1,3 @@
-import CursorEventComponent from '../../../../framework/concretes/components/CursorEventComponent';
 import Entity from '../../../../framework/concretes/Entity';
 import FakeCanvas from '../../../src/fakes/FakeHTMLCanvasElement';
 import HTML5CanvasGame from '../../../../html5/HTML5CanvasGame';
@@ -33,12 +32,11 @@ describe(TranslatableSystem.name, () => {
     it('translatable entity is translated with cursor movement', (done) => {
         const entity = game.store.entities.create(Entity);
         entity.add(PoseComponent, { x: 0, y: 0 });
-        entity.add(CursorEventComponent);
         const translatable = entity.add(TranslatableComponent);
         translatable.data.previous.cursor.x = 0;
         translatable.data.previous.cursor.y = 0;
-        //
         (impostorHTMLCanvasElement.unwrap() as unknown as FakeCanvas).simulateMouseMove(50, 50);
+        //
         game.loop.once();
         //
         const pose = entity.get(PoseComponent);

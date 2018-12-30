@@ -32,12 +32,12 @@ describe(WireSystem.name, () => {
     });
 
     it('wire is positioned and sized relative to head and tail terminals then rendered', (done) => {
-        //
         const gate1 = game.store.entities.create(Gate, { x: 50, y: 50 });
         const gate2 = game.store.entities.create(Gate, { x: 342, y: 543 });
         const wire = game.store.entities.create(Wire);
         wire.head = gate2.input;
         wire.tail = gate1.output;
+        //
         game.loop.once();
         const spyDrawWire = sinon.spy(game.viewport, 'drawShape');
         game.systems.get(RenderableShapeSystem).once(wire.get(RenderableShapeComponent));
@@ -64,11 +64,8 @@ describe(WireSystem.name, () => {
     it('wire resizes when connected terminals are moved', (done) => {
         impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(3)
             .returns({ left: 0, top: 0 });
-        //
         const gate1 = game.store.entities.create(Gate, { x: 50, y: 50 });
-        gate1.remove(TranslatableComponent);
         const gate2 = game.store.entities.create(Gate, { x: 342, y: 543 });
-        gate2.remove(TranslatableComponent);
         const wire = game.store.entities.create(Wire);
         wire.head = gate2.input;
         wire.tail = gate1.output;
@@ -76,6 +73,7 @@ describe(WireSystem.name, () => {
         fakeCanvas.simulateMouseDown(50, 50);
         fakeCanvas.simulateMouseMove(77, 118);
         fakeCanvas.simulateMouseUp(123, 439);
+        //
         game.loop.once();
         game.loop.once();
         game.loop.once();

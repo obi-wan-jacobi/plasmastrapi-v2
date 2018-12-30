@@ -5,6 +5,7 @@ import CursorEventSystem, {
 } from '../../framework/abstracts/systems/CursorEventSystem';
 import { OnlyIfEntityHas } from '../../framework/concretes/Entity';
 import GateFactoryComponent from '../components/GateFactoryComponent';
+import TranslatableComponent from '../../framework/concretes/components/TranslatableComponent';
 
 export default class GateFactorySystem extends CursorEventSystem {
 
@@ -17,10 +18,11 @@ export default class GateFactorySystem extends CursorEventSystem {
     @OnlyIfEntityHas(GateFactoryComponent)
     private __onCursorBeginActuation(component: CursorEventComponent): void {
         const factory = component.entity.get(GateFactoryComponent);
-        this.store.entities.create(factory.data.GateCtor, {
+        const gate = this.store.entities.create(factory.data.GateCtor, {
             x: component.data.x,
             y: component.data.y,
         });
+        gate.add(TranslatableComponent);
     }
 
 }

@@ -1,7 +1,5 @@
 import Entity from '../../framework/concretes/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
-import InputTerminal from './InputTerminal';
-import OutputTerminal from './OutputTerminal';
 import PoseComponent from '../../framework/concretes/components/PoseComponent';
 import Rectangle from '../../framework/concretes/geometry/shapes/Rectangle';
 import RenderableShapeComponent from '../../framework/concretes/components/RenderableShapeComponent';
@@ -10,8 +8,8 @@ import WireComponent from '../components/WireComponent';
 
 export default class Wire extends Entity {
 
-    public head: InputTerminal;
-    public tail: OutputTerminal;
+    public head: Entity;
+    public tail: Entity;
 
     constructor() {
         super();

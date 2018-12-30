@@ -1,8 +1,10 @@
 import DataWrapper from './DataWrapper';
 import Dictionary from './Dictionary';
+import IIterable from '../../interfaces/IIterable';
 import IUnique from '../../interfaces/IUnique';
 
-export default class TypeUnifold<TType extends IUnique> extends DataWrapper<Dictionary<TType>> {
+export default class TypeUnifold<TType extends IUnique> extends DataWrapper<Dictionary<TType>>
+implements IIterable<TType> {
 
     constructor() {
         super(new Dictionary<TType>());

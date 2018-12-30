@@ -1,4 +1,3 @@
-import CursorEventComponent from '../../../framework/concretes/components/CursorEventComponent';
 import Entity from '../../../framework/concretes/Entity';
 import HTML5CanvasGame from '../../../html5/HTML5CanvasGame';
 import { HTML5_COLOUR } from '../../../html5/enums/HTML5_COLOUR';
@@ -35,7 +34,6 @@ describe(Entity.name, () => {
         entity.add(PoseComponent, { x: 50, y: 50 });
         entity.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
         entity.add(RenderablePoseComponent, { colour: HTML5_COLOUR.RED });
-        entity.add(CursorEventComponent);
         entity.add(TranslatableComponent);
         //
         game.loop.once();

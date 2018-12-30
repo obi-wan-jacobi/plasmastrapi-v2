@@ -30,7 +30,6 @@ describe(Plasmastrapi.name, () => {
         impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(7)
             .returns({ left: 0, top: 0 });
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
-        //
         game.store.entities.create(GateFactoryButton, { x: 50, y: 50 });
         fakeCanvas.simulateMouseDown(54, 45);
         fakeCanvas.simulateMouseMove(101, 102);
@@ -39,6 +38,7 @@ describe(Plasmastrapi.name, () => {
         fakeCanvas.simulateClick(201, 202);
         fakeCanvas.simulateMouseMove(222, 222);
         fakeCanvas.simulateMouseMove(350, 144);
+        //
         game.loop.once();
         game.loop.once();
         game.loop.once();

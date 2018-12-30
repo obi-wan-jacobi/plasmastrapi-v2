@@ -103,12 +103,11 @@ describe(`systems operating against ${CursorEventComponent.name}`, () => {
         const fakeCursorSystem = game.systems.add(FakeSystem, CursorEventComponent);
         const impostorCursorSystem = new Impostor({ fake: fakeCursorSystem });
         const spy = sinon.spy(fakeCursorSystem, 'once');
-        //
         const entity = game.store.entities.create(Entity);
         entity.add(PoseComponent, { x: clientX, y: clientY });
         entity.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
-        entity.add(CursorEventComponent);
         (impostorHTMLCanvasElement.unwrap() as unknown as FakeCanvas)[simulateWhat](clientX, clientY);
+        //
         game.loop.once();
         //
         expect(spy.calledOnce).toBe(true);

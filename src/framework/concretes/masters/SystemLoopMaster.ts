@@ -39,9 +39,11 @@ export default class SystemLoopMaster {
     }
 
     public once(): void {
+        this.__store.loadNew();
         this.__viewport.refresh();
         this.__cursor.once(this.__store.components);
         this.__once(this.__store.components, this.__systems);
+        this.__store.cleanup();
     }
 
     private __once<TStoreManager extends StoreManager<any>>(

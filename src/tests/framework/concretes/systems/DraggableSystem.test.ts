@@ -1,4 +1,3 @@
-import CursorEventComponent from '../../../../framework/concretes/components/CursorEventComponent';
 import DraggableComponent from '../../../../framework/concretes/components/DraggableComponent';
 import DraggableSystem from '../../../../framework/concretes/systems/DraggableSystem';
 import Entity from '../../../../framework/concretes/Entity';
@@ -9,7 +8,6 @@ import ImpostorHTMLCanvasElement from '../../../src/impostors/ImpostorHTMLCanvas
 import PoseComponent from '../../../../framework/concretes/components/PoseComponent';
 import Rectangle from '../../../../framework/concretes/geometry/shapes/Rectangle';
 import ShapeComponent from '../../../../framework/concretes/components/ShapeComponent';
-import TranslatableComponent from '../../../../framework/concretes/components/TranslatableComponent';
 
 describe(DraggableSystem.name, () => {
 
@@ -34,15 +32,15 @@ describe(DraggableSystem.name, () => {
     });
 
     it('draggable entity is dragged by actuated cursor translation', (done) => {
+        const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
         const entity = game.store.entities.create(Entity);
         entity.add(PoseComponent, { x: 50, y: 50 });
         entity.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
-        entity.add(CursorEventComponent);
         entity.add(DraggableComponent);
+        fakeCanvas.simulateMouseDown(51, 52);
+        fakeCanvas.simulateMouseMove(51, 52);
+        fakeCanvas.simulateMouseMove(155, 173);
         //
-        (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement).simulateMouseDown(51, 52);
-        (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement).simulateMouseMove(51, 52);
-        (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement).simulateMouseMove(155, 173);
         game.loop.once();
         game.loop.once();
         game.loop.once();
@@ -58,11 +56,10 @@ describe(DraggableSystem.name, () => {
         const entity = game.store.entities.create(Entity);
         entity.add(PoseComponent, { x: 50, y: 50 });
         entity.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
-        entity.add(CursorEventComponent);
-        //
         fakeCanvas.simulateMouseDown(51, 52);
         fakeCanvas.simulateMouseMove(51, 52);
         fakeCanvas.simulateMouseMove(155, 173);
+        //
         game.loop.once();
         game.loop.once();
         game.loop.once();

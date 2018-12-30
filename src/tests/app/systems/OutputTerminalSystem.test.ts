@@ -27,13 +27,17 @@ describe(OutputTerminalSystem.name, () => {
     });
 
     it('terminal moves relative to parent', (done) => {
-        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(2)
+        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(4)
             .returns({ left: 0, top: 0 });
-        //
         const gate = game.store.entities.create(Gate, { x: 50, y: 50 });
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
-        fakeCanvas.simulateMouseMove(55, 55);
+        fakeCanvas.simulateMouseDown(55, 55);
         fakeCanvas.simulateMouseMove(105, 105);
+        fakeCanvas.simulateMouseUp(105, 105);
+        fakeCanvas.simulateMouseMove(125, 135);
+        //
+        game.loop.once();
+        game.loop.once();
         game.loop.once();
         game.loop.once();
         //

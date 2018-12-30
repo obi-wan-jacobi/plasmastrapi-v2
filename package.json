@@ -12,7 +12,7 @@
         "webpack": "./node_modules/.bin/webpack",
         "webpack-dev-server": "./node_modules/.bin/webpack-dev-server --open",
         "purge-dist-directory": "./node_modules/.bin/rimraf ./dist",
-        "lint-fix": "./node_modules/.bin/tslint --fix src/**/*.ts",
+        "lint-fix": "./node_modules/.bin/tslint --project tsconfig.json --fix src/**/*.ts",
         "lint": "./node_modules/.bin/tslint --project tsconfig.json",
         "test": "./node_modules/.bin/jest",
         "bundle": "npm run lint-fix && npm run lint && npm run purge-dist-directory && npm run webpack",
