@@ -3,7 +3,7 @@ import CursorEventComponent from '../../framework/concretes/components/CursorEve
 import CursorEventSystem, {
     OnCursorEvent, OnCursorIntersection,
 } from '../../framework/abstracts/systems/CursorEventSystem';
-import { OnlyIfEntityIsInstanceOf } from '../../framework/concretes/Entity';
+import Entity, { OnlyIfEntityIsInstanceOf } from '../../framework/concretes/Entity';
 import InputTerminal from '../entities/InputTerminal';
 import { Optional } from '../../framework/types/Optional';
 import OutputTerminal from '../entities/OutputTerminal';
@@ -47,7 +47,7 @@ export default class WireCreationSystem extends CursorEventSystem {
         if (!wireHandle) {
             return;
         }
-        this.store.entities.create(Wire, { head: component.entity, tail: wireHandle.wire.tail });
+        this.__createNewWireIfNotDuplicated({ head: component.entity, tail: wireHandle.wire.tail });
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
@@ -58,7 +58,7 @@ export default class WireCreationSystem extends CursorEventSystem {
         if (!wireHandle) {
             return;
         }
-        this.store.entities.create(Wire, { head: wireHandle.wire.head, tail: component.entity });
+        this.__createNewWireIfNotDuplicated({ head: wireHandle.wire.head, tail: component.entity });
     }
 
     private __findAnyExistingWireHandle(): Optional<WireHandle> {
@@ -71,6 +71,15 @@ export default class WireCreationSystem extends CursorEventSystem {
             wireHandle = instance;
         });
         return wireHandle;
+    }
+
+    private __createNewWireIfNotDuplicated({ head, tail}: { head: Entity, tail: Entity }) {
+        const duplicate = this.store.entities.get(Wire).find((wire: Wire) => {
+            return wire.head === head && wire.tail === tail;
+        });
+        if (!duplicate) {
+            this.store.entities.create(Wire, { head, tail });
+        }
     }
 
 }

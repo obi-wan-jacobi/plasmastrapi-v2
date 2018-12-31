@@ -49,4 +49,8 @@ implements IIterable<TType> {
         return this.unwrap().map(method);
     }
 
+    public find(method: (value: TType) => boolean): TType {
+        return this.unwrap().find(method);
+    }
+
 }

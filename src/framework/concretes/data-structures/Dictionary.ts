@@ -1,5 +1,6 @@
+import IIterable from '../../interfaces/IIterable';
 
-export default class Dictionary<T> {
+export default class Dictionary<T> implements IIterable<T> {
 
     private __data: { [key: string]: T };
 
@@ -37,6 +38,10 @@ export default class Dictionary<T> {
         return Object.keys(this.__data).map((key) => {
             return fn(this.__data[key]);
         });
+    }
+
+    public find(fn: (value: T) => boolean): T {
+        return this.map((value: T): T => value).find(fn);
     }
 
 }

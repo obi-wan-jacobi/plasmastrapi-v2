@@ -262,4 +262,48 @@ describe(WireCreationSystem.name, () => {
         done();
     });
 
+    it('duplicate wires not allowed', (done) => {
+        // Arrange
+        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(9)
+            .returns({ left: 0, top: 0 });
+        const gate = game.store.entities.create(Gate, { x: 500, y: 500 });
+        const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
+        fakeCanvas.simulateMouseDown(500, 523);
+        fakeCanvas.simulateMouseMove(500, 477);
+        fakeCanvas.simulateMouseUp(500, 477);
+        fakeCanvas.simulateMouseDown(500, 477);
+        fakeCanvas.simulateMouseMove(500, 523);
+        fakeCanvas.simulateMouseUp(500, 523);
+        fakeCanvas.simulateMouseDown(500, 523);
+        fakeCanvas.simulateMouseMove(500, 477);
+        fakeCanvas.simulateMouseUp(500, 477);
+        // Act 1
+        game.loop.once();
+        game.loop.once();
+        game.loop.once();
+        game.loop.once();
+        game.loop.once();
+        game.loop.once();
+        game.loop.once();
+        game.loop.once();
+        game.loop.once();
+        // Assert 1
+        expect(gate.get(PoseComponent).data).toEqual({ x: 500, y: 500, a: 0 });
+        expect(gate.input.get(PoseComponent).data).toEqual({ x: 500, y: 528, a: 0 });
+        expect(gate.output.get(PoseComponent).data).toEqual({ x: 500, y: 472, a: 0 });
+        expect(game.store.entities.get(Gate).length).toBe(1);
+        expect(game.store.entities.get(InputTerminal).length).toBe(1);
+        expect(game.store.entities.get(OutputTerminal).length).toBe(1);
+        expect(game.store.entities.get(Wire).length).toBe(1);
+        expect(game.store.entities.get(WireHandle).length).toBe(0);
+        game.store.entities.get(Wire).forEach((wire) => {
+            expect(wire.get(PoseComponent).data).toEqual({
+                x: 500,
+                y: 500,
+                a: 1.5707963267948966,
+            });
+        });
+        done();
+    });
+
 });
