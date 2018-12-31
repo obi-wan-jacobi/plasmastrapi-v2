@@ -1,6 +1,8 @@
+import ChildPoseOffsetSystem from './concretes/systems/ChildPoseOffsetSystem';
 import DraggableSystem from './concretes/systems/DraggableSystem';
 import ICursorAdapter from './interfaces/ICursorAdapter';
 import IViewportAdapter from './interfaces/IViewportAdapter';
+import LineConnectorSystem from './concretes/systems/LineConnectorSystem';
 import RenderablePoseSystem from './concretes/systems/RenderablePoseSystem';
 import RenderableShapeSystem from './concretes/systems/RenderableShapeSystem';
 import StoreMaster from './concretes/masters/StoreMaster';
@@ -27,7 +29,7 @@ export default class Engine {
             this.__storeMaster,
             this.__systemMaster,
             );
-        this.__initSystems();
+        this.__initSystemsInOrder();
     }
 
     public get viewport(): IViewportAdapter<any, any> {
@@ -50,8 +52,10 @@ export default class Engine {
         return this.__loopMaster;
     }
 
-    private __initSystems(): void {
+    private __initSystemsInOrder(): void {
+        this.systems.add(ChildPoseOffsetSystem);
         this.systems.add(TranslatableSystem);
+        this.systems.add(LineConnectorSystem);
         this.systems.add(DraggableSystem);
         this.systems.add(RenderablePoseSystem, this.viewport);
         this.systems.add(RenderableShapeSystem, this.viewport);

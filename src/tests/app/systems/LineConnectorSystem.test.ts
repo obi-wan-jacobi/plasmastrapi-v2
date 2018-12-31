@@ -2,16 +2,15 @@ import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../app/entities/Gate';
 import ImpostorCanvasRenderingContext2D from '../../src/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../src/impostors/ImpostorHTMLCanvasElement';
+import LineConnectorSystem from '../../../framework/concretes/systems/LineConnectorSystem';
 import Plasmastrapi from '../../../app/Plasmastrapi';
 import PoseComponent from '../../../framework/concretes/components/PoseComponent';
 import RenderableShapeComponent from '../../../framework/concretes/components/RenderableShapeComponent';
 import RenderableShapeSystem from '../../../framework/concretes/systems/RenderableShapeSystem';
-import TranslatableComponent from '../../../framework/concretes/components/TranslatableComponent';
 import Wire from '../../../app/entities/Wire';
-import WireSystem from '../../../app/systems/WireSystem';
 import * as sinon from 'sinon';
 
-describe(WireSystem.name, () => {
+describe(LineConnectorSystem.name, () => {
 
     let impostorRenderingContext: ImpostorCanvasRenderingContext2D;
     let impostorHTMLCanvasElement: ImpostorHTMLCanvasElement;
@@ -34,9 +33,7 @@ describe(WireSystem.name, () => {
     it('wire is positioned and sized relative to head and tail terminals then rendered', (done) => {
         const gate1 = game.store.entities.create(Gate, { x: 50, y: 50 });
         const gate2 = game.store.entities.create(Gate, { x: 342, y: 543 });
-        const wire = game.store.entities.create(Wire);
-        wire.head = gate2.input;
-        wire.tail = gate1.output;
+        const wire = game.store.entities.create(Wire, { head: gate2.input, tail: gate1.output });
         //
         game.loop.once();
         const spyDrawWire = sinon.spy(game.viewport, 'drawShape');
@@ -66,9 +63,7 @@ describe(WireSystem.name, () => {
             .returns({ left: 0, top: 0 });
         const gate1 = game.store.entities.create(Gate, { x: 50, y: 50 });
         const gate2 = game.store.entities.create(Gate, { x: 342, y: 543 });
-        const wire = game.store.entities.create(Wire);
-        wire.head = gate2.input;
-        wire.tail = gate1.output;
+        const wire = game.store.entities.create(Wire, { head: gate2.input, tail: gate1.output });
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
         fakeCanvas.simulateMouseDown(50, 50);
         fakeCanvas.simulateMouseMove(77, 118);

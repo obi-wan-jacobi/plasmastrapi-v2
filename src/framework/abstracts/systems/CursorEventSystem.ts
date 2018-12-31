@@ -51,7 +51,7 @@ export function OnCursorIntersection<TComponent>(
     };
 }
 
-class CursorIntersectsEntityValidator extends Invocable<CursorEventComponent, boolean> {
+export class CursorIntersectsEntityValidator extends Invocable<CursorEventComponent, boolean> {
 
     @OnlyIfEntityHas(PoseComponent)
     @OnlyIfEntityHas(ShapeComponent)

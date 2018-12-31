@@ -6,8 +6,11 @@ import RenderablePoseComponent from '../../framework/concretes/components/Render
 import RenderableShapeComponent from '../../framework/concretes/components/RenderableShapeComponent';
 import ShapeComponent from '../../framework/concretes/components/ShapeComponent';
 import TranslatableComponent from '../../framework/concretes/components/TranslatableComponent';
+import Wire from './Wire';
 
 export default class WireHandle extends Entity {
+
+    public wire: Wire;
 
     constructor({ x, y }: { x: number, y: number }) {
         super();
@@ -22,6 +25,11 @@ export default class WireHandle extends Entity {
             },
         });
 
+    }
+
+    public unload(): void {
+        super.unload();
+        this.wire.unload();
     }
 
 }

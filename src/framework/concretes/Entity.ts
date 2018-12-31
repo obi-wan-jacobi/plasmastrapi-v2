@@ -70,16 +70,23 @@ export function OnlyIfEntityHas<TComponent extends IComponent<any>>(ComponentCto
         const method = descriptor.value;
         descriptor.value = function(component: IComponent<any>): any {
             if (!component.entity.get(ComponentCtor)) {
-                // console.log([
-                //     `${target.constructor.name}`,
-                //     '::',
-                //     EntityMustPossess.name,
-                //     '::',
-                //     `${component.entity.constructor.name}`,
-                //     `(${ComponentCtor.name}`,
-                //     '-->',
-                //     `${component.constructor.name})`,
-                // ].join(' '));
+                return;
+            }
+            return method.apply(this, arguments);
+        };
+    };
+}
+
+export function OnlyIfEntityIsInstanceOf<TEntity extends Entity>(EntityCtor: Ctor<TEntity, any>)
+: (target: any, propertyKey: string, descriptor: PropertyDescriptor) => any {
+    return function(
+        target: System<IComponent<any>>,
+        propertyKey: string | symbol,
+        descriptor: PropertyDescriptor,
+    ): any {
+        const method = descriptor.value;
+        descriptor.value = function(component: IComponent<any>): any {
+            if (!(component.entity instanceof EntityCtor)) {
                 return;
             }
             return method.apply(this, arguments);

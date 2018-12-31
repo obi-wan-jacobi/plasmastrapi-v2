@@ -22,7 +22,8 @@
                     "${workspaceRoot}/node_modules/jest/bin/jest.js",
                     "--runInBand",
                     "--config",
-                    "${workspaceRoot}/jest.config.js"
+                    "${workspaceRoot}/jest.config.js",
+                    "wirecreationsystem"
                 ],
             },
             "console": "integratedTerminal",

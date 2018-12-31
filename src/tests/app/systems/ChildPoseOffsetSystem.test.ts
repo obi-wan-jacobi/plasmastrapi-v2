@@ -1,12 +1,12 @@
+import ChildPoseOffsetSystem from '../../../framework/concretes/systems/ChildPoseOffsetSystem';
 import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../app/entities/Gate';
 import ImpostorCanvasRenderingContext2D from '../../src/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../src/impostors/ImpostorHTMLCanvasElement';
-import OutputTerminalSystem from '../../../app/systems/OutputTerminalSystem';
 import Plasmastrapi from '../../../app/Plasmastrapi';
 import PoseComponent from '../../../framework/concretes/components/PoseComponent';
 
-describe(OutputTerminalSystem.name, () => {
+describe(ChildPoseOffsetSystem.name, () => {
 
     let impostorRenderingContext: ImpostorCanvasRenderingContext2D;
     let impostorHTMLCanvasElement: ImpostorHTMLCanvasElement;
