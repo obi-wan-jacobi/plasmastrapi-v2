@@ -53,8 +53,8 @@ export default class Engine {
     }
 
     private __initSystemsInPriorityOrder(): void {
-        this.systems.add(ChildPoseOffsetSystem);
         this.systems.add(TranslatableSystem);
+        this.systems.add(ChildPoseOffsetSystem);
         this.systems.add(LineConnectorSystem);
         this.systems.add(DraggableSystem);
         this.systems.add(RenderablePoseSystem, this.viewport);
