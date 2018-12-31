@@ -29,7 +29,7 @@ export default class Engine {
             this.__storeMaster,
             this.__systemMaster,
             );
-        this.__initSystemsInOrder();
+        this.__initSystemsInPriorityOrder();
     }
 
     public get viewport(): IViewportAdapter<any, any> {
@@ -52,7 +52,7 @@ export default class Engine {
         return this.__loopMaster;
     }
 
-    private __initSystemsInOrder(): void {
+    private __initSystemsInPriorityOrder(): void {
         this.systems.add(ChildPoseOffsetSystem);
         this.systems.add(TranslatableSystem);
         this.systems.add(LineConnectorSystem);

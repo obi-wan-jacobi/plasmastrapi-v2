@@ -13,29 +13,52 @@ import WireHandle from '../entities/WireHandle';
 export default class WireCreationSystem extends CursorEventSystem {
 
     public once(component: CursorEventComponent): void {
-        this.__onCursorBeginActuation(component);
-        this.__onCursorEndActuation(component);
+        this.__onCursorBeginActuationWithInputTerminal(component);
+        this.__onCursorBeginActuationWithOutputTerminal(component);
+        this.__onCursorEndActuationWithInputTerminal(component);
+        this.__onCursorEndActuationWithOutputTerminal(component);
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
     @OnCursorIntersection
     @OnlyIfEntityIsInstanceOf(OutputTerminal)
-    private __onCursorBeginActuation(component: CursorEventComponent): void {
+    private __onCursorBeginActuationWithOutputTerminal(component: CursorEventComponent): void {
         const wireHandle = this.store.entities.create(WireHandle, { x: component.data.x, y: component.data.y });
         const output = component.entity as OutputTerminal;
         const wire = this.store.entities.create(Wire, { head: wireHandle, tail: output });
         wireHandle.wire = wire;
     }
 
+    @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
+    @OnCursorIntersection
+    @OnlyIfEntityIsInstanceOf(InputTerminal)
+    private __onCursorBeginActuationWithInputTerminal(component: CursorEventComponent): void {
+        const wireHandle = this.store.entities.create(WireHandle, { x: component.data.x, y: component.data.y });
+        const input = component.entity as InputTerminal;
+        const wire = this.store.entities.create(Wire, { head: input, tail: wireHandle });
+        wireHandle.wire = wire;
+    }
+
     @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
     @OnlyIfEntityIsInstanceOf(InputTerminal)
     @OnCursorIntersection
-    private __onCursorEndActuation(component: CursorEventComponent): void {
+    private __onCursorEndActuationWithInputTerminal(component: CursorEventComponent): void {
         const wireHandle = this.__findAnyExistingWireHandle();
         if (!wireHandle) {
             return;
         }
         this.store.entities.create(Wire, { head: component.entity, tail: wireHandle.wire.tail });
+    }
+
+    @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
+    @OnlyIfEntityIsInstanceOf(OutputTerminal)
+    @OnCursorIntersection
+    private __onCursorEndActuationWithOutputTerminal(component: CursorEventComponent): void {
+        const wireHandle = this.__findAnyExistingWireHandle();
+        if (!wireHandle) {
+            return;
+        }
+        this.store.entities.create(Wire, { head: wireHandle.wire.head, tail: component.entity });
     }
 
     private __findAnyExistingWireHandle(): Optional<WireHandle> {
