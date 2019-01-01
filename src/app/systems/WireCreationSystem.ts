@@ -73,7 +73,7 @@ export default class WireCreationSystem extends CursorEventSystem {
         return wireHandle;
     }
 
-    private __createNewWireIfNotDuplicated({ head, tail}: { head: Entity, tail: Entity }) {
+    private __createNewWireIfNotDuplicated({ head, tail}: { head: Entity, tail: Entity }): void {
         const duplicate = this.store.entities.get(Wire).find((wire: Wire) => {
             return wire.head === head && wire.tail === tail;
         });
