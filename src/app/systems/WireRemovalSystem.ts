@@ -4,7 +4,7 @@ import CursorEventSystem, {
     OnCursorEvent, OnCursorIntersection,
 } from '../../engine/abstracts/systems/CursorEventSystem';
 import { OnlyIfEntityIsInstanceOf } from '../../engine/concretes/Entity';
-import Gate from '../entities/Gate';
+import Wire from '../entities/Wire';
 
 export default class GateRemovalSystem extends CursorEventSystem {
 
@@ -13,7 +13,7 @@ export default class GateRemovalSystem extends CursorEventSystem {
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
-    @OnlyIfEntityIsInstanceOf(Gate)
+    @OnlyIfEntityIsInstanceOf(Wire)
     @OnCursorIntersection
     private __onCursorEndActuation(component: CursorEventComponent): void {
         component.entity.unload();

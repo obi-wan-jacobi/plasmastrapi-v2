@@ -5,7 +5,7 @@ import ImpostorHTMLCanvasElement from '../../src/impostors/ImpostorHTMLCanvasEle
 import InputTerminal from '../../../app/entities/InputTerminal';
 import OutputTerminal from '../../../app/entities/OutputTerminal';
 import Plasmastrapi from '../../../app/Plasmastrapi';
-import PoseComponent from '../../../framework/concretes/components/PoseComponent';
+import PoseComponent from '../../../engine/concretes/components/PoseComponent';
 import Wire from '../../../app/entities/Wire';
 import WireCreationSystem from '../../../app/systems/WireCreationSystem';
 import WireHandle from '../../../app/entities/WireHandle';

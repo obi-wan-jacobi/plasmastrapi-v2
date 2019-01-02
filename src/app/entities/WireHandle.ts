@@ -1,11 +1,11 @@
-import Entity from '../../framework/concretes/Entity';
+import Entity from '../../engine/concretes/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
-import PoseComponent from '../../framework/concretes/components/PoseComponent';
-import Rectangle from '../../framework/concretes/geometry/shapes/Rectangle';
-import RenderablePoseComponent from '../../framework/concretes/components/RenderablePoseComponent';
-import RenderableShapeComponent from '../../framework/concretes/components/RenderableShapeComponent';
-import ShapeComponent from '../../framework/concretes/components/ShapeComponent';
-import TranslatableComponent from '../../framework/concretes/components/TranslatableComponent';
+import PoseComponent from '../../engine/concretes/components/PoseComponent';
+import Rectangle from '../../geometry/concretes/Rectangle';
+import RenderablePoseComponent from '../../engine/concretes/components/RenderablePoseComponent';
+import RenderableShapeComponent from '../../engine/concretes/components/RenderableShapeComponent';
+import ShapeComponent from '../../engine/concretes/components/ShapeComponent';
+import TranslatableComponent from '../../engine/concretes/components/TranslatableComponent';
 import Wire from './Wire';
 
 export default class WireHandle extends Entity {

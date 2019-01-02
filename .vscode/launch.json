@@ -14,7 +14,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Debug Jest Tests (windows)",
+            "name": "Debug Jest Test (windows)",
             "cwd": "${workspaceFolder}",
             "windows": {
                 "args": [
@@ -23,7 +23,7 @@
                     "--runInBand",
                     "--config",
                     "${workspaceRoot}/jest.config.js",
-                    "wirecreationsystem"
+                    "shapes"
                 ],
             },
             "console": "integratedTerminal",

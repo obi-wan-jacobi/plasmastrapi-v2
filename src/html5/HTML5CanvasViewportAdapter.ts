@@ -1,8 +1,8 @@
 import { HTML5_COLOUR } from './enums/HTML5_COLOUR';
-import IComponent from '../framework/interfaces/IComponent';
-import IRenderingProfile from '../framework/interfaces/IRenderingProfile';
-import IShape from '../framework/interfaces/IShape';
-import IViewportAdapter from '../framework/interfaces/IViewportAdapter';
+import IComponent from '../engine/interfaces/IComponent';
+import IRenderingProfile from '../engine/interfaces/IRenderingProfile';
+import IShape2D from '../geometry/interfaces/IShape2D';
+import IViewportAdapter from '../engine/interfaces/IViewportAdapter';
 
 const TWO_PI_RADIANS = 2 * Math.PI;
 const DEFAULT_RADIUS = 2;
@@ -34,7 +34,7 @@ export default class HTML5CanvasViewportAdapter implements
     }
 
     @Atomic
-    public drawShape(shape: IShape): void {
+    public drawShape(shape: IShape2D): void {
         shape.vertices.forEach((point) => {
             this.ctx.lineTo(point.x, point.y);
         });

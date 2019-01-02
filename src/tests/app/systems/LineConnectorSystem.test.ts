@@ -2,11 +2,11 @@ import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../app/entities/Gate';
 import ImpostorCanvasRenderingContext2D from '../../src/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../src/impostors/ImpostorHTMLCanvasElement';
-import LineConnectorSystem from '../../../framework/concretes/systems/LineConnectorSystem';
+import LineConnectorSystem from '../../../engine/concretes/systems/LineConnectorSystem';
 import Plasmastrapi from '../../../app/Plasmastrapi';
-import PoseComponent from '../../../framework/concretes/components/PoseComponent';
-import RenderableShapeComponent from '../../../framework/concretes/components/RenderableShapeComponent';
-import RenderableShapeSystem from '../../../framework/concretes/systems/RenderableShapeSystem';
+import PoseComponent from '../../../engine/concretes/components/PoseComponent';
+import RenderableShapeComponent from '../../../engine/concretes/components/RenderableShapeComponent';
+import RenderableShapeSystem from '../../../engine/concretes/systems/RenderableShapeSystem';
 import Wire from '../../../app/entities/Wire';
 import * as sinon from 'sinon';
 
@@ -50,10 +50,10 @@ describe(LineConnectorSystem.name, () => {
         expect(spyDrawWire.calledOnce).toBe(true);
         expect(spyDrawWire.firstCall.args[0]).toEqual({
             vertices: [
-                { x: 341.1171134247862, y: 571.4695863022995 },
-                { x: 49.1171134247862, y: 22.46958630229949 },
-                { x: 50.882886575213746, y: 21.53041369770051 },
-                { x: 342.8828865752138, y: 570.5304136977005 },
+                { x: 338.46845369914496, y: 572.878345209198 },
+                { x: 46.4684536991449, y: 23.87834520919796 },
+                { x: 53.53154630085504, y: 20.12165479080204 },
+                { x: 345.5315463008551, y: 569.121654790802 },
             ]});
         done();
     });
@@ -86,10 +86,10 @@ describe(LineConnectorSystem.name, () => {
         expect(spyDrawWire.calledOnce).toBe(true);
         expect(spyDrawWire.firstCall.args[0]).toEqual({
             vertices: [
-                { x: 341.1241303297471, y: 571.4825477393285 },
-                { x: 76.12413032974706, y: 90.48254773932851 },
-                { x: 77.87586967025288, y: 89.51745226067149 },
-                { x: 342.87586967025294, y: 570.5174522606715 },
+                { x: 338.4965213189884, y: 572.9301909573142 },
+                { x: 73.49652131898836, y: 91.9301909573141 },
+                { x: 80.50347868101159, y: 88.0698090426859 },
+                { x: 345.50347868101164, y: 569.0698090426858 },
             ]});
         done();
     });

@@ -1,11 +1,11 @@
-import { CURSOR_EVENT } from '../../framework/enums/CURSOR_EVENT';
-import CursorEventComponent from '../../framework/concretes/components/CursorEventComponent';
+import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
+import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
 import CursorEventSystem, {
     OnCursorEvent, OnCursorIntersection,
-} from '../../framework/abstracts/systems/CursorEventSystem';
-import Entity, { OnlyIfEntityIsInstanceOf } from '../../framework/concretes/Entity';
+} from '../../engine/abstracts/systems/CursorEventSystem';
+import Entity, { OnlyIfEntityIsInstanceOf } from '../../engine/concretes/Entity';
 import InputTerminal from '../entities/InputTerminal';
-import { Optional } from '../../framework/types/Optional';
+import { Optional } from '../../engine/types/Optional';
 import OutputTerminal from '../entities/OutputTerminal';
 import Wire from '../entities/Wire';
 import WireHandle from '../entities/WireHandle';

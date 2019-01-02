@@ -1,7 +1,7 @@
-import { CURSOR_EVENT } from '../../framework/enums/CURSOR_EVENT';
-import CursorEventComponent from '../../framework/concretes/components/CursorEventComponent';
-import CursorEventSystem, { OnCursorEvent } from '../../framework/abstracts/systems/CursorEventSystem';
-import { OnlyIfEntityIsInstanceOf } from '../../framework/concretes/Entity';
+import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
+import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
+import CursorEventSystem, { OnCursorEvent } from '../../engine/abstracts/systems/CursorEventSystem';
+import { OnlyIfEntityIsInstanceOf } from '../../engine/concretes/Entity';
 import WireHandle from '../entities/WireHandle';
 
 export default class WireHandleSystem extends CursorEventSystem {

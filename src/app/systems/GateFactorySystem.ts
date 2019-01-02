@@ -1,11 +1,11 @@
-import { CURSOR_EVENT } from '../../framework/enums/CURSOR_EVENT';
-import CursorEventComponent from '../../framework/concretes/components/CursorEventComponent';
+import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
+import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
 import CursorEventSystem, {
     OnCursorEvent, OnCursorIntersection,
-} from '../../framework/abstracts/systems/CursorEventSystem';
-import { OnlyIfEntityHas } from '../../framework/concretes/Entity';
+} from '../../engine/abstracts/systems/CursorEventSystem';
+import { OnlyIfEntityHas } from '../../engine/concretes/Entity';
 import GateFactoryComponent from '../components/GateFactoryComponent';
-import TranslatableComponent from '../../framework/concretes/components/TranslatableComponent';
+import TranslatableComponent from '../../engine/concretes/components/TranslatableComponent';
 
 export default class GateFactorySystem extends CursorEventSystem {
 

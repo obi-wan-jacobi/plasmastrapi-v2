@@ -1,6 +1,6 @@
-import { Ctor } from '../../../framework/types/Ctor';
+import { Ctor } from '../../../engine/types/Ctor';
 import IVerifiable from '../interfaces/IVerifiable';
-import System from '../../../framework/abstracts/System';
+import System from '../../../engine/abstracts/System';
 
 export default abstract class VerifiableSystem<TComponent> extends System<TComponent> implements IVerifiable {
 

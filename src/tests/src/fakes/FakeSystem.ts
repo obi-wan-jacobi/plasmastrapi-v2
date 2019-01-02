@@ -1,4 +1,4 @@
-import IComponent from '../../../framework/interfaces/IComponent';
+import IComponent from '../../../engine/interfaces/IComponent';
 import VerifiableSystem from '../abstracts/VerifiableSystem';
 
 export default class FakeSystem<TComponent extends IComponent<any>> extends VerifiableSystem<TComponent> {

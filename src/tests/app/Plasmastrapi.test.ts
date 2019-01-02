@@ -4,7 +4,7 @@ import GateFactoryButton from '../../app/entities/GateFactoryButton';
 import ImpostorCanvasRenderingContext2D from '../src/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../src/impostors/ImpostorHTMLCanvasElement';
 import Plasmastrapi from '../../app/Plasmastrapi';
-import PoseComponent from '../../framework/concretes/components/PoseComponent';
+import PoseComponent from '../../engine/concretes/components/PoseComponent';
 
 describe(Plasmastrapi.name, () => {
 
