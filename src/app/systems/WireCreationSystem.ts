@@ -5,7 +5,7 @@ import CursorEventSystem, {
 } from '../../engine/abstracts/systems/CursorEventSystem';
 import Entity, { OnlyIfEntityIsInstanceOf } from '../../engine/concretes/Entity';
 import InputTerminal from '../entities/InputTerminal';
-import { Optional } from '../../engine/types/Optional';
+import { Optional } from '../../framework/types/Optional';
 import OutputTerminal from '../entities/OutputTerminal';
 import Wire from '../entities/Wire';
 import WireHandle from '../entities/WireHandle';

@@ -1,4 +1,4 @@
-import Impostor from '../helpers/Impostor';
+import Impostor from './Impostor';
 
 export default class ImpostorCanvasRenderingContext2D extends Impostor<CanvasRenderingContext2D> {
 

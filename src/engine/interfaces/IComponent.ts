@@ -1,5 +1,5 @@
 import Entity from '../concretes/Entity';
-import IUnique from './IUnique';
+import IUnique from '../../framework/interfaces/IUnique';
 
 export default interface IComponent<T> extends IUnique {
 

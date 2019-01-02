@@ -1,4 +1,4 @@
-import { Ctor } from '../types/Ctor';
+import { Ctor } from '../../framework/types/Ctor';
 import ISystem from '../interfaces/ISystem';
 import StoreMaster from '../concretes/masters/StoreMaster';
 

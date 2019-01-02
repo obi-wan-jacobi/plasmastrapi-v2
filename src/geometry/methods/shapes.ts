@@ -28,12 +28,6 @@ export const rotatePointAboutOrigin = (point: IPosition2D, angleInRadians: numbe
     return { x, y };
 };
 
-export const isPointInsideShape = (point: IPosition2D, shape: IShape2D, pose: IPose2D): boolean => {
-    return ((countRayTraceIntersections(point, shape, pose) % 2) === 1)
-        ? true
-        : false;
-};
-
 export const getMinMaxBounds = (shape: IShape2D): MinMaxBoundary2D => {
     let minX = Infinity;
     let maxX = -Infinity;
@@ -61,13 +55,13 @@ export const isPointWithinMinMaxBounds = (point: IPosition2D, bounds: MinMaxBoun
     return point.x >= minX && point.x <= maxX && point.y >= minY && point.y <= maxY;
 };
 
-export const countRayTraceIntersections = (
+export const isPointInsideShape = (
     point: IPosition2D, shape: IShape2D, pose: IPose2D,
-): number => {
+): boolean => {
     shape = transformShape(shape, pose);
     const bounds = getMinMaxBounds(shape);
     if (!isPointWithinMinMaxBounds(point, bounds)) {
-        return 0;
+        return false;
     }
     const { minX, minY } = {
         minX: (bounds.minX * 1000) / 1000,
@@ -76,31 +70,45 @@ export const countRayTraceIntersections = (
     const vertices = shape.vertices;
     let numberOfIntersections = 0;
     vertices.push(vertices[0]);
-    const rm = (point.y - minY) / (point.x - minX);
-    const rb = point.y - rm * point.x;
+    const ray = fromPointsToStandardFormLinearEquation({ x: minX, y: minY }, point);
     for (let i = 0, L = vertices.length - 1; i < L; i++) {
-        let m = (vertices[i + 1].y - vertices[i].y) / (vertices[i + 1].x - vertices[i].x);
-        m = isFinite(m) ? m : Number.MAX_SAFE_INTEGER;
-        const b = vertices[i].y - m * vertices[i].x;
-        let intersectX = (b - rb) / (rm - m);
-        intersectX = isNaN(intersectX) ? Number.MAX_SAFE_INTEGER : intersectX;
-        let intersectY = rm * intersectX + rb;
-        intersectX = (intersectX * 1000) / 1000;
-        intersectY = (intersectY * 1000) / 1000;
+        const { m, b } = fromPointsToStandardFormLinearEquation(vertices[i], vertices[i + 1]);
+        const intersection = fromStarndardLinearFormLinearEquationsToPointOfIntersection(ray, { m, b });
+        const { intersectX, intersectY } = {
+            intersectX: (intersection.x * 1000) / 1000,
+            intersectY: (intersection.y * 1000) / 1000,
+        };
         const px = (point.x * 1000) / 1000;
         const py = (point.y * 1000) / 1000;
         if (intersectX <= px && intersectX >= minX && intersectY <= py && intersectY >= minY) {
             if (Math.round(intersectX) === Math.round(minX) && Math.round(intersectY) === Math.round(minY)) {
-                return 1;
+                return true;
             } else {
                 numberOfIntersections++;
             }
         }
     }
-    if (numberOfIntersections % 1 !== 0) {
-        throw new Error(
-            'Number of ray-trace-intersections resolved to a non-integer value. Something went terribly wrong.',
-        );
-    }
-    return numberOfIntersections;
+    return ((numberOfIntersections % 2) === 1)
+        ? true
+        : false;
+};
+
+export const fromPointsToStandardFormLinearEquation = (p1: IPosition2D, p2: IPosition2D): { m: number, b: number } => {
+    let m = (p2.y - p1.y) / (p2.x - p1.x);
+    m = isFinite(m) ? m : Number.MAX_SAFE_INTEGER;
+    const b = p1.y - m * p1.x;
+    return { m, b };
+};
+
+export const fromStarndardLinearFormLinearEquationsToPointOfIntersection = (
+    eq1: { m: number, b: number },
+    eq2: { m: number, b: number },
+): IPosition2D => {
+    let intersectX = (eq2.b - eq1.b) / (eq1.m - eq2.m);
+    intersectX = isNaN(intersectX) ? Number.MAX_SAFE_INTEGER : intersectX;
+    const intersectY = eq1.m * intersectX + eq1.b;
+    return {
+        x: intersectX,
+        y: intersectY,
+    };
 };

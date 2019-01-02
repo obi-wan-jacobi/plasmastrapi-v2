@@ -1,6 +1,6 @@
-import IImpostor from '../interfaces/IImpostor';
-import IVerifiable from '../interfaces/IVerifiable';
-import Wrapper from '../../../engine/abstracts/Wrapper';
+import IImpostor from '../../interfaces/IImpostor';
+import IVerifiable from '../../interfaces/IVerifiable';
+import Wrapper from '../../../../framework/abstracts/Wrapper';
 import * as sinon from 'sinon';
 
 export default class Impostor<T> extends Wrapper<T> implements IImpostor {

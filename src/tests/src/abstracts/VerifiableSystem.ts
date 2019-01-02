@@ -1,4 +1,4 @@
-import { Ctor } from '../../../engine/types/Ctor';
+import { Ctor } from '../../../framework/types/Ctor';
 import IVerifiable from '../interfaces/IVerifiable';
 import System from '../../../engine/abstracts/System';
 

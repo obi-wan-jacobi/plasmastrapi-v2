@@ -1,4 +1,4 @@
-import Dictionary from '../../../../engine/concretes/data-structures/Dictionary';
+import Dictionary from '../../../../framework/concretes/data-structures/Dictionary';
 
 describe(Dictionary, () => {
 

@@ -3,8 +3,8 @@ import DraggableSystem from '../../../../engine/concretes/systems/DraggableSyste
 import Entity from '../../../../engine/concretes/Entity';
 import FakeHTMLCanvasElement from '../../../src/fakes/FakeHTMLCanvasElement';
 import HTML5CanvasGame from '../../../../html5/HTML5CanvasGame';
-import ImpostorCanvasRenderingContext2D from '../../../src/impostors/ImpostorCanvasRenderingContext2D';
-import ImpostorHTMLCanvasElement from '../../../src/impostors/ImpostorHTMLCanvasElement';
+import ImpostorCanvasRenderingContext2D from '../../../src/concretes/impostors/ImpostorCanvasRenderingContext2D';
+import ImpostorHTMLCanvasElement from '../../../src/concretes/impostors/ImpostorHTMLCanvasElement';
 import PoseComponent from '../../../../engine/concretes/components/PoseComponent';
 import Rectangle from '../../../../geometry/concretes/Rectangle';
 import ShapeComponent from '../../../../engine/concretes/components/ShapeComponent';

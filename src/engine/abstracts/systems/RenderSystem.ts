@@ -1,4 +1,4 @@
-import { Ctor } from '../../types/Ctor';
+import { Ctor } from '../../../framework/types/Ctor';
 import IComponent from '../../interfaces/IComponent';
 import IRenderContext from '../../interfaces/IRenderContext';
 import IRenderingProfile from '../../interfaces/IRenderingProfile';

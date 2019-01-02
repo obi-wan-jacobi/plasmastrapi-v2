@@ -1,4 +1,4 @@
-import { Ctor } from '../types/Ctor';
+import { Ctor } from '../../framework/types/Ctor';
 import StoreMaster from '../concretes/masters/StoreMaster';
 
 export default interface ISystem<TComponent> {

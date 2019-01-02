@@ -1,8 +1,8 @@
-import { Ctor } from '../types/Ctor';
-import IIterable from '../interfaces/IIterable';
-import IUnique from '../interfaces/IUnique';
-import TypeManifold from '../concretes/data-structures/TypeManifold';
-import TypeUnifold from '../concretes/data-structures/TypeUnifold';
+import { Ctor } from '../../framework/types/Ctor';
+import IIterable from '../../framework/interfaces/IIterable';
+import IUnique from '../../framework/interfaces/IUnique';
+import TypeManifold from '../../framework/concretes/data-structures/TypeManifold';
+import TypeUnifold from '../../framework/concretes/data-structures/TypeUnifold';
 
 export default abstract class StoreManager<T extends IUnique> implements IIterable<TypeUnifold<T>> {
 

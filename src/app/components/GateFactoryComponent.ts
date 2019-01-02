@@ -1,5 +1,5 @@
 import Component from '../../engine/abstracts/Component';
-import { Ctor } from '../../engine/types/Ctor';
+import { Ctor } from '../../framework/types/Ctor';
 import Entity from '../../engine/concretes/Entity';
 import IPosition2D from '../../geometry/interfaces/IPosition2D';
 

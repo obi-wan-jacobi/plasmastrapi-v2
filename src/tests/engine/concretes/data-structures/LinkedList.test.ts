@@ -1,4 +1,4 @@
-import LinkedList from '../../../../engine/concretes/data-structures/LinkedList';
+import LinkedList from '../../../../framework/concretes/data-structures/LinkedList';
 
 describe(LinkedList, () => {
 

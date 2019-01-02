@@ -1,5 +1,5 @@
-import TypeCollection from '../../../../engine/concretes/data-structures/TypeCollection';
-import Unique from '../../../../engine/abstracts/Unique';
+import TypeCollection from '../../../../framework/concretes/data-structures/TypeCollection';
+import Unique from '../../../../framework/abstracts/Unique';
 
 describe(TypeCollection.name, () => {
 

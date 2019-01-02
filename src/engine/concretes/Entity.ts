@@ -1,12 +1,12 @@
-import { Ctor } from '../types/Ctor';
+import { Ctor } from '../../framework/types/Ctor';
 import CursorEventComponent from './components/CursorEventComponent';
 import IComponent from '../interfaces/IComponent';
-import IUnique from '../interfaces/IUnique';
-import { Optional } from '../types/Optional';
+import IUnique from '../../framework/interfaces/IUnique';
+import { Optional } from '../../framework/types/Optional';
 import StoreMaster from './masters/StoreMaster';
 import System from '../abstracts/System';
-import TypeCollection from './data-structures/TypeCollection';
-import Unique from '../abstracts/Unique';
+import TypeCollection from '../../framework/concretes/data-structures/TypeCollection';
+import Unique from '../../framework/abstracts/Unique';
 
 export default class Entity extends TypeCollection<IComponent<any>> implements IUnique {
 

@@ -1,5 +1,5 @@
-import TypeManifold from '../../../../engine/concretes/data-structures/TypeManifold';
-import Unique from '../../../../engine/abstracts/Unique';
+import TypeManifold from '../../../../framework/concretes/data-structures/TypeManifold';
+import Unique from '../../../../framework/abstracts/Unique';
 
 describe(TypeManifold.name, () => {
 

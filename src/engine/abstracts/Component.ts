@@ -1,7 +1,7 @@
-import DataWrapper from '../concretes/data-structures/DataWrapper';
+import DataWrapper from '../../framework/concretes/data-structures/DataWrapper';
 import Entity from '../concretes/Entity';
 import IComponent from '../interfaces/IComponent';
-import Unique from './Unique';
+import Unique from '../../framework/abstracts/Unique';
 
 export default abstract class Component<TData> extends Unique implements IComponent<TData> {
 

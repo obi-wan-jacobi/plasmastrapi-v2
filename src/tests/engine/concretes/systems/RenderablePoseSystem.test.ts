@@ -1,8 +1,8 @@
 import Entity from '../../../../engine/concretes/Entity';
 import HTML5CanvasGame from '../../../../html5/HTML5CanvasGame';
 import { HTML5_COLOUR } from '../../../../html5/enums/HTML5_COLOUR';
-import ImpostorCanvasRenderingContext2D from '../../../src/impostors/ImpostorCanvasRenderingContext2D';
-import ImpostorHTMLCanvasElement from '../../../src/impostors/ImpostorHTMLCanvasElement';
+import ImpostorCanvasRenderingContext2D from '../../../src/concretes/impostors/ImpostorCanvasRenderingContext2D';
+import ImpostorHTMLCanvasElement from '../../../src/concretes/impostors/ImpostorHTMLCanvasElement';
 import PoseComponent from '../../../../engine/concretes/components/PoseComponent';
 import RenderablePoseComponent from '../../../../engine/concretes/components/RenderablePoseComponent';
 import RenderablePoseSystem from '../../../../engine/concretes/systems/RenderablePoseSystem';

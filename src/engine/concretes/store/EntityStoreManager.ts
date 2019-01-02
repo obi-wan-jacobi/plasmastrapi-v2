@@ -1,6 +1,6 @@
-import { Ctor } from '../../types/Ctor';
+import { Ctor } from '../../../framework/types/Ctor';
 import Entity from '../Entity';
-import { Optional } from '../../types/Optional';
+import { Optional } from '../../../framework/types/Optional';
 import StoreManager from '../../abstracts/StoreManager';
 import StoreMaster from '../masters/StoreMaster';
 

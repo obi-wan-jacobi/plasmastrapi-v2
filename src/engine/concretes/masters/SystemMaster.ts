@@ -1,7 +1,7 @@
-import { Ctor } from '../../types/Ctor';
+import { Ctor } from '../../../framework/types/Ctor';
 import ISystem from '../../interfaces/ISystem';
 import StoreMaster from './StoreMaster';
-import TypeCollection from '../data-structures/TypeCollection';
+import TypeCollection from '../../../framework/concretes/data-structures/TypeCollection';
 
 export default class SystemMaster {
 

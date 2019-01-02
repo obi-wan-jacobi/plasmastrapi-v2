@@ -1,7 +1,7 @@
 import { CURSOR_EVENT } from '../../enums/CURSOR_EVENT';
 import CursorEventComponent from '../../concretes/components/CursorEventComponent';
 import { OnlyIfEntityHas } from '../../concretes/Entity';
-import Invocable from '../Invocable';
+import Invocable from '../../../framework/abstracts/Invocable';
 import PoseComponent from '../../concretes/components/PoseComponent';
 import ShapeComponent from '../../concretes/components/ShapeComponent';
 import System from '../System';

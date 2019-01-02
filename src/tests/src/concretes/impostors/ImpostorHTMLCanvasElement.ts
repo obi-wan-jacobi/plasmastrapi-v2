@@ -1,5 +1,5 @@
-import FakeHTMLCanvasElement from '../fakes/FakeHTMLCanvasElement';
-import Impostor from '../helpers/Impostor';
+import FakeHTMLCanvasElement from '../../fakes/FakeHTMLCanvasElement';
+import Impostor from './Impostor';
 
 export default class ImpostorHTMLCanvasElement extends Impostor<HTMLCanvasElement> {
 
