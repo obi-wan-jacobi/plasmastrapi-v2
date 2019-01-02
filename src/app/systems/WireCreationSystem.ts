@@ -47,6 +47,9 @@ export default class WireCreationSystem extends CursorEventSystem {
         if (!wireHandle) {
             return;
         }
+        if (!(wireHandle.wire.tail instanceof OutputTerminal)) {
+            return;
+        }
         this.__createNewWireIfNotDuplicated({ head: component.entity, tail: wireHandle.wire.tail });
     }
 
@@ -56,6 +59,9 @@ export default class WireCreationSystem extends CursorEventSystem {
     private __onCursorEndActuationWithOutputTerminal(component: CursorEventComponent): void {
         const wireHandle = this.__findAnyExistingWireHandle();
         if (!wireHandle) {
+            return;
+        }
+        if (!(wireHandle.wire.head instanceof InputTerminal)) {
             return;
         }
         this.__createNewWireIfNotDuplicated({ head: wireHandle.wire.head, tail: component.entity });
