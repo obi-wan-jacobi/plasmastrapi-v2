@@ -1,5 +1,6 @@
 import { HTML5_COLOUR } from './enums/HTML5_COLOUR';
 import IComponent from '../engine/interfaces/IComponent';
+import IPosition2D from '../geometry/interfaces/IPosition2D';
 import IRenderingProfile from '../engine/interfaces/IRenderingProfile';
 import IShape2D from '../geometry/interfaces/IShape2D';
 import IViewportAdapter from '../engine/interfaces/IViewportAdapter';
@@ -33,6 +34,13 @@ export default class HTML5CanvasViewportAdapter implements
         this.ctx.arc(point.x, point.y, DEFAULT_RADIUS, 0, TWO_PI_RADIANS);
     }
 
+    @AtomicWithoutClosePath
+    public drawLine(points: IPosition2D[]): void {
+        points.forEach((point) => {
+            this.ctx.lineTo(point.x, point.y);
+        });
+    }
+
     @Atomic
     public drawShape(shape: IShape2D): void {
         shape.vertices.forEach((point) => {
@@ -56,6 +64,24 @@ function Atomic(
         this.ctx.beginPath();
         method.call(this, component, renderProfile);
         this.ctx.closePath();
+        this.ctx.stroke();
+        this.ctx.restore();
+    };
+}
+
+function AtomicWithoutClosePath(
+    target: HTML5CanvasViewportAdapter,
+    propertyKey: string | symbol,
+    descriptor: PropertyDescriptor,
+): any {
+    const method = descriptor.value;
+    descriptor.value = function<TComponent extends IComponent<any>>(
+        component: TComponent, renderProfile: IComponent<IRenderingProfile<HTML5_COLOUR>>,
+    ): void {
+        this.ctx.save();
+        this.ctx.strokeStyle = renderProfile.data.colour;
+        this.ctx.beginPath();
+        method.call(this, component, renderProfile);
         this.ctx.stroke();
         this.ctx.restore();
     };

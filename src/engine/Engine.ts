@@ -1,14 +1,16 @@
 import ChildPoseOffsetSystem from './concretes/systems/ChildPoseOffsetSystem';
-import DraggableSystem from './concretes/systems/DraggableSystem';
+import DragSystem from './concretes/systems/DragSystem';
 import ICursorAdapter from './interfaces/ICursorAdapter';
 import IViewportAdapter from './interfaces/IViewportAdapter';
 import LineConnectorSystem from './concretes/systems/LineConnectorSystem';
-import RenderablePoseSystem from './concretes/systems/RenderablePoseSystem';
-import RenderableShapeSystem from './concretes/systems/RenderableShapeSystem';
+import LineDrawingSystem from './concretes/systems/LineDrawingSystem';
+import LineRenderingSystem from './concretes/systems/LineRenderingSystem';
+import PoseRenderingSystem from './concretes/systems/PoseRenderingSystem';
+import ShapeRenderingSystem from './concretes/systems/ShapeRenderingSystem';
 import StoreMaster from './concretes/masters/StoreMaster';
 import SystemLoopMaster from './concretes/masters/SystemLoopMaster';
 import SystemMaster from './concretes/masters/SystemMaster';
-import TranslatableSystem from './concretes/systems/TranslatableSystem';
+import TranslationSystem from './concretes/systems/TranslationSystem';
 
 export default class Engine {
 
@@ -53,12 +55,14 @@ export default class Engine {
     }
 
     private __initSystemsInPriorityOrder(): void {
-        this.systems.add(TranslatableSystem);
+        this.systems.add(TranslationSystem);
         this.systems.add(ChildPoseOffsetSystem);
         this.systems.add(LineConnectorSystem);
-        this.systems.add(DraggableSystem);
-        this.systems.add(RenderablePoseSystem, this.viewport);
-        this.systems.add(RenderableShapeSystem, this.viewport);
+        this.systems.add(DragSystem);
+        this.systems.add(LineDrawingSystem);
+        this.systems.add(LineRenderingSystem, this.viewport);
+        this.systems.add(PoseRenderingSystem, this.viewport);
+        this.systems.add(ShapeRenderingSystem, this.viewport);
     }
 
 }

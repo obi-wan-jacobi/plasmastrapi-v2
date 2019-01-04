@@ -4,10 +4,10 @@ import HTML5CanvasGame from '../../../../html5/HTML5CanvasGame';
 import ImpostorCanvasRenderingContext2D from '../../../src/concretes/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../../src/concretes/impostors/ImpostorHTMLCanvasElement';
 import PoseComponent from '../../../../engine/concretes/components/PoseComponent';
-import TranslatableComponent from '../../../../engine/concretes/components/TranslatableComponent';
-import TranslatableSystem from '../../../../engine/concretes/systems/TranslatableSystem';
+import TranslationComponent from '../../../../engine/concretes/components/TranslationComponent';
+import TranslationSystem from '../../../../engine/concretes/systems/TranslationSystem';
 
-describe(TranslatableSystem.name, () => {
+describe(TranslationSystem.name, () => {
 
     let impostorRenderingContext: ImpostorCanvasRenderingContext2D;
     let impostorHTMLCanvasElement: ImpostorHTMLCanvasElement;
@@ -32,7 +32,7 @@ describe(TranslatableSystem.name, () => {
     it('translatable entity is translated with cursor movement', (done) => {
         const entity = game.store.entities.create(Entity);
         entity.add(PoseComponent, { x: 0, y: 0 });
-        const translatable = entity.add(TranslatableComponent);
+        const translatable = entity.add(TranslationComponent);
         translatable.data.previous.cursor.x = 0;
         translatable.data.previous.cursor.y = 0;
         (impostorHTMLCanvasElement.unwrap() as unknown as FakeCanvas).simulateMouseMove(50, 50);

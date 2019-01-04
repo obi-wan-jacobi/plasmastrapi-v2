@@ -1,5 +1,5 @@
-import DraggableComponent from '../../../../engine/concretes/components/DraggableComponent';
-import DraggableSystem from '../../../../engine/concretes/systems/DraggableSystem';
+import DragComponent from '../../../../engine/concretes/components/DragComponent';
+import DragSystem from '../../../../engine/concretes/systems/DragSystem';
 import Entity from '../../../../engine/concretes/Entity';
 import FakeHTMLCanvasElement from '../../../src/fakes/FakeHTMLCanvasElement';
 import HTML5CanvasGame from '../../../../html5/HTML5CanvasGame';
@@ -9,7 +9,7 @@ import PoseComponent from '../../../../engine/concretes/components/PoseComponent
 import Rectangle from '../../../../geometry/concretes/Rectangle';
 import ShapeComponent from '../../../../engine/concretes/components/ShapeComponent';
 
-describe(DraggableSystem.name, () => {
+describe(DragSystem.name, () => {
 
     let impostorRenderingContext: ImpostorCanvasRenderingContext2D;
     let impostorHTMLCanvasElement: ImpostorHTMLCanvasElement;
@@ -36,7 +36,7 @@ describe(DraggableSystem.name, () => {
         const entity = game.store.entities.create(Entity);
         entity.add(PoseComponent, { x: 50, y: 50 });
         entity.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
-        entity.add(DraggableComponent);
+        entity.add(DragComponent);
         fakeCanvas.simulateMouseDown(51, 52);
         fakeCanvas.simulateMouseMove(51, 52);
         fakeCanvas.simulateMouseMove(155, 173);

@@ -5,7 +5,7 @@ import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import ICommand from '../../framework/interfaces/ICommand';
 import PoseComponent from '../../engine/concretes/components/PoseComponent';
 import Rectangle from '../../geometry/concretes/Rectangle';
-import RenderableShapeComponent from '../../engine/concretes/components/RenderableShapeComponent';
+import RenderingComponent from '../../engine/concretes/components/RenderingComponent';
 import ShapeComponent from '../../engine/concretes/components/ShapeComponent';
 
 const __doNothingCommand = new Command({ method: (component: CursorEventComponent) => { return; } });
@@ -27,7 +27,7 @@ export default class Button extends Entity {
         };
         this.add(PoseComponent, { x, y });
         this.add(ShapeComponent, new Rectangle({ width: 40, height: 40 }));
-        this.add(RenderableShapeComponent, { colour: HTML5_COLOUR.WHITE });
+        this.add(RenderingComponent, { colour: HTML5_COLOUR.WHITE });
     }
 
 }

@@ -1,11 +1,11 @@
 import { CURSOR_EVENT } from '../../enums/CURSOR_EVENT';
 import CursorEventComponent from '../components/CursorEventComponent';
 import CursorEventSystem, { OnCursorEvent, OnCursorIntersection } from '../../abstracts/systems/CursorEventSystem';
-import DraggableComponent from '../components/DraggableComponent';
+import DragComponent from '../components/DragComponent';
 import { OnlyIfEntityHas } from '../Entity';
-import TranslatableComponent from '../components/TranslatableComponent';
+import TranslationComponent from '../components/TranslationComponent';
 
-export default class DraggableSystem extends CursorEventSystem {
+export default class DragSystem extends CursorEventSystem {
 
     public once(component: CursorEventComponent): void {
         this.__onCursorBeginActuation(component);
@@ -14,17 +14,17 @@ export default class DraggableSystem extends CursorEventSystem {
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
     @OnCursorIntersection
-    @OnlyIfEntityHas(DraggableComponent)
+    @OnlyIfEntityHas(DragComponent)
     private __onCursorBeginActuation(component: CursorEventComponent): void {
-        const translatable = component.entity.add(TranslatableComponent);
+        const translatable = component.entity.add(TranslationComponent);
         translatable.data.previous.cursor.x = component.data.x;
         translatable.data.previous.cursor.y = component.data.y;
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
-    @OnlyIfEntityHas(DraggableComponent)
+    @OnlyIfEntityHas(DragComponent)
     private __onCursorEndActuation(component: CursorEventComponent): void {
-        component.entity.remove(TranslatableComponent);
+        component.entity.remove(TranslationComponent);
     }
 
 }

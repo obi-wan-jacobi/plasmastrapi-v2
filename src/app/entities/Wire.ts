@@ -5,7 +5,7 @@ import LineConnectorComponent from '../../engine/concretes/components/LineConnec
 import OutputTerminal from './OutputTerminal';
 import PoseComponent from '../../engine/concretes/components/PoseComponent';
 import Rectangle from '../../geometry/concretes/Rectangle';
-import RenderableShapeComponent from '../../engine/concretes/components/RenderableShapeComponent';
+import RenderingComponent from '../../engine/concretes/components/RenderingComponent';
 import ShapeComponent from '../../engine/concretes/components/ShapeComponent';
 import WireHandle from './WireHandle';
 
@@ -15,7 +15,7 @@ export default class Wire extends Entity {
         super();
         this.add(PoseComponent, { x: - Infinity, y: -Infinity });
         this.add(ShapeComponent, new Rectangle({ width: -Infinity, height: -Infinity }));
-        this.add(RenderableShapeComponent, { colour: HTML5_COLOUR.WHITE });
+        this.add(RenderingComponent, { colour: HTML5_COLOUR.WHITE });
         this.add(LineConnectorComponent, { head, tail });
     }
 

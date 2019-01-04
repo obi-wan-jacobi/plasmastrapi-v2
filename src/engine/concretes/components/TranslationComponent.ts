@@ -1,6 +1,6 @@
 import Component from '../../abstracts/Component';
 
-export default class TranslatableComponent
+export default class TranslationComponent
 extends Component<{
     previous: {
         cursor: {

@@ -5,9 +5,9 @@ import ImpostorCanvasRenderingContext2D from '../../src/concretes/impostors/Impo
 import ImpostorHTMLCanvasElement from '../../src/concretes/impostors/ImpostorHTMLCanvasElement';
 import PoseComponent from '../../../engine/concretes/components/PoseComponent';
 import Rectangle from '../../../geometry/concretes/Rectangle';
-import RenderablePoseComponent from '../../../engine/concretes/components/RenderablePoseComponent';
+import RenderingComponent from '../../../engine/concretes/components/RenderingComponent';
 import ShapeComponent from '../../../engine/concretes/components/ShapeComponent';
-import TranslatableComponent from '../../../engine/concretes/components/TranslatableComponent';
+import TranslationComponent from '../../../engine/concretes/components/TranslationComponent';
 
 describe(Entity.name, () => {
 
@@ -33,8 +33,8 @@ describe(Entity.name, () => {
         const entity = game.store.entities.create(Entity);
         entity.add(PoseComponent, { x: 50, y: 50 });
         entity.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
-        entity.add(RenderablePoseComponent, { colour: HTML5_COLOUR.RED });
-        entity.add(TranslatableComponent);
+        entity.add(RenderingComponent, { colour: HTML5_COLOUR.RED });
+        entity.add(TranslationComponent);
         //
         game.loop.once();
         //

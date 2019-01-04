@@ -1,17 +1,17 @@
 import { Ctor } from '../../../framework/types/Ctor';
-import IComponent from '../../interfaces/IComponent';
 import IRenderContext from '../../interfaces/IRenderContext';
 import IRenderingProfile from '../../interfaces/IRenderingProfile';
+import RenderingComponent from '../../concretes/components/RenderingComponent';
 import System from '../System';
 
-export default abstract class RenderSystem<TComponent extends IComponent<IRenderingProfile<any>>>
-extends System<TComponent> {
+export default abstract class RenderSystem<TProfile extends IRenderingProfile<any>>
+extends System<RenderingComponent<TProfile>> {
 
-    protected _context: IRenderContext<any>;
+    protected _ctx: IRenderContext<any>;
 
-    constructor(context: IRenderContext<any>, ComponentCtor: Ctor<TComponent, {}>) {
+    constructor(context: IRenderContext<any>, ComponentCtor: Ctor<RenderingComponent<TProfile>, {}>) {
         super(ComponentCtor);
-        this._context = context;
+        this._ctx = context;
     }
 
 }

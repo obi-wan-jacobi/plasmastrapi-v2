@@ -2,7 +2,7 @@ import Button from './Button';
 import Command from '../../framework/concretes/Command';
 import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
 import Gate from './Gate';
-import TranslatableComponent from '../../engine/concretes/components/TranslatableComponent';
+import TranslationComponent from '../../engine/concretes/components/TranslationComponent';
 
 export default class GateFactoryButton extends Button {
 
@@ -19,7 +19,7 @@ export default class GateFactoryButton extends Button {
                 x: component.data.x,
                 y: component.data.y,
             });
-            gate.add(TranslatableComponent);
+            gate.add(TranslationComponent);
         }});
     }
 

@@ -5,8 +5,8 @@ import ImpostorHTMLCanvasElement from '../../src/concretes/impostors/ImpostorHTM
 import LineConnectorSystem from '../../../engine/concretes/systems/LineConnectorSystem';
 import Plasmastrapi from '../../../app/Plasmastrapi';
 import PoseComponent from '../../../engine/concretes/components/PoseComponent';
-import RenderableShapeComponent from '../../../engine/concretes/components/RenderableShapeComponent';
-import RenderableShapeSystem from '../../../engine/concretes/systems/RenderableShapeSystem';
+import RenderingComponent from '../../../engine/concretes/components/RenderingComponent';
+import ShapeRenderingSystem from '../../../engine/concretes/systems/ShapeRenderingSystem';
 import Wire from '../../../app/entities/Wire';
 import * as sinon from 'sinon';
 
@@ -37,7 +37,7 @@ describe(LineConnectorSystem.name, () => {
         //
         game.loop.once();
         const spyDrawWire = sinon.spy(game.viewport, 'drawShape');
-        game.systems.get(RenderableShapeSystem).once(wire.get(RenderableShapeComponent));
+        game.systems.get(ShapeRenderingSystem).once(wire.get(RenderingComponent));
         //
         expect(game.store.entities.get(Wire).length).toBe(1);
         game.store.entities.get(Wire).forEach((instance) => {
@@ -73,7 +73,7 @@ describe(LineConnectorSystem.name, () => {
         game.loop.once();
         game.loop.once();
         const spyDrawWire = sinon.spy(game.viewport, 'drawShape');
-        game.systems.get(RenderableShapeSystem).once(wire.get(RenderableShapeComponent));
+        game.systems.get(ShapeRenderingSystem).once(wire.get(RenderingComponent));
         //
         expect(game.store.entities.get(Wire).length).toBe(1);
         game.store.entities.get(Wire).forEach((instance) => {

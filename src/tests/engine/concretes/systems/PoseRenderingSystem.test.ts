@@ -4,10 +4,10 @@ import { HTML5_COLOUR } from '../../../../html5/enums/HTML5_COLOUR';
 import ImpostorCanvasRenderingContext2D from '../../../src/concretes/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../../src/concretes/impostors/ImpostorHTMLCanvasElement';
 import PoseComponent from '../../../../engine/concretes/components/PoseComponent';
-import RenderablePoseComponent from '../../../../engine/concretes/components/RenderablePoseComponent';
-import RenderablePoseSystem from '../../../../engine/concretes/systems/RenderablePoseSystem';
+import PoseRenderingSystem from '../../../../engine/concretes/systems/PoseRenderingSystem';
+import RenderingComponent from '../../../../engine/concretes/components/RenderingComponent';
 
-describe(RenderablePoseSystem.name, () => {
+describe(PoseRenderingSystem.name, () => {
 
     let impostorRenderingContext: ImpostorCanvasRenderingContext2D;
     let impostorHTMLCanvasElement: ImpostorHTMLCanvasElement;
@@ -37,7 +37,7 @@ describe(RenderablePoseSystem.name, () => {
         impostorRenderingContext.expects('restore').once();
         const entity = game.store.entities.create(Entity);
         entity.add(PoseComponent, { x: 50, y: 50, a: 0 });
-        entity.add(RenderablePoseComponent, { colour: HTML5_COLOUR.NONE });
+        entity.add(RenderingComponent, { colour: HTML5_COLOUR.NONE });
         //
         game.loop.once();
         //
