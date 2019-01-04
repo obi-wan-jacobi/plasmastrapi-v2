@@ -36,9 +36,9 @@ describe(GateRemovalSystem.name, () => {
         fakeCanvas.simulateMouseDown(55, 55);
         fakeCanvas.simulateMouseUp(55, 55);
         //
-        game.loop.sync();
         game.loop.once();
         game.loop.once();
+        game.store.sync();
         //
         expect(game.store.entities.get(Gate).length).toBe(0);
         expect(game.store.entities.get(InputTerminal).length).toBe(0);

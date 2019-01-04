@@ -100,8 +100,7 @@ describe(`systems operating against ${CursorEventComponent.name}`, () => {
         clientY: number,
         expectedCursorEvent: CURSOR_EVENT,
     }) => {
-        game.systems.add(FakeSystem, CursorEventComponent);
-        game.systems.sync();
+        game.systems.add(FakeSystem, CursorEventComponent).sync();
         const fakeCursorSystem = game.systems.get(FakeSystem);
         const impostorCursorSystem = new Impostor({ fake: fakeCursorSystem });
         const spy = sinon.spy(fakeCursorSystem, 'once');

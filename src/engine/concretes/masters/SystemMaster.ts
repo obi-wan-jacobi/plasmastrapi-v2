@@ -19,12 +19,14 @@ export default class SystemMaster {
 
     public add<TSystem extends ISystem<any>>(
         SystemCtor: Ctor<TSystem, any>, arg?: any,
-    ): void {
+    ): SystemMaster {
         this.__systemsToAdd.push({ Ctor: SystemCtor, arg });
+        return this;
     }
 
-    public remove<TSystem extends ISystem<any>>(SystemCtor: Ctor<TSystem, any>): void {
+    public remove<TSystem extends ISystem<any>>(SystemCtor: Ctor<TSystem, any>): SystemMaster {
         this.__systemsToRemove.push({ Ctor: SystemCtor });
+        return this;
     }
 
     public get<TSystem extends ISystem<any>>(SystemCtor: Ctor<TSystem, any>): TSystem {
@@ -35,9 +37,10 @@ export default class SystemMaster {
         this.__systems.forEach(method);
     }
 
-    public sync(): void {
+    public sync(): SystemMaster {
         this.__processSystemsToAdd();
         this.__processSystemsToRemove();
+        return this;
     }
 
     private __processSystemsToAdd(): void {
