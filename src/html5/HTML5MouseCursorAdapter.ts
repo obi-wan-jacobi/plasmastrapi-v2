@@ -14,12 +14,8 @@ export default class HTML5MouseCursorAdapter implements ICursorAdapter {
         this.__bindCursorEvents();
     }
 
-    public once(components: ComponentStoreManager): void {
-        const next = this.__buffer.pop() || {
-            data: {
-               eventName: CURSOR_EVENT.UNDEFINED,
-           },
-        };
+    public sync(components: ComponentStoreManager): void {
+        const next = this.__buffer.pop() || { data: { eventName: CURSOR_EVENT.UNDEFINED } };
         components.get(CursorEventComponent).forEach((component) => {
             component.set(next.data);
         });

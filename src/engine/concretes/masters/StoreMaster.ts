@@ -19,12 +19,9 @@ export default class StoreMaster {
         return this.__entityStoreManager;
     }
 
-    public loadNew(): void {
+    public sync(): void {
         this.__componentStoreManager.loadNew();
         this.__entityStoreManager.loadNew();
-    }
-
-    public cleanup(): void {
         this.__componentStoreManager.cleanup();
         this.__entityStoreManager.cleanup();
     }

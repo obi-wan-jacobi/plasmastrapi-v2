@@ -39,6 +39,7 @@ describe(WireRemovalSystem.name, () => {
         game.loop.once();
         expect(game.store.entities.get(Wire).length).toBe(1);
         game.loop.once();
+        game.store.sync();
         expect(game.store.entities.get(Wire).length).toBe(0);
         done();
     });

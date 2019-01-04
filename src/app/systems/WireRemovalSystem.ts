@@ -6,7 +6,7 @@ import CursorEventSystem, {
 import { OnlyIfEntityIsInstanceOf } from '../../engine/concretes/Entity';
 import Wire from '../entities/Wire';
 
-export default class GateRemovalSystem extends CursorEventSystem {
+export default class WireRemovalSystem extends CursorEventSystem {
 
     public once(component: CursorEventComponent): void {
         this.__onCursorEndActuation(component);

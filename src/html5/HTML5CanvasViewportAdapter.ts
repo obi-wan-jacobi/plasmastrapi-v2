@@ -22,7 +22,7 @@ export default class HTML5CanvasViewportAdapter implements
         return this.__ctx;
     }
 
-    public refresh(): void {
+    public sync(): void {
         const width = this.__canvas.clientWidth;
         const height = this.__canvas.clientHeight;
         this.ctx.clearRect(0, 0, width, height);

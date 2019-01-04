@@ -287,6 +287,7 @@ describe(WireCreationSystem.name, () => {
         game.loop.once();
         game.loop.once();
         game.loop.once();
+        game.store.sync();
         // Assert 1
         expect(gate.get(PoseComponent).data).toEqual({ x: 500, y: 500, a: 0 });
         expect(gate.input.get(PoseComponent).data).toEqual({ x: 500, y: 528, a: 0 });

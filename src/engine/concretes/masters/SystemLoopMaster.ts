@@ -1,6 +1,5 @@
 import ICursorAdapter from '../../interfaces/ICursorAdapter';
 import IViewportAdapter from '../../interfaces/IViewportAdapter';
-import StoreManager from '../../abstracts/StoreManager';
 import StoreMaster from './StoreMaster';
 import SystemMaster from './SystemMaster';
 
@@ -29,6 +28,13 @@ export default class SystemLoopMaster {
         this.__isStopped = true;
     }
 
+    public sync(): void {
+        this.__systems.sync();
+        this.__store.sync();
+        this.__viewport.sync();
+        this.__cursor.sync(this.__store.components);
+    }
+
     public start(): void {
         this.__isStopped = false;
         this.__loop();
@@ -39,18 +45,13 @@ export default class SystemLoopMaster {
     }
 
     public once(): void {
-        this.__store.loadNew();
-        this.__viewport.refresh();
-        this.__cursor.once(this.__store.components);
-        this.__once(this.__store.components, this.__systems);
-        this.__store.cleanup();
+        this.sync();
+        this.__executeAgaintComponentsForEachCorrespondingSystemOnce();
     }
 
-    private __once<TStoreManager extends StoreManager<any>>(
-        store: TStoreManager, systems: SystemMaster,
-    ): void {
-        systems.forEach((system) => {
-            const collection = store.get(system.ComponentCtor);
+    private __executeAgaintComponentsForEachCorrespondingSystemOnce(): void {
+        this.__systems.forEach((system) => {
+            const collection = this.__store.components.get(system.ComponentCtor);
             if (!collection) {
                 return;
             }
