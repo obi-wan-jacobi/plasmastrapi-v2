@@ -50,30 +50,19 @@ export const isPointInsideMinMaxBounds = (point: IPosition2D, bounds: MinMaxBoun
 export const isPointInsideShape = (
     point: IPosition2D, shape: IShape2D, pose: IPose2D,
 ): boolean => {
-    shape = transformShape(shape, pose);
-    const bounds = getMinMaxShapeBounds(shape);
-    if (!isPointInsideMinMaxBounds(point, bounds)) {
+    const { minX, maxX, minY, maxY } = getMinMaxShapeBounds(transformShape(shape, pose));
+    if (!isPointInsideMinMaxBounds(point, { minX, maxX, minY, maxY })) {
         return false;
     }
-    const { minX, minY } = {
-        minX: (bounds.minX * 1000) / 1000,
-        minY: (bounds.minY * 1000) / 1000,
-    };
-    const vertices = shape.vertices;
     let numberOfIntersections = 0;
-    vertices.push(vertices[0]);
-    const ray = fromPointsToStandardForm({ x: minX, y: minY }, point);
-    for (let i = 0, L = vertices.length - 1; i < L; i++) {
-        const { m, b } = fromPointsToStandardForm(vertices[i], vertices[i + 1]);
-        const intersection = getIntersectionBetweenStandardForms(ray, { m, b });
-        const { intersectX, intersectY } = {
-            intersectX: (intersection.x * 1000) / 1000,
-            intersectY: (intersection.y * 1000) / 1000,
-        };
-        const px = (point.x * 1000) / 1000;
-        const py = (point.y * 1000) / 1000;
-        if (intersectX <= px && intersectX >= minX && intersectY <= py && intersectY >= minY) {
-            if (Math.round(intersectX) === Math.round(minX) && Math.round(intersectY) === Math.round(minY)) {
+    const shapeSegments = fromShapeToLineSegments(shape, pose);
+    const raySegment = { head: point, tail: { x: minX, y: minY } };
+    const rayStandardForm = fromLineSegmentToStandardForm(raySegment);
+    for (const shapeSegment of shapeSegments) {
+        const shapeSegmentStandardForm = fromLineSegmentToStandardForm(shapeSegment);
+        const intersection = getIntersectionBetweenStandardForms(rayStandardForm, shapeSegmentStandardForm);
+        if (isPointInsideMinMaxBounds(intersection, { minX, maxX, minY, maxY })) {
+            if (Math.round(intersection.x) === Math.round(minX) && Math.round(intersection.y) === Math.round(minY)) {
                 return true;
             } else {
                 numberOfIntersections++;
