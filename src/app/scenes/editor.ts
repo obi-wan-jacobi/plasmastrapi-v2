@@ -1,13 +1,14 @@
-import Button from '../entities/Button';
 import GateFactoryButton from '../entities/GateFactoryButton';
+import GateRemovalButton from '../entities/GateRemovalButton';
+import WireRemovalButton from '../entities/WireRemovalButton';
 
 export default [
     {
-        Ctor: Button,
+        Ctor: WireRemovalButton,
         args: { x: 40, y: 40 },
     },
     {
-        Ctor: Button,
+        Ctor: GateRemovalButton,
         args: { x: 100, y: 40 },
     },
     {

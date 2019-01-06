@@ -1,35 +1,34 @@
 import { Ctor } from '../../../framework/types/Ctor';
+import Engine from '../../Engine';
 import Entity from '../../abstracts/Entity';
-import ISlave from '../../../framework/interfaces/ISlave';
 import { Optional } from '../../../framework/types/Optional';
 import StoreManager from '../../abstracts/StoreManager';
-import StoreMaster from '../masters/StoreMaster';
 
-export default class EntityStoreManager extends StoreManager<Entity> implements ISlave<StoreMaster> {
+export default class EntityStoreManager extends StoreManager<Entity> {
 
-    public readonly master: StoreMaster;
+    private readonly __engine: Engine;
 
-    constructor(master: StoreMaster) {
+    constructor(engine: Engine) {
         super();
-        this.master = master;
+        this.__engine = engine;
     }
 
     public create<TEntity extends Entity, TData>(EntityCtor: Ctor<TEntity, Optional<TData>>, data?: TData): TEntity {
         const entity = super.create(EntityCtor, data);
-        entity.bind(this.master);
+        entity.bind(this.__engine);
         return entity;
     }
 
     public load(entity: Entity): void {
         entity.forEach((component) => {
-            this.master.components.load(component);
+            this.__engine.store.components.load(component);
         });
         super.load(entity);
     }
 
     public unload(entity: Entity): void {
         entity.forEach((component) => {
-            this.master.components.unload(component);
+            this.__engine.store.components.unload(component);
         });
         super.unload(entity);
     }

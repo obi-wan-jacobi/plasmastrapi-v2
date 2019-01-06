@@ -1,9 +1,9 @@
 import { Ctor } from '../../framework/types/Ctor';
 import CursorEventComponent from '../concretes/components/CursorEventComponent';
+import Engine from '../Engine';
 import IComponent from '../interfaces/IComponent';
 import IEntity from '../interfaces/IEntity';
 import { Optional } from '../../framework/types/Optional';
-import StoreMaster from '../concretes/masters/StoreMaster';
 import System from './System';
 import TypeIndex from '../../framework/concretes/data-structures/TypeIndex';
 import Unique from '../../framework/abstracts/Unique';
@@ -11,7 +11,7 @@ import Unique from '../../framework/abstracts/Unique';
 export default class Entity extends TypeIndex<IComponent<any>> implements IEntity {
 
     public readonly id: string;
-    protected _store: StoreMaster;
+    protected _engine: Engine;
 
     constructor() {
         super();
@@ -19,10 +19,10 @@ export default class Entity extends TypeIndex<IComponent<any>> implements IEntit
         this.add(CursorEventComponent);
     }
 
-    public bind(store: StoreMaster): void {
-        this._store = store;
+    public bind(engine: Engine): void {
+        this._engine = engine;
         this.forEach((component) => {
-            this._store.components.load(component);
+            this._engine.store.components.load(component);
         });
     }
 
@@ -31,26 +31,26 @@ export default class Entity extends TypeIndex<IComponent<any>> implements IEntit
     ): TComponent {
         const component = super.add(ComponentCtor, data);
         component.bind(this);
-        if (this._store) {
-            this._store.components.load(component);
+        if (this._engine) {
+            this._engine.store.components.load(component);
         }
         return component;
     }
 
     public remove<TComponent extends IComponent<any>>(ComponentCtor: Ctor<TComponent, any>): Optional<TComponent> {
         const component =  super.remove(ComponentCtor);
-        if (this._store && component) {
-            this._store.components.unload(component);
+        if (this._engine.store && component) {
+            this._engine.store.components.unload(component);
         }
         return component;
     }
 
     public load(): void {
-        this._store.entities.load(this);
+        this._engine.store.entities.load(this);
     }
 
     public unload(): void {
-        this._store.entities.unload(this);
+        this._engine.store.entities.unload(this);
     }
 
 }

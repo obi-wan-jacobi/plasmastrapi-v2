@@ -15,7 +15,7 @@ export default class GateFactoryButton extends Button {
 
     private __initCommands(): void {
         this.commands.onCursorBeginActuation = new Command({ method: (component: CursorEventComponent) => {
-            const gate = this._store.entities.create(Gate, {
+            const gate = this._engine.store.entities.create(Gate, {
                 x: component.data.x,
                 y: component.data.y,
             });

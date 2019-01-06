@@ -25,7 +25,7 @@ export default class Engine {
     constructor(viewport: IViewportAdapter<any, any>, cursor: ICursorAdapter) {
         this.viewport = viewport;
         this.cursor = cursor;
-        this.store = new StoreMaster();
+        this.store = new StoreMaster(this);
         this.systems = new SystemMaster(this);
         this.loop = new SystemLoopMaster(
             this.viewport,
