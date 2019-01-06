@@ -1,11 +1,11 @@
 import { Ctor } from '../../types/Ctor';
-import DataWrapper from './DataWrapper';
 import Dictionary from './Dictionary';
-import ITypeCollection from '../../interfaces/ITypeCollection';
+import ITypeIndex from '../../interfaces/ITypeIndex';
 import { Optional } from '../../types/Optional';
+import Wrapper from '../../abstracts/Wrapper';
 
-export default class TypeCollection<TBaseType> extends DataWrapper<Dictionary<TBaseType>>
-implements ITypeCollection<TBaseType> {
+export default class TypeIndex<TBaseType> extends Wrapper<Dictionary<TBaseType>>
+implements ITypeIndex<TBaseType> {
 
     constructor() {
         super(new Dictionary<TBaseType>());

@@ -1,4 +1,4 @@
-import Entity from '../../../../engine/concretes/Entity';
+import Entity from '../../../../engine/abstracts/Entity';
 import FakeCanvas from '../../../src/fakes/FakeHTMLCanvasElement';
 import HTML5CanvasGame from '../../../../html5/HTML5CanvasGame';
 import ImpostorCanvasRenderingContext2D from '../../../src/concretes/impostors/ImpostorCanvasRenderingContext2D';

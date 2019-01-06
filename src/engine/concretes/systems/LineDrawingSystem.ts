@@ -1,7 +1,7 @@
 import { CURSOR_EVENT } from '../../enums/CURSOR_EVENT';
 import CursorEventComponent from '../components/CursorEventComponent';
 import CursorEventSystem, { OnCursorEvent } from '../../abstracts/systems/CursorEventSystem';
-import { OnlyIfEntityIsInstanceOf } from '../Entity';
+import { OnlyIfEntityIsInstanceOf } from '../../abstracts/Entity';
 import LineComponent from '../components/LineComponent';
 import LineDrawing from '../entities/LineDrawing';
 

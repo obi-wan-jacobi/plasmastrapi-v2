@@ -1,4 +1,4 @@
-import Entity from '../../engine/concretes/Entity';
+import Entity from '../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import InputTerminal from './InputTerminal';
 import LineConnectorComponent from '../../engine/concretes/components/LineConnectorComponent';

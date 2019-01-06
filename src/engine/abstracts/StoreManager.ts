@@ -1,23 +1,24 @@
 import { Ctor } from '../../framework/types/Ctor';
 import IIterable from '../../framework/interfaces/IIterable';
 import IUnique from '../../framework/interfaces/IUnique';
-import TypeManifold from '../../framework/concretes/data-structures/TypeManifold';
-import TypeUnifold from '../../framework/concretes/data-structures/TypeUnifold';
+import Index from '../../framework/concretes/data-structures/Index';
+import Manifold from '../../framework/concretes/data-structures/Manifold';
+import Wrapper from '../../framework/abstracts/Wrapper';
 
-export default abstract class StoreManager<T extends IUnique> implements IIterable<TypeUnifold<T>> {
+export default abstract class StoreManager<T extends IUnique> extends Wrapper<Manifold<T>>
+implements IIterable<Index<T>> {
 
-    private __store: TypeManifold<T>;
     private __itemsToLoad: T[];
     private __itemsToUnload: T[];
 
     constructor() {
-        this.__store = new TypeManifold<T>();
+        super(new Manifold<T>());
         this.__itemsToLoad = [];
         this.__itemsToUnload = [];
     }
 
     public get length(): number {
-        return this.__store.length;
+        return this.unwrap().length;
     }
 
     public create<TInstance extends T, TData>(
@@ -28,12 +29,12 @@ export default abstract class StoreManager<T extends IUnique> implements IIterab
         return instance;
     }
 
-    public get(TargetCtor: Ctor<T, any>): TypeUnifold<T> {
-        return this.__store.get(TargetCtor);
+    public get(TargetCtor: Ctor<T, any>): Index<T> {
+        return this.unwrap().get(TargetCtor);
     }
 
-    public forEach(method: (payload: TypeUnifold<T>) => void): void {
-        return this.__store.forEach(method);
+    public forEach(method: (payload: Index<T>) => void): void {
+        return this.unwrap().forEach(method);
     }
 
     public load(target: T): void {
@@ -54,14 +55,14 @@ export default abstract class StoreManager<T extends IUnique> implements IIterab
 
     private __processItemsToLoad(): void {
         this.__itemsToLoad.forEach((target) => {
-            this.__store.add(target);
+            this.unwrap().add(target);
         });
         this.__itemsToLoad = [];
     }
 
     private __processItemsToUnload(): void {
         this.__itemsToUnload.forEach((target) => {
-            this.__store.remove(target);
+            this.unwrap().remove(target);
         });
         this.__itemsToUnload = [];
     }

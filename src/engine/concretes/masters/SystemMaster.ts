@@ -1,20 +1,22 @@
 import { Ctor } from '../../../framework/types/Ctor';
+import Engine from '../../Engine';
+import IIterable from '../../../framework/interfaces/IIterable';
+import IMaster from '../../interfaces/IMaster';
 import ISystem from '../../interfaces/ISystem';
-import StoreMaster from './StoreMaster';
-import TypeCollection from '../../../framework/concretes/data-structures/TypeCollection';
+import TypeIndex from '../../../framework/concretes/data-structures/TypeIndex';
 
-export default class SystemMaster {
+export default class SystemMaster implements IMaster, IIterable<ISystem<any>> {
 
-    private __store: StoreMaster;
-    private __systems: TypeCollection<ISystem<any>>;
+    private __engine: Engine;
+    private __systems: TypeIndex<ISystem<any>>;
     private __systemsToAdd: Array<{ Ctor: Ctor<ISystem<any>, any>, arg: any }>;
     private __systemsToRemove: Array<{ Ctor: Ctor<ISystem<any>, any> }>;
 
-    constructor(store: StoreMaster) {
-        this.__store = store;
+    constructor(engine: Engine) {
+        this.__engine = engine;
         this.__systemsToAdd = [];
         this.__systemsToRemove = [];
-        this.__systems = new TypeCollection<ISystem<any>>();
+        this.__systems = new TypeIndex<ISystem<any>>();
     }
 
     public add<TSystem extends ISystem<any>>(
@@ -45,7 +47,7 @@ export default class SystemMaster {
 
     private __processSystemsToAdd(): void {
         this.__systemsToAdd.forEach((system) => {
-            this.__systems.add(system.Ctor, system.arg).bind(this.__store);
+            this.__systems.add(system.Ctor, system.arg).bind(this.__engine);
         });
         this.__systemsToAdd = [];
     }

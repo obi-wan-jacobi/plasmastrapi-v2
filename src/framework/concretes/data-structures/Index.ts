@@ -1,24 +1,24 @@
-import DataWrapper from './DataWrapper';
 import Dictionary from './Dictionary';
 import IIterable from '../../interfaces/IIterable';
 import IUnique from '../../interfaces/IUnique';
+import Wrapper from '../../abstracts/Wrapper';
 
-export default class TypeUnifold<TType extends IUnique> extends DataWrapper<Dictionary<TType>>
-implements IIterable<TType> {
+export default class Index<T extends IUnique> extends Wrapper<Dictionary<T>>
+implements IIterable<T> {
 
     constructor() {
-        super(new Dictionary<TType>());
+        super(new Dictionary<T>());
     }
 
     public get length(): number {
         return this.unwrap().length;
     }
 
-    public get(key: string): TType {
+    public get(key: string): T {
         return this.unwrap().read(key);
     }
 
-    public add(instance: TType): boolean {
+    public add(instance: T): boolean {
         if (this.unwrap().read(instance.id)) {
             return false;
         }
@@ -41,15 +41,15 @@ implements IIterable<TType> {
         this.unwrap().flush();
     }
 
-    public forEach(method: (value: TType) => void): void {
+    public forEach(method: (value: T) => void): void {
         this.unwrap().forEach(method);
     }
 
-    public map(method: (value: TType) => any): any[] {
+    public map(method: (value: T) => any): any[] {
         return this.unwrap().map(method);
     }
 
-    public find(method: (value: TType) => boolean): TType {
+    public find(method: (value: T) => boolean): T {
         return this.unwrap().find(method);
     }
 

@@ -3,7 +3,7 @@ import CursorEventComponent from '../../engine/concretes/components/CursorEventC
 import CursorEventSystem, {
     OnCursorEvent, OnCursorIntersection,
 } from '../../engine/abstracts/systems/CursorEventSystem';
-import Entity, { OnlyIfEntityIsInstanceOf } from '../../engine/concretes/Entity';
+import Entity, { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import InputTerminal from '../entities/InputTerminal';
 import { Optional } from '../../framework/types/Optional';
 import OutputTerminal from '../entities/OutputTerminal';

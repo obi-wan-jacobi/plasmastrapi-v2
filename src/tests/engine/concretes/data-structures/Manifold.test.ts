@@ -1,12 +1,12 @@
-import TypeManifold from '../../../../framework/concretes/data-structures/TypeManifold';
+import Manifold from '../../../../framework/concretes/data-structures/Manifold';
 import Unique from '../../../../framework/abstracts/Unique';
 
-describe(TypeManifold.name, () => {
+describe(Manifold.name, () => {
 
     let addedTestType1Ids: string[];
     let addedTestType2Ids: string[];
     let addedTestType3Ids: string[];
-    let manifold: TypeManifold<TestType1>;
+    let manifold: Manifold<TestType1>;
     let testType11: TestType1;
     let testType12: TestType1;
     let testType13: TestType1;
@@ -24,7 +24,7 @@ describe(TypeManifold.name, () => {
         addedTestType1Ids = ['1', '2', '3', '4', '5'];
         addedTestType2Ids = ['one', 'two', 'three' ];
         addedTestType3Ids = ['un', 'deux', 'trois', 'quatre' ];
-        manifold = new TypeManifold<TestType1>();
+        manifold = new Manifold<TestType1>();
         testType11 = new TestType1('1');
         testType12 = new TestType1('2');
         testType13 = new TestType1('3');

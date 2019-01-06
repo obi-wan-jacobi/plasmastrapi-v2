@@ -1,12 +1,11 @@
 import { Ctor } from '../../framework/types/Ctor';
-import StoreMaster from '../concretes/masters/StoreMaster';
+import Engine from '../Engine';
+import ILoopable from './ILoopable';
 
-export default interface ISystem<TComponent> {
+export default interface ISystem<TComponent> extends ILoopable<TComponent> {
 
     ComponentCtor: Ctor<TComponent, any>;
 
-    bind(store: StoreMaster): void;
-
-    once(payload: TComponent): void;
+    bind(engine: Engine): void;
 
 }

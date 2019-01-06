@@ -1,7 +1,8 @@
 import ComponentStoreManager from '../store/ComponentStoreManager';
 import EntityStoreManager from '../store/EntityStoreManager';
+import IMaster from '../../interfaces/IMaster';
 
-export default class StoreMaster {
+export default class StoreMaster implements IMaster {
 
     private __componentStoreManager: ComponentStoreManager;
     private __entityStoreManager: EntityStoreManager;
@@ -21,8 +22,8 @@ export default class StoreMaster {
 
     public sync(): void {
         this.__componentStoreManager.loadNew();
-        this.__entityStoreManager.loadNew();
         this.__componentStoreManager.cleanup();
+        this.__entityStoreManager.loadNew();
         this.__entityStoreManager.cleanup();
     }
 

@@ -11,16 +11,12 @@ const DEFAULT_RADIUS = 2;
 export default class HTML5CanvasViewportAdapter implements
  IViewportAdapter<CanvasRenderingContext2D, IRenderingProfile<HTML5_COLOUR>> {
 
+    public readonly ctx: CanvasRenderingContext2D;
     private __canvas: HTMLCanvasElement;
-    private __ctx: CanvasRenderingContext2D;
 
     constructor(canvas: HTMLCanvasElement) {
         this.__canvas = canvas;
-        this.__ctx = this.__canvas.getContext('2d') as CanvasRenderingContext2D;
-    }
-
-    public get ctx(): CanvasRenderingContext2D {
-        return this.__ctx;
+        this.ctx = this.__canvas.getContext('2d') as CanvasRenderingContext2D;
     }
 
     public sync(): void {

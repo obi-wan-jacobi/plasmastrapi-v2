@@ -1,4 +1,4 @@
-import Entity from '../Entity';
+import Entity from '../../abstracts/Entity';
 import { HTML5_COLOUR } from '../../../html5/enums/HTML5_COLOUR';
 import IPosition2D from '../../../geometry/interfaces/IPosition2D';
 import LineComponent from '../components/LineComponent';

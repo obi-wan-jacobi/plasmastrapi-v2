@@ -1,6 +1,6 @@
 
 export default interface IChild<TParent> {
 
-    parent: TParent;
+    readonly parent: TParent;
 
 }

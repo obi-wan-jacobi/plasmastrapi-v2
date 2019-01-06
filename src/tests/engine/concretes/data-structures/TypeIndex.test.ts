@@ -1,15 +1,15 @@
-import TypeCollection from '../../../../framework/concretes/data-structures/TypeCollection';
+import TypeIndex from '../../../../framework/concretes/data-structures/TypeIndex';
 import Unique from '../../../../framework/abstracts/Unique';
 
-describe(TypeCollection.name, () => {
+describe(TypeIndex.name, () => {
 
-    let collection: TypeCollection<Unique>;
+    let collection: TypeIndex<Unique>;
     let testType1: TestType1;
     let testType2: TestType2;
     let testType3: TestType3;
 
     beforeEach(() => {
-        collection = new TypeCollection<Unique>();
+        collection = new TypeIndex<Unique>();
         expect(collection.get(TestType1)).toBeUndefined();
         expect(collection.get(TestType2)).toBeUndefined();
         expect(collection.get(TestType3)).toBeUndefined();

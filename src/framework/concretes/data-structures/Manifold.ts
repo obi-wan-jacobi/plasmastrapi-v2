@@ -1,40 +1,40 @@
 import { Ctor } from '../../types/Ctor';
-import DataWrapper from './DataWrapper';
 import Dictionary from './Dictionary';
-import ITypeManifold from '../../interfaces/ITypeManifold';
+import IManifold from '../../interfaces/IManifold';
 import IUnique from '../../interfaces/IUnique';
-import TypeUnifold from './TypeUnifold';
+import Index from './Index';
+import Wrapper from '../../abstracts/Wrapper';
 
-export default class TypeManifold<TType extends IUnique> extends DataWrapper<Dictionary<TypeUnifold<TType>>>
-implements ITypeManifold<TType> {
+export default class Manifold<T extends IUnique> extends Wrapper<Dictionary<Index<T>>>
+implements IManifold<T> {
 
     constructor() {
-        super(new Dictionary<TypeUnifold<TType>>());
+        super(new Dictionary<Index<T>>());
     }
 
     public get length(): number {
         return this.unwrap().length;
     }
 
-    public get(InstanceCtor: Ctor<TType, any>): TypeUnifold<TType> {
+    public get(InstanceCtor: Ctor<T, any>): Index<T> {
         if (!this.unwrap().read(InstanceCtor.name)) {
             this.unwrap().write({
                 key: InstanceCtor.name,
-                value: new TypeUnifold<TType>(),
+                value: new Index<T>(),
             });
         }
         return this.unwrap().read(InstanceCtor.name);
     }
 
-    public getById(id: string): TypeUnifold<TType> {
+    public getById(id: string): Index<T> {
         return this.unwrap().read(id);
     }
 
-    public add(instance: TType): boolean {
+    public add(instance: T): boolean {
         if (!this.unwrap().read(instance.constructor.name)) {
             this.unwrap().write({
                 key: instance.constructor.name,
-                value: new TypeUnifold<TType>(),
+                value: new Index<T>(),
             });
         }
         return this.unwrap()
@@ -42,11 +42,11 @@ implements ITypeManifold<TType> {
             .add(instance);
     }
 
-    public remove(instance: TType): boolean {
+    public remove(instance: T): boolean {
         return this.unwrap().read(instance.constructor.name).remove(instance.id);
     }
 
-    public prune(InstanceCtor: Ctor<TType, any>): boolean {
+    public prune(InstanceCtor: Ctor<T, any>): boolean {
         const inner = this.unwrap().read(InstanceCtor.name);
         if (!inner) {
             return false;
@@ -56,7 +56,7 @@ implements ITypeManifold<TType> {
         return true;
     }
 
-    public forEach(method: (payload: TypeUnifold<TType>) => void): void {
+    public forEach(method: (payload: Index<T>) => void): void {
         this.unwrap().forEach((collection) => {
             method(collection);
         });

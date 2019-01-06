@@ -1,6 +1,6 @@
 
 export default interface IUnique {
 
-    id: string;
+    readonly id: string;
 
 }

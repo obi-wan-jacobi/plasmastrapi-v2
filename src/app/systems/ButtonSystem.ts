@@ -4,14 +4,20 @@ import CursorEventComponent from '../../engine/concretes/components/CursorEventC
 import CursorEventSystem, {
     OnCursorEvent, OnCursorIntersection,
 } from '../../engine/abstracts/systems/CursorEventSystem';
-import { OnlyIfEntityIsInstanceOf } from '../../engine/concretes/Entity';
+import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 
 export default class ButtonSystem extends CursorEventSystem {
 
     public once(component: CursorEventComponent): void {
+        this.__always(component);
         this.__onCursorBeginActuation(component);
         this.__onCursorEndActuation(component);
         this.__onCursorCompleteActuation(component);
+    }
+
+    @OnlyIfEntityIsInstanceOf(Button)
+    private __always(component: CursorEventComponent): void {
+        (component.entity as unknown as Button).commands.always.invoke(component);
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)

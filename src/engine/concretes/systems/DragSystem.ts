@@ -2,7 +2,7 @@ import { CURSOR_EVENT } from '../../enums/CURSOR_EVENT';
 import CursorEventComponent from '../components/CursorEventComponent';
 import CursorEventSystem, { OnCursorEvent, OnCursorIntersection } from '../../abstracts/systems/CursorEventSystem';
 import DragComponent from '../components/DragComponent';
-import { OnlyIfEntityHas } from '../Entity';
+import { OnlyIfEntityHas } from '../../abstracts/Entity';
 import TranslationComponent from '../components/TranslationComponent';
 
 export default class DragSystem extends CursorEventSystem {

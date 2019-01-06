@@ -3,7 +3,7 @@ import CursorEventComponent from '../../engine/concretes/components/CursorEventC
 import CursorEventSystem, {
     OnCursorEvent, OnCursorIntersection,
 } from '../../engine/abstracts/systems/CursorEventSystem';
-import { OnlyIfEntityIsInstanceOf } from '../../engine/concretes/Entity';
+import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import Gate from '../entities/Gate';
 
 export default class GateRemovalSystem extends CursorEventSystem {
@@ -17,6 +17,7 @@ export default class GateRemovalSystem extends CursorEventSystem {
     @OnCursorIntersection
     private __onCursorEndActuation(component: CursorEventComponent): void {
         component.entity.unload();
+        this.master.remove(GateRemovalSystem);
     }
 
 }

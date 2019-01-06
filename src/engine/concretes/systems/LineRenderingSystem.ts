@@ -1,4 +1,4 @@
-import { OnlyIfEntityHas } from '../Entity';
+import { OnlyIfEntityHas } from '../../abstracts/Entity';
 import { HTML5_COLOUR } from '../../../html5/enums/HTML5_COLOUR';
 import IRenderContext from '../../interfaces/IRenderContext';
 import IRenderingProfile from '../../interfaces/IRenderingProfile';

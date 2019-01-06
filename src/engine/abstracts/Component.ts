@@ -1,21 +1,18 @@
-import DataWrapper from '../../framework/concretes/data-structures/DataWrapper';
-import Entity from '../concretes/Entity';
+import Entity from './Entity';
 import IComponent from '../interfaces/IComponent';
-import Unique from '../../framework/abstracts/Unique';
+import UniqueWrapper from '../../framework/abstracts/UniqueWrapper';
 
-export default abstract class Component<TData> extends Unique implements IComponent<TData> {
+export default abstract class Component<TData> extends UniqueWrapper<TData> implements IComponent<TData> {
 
-    private __data: DataWrapper<TData>;
     private __entity: Entity;
 
     constructor(data: TData) {
-        super();
-        this.__data = new DataWrapper<TData>(data);
+        super(data);
         this.set(data);
     }
 
     public get data(): TData {
-        return this.__data.unwrap();
+        return super.unwrap();
     }
 
     public get entity(): Entity {
@@ -23,7 +20,7 @@ export default abstract class Component<TData> extends Unique implements ICompon
     }
 
     public set(data: TData): void {
-        Object.assign(this.__data.unwrap(), data);
+        Object.assign(super.unwrap(), data);
     }
 
     public bind(entity: Entity): void {

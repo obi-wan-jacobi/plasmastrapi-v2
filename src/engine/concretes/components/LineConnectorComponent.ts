@@ -1,5 +1,5 @@
 import Component from '../../abstracts/Component';
-import Entity from '../Entity';
+import Entity from '../../abstracts/Entity';
 
 export default class LineConnectorComponent extends Component<{ head: Entity, tail: Entity }> {
 

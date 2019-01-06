@@ -1,30 +1,33 @@
 import { Ctor } from '../../framework/types/Ctor';
+import Engine from '../Engine';
+import ISlave from '../../framework/interfaces/ISlave';
 import ISystem from '../interfaces/ISystem';
 import StoreMaster from '../concretes/masters/StoreMaster';
+import SystemMaster from '../concretes/masters/SystemMaster';
 
-export default abstract class System<TComponent extends {}> implements ISystem<TComponent> {
+export default abstract class System<TComponent extends {}> implements ISystem<TComponent>, ISlave<SystemMaster> {
 
     /* tslint:disable:naming-convention */
-    private __ComponentCtor: Ctor<TComponent, any>;
+    public readonly ComponentCtor: Ctor<TComponent, any>;
     /* tslint:enable:naming-convention */
     private __store: StoreMaster;
+    private __master: SystemMaster;
 
     constructor(ComponentCtor: Ctor<TComponent, {}>) {
-        this.__ComponentCtor = ComponentCtor;
+        this.ComponentCtor = ComponentCtor;
     }
-
-    /* tslint:disable:naming-convention */
-    public get ComponentCtor(): Ctor<TComponent, any> {
-        return this.__ComponentCtor;
-    }
-    /* tslint:enable:naming-convention */
 
     public get store(): StoreMaster {
         return this.__store;
     }
 
-    public bind(store: StoreMaster): void {
-        this.__store = store;
+    public get master(): SystemMaster {
+        return this.__master;
+    }
+
+    public bind(engine: Engine): void {
+        this.__store = engine.store;
+        this.__master = engine.systems;
     }
 
     public abstract once(payload: TComponent): void;

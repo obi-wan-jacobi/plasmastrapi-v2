@@ -1,7 +1,7 @@
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
 import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
 import CursorEventSystem, { OnCursorEvent } from '../../engine/abstracts/systems/CursorEventSystem';
-import { OnlyIfEntityIsInstanceOf } from '../../engine/concretes/Entity';
+import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import LineComponent from '../../engine/concretes/components/LineComponent';
 import LineDrawing from '../../engine/concretes/entities/LineDrawing';
 import PoseComponent from '../../engine/concretes/components/PoseComponent';
@@ -26,6 +26,7 @@ export default class WireRemovalSystem extends CursorEventSystem {
     private __onCursorEndActuation(component: CursorEventComponent): void {
         this.__cutAndRemoveWires(component.entity);
         component.entity.unload();
+        this.master.remove(WireRemovalSystem);
     }
 
     private __cutAndRemoveWires(lineDrawing: LineDrawing): void {

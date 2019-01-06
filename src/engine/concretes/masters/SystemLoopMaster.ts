@@ -1,13 +1,15 @@
 import ICursorAdapter from '../../interfaces/ICursorAdapter';
+import ILoopable from '../../interfaces/ILoopable';
+import IMaster from '../../interfaces/IMaster';
 import IViewportAdapter from '../../interfaces/IViewportAdapter';
 import StoreMaster from './StoreMaster';
 import SystemMaster from './SystemMaster';
 
 const ONE_SECOND_IN_MS = 1000.00;
-const LOOPS_PER_SECOND = 60.0;
+const LOOPS_PER_SECOND = 120.0;
 const MS_PER_LOOP_INTERVAL = ONE_SECOND_IN_MS / LOOPS_PER_SECOND;
 
-export default class SystemLoopMaster {
+export default class SystemLoopMaster implements IMaster, ILoopable<void> {
 
     private __isStopped: boolean;
     private __viewport: IViewportAdapter<any, any>;

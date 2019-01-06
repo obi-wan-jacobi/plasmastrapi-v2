@@ -1,5 +1,5 @@
 import DragComponent from '../../engine/concretes/components/DragComponent';
-import Entity from '../../engine/concretes/Entity';
+import Entity from '../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import InputTerminal from './InputTerminal';
 import OutputTerminal from './OutputTerminal';
@@ -11,25 +11,17 @@ import StoreMaster from '../../engine/concretes/masters/StoreMaster';
 
 export default class Gate extends Entity {
 
-    private __output: OutputTerminal;
-    private __input: InputTerminal;
+    public readonly output: OutputTerminal;
+    public readonly input: InputTerminal;
 
     constructor({ x, y }: { x: number, y: number }) {
         super();
-        this.__output = new OutputTerminal(this);
-        this.__input = new InputTerminal(this);
+        this.output = new OutputTerminal(this);
+        this.input = new InputTerminal(this);
         this.add(PoseComponent, { x, y });
         this.add(ShapeComponent, new Rectangle({ width: 40, height: 40 }));
         this.add(RenderingComponent, { colour: HTML5_COLOUR.ORANGE });
         this.add(DragComponent);
-    }
-
-    public get output(): OutputTerminal {
-        return this.__output;
-    }
-
-    public get input(): InputTerminal {
-        return this.__input;
     }
 
     public bind(store: StoreMaster): void {

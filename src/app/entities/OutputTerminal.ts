@@ -1,26 +1,23 @@
 import ChildPoseOffsetComponent from '../../engine/concretes/components/ChildPoseOffsetComponent';
-import Entity from '../../engine/concretes/Entity';
+import Entity from '../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
+import IChild from '../../framework/interfaces/IChild';
 import PoseComponent from '../../engine/concretes/components/PoseComponent';
 import Rectangle from '../../geometry/concretes/Rectangle';
 import RenderingComponent from '../../engine/concretes/components/RenderingComponent';
 import ShapeComponent from '../../engine/concretes/components/ShapeComponent';
 
-export default class OutputTerminal extends Entity {
+export default class OutputTerminal extends Entity implements IChild<Entity> {
 
-    private __parent: Entity;
+    public readonly parent: Entity;
 
     constructor(parent: Entity) {
         super();
-        this.__parent = parent;
+        this.parent = parent;
         this.add(PoseComponent, { x: - Infinity, y: -Infinity });
         this.add(ShapeComponent, new Rectangle({ width: 10, height: 10 }));
         this.add(RenderingComponent, { colour: HTML5_COLOUR.YELLOW });
         this.add(ChildPoseOffsetComponent, { offsetX: 0, offsetY: -28 });
-    }
-
-    public get parent(): Entity {
-        return this.__parent;
     }
 
 }

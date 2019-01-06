@@ -1,9 +1,10 @@
 import IIterable from '../../interfaces/IIterable';
+import IQueue from '../../interfaces/IQueue';
 import IWrapper from '../../interfaces/IWrapper';
 import Link, { OptionalLink } from './Link';
 import { Optional } from '../../types/Optional';
 
-export default class LinkedList<T> implements IIterable<Optional<T>>, IWrapper<OptionalLink<T>> {
+export default class LinkedList<T> implements IIterable<Optional<T>>, IWrapper<OptionalLink<T>> , IQueue<T>{
 
     private __start: OptionalLink<T>;
     private __end: OptionalLink<T>;

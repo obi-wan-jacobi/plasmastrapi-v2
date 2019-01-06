@@ -1,27 +1,22 @@
 import { Ctor } from '../../framework/types/Ctor';
-import CursorEventComponent from './components/CursorEventComponent';
+import CursorEventComponent from '../concretes/components/CursorEventComponent';
 import IComponent from '../interfaces/IComponent';
-import IUnique from '../../framework/interfaces/IUnique';
+import IEntity from '../interfaces/IEntity';
 import { Optional } from '../../framework/types/Optional';
-import StoreMaster from './masters/StoreMaster';
-import System from '../abstracts/System';
-import TypeCollection from '../../framework/concretes/data-structures/TypeCollection';
+import StoreMaster from '../concretes/masters/StoreMaster';
+import System from './System';
+import TypeIndex from '../../framework/concretes/data-structures/TypeIndex';
 import Unique from '../../framework/abstracts/Unique';
 
-export default class Entity extends TypeCollection<IComponent<any>> implements IUnique {
+export default class Entity extends TypeIndex<IComponent<any>> implements IEntity {
 
+    public readonly id: string;
     protected _store: StoreMaster;
-
-    private __id: string;
 
     constructor() {
         super();
-        this.__id = Unique.generateUuid();
+        this.id = Unique.generateUuid();
         this.add(CursorEventComponent);
-    }
-
-    public get id(): string {
-        return this.__id;
     }
 
     public bind(store: StoreMaster): void {

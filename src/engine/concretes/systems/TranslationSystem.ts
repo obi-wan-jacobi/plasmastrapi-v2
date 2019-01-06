@@ -1,7 +1,7 @@
 import { CURSOR_EVENT } from '../../enums/CURSOR_EVENT';
 import CursorEventComponent from '../components/CursorEventComponent';
 import CursorEventSystem, { OnCursorEvent } from '../../abstracts/systems/CursorEventSystem';
-import { OnlyIfEntityHas } from '../Entity';
+import { OnlyIfEntityHas } from '../../abstracts/Entity';
 import PoseComponent from '../components/PoseComponent';
 import TranslationComponent from '../components/TranslationComponent';
 

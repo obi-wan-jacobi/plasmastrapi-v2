@@ -1,6 +1,7 @@
 import { CURSOR_EVENT } from '../../enums/CURSOR_EVENT';
 import CursorEventComponent from '../../concretes/components/CursorEventComponent';
-import { OnlyIfEntityHas } from '../../concretes/Entity';
+import { OnlyIfEntityHas } from '../Entity';
+import ISystem from '../../interfaces/ISystem';
 import Invocable from '../../../framework/abstracts/Invocable';
 import PoseComponent from '../../concretes/components/PoseComponent';
 import ShapeComponent from '../../concretes/components/ShapeComponent';
@@ -36,7 +37,7 @@ export function OnCursorEvent<TSystem extends CursorEventSystem>(event: CURSOR_E
 }
 
 export function OnCursorIntersection<TComponent>(
-    target: System<TComponent>,
+    target: ISystem<TComponent>,
     propertyKey: string | symbol,
     descriptor: PropertyDescriptor,
 ): any {
