@@ -1,12 +1,12 @@
-import ChildPoseOffsetSystem from '../../../engine/concretes/systems/ChildPoseOffsetSystem';
 import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../app/entities/Gate';
 import ImpostorCanvasRenderingContext2D from '../../src/concretes/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../src/concretes/impostors/ImpostorHTMLCanvasElement';
 import Plasmastrapi from '../../../app/Plasmastrapi';
-import PoseComponent from '../../../engine/concretes/components/PoseComponent';
+import Wire from '../../../app/entities/Wire';
+import WireCuttingSystem from '../../../app/systems/WireCuttingSystem';
 
-describe(ChildPoseOffsetSystem.name, () => {
+describe(WireCuttingSystem.name, () => {
 
     let impostorRenderingContext: ImpostorCanvasRenderingContext2D;
     let impostorHTMLCanvasElement: ImpostorHTMLCanvasElement;
@@ -26,23 +26,23 @@ describe(ChildPoseOffsetSystem.name, () => {
         impostorHTMLCanvasElement.assertMethodsCalledInOrder();
     });
 
-    it('terminal moves relative to parent', (done) => {
-        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(4)
+    it('cut/remove wire', (done) => {
+        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(3)
             .returns({ left: 0, top: 0 });
-        const gate = game.store.entities.create(Gate, { x: 50, y: 50 });
+        const gate1 = game.store.entities.create(Gate, { x: 100, y: 100 });
+        const gate2 = game.store.entities.create(Gate, { x: 300, y: 300 });
+        game.store.entities.create(Wire, { head: gate2.input, tail: gate1.output });
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
-        fakeCanvas.simulateMouseDown(55, 55);
-        fakeCanvas.simulateMouseMove(105, 105);
-        fakeCanvas.simulateMouseUp(105, 105);
-        fakeCanvas.simulateMouseMove(125, 135);
-        //
+        game.systems.add(WireCuttingSystem);
+        fakeCanvas.simulateMouseDown(100, 200);
+        fakeCanvas.simulateMouseMove(300, 100);
+        fakeCanvas.simulateMouseUp(300, 100);
+        game.loop.once();
+        expect(game.store.entities.get(Wire).length).toBe(1);
         game.loop.once();
         game.loop.once();
-        game.loop.once();
-        game.loop.once();
-        //
-        expect(gate.get(PoseComponent).data).toEqual({ x: 100, y: 100, a: 0 });
-        expect(gate.output.get(PoseComponent).data).toEqual({ x: 100, y: 72, a: 0 });
+        game.store.sync();
+        expect(game.store.entities.get(Wire).length).toBe(0);
         done();
     });
 

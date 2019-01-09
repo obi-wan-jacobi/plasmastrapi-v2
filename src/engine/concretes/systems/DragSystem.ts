@@ -13,8 +13,8 @@ export default class DragSystem extends CursorEventSystem {
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
-    @OnCursorIntersection
     @OnlyIfEntityHas(DragComponent)
+    @OnCursorIntersection
     private __onCursorBeginActuation(component: CursorEventComponent): void {
         const translatable = component.entity.add(TranslationComponent);
         translatable.data.previous.cursor.x = component.data.x;

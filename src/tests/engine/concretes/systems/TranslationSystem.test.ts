@@ -1,3 +1,4 @@
+import CursorEventComponent from '../../../../engine/concretes/components/CursorEventComponent';
 import Entity from '../../../../engine/abstracts/Entity';
 import FakeCanvas from '../../../src/fakes/FakeHTMLCanvasElement';
 import HTML5CanvasGame from '../../../../html5/HTML5CanvasGame';
@@ -31,6 +32,7 @@ describe(TranslationSystem.name, () => {
 
     it('translatable entity is translated with cursor movement', (done) => {
         const entity = game.store.entities.create(Entity);
+        entity.add(CursorEventComponent);
         entity.add(PoseComponent, { x: 0, y: 0 });
         const translatable = entity.add(TranslationComponent);
         translatable.data.previous.cursor.x = 0;

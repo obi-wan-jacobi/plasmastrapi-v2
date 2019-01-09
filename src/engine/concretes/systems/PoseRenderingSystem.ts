@@ -7,7 +7,7 @@ import RenderSystem from '../../abstracts/systems/RenderSystem';
 import RenderingComponent from '../components/RenderingComponent';
 
 export default class PoseRenderingSystem
- extends RenderSystem<IRenderingProfile<HTML5_COLOUR>> {
+extends RenderSystem<IRenderingProfile<HTML5_COLOUR>> {
 
     constructor(context: IRenderContext<any>) {
         super(context, RenderingComponent);

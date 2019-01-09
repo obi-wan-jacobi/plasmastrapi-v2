@@ -1,3 +1,4 @@
+import CursorEventComponent from '../../../../engine/concretes/components/CursorEventComponent';
 import DragComponent from '../../../../engine/concretes/components/DragComponent';
 import DragSystem from '../../../../engine/concretes/systems/DragSystem';
 import Entity from '../../../../engine/abstracts/Entity';
@@ -34,6 +35,7 @@ describe(DragSystem.name, () => {
     it('draggable entity is dragged by actuated cursor translation', (done) => {
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
         const entity = game.store.entities.create(Entity);
+        entity.add(CursorEventComponent);
         entity.add(PoseComponent, { x: 50, y: 50 });
         entity.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
         entity.add(DragComponent);
@@ -54,6 +56,7 @@ describe(DragSystem.name, () => {
     it('non-draggable entity is not dragged by actuated cursor translation', (done) => {
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
         const entity = game.store.entities.create(Entity);
+        entity.add(CursorEventComponent);
         entity.add(PoseComponent, { x: 50, y: 50 });
         entity.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
         fakeCanvas.simulateMouseDown(51, 52);

@@ -20,8 +20,8 @@ export default class WireCreationSystem extends CursorEventSystem {
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
-    @OnCursorIntersection
     @OnlyIfEntityIsInstanceOf(OutputTerminal)
+    @OnCursorIntersection
     private __onCursorBeginActuationWithOutputTerminal(component: CursorEventComponent): void {
         const wireHandle = this.store.entities.create(WireHandle, { x: component.data.x, y: component.data.y });
         const output = component.entity as OutputTerminal;
@@ -30,8 +30,8 @@ export default class WireCreationSystem extends CursorEventSystem {
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
-    @OnCursorIntersection
     @OnlyIfEntityIsInstanceOf(InputTerminal)
+    @OnCursorIntersection
     private __onCursorBeginActuationWithInputTerminal(component: CursorEventComponent): void {
         const wireHandle = this.store.entities.create(WireHandle, { x: component.data.x, y: component.data.y });
         const input = component.entity as InputTerminal;

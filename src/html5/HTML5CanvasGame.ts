@@ -1,4 +1,4 @@
-import Engine from '../engine/Engine';
+import Engine from '../engine/abstracts/Engine';
 import HTML5CanvasViewportAdapter from './HTML5CanvasViewportAdapter';
 import HTML5MouseCursorAdapter from './HTML5MouseCursorAdapter';
 

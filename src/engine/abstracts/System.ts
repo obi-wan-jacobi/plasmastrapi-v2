@@ -1,5 +1,5 @@
 import { Ctor } from '../../framework/types/Ctor';
-import Engine from '../Engine';
+import Engine from './Engine';
 import ISlave from '../../framework/interfaces/ISlave';
 import ISystem from '../interfaces/ISystem';
 import StoreMaster from '../concretes/masters/StoreMaster';

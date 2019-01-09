@@ -1,16 +1,15 @@
 import ComponentStoreManager from '../store/ComponentStoreManager';
-import Engine from '../../Engine';
 import EntityStoreManager from '../store/EntityStoreManager';
 import IMaster from '../../interfaces/IMaster';
 
-export default class StoreMaster implements IMaster {
+export default class StoreMaster implements IMaster<void> {
 
     private __componentStoreManager: ComponentStoreManager;
     private __entityStoreManager: EntityStoreManager;
 
-    constructor(engine: Engine) {
+    constructor() {
         this.__componentStoreManager = new ComponentStoreManager();
-        this.__entityStoreManager = new EntityStoreManager(engine);
+        this.__entityStoreManager = new EntityStoreManager(this);
     }
 
     get components(): ComponentStoreManager {

@@ -1,6 +1,6 @@
 
-export default interface ISyncable {
+export default interface ISyncable<T> {
 
-    sync(): void;
+    sync(arg: T): void;
 
 }

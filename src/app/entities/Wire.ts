@@ -1,3 +1,4 @@
+import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
 import Entity from '../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import InputTerminal from './InputTerminal';
@@ -13,6 +14,7 @@ export default class Wire extends Entity {
 
     constructor({ head, tail }: { head: InputTerminal | WireHandle, tail: OutputTerminal | WireHandle }) {
         super();
+        this.add(CursorEventComponent);
         this.add(PoseComponent, { x: - Infinity, y: -Infinity });
         this.add(ShapeComponent, new Rectangle({ width: -Infinity, height: -Infinity }));
         this.add(RenderingComponent, { colour: HTML5_COLOUR.WHITE });

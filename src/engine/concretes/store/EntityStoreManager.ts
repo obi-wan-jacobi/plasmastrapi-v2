@@ -1,34 +1,34 @@
 import { Ctor } from '../../../framework/types/Ctor';
-import Engine from '../../Engine';
 import Entity from '../../abstracts/Entity';
 import { Optional } from '../../../framework/types/Optional';
 import StoreManager from '../../abstracts/StoreManager';
+import StoreMaster from '../masters/StoreMaster';
 
 export default class EntityStoreManager extends StoreManager<Entity> {
 
-    private readonly __engine: Engine;
+    private readonly __store: StoreMaster;
 
-    constructor(engine: Engine) {
+    constructor(store: StoreMaster) {
         super();
-        this.__engine = engine;
+        this.__store = store;
     }
 
     public create<TEntity extends Entity, TData>(EntityCtor: Ctor<TEntity, Optional<TData>>, data?: TData): TEntity {
         const entity = super.create(EntityCtor, data);
-        entity.bind(this.__engine);
+        entity.bind(this.__store);
         return entity;
     }
 
     public load(entity: Entity): void {
         entity.forEach((component) => {
-            this.__engine.store.components.load(component);
+            this.__store.components.load(component);
         });
         super.load(entity);
     }
 
     public unload(entity: Entity): void {
         entity.forEach((component) => {
-            this.__engine.store.components.unload(component);
+            this.__store.components.unload(component);
         });
         super.unload(entity);
     }

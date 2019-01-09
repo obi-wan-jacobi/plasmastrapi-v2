@@ -1,3 +1,4 @@
+import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
 import Entity from '../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import PoseComponent from '../../engine/concretes/components/PoseComponent';
@@ -13,6 +14,7 @@ export default class WireHandle extends Entity {
 
     constructor({ x, y }: { x: number, y: number }) {
         super();
+        this.add(CursorEventComponent);
         this.add(PoseComponent, { x, y });
         this.add(RenderingComponent, { colour: HTML5_COLOUR.LIGHTGREEN });
         this.add(ShapeComponent, new Rectangle({ width: 10, height: 10 }));

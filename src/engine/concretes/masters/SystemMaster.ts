@@ -1,11 +1,11 @@
 import { Ctor } from '../../../framework/types/Ctor';
-import Engine from '../../Engine';
+import Engine from '../../abstracts/Engine';
 import IIterable from '../../../framework/interfaces/IIterable';
 import IMaster from '../../interfaces/IMaster';
 import ISystem from '../../interfaces/ISystem';
 import TypeIndex from '../../../framework/concretes/data-structures/TypeIndex';
 
-export default class SystemMaster implements IMaster, IIterable<ISystem<any>> {
+export default class SystemMaster implements IMaster<void>, IIterable<ISystem<any>> {
 
     private __engine: Engine;
     private __systems: TypeIndex<ISystem<any>>;

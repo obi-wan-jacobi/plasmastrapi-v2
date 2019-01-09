@@ -1,3 +1,4 @@
+import CursorEventComponent from '../../../engine/concretes/components/CursorEventComponent';
 import Entity from '../../../engine/abstracts/Entity';
 import HTML5CanvasGame from '../../../html5/HTML5CanvasGame';
 import { HTML5_COLOUR } from '../../../html5/enums/HTML5_COLOUR';
@@ -31,6 +32,7 @@ describe(Entity.name, () => {
 
     it('load multiple components with dependencies', (done) => {
         const entity = game.store.entities.create(Entity);
+        entity.add(CursorEventComponent);
         entity.add(PoseComponent, { x: 50, y: 50 });
         entity.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
         entity.add(RenderingComponent, { colour: HTML5_COLOUR.RED });

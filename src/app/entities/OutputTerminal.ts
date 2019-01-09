@@ -1,4 +1,5 @@
 import ChildPoseOffsetComponent from '../../engine/concretes/components/ChildPoseOffsetComponent';
+import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
 import Entity from '../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import IChild from '../../framework/interfaces/IChild';
@@ -14,6 +15,7 @@ export default class OutputTerminal extends Entity implements IChild<Entity> {
     constructor(parent: Entity) {
         super();
         this.parent = parent;
+        this.add(CursorEventComponent);
         this.add(PoseComponent, { x: - Infinity, y: -Infinity });
         this.add(ShapeComponent, new Rectangle({ width: 10, height: 10 }));
         this.add(RenderingComponent, { colour: HTML5_COLOUR.YELLOW });
