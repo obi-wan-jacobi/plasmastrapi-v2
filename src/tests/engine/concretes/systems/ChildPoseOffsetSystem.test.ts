@@ -1,10 +1,10 @@
 import ChildPoseOffsetSystem from '../../../../engine/concretes/systems/ChildPoseOffsetSystem';
 import FakeHTMLCanvasElement from '../../../src/fakes/FakeHTMLCanvasElement';
-import Gate from '../../../../app/entities/Gate';
 import ImpostorCanvasRenderingContext2D from '../../../src/concretes/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../../src/concretes/impostors/ImpostorHTMLCanvasElement';
 import Plasmastrapi from '../../../../app/Plasmastrapi';
 import PoseComponent from '../../../../engine/concretes/components/PoseComponent';
+import Gate from '../../../../app/entities/circuit-elements/Gate';
 
 describe(ChildPoseOffsetSystem.name, () => {
 

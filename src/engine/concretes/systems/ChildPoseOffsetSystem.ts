@@ -1,5 +1,5 @@
 import ChildPoseOffsetComponent from '../components/ChildPoseOffsetComponent';
-import InputTerminal from '../../../app/entities/InputTerminal';
+import InputTerminal from '../../../app/entities/circuit-elements/InputTerminal';
 import PoseComponent from '../components/PoseComponent';
 import System from '../../abstracts/System';
 

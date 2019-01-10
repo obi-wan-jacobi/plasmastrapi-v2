@@ -1,12 +1,12 @@
 import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
-import Gate from '../../../app/entities/Gate';
-import GateRemovalCaret from '../../../app/entities/carets/GateRemovalCaret';
 import GateRemovalSystem from '../../../app/systems/GateRemovalSystem';
 import ImpostorCanvasRenderingContext2D from '../../src/concretes/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../src/concretes/impostors/ImpostorHTMLCanvasElement';
-import InputTerminal from '../../../app/entities/InputTerminal';
-import OutputTerminal from '../../../app/entities/OutputTerminal';
 import Plasmastrapi from '../../../app/Plasmastrapi';
+import Gate from '../../../app/entities/circuit-elements/Gate';
+import GateRemovalCaret from '../../../app/entities/tool-carets/GateRemovalCaret';
+import InputTerminal from '../../../app/entities/circuit-elements/InputTerminal';
+import OutputTerminal from '../../../app/entities/circuit-elements/OutputTerminal';
 
 describe(GateRemovalSystem.name, () => {
 

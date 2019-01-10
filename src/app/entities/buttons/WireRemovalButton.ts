@@ -1,5 +1,5 @@
-import Button from './Button';
-import IPosition2D from '../../geometry/interfaces/IPosition2D';
+import Button from '../../abstracts/Button';
+import IPosition2D from '../../../geometry/interfaces/IPosition2D';
 
 export default class WireRemovalButton extends Button {
 

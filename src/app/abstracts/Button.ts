@@ -7,7 +7,7 @@ import Rectangle from '../../geometry/concretes/Rectangle';
 import RenderingComponent from '../../engine/concretes/components/RenderingComponent';
 import ShapeComponent from '../../engine/concretes/components/ShapeComponent';
 
-export default class Button extends Entity {
+export default abstract class Button extends Entity {
 
     constructor(position: IPosition2D) {
         super();

@@ -1,6 +1,6 @@
-import GateCreationButton from '../entities/GateCreationButton';
-import GateRemovalButton from '../entities/GateRemovalButton';
-import WireRemovalButton from '../entities/WireRemovalButton';
+import GateCreationButton from '../entities/buttons/GateCreationButton';
+import GateRemovalButton from '../entities/buttons/GateRemovalButton';
+import WireRemovalButton from '../entities/buttons/WireRemovalButton';
 
 export default [
     {

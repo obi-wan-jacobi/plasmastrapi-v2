@@ -1,25 +1,38 @@
+import ActiveToolButtonFrame from '../entities/ActiveToolButtonFrame';
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
 import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
 import CursorEventSystem, {
     OnCursorEvent, OnCursorIntersection,
 } from '../../engine/abstracts/systems/CursorEventSystem';
 import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
-import Gate from '../entities/Gate';
-import GateCreationButton from '../entities/GateCreationButton';
+import Gate from '../entities/circuit-elements/Gate';
+import GateCreationButton from '../entities/buttons/GateCreationButton';
+import GateCreationCaret from '../entities/tool-carets/GateCreationCaret';
+import PoseComponent from '../../engine/concretes/components/PoseComponent';
 import TranslationComponent from '../../engine/concretes/components/TranslationComponent';
 
 export default class GateCreationSystem extends CursorEventSystem {
 
     public once(component: CursorEventComponent): void {
-        this.__onCursorBeginActuation(component);
+        this.__onCursorCompleteActuationWithButton(component);
+        this.__onCursorCompleteActuationWithCaret(component);
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
+    @OnCursorEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)
     @OnlyIfEntityIsInstanceOf(GateCreationButton)
     @OnCursorIntersection
-    private __onCursorBeginActuation(component: CursorEventComponent): void {
-        const gate = this.store.entities.create(Gate, { x: component.data.x, y: component.data.y });
+    private __onCursorCompleteActuationWithButton(component: CursorEventComponent): void {
+        const gate = this.store.entities.create(Gate, component.data);
         gate.add(TranslationComponent);
+        this.store.entities.create(GateCreationCaret, component.data);
+        this.store.entities.create(ActiveToolButtonFrame, component.entity.get(PoseComponent).data);
+    }
+
+    @OnCursorEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)
+    @OnlyIfEntityIsInstanceOf(GateCreationCaret)
+    private __onCursorCompleteActuationWithCaret(component: CursorEventComponent): void {
+        component.entity.unload();
+        this.store.entities.get(ActiveToolButtonFrame).forEach((frame) => frame.unload());
     }
 
 }

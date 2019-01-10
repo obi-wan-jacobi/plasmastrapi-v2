@@ -75,7 +75,7 @@ export const isPointInsideShape = (
 };
 
 export const fromPointsToStandardForm = (p1: IPosition2D, p2: IPosition2D): { m: number, b: number } => {
-    let m = (p2.y - p1.y) / (p2.x - p1.x);
+    const m = (p2.y - p1.y) / (p2.x - p1.x);
     const b = p1.y - m * p1.x;
     return { m, b };
 };
