@@ -23,7 +23,7 @@
                     "--runInBand",
                     "--config",
                     "${workspaceRoot}/jest.config.js",
-                    "gateremoval"
+                    "wireremoval"
                 ],
             },
             "console": "integratedTerminal",

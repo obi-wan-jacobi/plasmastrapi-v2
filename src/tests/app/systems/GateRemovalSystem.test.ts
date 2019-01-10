@@ -1,5 +1,6 @@
 import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../app/entities/Gate';
+import GateRemovalCaret from '../../../app/entities/carets/GateRemovalCaret';
 import GateRemovalSystem from '../../../app/systems/GateRemovalSystem';
 import ImpostorCanvasRenderingContext2D from '../../src/concretes/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../src/concretes/impostors/ImpostorHTMLCanvasElement';
@@ -28,18 +29,21 @@ describe(GateRemovalSystem.name, () => {
     });
 
     it('remove gate', (done) => {
-        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(2)
+        const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
+        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(3)
             .returns({ left: 0, top: 0 });
         game.store.entities.create(Gate, { x: 50, y: 50 });
-        const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
-        game.systems.add(GateRemovalSystem);
+        game.store.entities.create(GateRemovalCaret, { x: 55, y: 55 });
         fakeCanvas.simulateMouseDown(55, 55);
         fakeCanvas.simulateMouseUp(55, 55);
+        fakeCanvas.simulateClick(55, 55);
         //
+        game.loop.once();
         game.loop.once();
         game.loop.once();
         game.store.sync();
         //
+        expect(game.store.entities.get(GateRemovalCaret).length).toBe(0);
         expect(game.store.entities.get(Gate).length).toBe(0);
         expect(game.store.entities.get(InputTerminal).length).toBe(0);
         expect(game.store.entities.get(OutputTerminal).length).toBe(0);

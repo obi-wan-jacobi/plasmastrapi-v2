@@ -8,11 +8,11 @@ import PoseComponent from '../../engine/concretes/components/PoseComponent';
 import Rectangle from '../../geometry/concretes/Rectangle';
 import RenderingComponent from '../../engine/concretes/components/RenderingComponent';
 import ShapeComponent from '../../engine/concretes/components/ShapeComponent';
-import WireHandle from './WireHandle';
+import WireCreationCaret from './carets/WireCreationCaret';
 
 export default class Wire extends Entity {
 
-    constructor({ head, tail }: { head: InputTerminal | WireHandle, tail: OutputTerminal | WireHandle }) {
+    constructor({ head, tail }: { head: InputTerminal | WireCreationCaret, tail: OutputTerminal | WireCreationCaret }) {
         super();
         this.add(CursorEventComponent);
         this.add(PoseComponent, { x: - Infinity, y: -Infinity });

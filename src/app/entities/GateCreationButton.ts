@@ -1,8 +1,9 @@
 import Button from './Button';
+import IPosition2D from '../../geometry/interfaces/IPosition2D';
 
 export default class GateCreationButton extends Button {
 
-    constructor({ x, y }: {x: number, y: number }) {
-        super({ x, y });
+    constructor(position: IPosition2D) {
+        super(position);
     }
 }

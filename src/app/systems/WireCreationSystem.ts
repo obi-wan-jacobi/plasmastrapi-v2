@@ -8,7 +8,7 @@ import InputTerminal from '../entities/InputTerminal';
 import { Optional } from '../../framework/types/Optional';
 import OutputTerminal from '../entities/OutputTerminal';
 import Wire from '../entities/Wire';
-import WireHandle from '../entities/WireHandle';
+import WireCreationCaret from '../entities/carets/WireCreationCaret';
 
 export default class WireCreationSystem extends CursorEventSystem {
 
@@ -17,66 +17,67 @@ export default class WireCreationSystem extends CursorEventSystem {
         this.__onCursorBeginActuationWithOutputTerminal(component);
         this.__onCursorEndActuationWithInputTerminal(component);
         this.__onCursorEndActuationWithOutputTerminal(component);
+        this.__onCursorCompleteActuationWithCaret(component);
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
     @OnlyIfEntityIsInstanceOf(OutputTerminal)
     @OnCursorIntersection
     private __onCursorBeginActuationWithOutputTerminal(component: CursorEventComponent): void {
-        const wireHandle = this.store.entities.create(WireHandle, { x: component.data.x, y: component.data.y });
         const output = component.entity as OutputTerminal;
-        const wire = this.store.entities.create(Wire, { head: wireHandle, tail: output });
-        wireHandle.wire = wire;
+        const caret = this.store.entities.create(WireCreationCaret, { x: component.data.x, y: component.data.y });
+        const wire = this.store.entities.create(Wire, { head: caret, tail: output });
+        caret.wire = wire;
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
     @OnlyIfEntityIsInstanceOf(InputTerminal)
     @OnCursorIntersection
     private __onCursorBeginActuationWithInputTerminal(component: CursorEventComponent): void {
-        const wireHandle = this.store.entities.create(WireHandle, { x: component.data.x, y: component.data.y });
         const input = component.entity as InputTerminal;
-        const wire = this.store.entities.create(Wire, { head: input, tail: wireHandle });
-        wireHandle.wire = wire;
+        const caret = this.store.entities.create(WireCreationCaret, { x: component.data.x, y: component.data.y });
+        const wire = this.store.entities.create(Wire, { head: input, tail: caret });
+        caret.wire = wire;
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
     @OnlyIfEntityIsInstanceOf(InputTerminal)
     @OnCursorIntersection
     private __onCursorEndActuationWithInputTerminal(component: CursorEventComponent): void {
-        const wireHandle = this.__findAnyExistingWireHandle();
-        if (!wireHandle) {
+        const caret = this.__findAnyExistingCaret();
+        if (!caret) {
             return;
         }
-        if (!(wireHandle.wire.tail instanceof OutputTerminal)) {
+        if (!(caret.wire.tail instanceof OutputTerminal)) {
             return;
         }
-        this.__createNewWireIfNotDuplicated({ head: component.entity, tail: wireHandle.wire.tail });
+        this.__createNewWireIfNotDuplicated({ head: component.entity, tail: caret.wire.tail });
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
     @OnlyIfEntityIsInstanceOf(OutputTerminal)
     @OnCursorIntersection
     private __onCursorEndActuationWithOutputTerminal(component: CursorEventComponent): void {
-        const wireHandle = this.__findAnyExistingWireHandle();
-        if (!wireHandle) {
+        const caret = this.__findAnyExistingCaret();
+        if (!caret) {
             return;
         }
-        if (!(wireHandle.wire.head instanceof InputTerminal)) {
+        if (!(caret.wire.head instanceof InputTerminal)) {
             return;
         }
-        this.__createNewWireIfNotDuplicated({ head: wireHandle.wire.head, tail: component.entity });
+        this.__createNewWireIfNotDuplicated({ head: caret.wire.head, tail: component.entity });
     }
 
-    private __findAnyExistingWireHandle(): Optional<WireHandle> {
-        let wireHandle: Optional<WireHandle>;
-        const wireHandleCollection = this.store.entities.get(WireHandle);
-        if (wireHandleCollection.length > 1) {
-            throw new Error(`Memory leak detected: more than one instance of ${WireHandle.name} was found`);
+    private __findAnyExistingCaret(): Optional<WireCreationCaret> {
+        let caret: Optional<WireCreationCaret>;
+        const caretCollection = this.store.entities.get(WireCreationCaret);
+        if (caretCollection.length > 1) {
+            throw new Error(`Memory leak detected: more than one instance of ${WireCreationCaret.name} was found`);
         }
-        wireHandleCollection.forEach((instance: WireHandle) => {
-            wireHandle = instance;
+        caretCollection.forEach((instance: WireCreationCaret) => {
+            caret = instance;
         });
-        return wireHandle;
+        return caret;
     }
 
     private __createNewWireIfNotDuplicated({ head, tail}: { head: Entity, tail: Entity }): void {
@@ -86,6 +87,12 @@ export default class WireCreationSystem extends CursorEventSystem {
         if (!duplicate) {
             this.store.entities.create(Wire, { head, tail });
         }
+    }
+
+    @OnCursorEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)
+    @OnlyIfEntityIsInstanceOf(WireCreationCaret)
+    private __onCursorCompleteActuationWithCaret(component: CursorEventComponent): void {
+        component.entity.unload();
     }
 
 }

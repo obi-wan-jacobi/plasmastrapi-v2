@@ -2,6 +2,7 @@ import CursorEventComponent from '../../engine/concretes/components/CursorEventC
 import DragComponent from '../../engine/concretes/components/DragComponent';
 import Entity from '../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
+import IPosition2D from '../../geometry/interfaces/IPosition2D';
 import InputTerminal from './InputTerminal';
 import OutputTerminal from './OutputTerminal';
 import PoseComponent from '../../engine/concretes/components/PoseComponent';
@@ -15,12 +16,12 @@ export default class Gate extends Entity {
     public readonly output: OutputTerminal;
     public readonly input: InputTerminal;
 
-    constructor({ x, y }: { x: number, y: number }) {
+    constructor(position: IPosition2D) {
         super();
         this.output = new OutputTerminal(this);
         this.input = new InputTerminal(this);
         this.add(CursorEventComponent);
-        this.add(PoseComponent, { x, y });
+        this.add(PoseComponent, { x: position.x, y: position.y });
         this.add(ShapeComponent, new Rectangle({ width: 40, height: 40 }));
         this.add(RenderingComponent, { colour: HTML5_COLOUR.ORANGE });
         this.add(DragComponent);

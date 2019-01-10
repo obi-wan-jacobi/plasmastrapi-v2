@@ -7,8 +7,8 @@ import OutputTerminal from '../../../app/entities/OutputTerminal';
 import Plasmastrapi from '../../../app/Plasmastrapi';
 import PoseComponent from '../../../engine/concretes/components/PoseComponent';
 import Wire from '../../../app/entities/Wire';
+import WireCreationCaret from '../../../app/entities/carets/WireCreationCaret';
 import WireCreationSystem from '../../../app/systems/WireCreationSystem';
-import WireHandle from '../../../app/entities/WireHandle';
 
 describe(WireCreationSystem.name, () => {
 
@@ -32,13 +32,14 @@ describe(WireCreationSystem.name, () => {
 
     it('actuating output terminal creates new wire at cursor, but is destroyed if not immediately used', (done) => {
         // Arrange
-        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(4)
+        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(5)
             .returns({ left: 0, top: 0 });
         const gate = game.store.entities.create(Gate, { x: 500, y: 500 });
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
-        fakeCanvas.simulateMouseDown(500, 477);
+        fakeCanvas.simulateMouseDown(500, 472);
         fakeCanvas.simulateMouseMove(605, 450);
         fakeCanvas.simulateMouseUp(605, 450);
+        fakeCanvas.simulateClick(605, 450);
         fakeCanvas.simulateMouseMove(505, 450);
         // Act 1
         game.loop.once();
@@ -50,7 +51,7 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(InputTerminal).length).toBe(1);
         expect(game.store.entities.get(OutputTerminal).length).toBe(1);
         expect(game.store.entities.get(Wire).length).toBe(1);
-        expect(game.store.entities.get(WireHandle).length).toBe(1);
+        expect(game.store.entities.get(WireCreationCaret).length).toBe(1);
         expect(game.store.entities.length).toBe(5);
         game.store.entities.get(Wire).forEach((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
@@ -59,14 +60,15 @@ describe(WireCreationSystem.name, () => {
                 a: -0.20653607310567618,
             });
         });
-        game.store.entities.get(WireHandle).forEach((wireHandle) => {
-            expect(wireHandle.get(PoseComponent).data).toEqual({
+        game.store.entities.get(WireCreationCaret).forEach((TerminalCaret) => {
+            expect(TerminalCaret.get(PoseComponent).data).toEqual({
                 x: 605,
                 y: 450,
                 a: 0,
             });
         });
         // Act 2
+        game.loop.once();
         game.loop.once();
         game.loop.once();
         // Assert 2
@@ -76,19 +78,20 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(InputTerminal).length).toBe(1);
         expect(game.store.entities.get(OutputTerminal).length).toBe(1);
         expect(game.store.entities.get(Wire).length).toBe(0);
-        expect(game.store.entities.get(WireHandle).length).toBe(0);
+        expect(game.store.entities.get(WireCreationCaret).length).toBe(0);
         done();
     });
 
     it('actuating input terminal creates new wire at cursor, but is destroyed if not immediately used', (done) => {
         // Arrange
-        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(4)
+        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(5)
             .returns({ left: 0, top: 0 });
         const gate = game.store.entities.create(Gate, { x: 500, y: 500 });
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
-        fakeCanvas.simulateMouseDown(500, 523);
+        fakeCanvas.simulateMouseDown(500, 528);
         fakeCanvas.simulateMouseMove(605, 450);
         fakeCanvas.simulateMouseUp(605, 450);
+        fakeCanvas.simulateClick(605, 450);
         fakeCanvas.simulateMouseMove(505, 450);
         // Act 1
         game.loop.once();
@@ -100,7 +103,7 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(InputTerminal).length).toBe(1);
         expect(game.store.entities.get(OutputTerminal).length).toBe(1);
         expect(game.store.entities.get(Wire).length).toBe(1);
-        expect(game.store.entities.get(WireHandle).length).toBe(1);
+        expect(game.store.entities.get(WireCreationCaret).length).toBe(1);
         expect(game.store.entities.length).toBe(5);
         game.store.entities.get(Wire).forEach((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
@@ -109,14 +112,15 @@ describe(WireCreationSystem.name, () => {
                 a: 2.502678668585906,
             });
         });
-        game.store.entities.get(WireHandle).forEach((wireHandle) => {
-            expect(wireHandle.get(PoseComponent).data).toEqual({
+        game.store.entities.get(WireCreationCaret).forEach((TerminalCaret) => {
+            expect(TerminalCaret.get(PoseComponent).data).toEqual({
                 x: 605,
                 y: 450,
                 a: 0,
             });
         });
         // Act 2
+        game.loop.once();
         game.loop.once();
         game.loop.once();
         // Assert 2
@@ -126,7 +130,7 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(InputTerminal).length).toBe(1);
         expect(game.store.entities.get(OutputTerminal).length).toBe(1);
         expect(game.store.entities.get(Wire).length).toBe(0);
-        expect(game.store.entities.get(WireHandle).length).toBe(0);
+        expect(game.store.entities.get(WireCreationCaret).length).toBe(0);
         done();
     });
 
@@ -134,21 +138,25 @@ describe(WireCreationSystem.name, () => {
         'can be connected to an input terminal,',
         'and stays connected/resizes accordingly when either terminal is moved',
     ].join(' '), (done) => {
-        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(9)
+        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(12)
             .returns({ left: 0, top: 0 });
         const gate1 = game.store.entities.create(Gate, { x: 500, y: 500 });
         const gate2 = game.store.entities.create(Gate, { x: 600, y: 500 });
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
-        fakeCanvas.simulateMouseDown(500, 477);
-        fakeCanvas.simulateMouseMove(600, 523);
-        fakeCanvas.simulateMouseUp(600, 523);
+        fakeCanvas.simulateMouseDown(500, 472);
+        fakeCanvas.simulateMouseMove(600, 528);
+        fakeCanvas.simulateMouseUp(600, 528);
+        fakeCanvas.simulateClick(600, 528);
         fakeCanvas.simulateMouseDown(500, 500);
         fakeCanvas.simulateMouseMove(505, 840);
         fakeCanvas.simulateMouseUp(505, 840);
+        fakeCanvas.simulateClick(505, 840);
         fakeCanvas.simulateMouseDown(600, 500);
         fakeCanvas.simulateMouseMove(805, 140);
         fakeCanvas.simulateMouseUp(805, 140);
+        fakeCanvas.simulateClick(805, 140);
         //
+        game.loop.once();
         game.loop.once();
         game.loop.once();
         game.loop.once();
@@ -162,7 +170,7 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(InputTerminal).length).toBe(2);
         expect(game.store.entities.get(OutputTerminal).length).toBe(2);
         expect(game.store.entities.get(Wire).length).toBe(1);
-        expect(game.store.entities.get(WireHandle).length).toBe(0);
+        expect(game.store.entities.get(WireCreationCaret).length).toBe(0);
         game.store.entities.get(Wire).forEach((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
                 x: 550,
@@ -171,6 +179,8 @@ describe(WireCreationSystem.name, () => {
             });
         });
         //
+        game.loop.once();
+        game.loop.once();
         game.loop.once();
         game.loop.once();
         game.loop.once();
@@ -185,7 +195,7 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(InputTerminal).length).toBe(2);
         expect(game.store.entities.get(OutputTerminal).length).toBe(2);
         expect(game.store.entities.get(Wire).length).toBe(1);
-        expect(game.store.entities.get(WireHandle).length).toBe(0);
+        expect(game.store.entities.get(WireCreationCaret).length).toBe(0);
         game.store.entities.get(Wire).forEach((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
                 x: 655,
@@ -200,21 +210,25 @@ describe(WireCreationSystem.name, () => {
         'can be connected to an output terminal,',
         'and stays connected/resizes accordingly when either terminal is moved',
     ].join(' '), (done) => {
-        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(9)
+        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(12)
             .returns({ left: 0, top: 0 });
         const gate1 = game.store.entities.create(Gate, { x: 500, y: 500 });
         const gate2 = game.store.entities.create(Gate, { x: 600, y: 500 });
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
-        fakeCanvas.simulateMouseDown(500, 523);
-        fakeCanvas.simulateMouseMove(600, 477);
-        fakeCanvas.simulateMouseUp(600, 477);
+        fakeCanvas.simulateMouseDown(500, 528);
+        fakeCanvas.simulateMouseMove(600, 472);
+        fakeCanvas.simulateMouseUp(600, 472);
+        fakeCanvas.simulateClick(600, 472);
         fakeCanvas.simulateMouseDown(500, 500);
         fakeCanvas.simulateMouseMove(505, 840);
         fakeCanvas.simulateMouseUp(505, 840);
+        fakeCanvas.simulateClick(505, 840);
         fakeCanvas.simulateMouseDown(600, 500);
         fakeCanvas.simulateMouseMove(805, 140);
         fakeCanvas.simulateMouseUp(805, 140);
+        fakeCanvas.simulateClick(805, 140);
         //
+        game.loop.once();
         game.loop.once();
         game.loop.once();
         game.loop.once();
@@ -228,7 +242,7 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(InputTerminal).length).toBe(2);
         expect(game.store.entities.get(OutputTerminal).length).toBe(2);
         expect(game.store.entities.get(Wire).length).toBe(1);
-        expect(game.store.entities.get(WireHandle).length).toBe(0);
+        expect(game.store.entities.get(WireCreationCaret).length).toBe(0);
         game.store.entities.get(Wire).forEach((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
                 x: 550,
@@ -237,6 +251,8 @@ describe(WireCreationSystem.name, () => {
             });
         });
         //
+        game.loop.once();
+        game.loop.once();
         game.loop.once();
         game.loop.once();
         game.loop.once();
@@ -251,7 +267,7 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(InputTerminal).length).toBe(2);
         expect(game.store.entities.get(OutputTerminal).length).toBe(2);
         expect(game.store.entities.get(Wire).length).toBe(1);
-        expect(game.store.entities.get(WireHandle).length).toBe(0);
+        expect(game.store.entities.get(WireCreationCaret).length).toBe(0);
         game.store.entities.get(Wire).forEach((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
                 x: 655,
@@ -264,20 +280,26 @@ describe(WireCreationSystem.name, () => {
 
     it('duplicate wires not allowed', (done) => {
         // Arrange
-        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(9)
+        impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(12)
             .returns({ left: 0, top: 0 });
         const gate = game.store.entities.create(Gate, { x: 500, y: 500 });
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
-        fakeCanvas.simulateMouseDown(500, 523);
-        fakeCanvas.simulateMouseMove(500, 477);
-        fakeCanvas.simulateMouseUp(500, 477);
-        fakeCanvas.simulateMouseDown(500, 477);
-        fakeCanvas.simulateMouseMove(500, 523);
-        fakeCanvas.simulateMouseUp(500, 523);
-        fakeCanvas.simulateMouseDown(500, 523);
-        fakeCanvas.simulateMouseMove(500, 477);
-        fakeCanvas.simulateMouseUp(500, 477);
+        fakeCanvas.simulateMouseDown(500, 528);
+        fakeCanvas.simulateMouseMove(500, 472);
+        fakeCanvas.simulateMouseUp(500, 472);
+        fakeCanvas.simulateClick(500, 472);
+        fakeCanvas.simulateMouseDown(500, 472);
+        fakeCanvas.simulateMouseMove(500, 528);
+        fakeCanvas.simulateMouseUp(500, 528);
+        fakeCanvas.simulateClick(500, 528);
+        fakeCanvas.simulateMouseDown(500, 528);
+        fakeCanvas.simulateMouseMove(500, 472);
+        fakeCanvas.simulateMouseUp(500, 472);
+        fakeCanvas.simulateClick(500, 472);
         // Act 1
+        game.loop.once();
+        game.loop.once();
+        game.loop.once();
         game.loop.once();
         game.loop.once();
         game.loop.once();
@@ -296,7 +318,7 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(InputTerminal).length).toBe(1);
         expect(game.store.entities.get(OutputTerminal).length).toBe(1);
         expect(game.store.entities.get(Wire).length).toBe(1);
-        expect(game.store.entities.get(WireHandle).length).toBe(0);
+        expect(game.store.entities.get(WireCreationCaret).length).toBe(0);
         game.store.entities.get(Wire).forEach((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
                 x: 500,

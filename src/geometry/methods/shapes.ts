@@ -76,7 +76,6 @@ export const isPointInsideShape = (
 
 export const fromPointsToStandardForm = (p1: IPosition2D, p2: IPosition2D): { m: number, b: number } => {
     let m = (p2.y - p1.y) / (p2.x - p1.x);
-    m = isFinite(m) ? m : Number.MAX_SAFE_INTEGER;
     const b = p1.y - m * p1.x;
     return { m, b };
 };
@@ -85,8 +84,7 @@ export const getIntersectionBetweenStandardForms = (
     eq1: { m: number, b: number },
     eq2: { m: number, b: number },
 ): IPosition2D => {
-    let intersectX = (eq2.b - eq1.b) / (eq1.m - eq2.m);
-    intersectX = isNaN(intersectX) ? Number.MAX_SAFE_INTEGER : intersectX;
+    const intersectX = (eq2.b - eq1.b) / (eq1.m - eq2.m);
     const intersectY = eq1.m * intersectX + eq1.b;
     return {
         x: __settleFloatingPoint(intersectX),
@@ -155,7 +153,20 @@ export const isLineSegmentIntersectedByLineSegment = (
 ): boolean => {
     const ray = fromPointsToStandardForm(segment1.tail, segment1.head);
     const { m, b } = fromPointsToStandardForm(segment2.tail, segment2.head);
-    const intersection = getIntersectionBetweenStandardForms(ray, { m, b });
+    let intersection: { x: number, y: number };
+    if (!isFinite(ray.m)) {
+        intersection = {
+            x: segment1.head.x,
+            y: m * segment1.head.x + b,
+        };
+    } else if (!isFinite(m)) {
+        intersection = {
+            x: segment2.head.x,
+            y: ray.m * segment2.head.x + ray.b,
+        };
+    } else {
+        intersection = getIntersectionBetweenStandardForms(ray, { m, b });
+    }
     return isPointInsideMinMaxBounds(intersection, getMinMaxLineSegmentBounds(segment1))
         && isPointInsideMinMaxBounds(intersection, getMinMaxLineSegmentBounds(segment2)) ;
 };
