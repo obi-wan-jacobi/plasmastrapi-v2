@@ -57,10 +57,8 @@ export const isPointInsideShape = (
     let numberOfIntersections = 0;
     const shapeSegments = fromShapeToLineSegments(shape, pose);
     const raySegment = { head: point, tail: { x: minX, y: minY } };
-    const rayStandardForm = fromLineSegmentToStandardForm(raySegment);
     for (const shapeSegment of shapeSegments) {
-        const shapeSegmentStandardForm = fromLineSegmentToStandardForm(shapeSegment);
-        const intersection = getIntersectionBetweenStandardForms(rayStandardForm, shapeSegmentStandardForm);
+        const intersection = getPointOfIntersectionBetweenLinesFromSegments(raySegment, shapeSegment);
         if (isPointInsideMinMaxBounds(intersection, { minX, maxX, minY, maxY })) {
             if (Math.round(intersection.x) === Math.round(minX) && Math.round(intersection.y) === Math.round(minY)) {
                 return true;
@@ -151,24 +149,30 @@ export const isLineSegmentIntersectedByLineSegment = (
     segment1: { head: IPosition2D, tail: IPosition2D },
     segment2: { head: IPosition2D, tail: IPosition2D },
 ): boolean => {
+    const intersection = getPointOfIntersectionBetweenLinesFromSegments(segment1, segment2);
+    return isPointInsideMinMaxBounds(intersection, getMinMaxLineSegmentBounds(segment1))
+        && isPointInsideMinMaxBounds(intersection, getMinMaxLineSegmentBounds(segment2)) ;
+};
+
+export const getPointOfIntersectionBetweenLinesFromSegments = (
+    segment1: { head: IPosition2D, tail: IPosition2D },
+    segment2: { head: IPosition2D, tail: IPosition2D },
+): IPosition2D => {
     const ray = fromPointsToStandardForm(segment1.tail, segment1.head);
     const { m, b } = fromPointsToStandardForm(segment2.tail, segment2.head);
-    let intersection: { x: number, y: number };
     if (!isFinite(ray.m)) {
-        intersection = {
+        return {
             x: segment1.head.x,
             y: m * segment1.head.x + b,
         };
     } else if (!isFinite(m)) {
-        intersection = {
+        return {
             x: segment2.head.x,
             y: ray.m * segment2.head.x + ray.b,
         };
     } else {
-        intersection = getIntersectionBetweenStandardForms(ray, { m, b });
+        return getIntersectionBetweenStandardForms(ray, { m, b });
     }
-    return isPointInsideMinMaxBounds(intersection, getMinMaxLineSegmentBounds(segment1))
-        && isPointInsideMinMaxBounds(intersection, getMinMaxLineSegmentBounds(segment2)) ;
 };
 
 export const getMinMaxLineSegmentBounds = (segment: { head: IPosition2D, tail: IPosition2D }): MinMaxBoundary2D => {
