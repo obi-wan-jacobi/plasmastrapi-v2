@@ -1,4 +1,4 @@
-import ActiveToolButtonFrame from '../entities/ActiveToolButtonFrame';
+import ActiveItemFrame from '../entities/ActiveItemFrame';
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
 import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
 import CursorEventSystem, {
@@ -8,7 +8,6 @@ import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import Gate from '../entities/circuit-elements/Gate';
 import GateCreationButton from '../entities/buttons/GateCreationButton';
 import GateCreationCaret from '../entities/tool-carets/GateCreationCaret';
-import PoseComponent from '../../engine/concretes/components/PoseComponent';
 import TranslationComponent from '../../engine/concretes/components/TranslationComponent';
 
 export default class GateCreationSystem extends CursorEventSystem {
@@ -25,14 +24,14 @@ export default class GateCreationSystem extends CursorEventSystem {
         const gate = this.store.entities.create(Gate, component.data);
         gate.add(TranslationComponent);
         this.store.entities.create(GateCreationCaret, component.data);
-        this.store.entities.create(ActiveToolButtonFrame, component.entity.get(PoseComponent).data);
+        this.store.entities.create(ActiveItemFrame, component.entity);
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)
     @OnlyIfEntityIsInstanceOf(GateCreationCaret)
     private __onCursorCompleteActuationWithCaret(component: CursorEventComponent): void {
         component.entity.unload();
-        this.store.entities.get(ActiveToolButtonFrame).forEach((frame) => frame.unload());
+        this.store.entities.get(ActiveItemFrame).forEach((frame) => frame.unload());
     }
 
 }

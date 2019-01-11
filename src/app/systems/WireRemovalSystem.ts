@@ -1,4 +1,4 @@
-import ActiveToolButtonFrame from '../entities/ActiveToolButtonFrame';
+import ActiveItemFrame from '../entities/ActiveItemFrame';
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
 import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
 import CursorEventSystem, {
@@ -26,7 +26,7 @@ export default class WireRemovalSystem extends CursorEventSystem {
     @OnlyIfEntityIsInstanceOf(WireRemovalCaret)
     private __onCursorBeginActuationWithLineDrawing(component: CursorEventComponent): void {
         component.entity.unload();
-        this.store.entities.get(ActiveToolButtonFrame).forEach((frame) => frame.unload());
+        this.store.entities.get(ActiveItemFrame).forEach((frame) => frame.unload());
         this.store.entities.create(LineDrawing, { points: [{ x: component.data.x, y: component.data.y }] });
     }
 
@@ -53,7 +53,7 @@ export default class WireRemovalSystem extends CursorEventSystem {
     @OnCursorIntersection
     private __onCursorCompleteActuationWithButton(component: CursorEventComponent): void {
         this.store.entities.create(WireRemovalCaret, component.data);
-        this.store.entities.create(ActiveToolButtonFrame, component.entity.get(PoseComponent).data);
+        this.store.entities.create(ActiveItemFrame, component.entity);
     }
 
 }

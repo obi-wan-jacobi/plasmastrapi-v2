@@ -1,18 +1,23 @@
+import ChildPoseOffsetComponent from '../../engine/concretes/components/ChildPoseOffsetComponent';
 import Entity from '../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
-import IPosition2D from '../../geometry/interfaces/IPosition2D';
+import IChild from '../../framework/interfaces/IChild';
 import PoseComponent from '../../engine/concretes/components/PoseComponent';
 import Rectangle from '../../geometry/concretes/Rectangle';
 import RenderingComponent from '../../engine/concretes/components/RenderingComponent';
 import ShapeComponent from '../../engine/concretes/components/ShapeComponent';
 
-export default class ActiveToolButtonFrame extends Entity {
+export default class ActiveToolButtonFrame extends Entity implements IChild<Entity> {
 
-    constructor(position: IPosition2D) {
+    public parent: Entity;
+
+    constructor(entity: Entity) {
         super();
-        this.add(PoseComponent, { x: position.x, y: position.y, a: 0 });
+        this.parent = entity;
+        this.add(PoseComponent, this.parent.get(PoseComponent).data);
         this.add(RenderingComponent, { colour: HTML5_COLOUR.WHITE });
         this.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
+        this.add(ChildPoseOffsetComponent, { offsetX: 0, offsetY: 0 });
     }
 
 }
