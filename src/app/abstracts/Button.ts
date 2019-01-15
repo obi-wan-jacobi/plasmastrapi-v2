@@ -6,6 +6,7 @@ import PoseComponent from '../../engine/concretes/components/PoseComponent';
 import Rectangle from '../../geometry/concretes/Rectangle';
 import RenderingComponent from '../../engine/concretes/components/RenderingComponent';
 import ShapeComponent from '../../engine/concretes/components/ShapeComponent';
+import { settings } from '../game.config';
 
 export default abstract class Button extends Entity {
 
@@ -14,7 +15,10 @@ export default abstract class Button extends Entity {
         this.add(CursorEventComponent);
         this.add(PoseComponent, { x: position.x, y: position.y, a: 0 });
         this.add(RenderingComponent, { colour: HTML5_COLOUR.WHITE });
-        this.add(ShapeComponent, new Rectangle({ width: 40, height: 40 }));
+        this.add(ShapeComponent, new Rectangle({
+            width: settings.button.width,
+            height: settings.button.height,
+        }));
     }
 
 }

@@ -10,6 +10,7 @@ import Rectangle from '../../../geometry/concretes/Rectangle';
 import RenderingComponent from '../../../engine/concretes/components/RenderingComponent';
 import ShapeComponent from '../../../engine/concretes/components/ShapeComponent';
 import StoreMaster from '../../../engine/concretes/masters/StoreMaster';
+import { settings } from '../../game.config';
 
 export default class Gate extends Entity {
 
@@ -22,7 +23,10 @@ export default class Gate extends Entity {
         this.input = new InputTerminal(this);
         this.add(CursorEventComponent);
         this.add(PoseComponent, { x: position.x, y: position.y });
-        this.add(ShapeComponent, new Rectangle({ width: 40, height: 40 }));
+        this.add(ShapeComponent, new Rectangle({
+            width: settings.gate.width,
+            height: settings.gate.height,
+        }));
         this.add(RenderingComponent, { colour: HTML5_COLOUR.ORANGE });
         this.add(DragComponent);
     }

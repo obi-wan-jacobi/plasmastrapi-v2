@@ -7,6 +7,7 @@ import PoseComponent from '../../../engine/concretes/components/PoseComponent';
 import Rectangle from '../../../geometry/concretes/Rectangle';
 import RenderingComponent from '../../../engine/concretes/components/RenderingComponent';
 import ShapeComponent from '../../../engine/concretes/components/ShapeComponent';
+import { settings } from '../../game.config';
 
 export default class OutputTerminal extends Entity implements IChild<Entity> {
 
@@ -17,9 +18,15 @@ export default class OutputTerminal extends Entity implements IChild<Entity> {
         this.parent = parent;
         this.add(CursorEventComponent);
         this.add(PoseComponent, { x: - Infinity, y: -Infinity });
-        this.add(ShapeComponent, new Rectangle({ width: 10, height: 10 }));
+        this.add(ShapeComponent, new Rectangle({
+            width: settings.terminal.width,
+            height: settings.terminal.height,
+        }));
         this.add(RenderingComponent, { colour: HTML5_COLOUR.YELLOW });
-        this.add(ChildPoseOffsetComponent, { offsetX: 0, offsetY: -28 });
+        this.add(ChildPoseOffsetComponent, {
+            offsetX: settings.terminal.output.offsetX,
+            offsetY: settings.terminal.output.offsetY,
+        });
     }
 
 }

@@ -3,7 +3,7 @@ import ChildPoseOffsetSystem from '../concretes/systems/ChildPoseOffsetSystem';
 import DragSystem from '../concretes/systems/DragSystem';
 import ICursorAdapter from '../interfaces/ICursorAdapter';
 import IViewportAdapter from '../interfaces/IViewportAdapter';
-import LineConnectorSystem from '../concretes/systems/LineConnectorSystem';
+import WireSystem from '../concretes/systems/LineConnectorSystem';
 import LineDrawingSystem from '../concretes/systems/LineDrawingSystem';
 import LineRenderingSystem from '../concretes/systems/LineRenderingSystem';
 import PoseRenderingSystem from '../concretes/systems/PoseRenderingSystem';
@@ -41,7 +41,7 @@ export default abstract class Engine {
     private __initSystemsInPriorityOrder(): void {
         this.systems.add(TranslationSystem);
         this.systems.add(ChildPoseOffsetSystem);
-        this.systems.add(LineConnectorSystem);
+        this.systems.add(WireSystem);
         this.systems.add(DragSystem);
         this.systems.add(LineDrawingSystem);
         this.systems.add(LineRenderingSystem, this.viewport);

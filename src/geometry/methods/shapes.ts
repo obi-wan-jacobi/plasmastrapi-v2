@@ -1,3 +1,4 @@
+/* tslint:disable:no-magic-numbers */
 import IPose2D from '../interfaces/IPose2D';
 import IPosition2D from '../interfaces/IPosition2D';
 import IShape2D from '../interfaces/IShape2D';

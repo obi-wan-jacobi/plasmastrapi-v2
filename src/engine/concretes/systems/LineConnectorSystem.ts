@@ -1,8 +1,13 @@
+/* tslint:disable:no-magic-numbers */
+import IPose2D from '../../../geometry/interfaces/IPose2D';
+import IPosition2D from '../../../geometry/interfaces/IPosition2D';
+import IShape2D from '../../../geometry/interfaces/IShape2D';
 import LineConnectorComponent from '../components/LineConnectorComponent';
 import PoseComponent from '../components/PoseComponent';
 import Rectangle from '../../../geometry/concretes/Rectangle';
 import ShapeComponent from '../components/ShapeComponent';
 import System from '../../abstracts/System';
+import { settings } from '../../engine.config';
 
 export default class LineConnectorSystem extends System<LineConnectorComponent> {
 
@@ -11,19 +16,34 @@ export default class LineConnectorSystem extends System<LineConnectorComponent> 
     }
 
     public once(component: LineConnectorComponent): void {
-        const headPose = component.data.head.get(PoseComponent).data;
-        const tailPose = component.data.tail.get(PoseComponent).data;
-        const pose = component.entity.get(PoseComponent);
-        const dx = headPose.x - tailPose.x;
-        const dy = headPose.y - tailPose.y;
-        pose.data.x = tailPose.x + dx / 2;
-        pose.data.y = tailPose.y + dy / 2;
-        pose.data.a = Math.atan2(dy, dx);
-        const shape = component.entity.get(ShapeComponent);
-        shape.set(new Rectangle({
-            width: Math.sqrt(Math.pow(Math.abs(headPose.x - tailPose.x), 2) + Math.pow(headPose.y - tailPose.y, 2)),
-            height: 8,
-        }));
+        const head = component.data.head.get(PoseComponent).data;
+        const tail = component.data.tail.get(PoseComponent).data;
+        const { pose, shape } = __fromPointsToLine(tail, head);
+        component.entity.get(PoseComponent).set(pose);
+        component.entity.get(ShapeComponent).set(shape);
     }
-
 }
+
+const __fromPointsToLine = (p1: IPosition2D, p2: IPosition2D): { pose: IPose2D, shape: IShape2D } => {
+    return {
+        pose: __fromPointsToLinePose(p1, p2),
+        shape: new Rectangle({
+            width: __fromPointsToEuclideanDistance(p1, p2),
+            height: settings.line.height,
+        }),
+    };
+};
+
+const __fromPointsToLinePose = (p1: IPosition2D, p2: IPosition2D): IPose2D => {
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    return {
+        x: p1.x + dx / 2,
+        y: p1.y + dy / 2,
+        a: Math.atan2(dy, dx),
+    };
+};
+
+const __fromPointsToEuclideanDistance = (p1: IPosition2D, p2: IPosition2D): number => {
+    return Math.sqrt(Math.pow(Math.abs(p2.x - p1.x), 2) + Math.pow(p2.y - p1.y, 2));
+};

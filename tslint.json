@@ -1,6 +1,7 @@
 {
     "extends": ["tslint:recommended", "tslint-consistent-codestyle"],
     "rules": {
+        "no-magic-numbers": true,
         "trailing-comma": [true, { 
             "multiline": "always",
             "singleline": "never"

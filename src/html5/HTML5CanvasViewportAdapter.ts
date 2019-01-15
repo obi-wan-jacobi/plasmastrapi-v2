@@ -5,8 +5,10 @@ import IRenderingProfile from '../engine/interfaces/IRenderingProfile';
 import IShape2D from '../geometry/interfaces/IShape2D';
 import IViewportAdapter from '../engine/interfaces/IViewportAdapter';
 
+/* tslint:disable:no-magic-numbers */
 const TWO_PI_RADIANS = 2 * Math.PI;
 const DEFAULT_RADIUS = 2;
+/* tslint:enable:no-magic-numbers */
 
 export default class HTML5CanvasViewportAdapter implements
  IViewportAdapter<CanvasRenderingContext2D, IRenderingProfile<HTML5_COLOUR>> {
