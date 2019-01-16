@@ -53,14 +53,14 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(Wire).length).toBe(1);
         expect(game.store.entities.get(WireCreationCaret).length).toBe(1);
         expect(game.store.entities.length).toBe(5);
-        game.store.entities.get(Wire).forEach((wire) => {
+        game.store.entities.get(Wire).first((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
                 x: 552.5,
                 y: 461,
                 a: -0.20653607310567618,
             });
         });
-        game.store.entities.get(WireCreationCaret).forEach((TerminalCaret) => {
+        game.store.entities.get(WireCreationCaret).first((TerminalCaret) => {
             expect(TerminalCaret.get(PoseComponent).data).toEqual({
                 x: 605,
                 y: 450,
@@ -105,14 +105,14 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(Wire).length).toBe(1);
         expect(game.store.entities.get(WireCreationCaret).length).toBe(1);
         expect(game.store.entities.length).toBe(5);
-        game.store.entities.get(Wire).forEach((wire) => {
+        game.store.entities.get(Wire).first((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
                 x: 552.5,
                 y: 489,
                 a: 2.502678668585906,
             });
         });
-        game.store.entities.get(WireCreationCaret).forEach((TerminalCaret) => {
+        game.store.entities.get(WireCreationCaret).first((TerminalCaret) => {
             expect(TerminalCaret.get(PoseComponent).data).toEqual({
                 x: 605,
                 y: 450,
@@ -171,7 +171,7 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(OutputTerminal).length).toBe(2);
         expect(game.store.entities.get(Wire).length).toBe(1);
         expect(game.store.entities.get(WireCreationCaret).length).toBe(0);
-        game.store.entities.get(Wire).forEach((wire) => {
+        game.store.entities.get(Wire).first((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
                 x: 550,
                 y: 500,
@@ -196,7 +196,7 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(OutputTerminal).length).toBe(2);
         expect(game.store.entities.get(Wire).length).toBe(1);
         expect(game.store.entities.get(WireCreationCaret).length).toBe(0);
-        game.store.entities.get(Wire).forEach((wire) => {
+        game.store.entities.get(Wire).first((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
                 x: 655,
                 y: 490,
@@ -243,7 +243,7 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(OutputTerminal).length).toBe(2);
         expect(game.store.entities.get(Wire).length).toBe(1);
         expect(game.store.entities.get(WireCreationCaret).length).toBe(0);
-        game.store.entities.get(Wire).forEach((wire) => {
+        game.store.entities.get(Wire).first((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
                 x: 550,
                 y: 500,
@@ -268,7 +268,7 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(OutputTerminal).length).toBe(2);
         expect(game.store.entities.get(Wire).length).toBe(1);
         expect(game.store.entities.get(WireCreationCaret).length).toBe(0);
-        game.store.entities.get(Wire).forEach((wire) => {
+        game.store.entities.get(Wire).first((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
                 x: 655,
                 y: 490,
@@ -319,7 +319,7 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(OutputTerminal).length).toBe(1);
         expect(game.store.entities.get(Wire).length).toBe(1);
         expect(game.store.entities.get(WireCreationCaret).length).toBe(0);
-        game.store.entities.get(Wire).forEach((wire) => {
+        game.store.entities.get(Wire).first((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
                 x: 500,
                 y: 500,

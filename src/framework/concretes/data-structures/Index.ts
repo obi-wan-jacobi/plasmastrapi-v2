@@ -1,6 +1,7 @@
 import Dictionary from './Dictionary';
 import IIterable from '../../interfaces/IIterable';
 import IUnique from '../../interfaces/IUnique';
+import { Optional } from '../../types/Optional';
 import Wrapper from '../../abstracts/Wrapper';
 
 export default class Index<T extends IUnique> extends Wrapper<Dictionary<T>>
@@ -51,6 +52,14 @@ implements IIterable<T> {
 
     public find(method: (value: T) => boolean): T {
         return this.unwrap().find(method);
+    }
+
+    public first(method?: (value: T) => void): Optional<T> {
+        const first = this.unwrap().first();
+        if (method && first) {
+            method(first);
+        }
+        return first;
     }
 
 }

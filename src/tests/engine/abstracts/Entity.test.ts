@@ -40,7 +40,8 @@ describe(Entity.name, () => {
         //
         game.loop.once();
         //
-        expect(entity.length).toBe(5);
+        const expectedNumberOfComponents = 5;
+        expect(entity.length).toBe(expectedNumberOfComponents);
         done();
     });
 

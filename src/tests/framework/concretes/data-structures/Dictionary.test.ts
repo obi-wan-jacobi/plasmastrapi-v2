@@ -146,4 +146,24 @@ describe(Dictionary, () => {
         done();
     });
 
+    it('get first element', (done) => {
+        dictionary.write({
+            key: firstTuple.id,
+            value: firstTuple.data,
+        });
+        dictionary.write({
+            key: secondTuple.id,
+            value: secondTuple.data,
+        });
+        dictionary.write({
+            key: thirdTuple.id,
+            value: thirdTuple.data,
+        });
+        //
+        const result = dictionary.first();
+        //
+        expect(result).toBe(firstTuple.data);
+        done();
+    });
+
 });

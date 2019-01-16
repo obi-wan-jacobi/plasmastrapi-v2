@@ -1,3 +1,4 @@
+import CircuitDesignSystem from './systems/CircuitDesignSystem';
 import GateCreationSystem from './systems/GateCreationSystem';
 import GateRemovalSystem from './systems/GateRemovalSystem';
 import HTML5CanvasGame from '../html5/HTML5CanvasGame';
@@ -12,6 +13,7 @@ export default class Plasmastrapi extends HTML5CanvasGame {
         this.systems.add(GateRemovalSystem);
         this.systems.add(WireCreationSystem);
         this.systems.add(WireRemovalSystem);
+        this.systems.add(CircuitDesignSystem);
     }
 
 }

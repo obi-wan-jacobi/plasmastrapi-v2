@@ -1,14 +1,14 @@
-import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
-import ImpostorCanvasRenderingContext2D from '../../src/concretes/impostors/ImpostorCanvasRenderingContext2D';
-import ImpostorHTMLCanvasElement from '../../src/concretes/impostors/ImpostorHTMLCanvasElement';
-import LineConnectorSystem from '../../../engine/concretes/systems/LineConnectorSystem';
-import Plasmastrapi from '../../../app/Plasmastrapi';
-import PoseComponent from '../../../engine/concretes/components/PoseComponent';
-import RenderingComponent from '../../../engine/concretes/components/RenderingComponent';
-import ShapeRenderingSystem from '../../../engine/concretes/systems/ShapeRenderingSystem';
+import FakeHTMLCanvasElement from '../../../src/fakes/FakeHTMLCanvasElement';
+import Gate from '../../../../app/entities/circuit-elements/Gate';
+import ImpostorCanvasRenderingContext2D from '../../../src/concretes/impostors/ImpostorCanvasRenderingContext2D';
+import ImpostorHTMLCanvasElement from '../../../src/concretes/impostors/ImpostorHTMLCanvasElement';
+import LineConnectorSystem from '../../../../engine/concretes/systems/LineConnectorSystem';
+import Plasmastrapi from '../../../../app/Plasmastrapi';
+import PoseComponent from '../../../../engine/concretes/components/PoseComponent';
+import RenderingComponent from '../../../../engine/concretes/components/RenderingComponent';
+import ShapeRenderingSystem from '../../../../engine/concretes/systems/ShapeRenderingSystem';
+import Wire from '../../../../app/entities/circuit-elements/Wire';
 import * as sinon from 'sinon';
-import Gate from '../../../app/entities/circuit-elements/Gate';
-import Wire from '../../../app/entities/circuit-elements/Wire';
 
 describe(LineConnectorSystem.name, () => {
 
@@ -40,7 +40,7 @@ describe(LineConnectorSystem.name, () => {
         game.systems.get(ShapeRenderingSystem).once(wire.get(RenderingComponent));
         //
         expect(game.store.entities.get(Wire).length).toBe(1);
-        game.store.entities.get(Wire).forEach((instance) => {
+        game.store.entities.get(Wire).first((instance) => {
             expect(instance.get(PoseComponent).data).toEqual({
                 x: (342 + 50) / 2,
                 y: (543 + 50) / 2,
@@ -76,7 +76,7 @@ describe(LineConnectorSystem.name, () => {
         game.systems.get(ShapeRenderingSystem).once(wire.get(RenderingComponent));
         //
         expect(game.store.entities.get(Wire).length).toBe(1);
-        game.store.entities.get(Wire).forEach((instance) => {
+        game.store.entities.get(Wire).first((instance) => {
             expect(instance.get(PoseComponent).data).toEqual({
                 x: 209.5,
                 y: 330.5,

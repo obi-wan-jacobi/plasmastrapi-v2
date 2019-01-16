@@ -5,10 +5,8 @@ import CursorEventSystem, {
     OnCursorEvent, OnCursorIntersection,
 } from '../../engine/abstracts/systems/CursorEventSystem';
 import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
-import Gate from '../entities/circuit-elements/Gate';
 import GateCreationButton from '../entities/buttons/GateCreationButton';
 import GateCreationCaret from '../entities/tool-carets/GateCreationCaret';
-import TranslationComponent from '../../engine/concretes/components/TranslationComponent';
 
 export default class GateCreationSystem extends CursorEventSystem {
 
@@ -21,10 +19,8 @@ export default class GateCreationSystem extends CursorEventSystem {
     @OnlyIfEntityIsInstanceOf(GateCreationButton)
     @OnCursorIntersection
     private __onCursorCompleteActuationWithButton(component: CursorEventComponent): void {
-        const gate = this.store.entities.create(Gate, component.data);
-        gate.add(TranslationComponent);
-        this.store.entities.create(GateCreationCaret, component.data);
         this.store.entities.create(ActiveItemFrame, component.entity);
+        this.store.entities.create(GateCreationCaret, component.data);
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)

@@ -1,4 +1,5 @@
 import IIterable from '../../interfaces/IIterable';
+import { Optional } from '../../types/Optional';
 
 export default class Dictionary<T> implements IIterable<T> {
 
@@ -42,6 +43,14 @@ export default class Dictionary<T> implements IIterable<T> {
 
     public find(fn: (value: T) => boolean): T {
         return this.map((value: T): T => value).find(fn);
+    }
+
+    public first(): Optional<T> {
+        for (const key in this.__data) {
+            if (this.__data.hasOwnProperty(key)) {
+                return this.__data[key];
+            }
+        }
     }
 
 }
