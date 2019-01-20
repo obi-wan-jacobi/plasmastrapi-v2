@@ -1,9 +1,9 @@
 import CursorEventComponent from '../../../src/engine/components/CursorEventComponent';
 import Entity from '../../../src/engine/abstracts/Entity';
 import FakeCanvas from '../../src/fakes/FakeHTMLCanvasElement';
-import HTML5CanvasGame from '../../../src/html5/HTML5CanvasGame';
 import ImpostorCanvasRenderingContext2D from '../../src//impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../src//impostors/ImpostorHTMLCanvasElement';
+import Plasmastrapi from '../../../src/app/Plasmastrapi';
 import PoseComponent from '../../../src/engine/components/PoseComponent';
 import TranslationComponent from '../../../src/app/components/TranslationComponent';
 import TranslationSystem from '../../../src/app/systems/TranslationSystem';
@@ -12,7 +12,7 @@ describe(TranslationSystem.name, () => {
 
     let impostorRenderingContext: ImpostorCanvasRenderingContext2D;
     let impostorHTMLCanvasElement: ImpostorHTMLCanvasElement;
-    let game: HTML5CanvasGame;
+    let game: Plasmastrapi;
 
     beforeEach(() => {
         impostorRenderingContext = new ImpostorCanvasRenderingContext2D();
@@ -22,8 +22,7 @@ describe(TranslationSystem.name, () => {
             .returns(impostorRenderingContext.unwrap());
         impostorHTMLCanvasElement.expects('getBoundingClientRect').once()
             .returns({ left: 0, top: 0 });
-        game = new HTML5CanvasGame(impostorHTMLCanvasElement.unwrap());
-        game.systems.add(TranslationSystem);
+        game = new Plasmastrapi(impostorHTMLCanvasElement.unwrap());
     });
 
     afterEach(() => {
