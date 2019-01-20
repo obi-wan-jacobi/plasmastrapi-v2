@@ -1,15 +1,15 @@
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
 import CircuitDesignArea from '../entities/CircuitDesignArea';
-import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
+import CursorEventComponent from '../../engine/components/CursorEventComponent';
 import CursorEventSystem, {
     OnCursorEvent,
 } from '../../engine/abstracts/systems/CursorEventSystem';
 import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import Gate from '../entities/circuit-elements/Gate';
 import GateCreationCaret from '../entities/tool-carets/GateCreationCaret';
-import PoseComponent from '../../engine/concretes/components/PoseComponent';
-import ShapeComponent from '../../engine/concretes/components/ShapeComponent';
-import TranslationComponent from '../../engine/concretes/components/TranslationComponent';
+import PoseComponent from '../../engine/components/PoseComponent';
+import ShapeComponent from '../../engine/components/ShapeComponent';
+import TranslationComponent from '../components/TranslationComponent';
 import { isPointInsideShape } from '../../geometry/methods/shapes';
 
 export default class CircuitDesignSystem extends CursorEventSystem {

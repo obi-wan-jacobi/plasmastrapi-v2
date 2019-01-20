@@ -2,10 +2,10 @@ import ChildPoseOffsetComponent from '../components/ChildPoseOffsetComponent';
 import Entity from '../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import IChild from '../../framework/interfaces/IChild';
-import PoseComponent from '../../engine/concretes/components/PoseComponent';
+import PoseComponent from '../../engine/components/PoseComponent';
 import Rectangle from '../../geometry/concretes/Rectangle';
-import RenderingComponent from '../../engine/concretes/components/RenderingComponent';
-import ShapeComponent from '../../engine/concretes/components/ShapeComponent';
+import RenderingComponent from '../../engine/components/RenderingComponent';
+import ShapeComponent from '../../engine/components/ShapeComponent';
 
 export default class ActiveToolButtonFrame extends Entity implements IChild<Entity> {
 

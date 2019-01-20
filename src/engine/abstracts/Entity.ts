@@ -2,9 +2,9 @@ import { Ctor } from '../../framework/types/Ctor';
 import IComponent from '../interfaces/IComponent';
 import IEntity from '../interfaces/IEntity';
 import { Optional } from '../../framework/types/Optional';
-import StoreMaster from '../concretes/masters/StoreMaster';
+import StoreMaster from '../masters/StoreMaster';
 import System from './System';
-import TypeIndex from '../../framework/concretes/data-structures/TypeIndex';
+import TypeIndex from '../../framework/data-structures/TypeIndex';
 import Unique from '../../framework/abstracts/Unique';
 
 export default class Entity extends TypeIndex<IComponent<any>> implements IEntity {

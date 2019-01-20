@@ -1,12 +1,13 @@
+/* tslint:disable:no-magic-numbers */
 import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../src/app/entities/circuit-elements/Gate';
-import ImpostorCanvasRenderingContext2D from '../../src/concretes/impostors/ImpostorCanvasRenderingContext2D';
-import ImpostorHTMLCanvasElement from '../../src/concretes/impostors/ImpostorHTMLCanvasElement';
+import ImpostorCanvasRenderingContext2D from '../../src//impostors/ImpostorCanvasRenderingContext2D';
+import ImpostorHTMLCanvasElement from '../../src//impostors/ImpostorHTMLCanvasElement';
 import LineConnectorSystem from '../../../src/app/systems/LinePoseSystem';
 import Plasmastrapi from '../../../src/app/Plasmastrapi';
-import PoseComponent from '../../../src/engine/concretes/components/PoseComponent';
-import RenderingComponent from '../../../src/engine/concretes/components/RenderingComponent';
-import ShapeRenderingSystem from '../../../src/engine/concretes/systems/ShapeRenderingSystem';
+import PoseComponent from '../../../src/engine/components/PoseComponent';
+import RenderingComponent from '../../../src/engine/components/RenderingComponent';
+import ShapeRenderingSystem from '../../../src/engine/systems/ShapeRenderingSystem';
 import Wire from '../../../src/app/entities/circuit-elements/Wire';
 import * as sinon from 'sinon';
 

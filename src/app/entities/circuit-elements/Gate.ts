@@ -1,15 +1,15 @@
-import CursorEventComponent from '../../../engine/concretes/components/CursorEventComponent';
-import DragComponent from '../../../engine/concretes/components/DragComponent';
+import CursorEventComponent from '../../../engine/components/CursorEventComponent';
+import DragComponent from '../../components/DragComponent';
 import Entity from '../../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../../html5/enums/HTML5_COLOUR';
 import IPosition2D from '../../../geometry/interfaces/IPosition2D';
 import InputTerminal from './InputTerminal';
 import OutputTerminal from './OutputTerminal';
-import PoseComponent from '../../../engine/concretes/components/PoseComponent';
+import PoseComponent from '../../../engine/components/PoseComponent';
 import Rectangle from '../../../geometry/concretes/Rectangle';
-import RenderingComponent from '../../../engine/concretes/components/RenderingComponent';
-import ShapeComponent from '../../../engine/concretes/components/ShapeComponent';
-import StoreMaster from '../../../engine/concretes/masters/StoreMaster';
+import RenderingComponent from '../../../engine/components/RenderingComponent';
+import ShapeComponent from '../../../engine/components/ShapeComponent';
+import StoreMaster from '../../../engine/masters/StoreMaster';
 import { settings } from '../../game.config';
 
 export default class Gate extends Entity {

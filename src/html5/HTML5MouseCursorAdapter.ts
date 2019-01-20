@@ -1,6 +1,6 @@
 import { CURSOR_EVENT } from '../engine/enums/CURSOR_EVENT';
-import ComponentStoreManager from '../engine/concretes/store/ComponentStoreManager';
-import CursorEventComponent from '../engine/concretes/components/CursorEventComponent';
+import ComponentStoreManager from '../engine/store/ComponentStoreManager';
+import CursorEventComponent from '../engine/components/CursorEventComponent';
 import ICursorAdapter from '../engine/interfaces/ICursorAdapter';
 
 export default class HTML5MouseCursorAdapter implements ICursorAdapter {

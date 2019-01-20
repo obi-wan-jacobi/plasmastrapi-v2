@@ -1,8 +1,8 @@
-import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
+import CursorEventComponent from '../../engine/components/CursorEventComponent';
 import Entity from '../../engine/abstracts/Entity';
 import IPosition2D from '../../geometry/interfaces/IPosition2D';
-import PoseComponent from '../../engine/concretes/components/PoseComponent';
-import TranslationComponent from '../../engine/concretes/components/TranslationComponent';
+import PoseComponent from '../../engine/components/PoseComponent';
+import TranslationComponent from '../components/TranslationComponent';
 
 export default abstract class ToolCaret extends Entity {
 

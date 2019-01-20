@@ -1,7 +1,7 @@
 import { Ctor } from '../../../framework/types/Ctor';
 import IRenderContext from '../../interfaces/IRenderContext';
 import IRenderingProfile from '../../interfaces/IRenderingProfile';
-import RenderingComponent from '../../concretes/components/RenderingComponent';
+import RenderingComponent from '../../components/RenderingComponent';
 import System from '../System';
 
 export default abstract class RenderSystem<TProfile extends IRenderingProfile<any>>

@@ -1,13 +1,13 @@
 import ActiveItemFrame from '../entities/ActiveItemFrame';
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
-import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
+import CursorEventComponent from '../../engine/components/CursorEventComponent';
 import CursorEventSystem, {
     OnCursorEvent, OnCursorIntersection,
 } from '../../engine/abstracts/systems/CursorEventSystem';
 import CurveComponent from '../components/CurveComponent';
 import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
-import PoseComponent from '../../engine/concretes/components/PoseComponent';
-import ShapeComponent from '../../engine/concretes/components/ShapeComponent';
+import PoseComponent from '../../engine/components/PoseComponent';
+import ShapeComponent from '../../engine/components/ShapeComponent';
 import Wire from '../entities/circuit-elements/Wire';
 import WireCuttingPath from '../entities/tool-carets/WireCuttingPath';
 import WireRemovalButton from '../entities/buttons/WireRemovalButton';

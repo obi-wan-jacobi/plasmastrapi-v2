@@ -3,9 +3,9 @@ import IPose2D from '../../geometry/interfaces/IPose2D';
 import IPosition2D from '../../geometry/interfaces/IPosition2D';
 import IShape2D from '../../geometry/interfaces/IShape2D';
 import LineComponent from '../components/LineComponent';
-import PoseComponent from '../../engine/concretes/components/PoseComponent';
+import PoseComponent from '../../engine/components/PoseComponent';
 import Rectangle from '../../geometry/concretes/Rectangle';
-import ShapeComponent from '../../engine/concretes/components/ShapeComponent';
+import ShapeComponent from '../../engine/components/ShapeComponent';
 import System from '../../engine/abstracts/System';
 import { settings } from '../../engine/engine.config';
 

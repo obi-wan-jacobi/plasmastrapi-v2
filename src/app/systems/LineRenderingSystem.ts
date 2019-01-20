@@ -4,7 +4,7 @@ import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import IRenderContext from '../../engine/interfaces/IRenderContext';
 import IRenderingProfile from '../../engine/interfaces/IRenderingProfile';
 import RenderSystem from '../../engine/abstracts/systems/RenderSystem';
-import RenderingComponent from '../../engine/concretes/components/RenderingComponent';
+import RenderingComponent from '../../engine/components/RenderingComponent';
 
 export default class LineRenderingSystem extends RenderSystem<IRenderingProfile<HTML5_COLOUR>> {
 

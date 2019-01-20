@@ -5,10 +5,10 @@ import Gate from '../../../src/app/entities/circuit-elements/Gate';
 import GateCreationButton from '../../../src/app/entities/buttons/GateCreationButton';
 import GateCreationCaret from '../../../src/app/entities/tool-carets/GateCreationCaret';
 import GateCreationSystem from '../../../src/app/systems/GateCreationSystem';
-import ImpostorCanvasRenderingContext2D from '../../src/concretes/impostors/ImpostorCanvasRenderingContext2D';
-import ImpostorHTMLCanvasElement from '../../src/concretes/impostors/ImpostorHTMLCanvasElement';
+import ImpostorCanvasRenderingContext2D from '../../src//impostors/ImpostorCanvasRenderingContext2D';
+import ImpostorHTMLCanvasElement from '../../src//impostors/ImpostorHTMLCanvasElement';
 import Plasmastrapi from '../../../src/app/Plasmastrapi';
-import PoseComponent from '../../../src/engine/concretes/components/PoseComponent';
+import PoseComponent from '../../../src/engine/components/PoseComponent';
 
 describe(GateCreationSystem.name, () => {
 

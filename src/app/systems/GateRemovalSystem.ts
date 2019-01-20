@@ -1,6 +1,6 @@
 import ActiveItemFrame from '../entities/ActiveItemFrame';
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
-import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
+import CursorEventComponent from '../../engine/components/CursorEventComponent';
 import CursorEventSystem, {
     CursorIntersectsEntityValidator, OnCursorEvent, OnCursorIntersection,
 } from '../../engine/abstracts/systems/CursorEventSystem';

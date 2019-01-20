@@ -1,9 +1,9 @@
 import { Ctor } from '../../framework/types/Ctor';
-import Engine from './Engine';
+import Engine from '../Engine';
 import ISlave from '../../framework/interfaces/ISlave';
 import ISystem from '../interfaces/ISystem';
-import StoreMaster from '../concretes/masters/StoreMaster';
-import SystemMaster from '../concretes/masters/SystemMaster';
+import StoreMaster from '../masters/StoreMaster';
+import SystemMaster from '../masters/SystemMaster';
 
 export default abstract class System<TComponent extends {}> implements ISystem<TComponent>, ISlave<SystemMaster> {
 

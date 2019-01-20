@@ -1,14 +1,14 @@
-import CursorEventComponent from '../../../src/engine/concretes/components/CursorEventComponent';
+import CursorEventComponent from '../../../src/engine/components/CursorEventComponent';
 import Entity from '../../../src/engine/abstracts/Entity';
 import HTML5CanvasGame from '../../../src/html5/HTML5CanvasGame';
 import { HTML5_COLOUR } from '../../../src/html5/enums/HTML5_COLOUR';
-import ImpostorCanvasRenderingContext2D from '../../src/concretes/impostors/ImpostorCanvasRenderingContext2D';
-import ImpostorHTMLCanvasElement from '../../src/concretes/impostors/ImpostorHTMLCanvasElement';
-import PoseComponent from '../../../src/engine/concretes/components/PoseComponent';
+import ImpostorCanvasRenderingContext2D from '../../src/impostors/ImpostorCanvasRenderingContext2D';
+import ImpostorHTMLCanvasElement from '../../src/impostors/ImpostorHTMLCanvasElement';
+import PoseComponent from '../../../src/engine/components/PoseComponent';
 import Rectangle from '../../../src/geometry/concretes/Rectangle';
-import RenderingComponent from '../../../src/engine/concretes/components/RenderingComponent';
-import ShapeComponent from '../../../src/engine/concretes/components/ShapeComponent';
-import TranslationComponent from '../../../src/engine/concretes/components/TranslationComponent';
+import RenderingComponent from '../../../src/engine/components/RenderingComponent';
+import ShapeComponent from '../../../src/engine/components/ShapeComponent';
+import TranslationComponent from '../../../src/app/components/TranslationComponent';
 
 describe(Entity.name, () => {
 

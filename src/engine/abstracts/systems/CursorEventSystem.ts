@@ -1,10 +1,10 @@
 import { CURSOR_EVENT } from '../../enums/CURSOR_EVENT';
-import CursorEventComponent from '../../concretes/components/CursorEventComponent';
+import CursorEventComponent from '../../components/CursorEventComponent';
 import { OnlyIfEntityHas } from '../Entity';
 import ISystem from '../../interfaces/ISystem';
 import Invocable from '../../../framework/abstracts/Invocable';
-import PoseComponent from '../../concretes/components/PoseComponent';
-import ShapeComponent from '../../concretes/components/ShapeComponent';
+import PoseComponent from '../../components/PoseComponent';
+import ShapeComponent from '../../components/ShapeComponent';
 import System from '../System';
 import { isPointInsideShape } from '../../../geometry/methods/shapes';
 

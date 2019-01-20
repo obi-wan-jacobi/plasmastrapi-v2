@@ -1,8 +1,8 @@
 import { Ctor } from '../../framework/types/Ctor';
 import IIterable from '../../framework/interfaces/IIterable';
 import IUnique from '../../framework/interfaces/IUnique';
-import Index from '../../framework/concretes/data-structures/Index';
-import Manifold from '../../framework/concretes/data-structures/Manifold';
+import Index from '../../framework/data-structures/Index';
+import Manifold from '../../framework/data-structures/Manifold';
 import Wrapper from '../../framework/abstracts/Wrapper';
 
 export default abstract class StoreManager<T extends IUnique> extends Wrapper<Manifold<T>>

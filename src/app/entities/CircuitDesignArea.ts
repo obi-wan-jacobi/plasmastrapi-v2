@@ -1,11 +1,11 @@
-import CursorEventComponent from '../../engine/concretes/components/CursorEventComponent';
+import CursorEventComponent from '../../engine/components/CursorEventComponent';
 import Entity from '../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import IPosition2D from '../../geometry/interfaces/IPosition2D';
-import PoseComponent from '../../engine/concretes/components/PoseComponent';
+import PoseComponent from '../../engine/components/PoseComponent';
 import Rectangle from '../../geometry/concretes/Rectangle';
-import RenderingComponent from '../../engine/concretes/components/RenderingComponent';
-import ShapeComponent from '../../engine/concretes/components/ShapeComponent';
+import RenderingComponent from '../../engine/components/RenderingComponent';
+import ShapeComponent from '../../engine/components/ShapeComponent';
 
 export default class CircuitDesignArea extends Entity {
 
