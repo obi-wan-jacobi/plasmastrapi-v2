@@ -1,11 +1,11 @@
-import RenderSystem from '../abstracts/systems/RenderSystem';
-import IRenderingProfile from '../interfaces/IRenderingProfile';
+import { OnlyIfEntityHas } from '../abstracts/Entity';
 import IRenderContext from '../interfaces/IRenderContext';
+import IRenderingProfile from '../interfaces/IRenderingProfile';
+import PoseComponent from '../components/PoseComponent';
+import RenderSystem from '../abstracts/systems/RenderSystem';
 import RenderingComponent from '../components/RenderingComponent';
 import ShapeComponent from '../components/ShapeComponent';
-import { OnlyIfEntityHas } from '../abstracts/Entity';
 import { transformShape } from '../../geometry/methods/shapes';
-import PoseComponent from '../components/PoseComponent';
 
 export default class ShapeRenderingSystem<T>
 extends RenderSystem<IRenderingProfile<T>> {

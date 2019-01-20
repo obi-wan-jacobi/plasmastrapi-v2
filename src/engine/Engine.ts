@@ -1,12 +1,8 @@
-import DragSystem from '../app/systems/DragSystem';
 import ICursorAdapter from './interfaces/ICursorAdapter';
 import IViewportAdapter from './interfaces/IViewportAdapter';
-import PoseRenderingSystem from './systems/PoseRenderingSystem';
-import ShapeRenderingSystem from './systems/ShapeRenderingSystem';
 import StoreMaster from './masters/StoreMaster';
 import SystemLoopMaster from './masters/SystemLoopMaster';
 import SystemMaster from './masters/SystemMaster';
-import TranslationSystem from '../app/systems/TranslationSystem';
 
 export default class Engine {
 
@@ -27,14 +23,6 @@ export default class Engine {
             this.store,
             this.systems,
         );
-        this.__initSystemsInPriorityOrder();
-    }
-
-    private __initSystemsInPriorityOrder(): void {
-        this.systems.add(TranslationSystem);
-        this.systems.add(DragSystem);
-        this.systems.add(PoseRenderingSystem, this.viewport);
-        this.systems.add(ShapeRenderingSystem, this.viewport);
     }
 
 }

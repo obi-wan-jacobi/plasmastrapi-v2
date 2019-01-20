@@ -1,3 +1,4 @@
+/* tslint:disable:no-magic-numbers */
 import CursorEventComponent from '../../../src/engine/components/CursorEventComponent';
 import DragComponent from '../../../src/app/components/DragComponent';
 import DragSystem from '../../../src/app/systems/DragSystem';
@@ -9,6 +10,7 @@ import ImpostorHTMLCanvasElement from '../../src//impostors/ImpostorHTMLCanvasEl
 import PoseComponent from '../../../src/engine/components/PoseComponent';
 import Rectangle from '../../../src/geometry/concretes/Rectangle';
 import ShapeComponent from '../../../src/engine/components/ShapeComponent';
+import TranslationSystem from '../../../src/app/systems/TranslationSystem';
 
 describe(DragSystem.name, () => {
 
@@ -25,6 +27,8 @@ describe(DragSystem.name, () => {
         impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(3)
         .returns({ left: 0, top: 0 });
         game = new HTML5CanvasGame(impostorHTMLCanvasElement.unwrap());
+        game.systems.add(TranslationSystem);
+        game.systems.add(DragSystem);
     });
 
     afterEach(() => {

@@ -1,7 +1,7 @@
-import ICursorAdapter from '../../interfaces/ICursorAdapter';
-import ILoopable from '../../interfaces/ILoopable';
-import IMaster from '../../interfaces/IMaster';
-import IViewportAdapter from '../../interfaces/IViewportAdapter';
+import ICursorAdapter from '../interfaces/ICursorAdapter';
+import ILoopable from '../interfaces/ILoopable';
+import IMaster from '../interfaces/IMaster';
+import IViewportAdapter from '../interfaces/IViewportAdapter';
 import StoreMaster from './StoreMaster';
 import SystemMaster from './SystemMaster';
 

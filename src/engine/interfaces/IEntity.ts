@@ -4,7 +4,7 @@ import IComponent from './IComponent';
 import ILoadable from './ILoadable';
 import IUnique from '../../framework/interfaces/IUnique';
 import { Optional } from '../../framework/types/Optional';
-import StoreMaster from '../concretes/masters/StoreMaster';
+import StoreMaster from '../masters/StoreMaster';
 
 export default interface IEntity extends IUnique, ILoadable, IBindable<StoreMaster> {
 

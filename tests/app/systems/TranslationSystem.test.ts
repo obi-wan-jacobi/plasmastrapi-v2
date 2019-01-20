@@ -23,6 +23,7 @@ describe(TranslationSystem.name, () => {
         impostorHTMLCanvasElement.expects('getBoundingClientRect').once()
             .returns({ left: 0, top: 0 });
         game = new HTML5CanvasGame(impostorHTMLCanvasElement.unwrap());
+        game.systems.add(TranslationSystem);
     });
 
     afterEach(() => {

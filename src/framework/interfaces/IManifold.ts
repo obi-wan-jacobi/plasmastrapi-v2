@@ -1,7 +1,7 @@
 import { Ctor } from '../types/Ctor';
 import IIterable from './IIterable';
 import IUnique from './IUnique';
-import Index from '../concretes/data-structures/Index';
+import Index from '../data-structures/Index';
 
 export default interface IManifold<T extends IUnique> extends IIterable<Index<T>> {
 

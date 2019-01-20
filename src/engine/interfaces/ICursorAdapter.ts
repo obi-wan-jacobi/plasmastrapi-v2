@@ -1,4 +1,4 @@
-import ComponentStoreManager from '../concretes/store/ComponentStoreManager';
+import ComponentStoreManager from '../store/ComponentStoreManager';
 
 export default interface ICursorAdapter {
 
