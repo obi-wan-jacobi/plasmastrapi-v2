@@ -1,4 +1,4 @@
-import ChildPoseOffsetComponent from '../../engine/concretes/components/ChildPoseOffsetComponent';
+import ChildPoseOffsetComponent from '../components/ChildPoseOffsetComponent';
 import Entity from '../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import IChild from '../../framework/interfaces/IChild';

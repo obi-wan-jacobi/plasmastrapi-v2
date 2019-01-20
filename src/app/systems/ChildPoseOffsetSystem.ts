@@ -1,7 +1,7 @@
 import ChildPoseOffsetComponent from '../components/ChildPoseOffsetComponent';
-import InputTerminal from '../../../app/entities/circuit-elements/InputTerminal';
-import PoseComponent from '../components/PoseComponent';
-import System from '../../abstracts/System';
+import InputTerminal from '../entities/circuit-elements/InputTerminal';
+import PoseComponent from '../../engine/concretes/components/PoseComponent';
+import System from '../../engine/abstracts/System';
 
 export default class ChildPoseOffsetSystem extends System<ChildPoseOffsetComponent> {
 

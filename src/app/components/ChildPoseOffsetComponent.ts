@@ -1,4 +1,4 @@
-import Component from '../../abstracts/Component';
+import Component from '../../engine/abstracts/Component';
 
 export default class ChildPoseOffsetComponent
  extends Component<{

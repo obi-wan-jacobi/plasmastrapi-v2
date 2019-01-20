@@ -1,21 +1,21 @@
 /* tslint:disable:no-magic-numbers */
-import IPose2D from '../../../geometry/interfaces/IPose2D';
-import IPosition2D from '../../../geometry/interfaces/IPosition2D';
-import IShape2D from '../../../geometry/interfaces/IShape2D';
-import LineConnectorComponent from '../components/LineConnectorComponent';
-import PoseComponent from '../components/PoseComponent';
-import Rectangle from '../../../geometry/concretes/Rectangle';
-import ShapeComponent from '../components/ShapeComponent';
-import System from '../../abstracts/System';
-import { settings } from '../../engine.config';
+import IPose2D from '../../geometry/interfaces/IPose2D';
+import IPosition2D from '../../geometry/interfaces/IPosition2D';
+import IShape2D from '../../geometry/interfaces/IShape2D';
+import LineComponent from '../components/LineComponent';
+import PoseComponent from '../../engine/concretes/components/PoseComponent';
+import Rectangle from '../../geometry/concretes/Rectangle';
+import ShapeComponent from '../../engine/concretes/components/ShapeComponent';
+import System from '../../engine/abstracts/System';
+import { settings } from '../../engine/engine.config';
 
-export default class LineConnectorSystem extends System<LineConnectorComponent> {
+export default class LinePoseSystem extends System<LineComponent> {
 
     constructor() {
-        super(LineConnectorComponent);
+        super(LineComponent);
     }
 
-    public once(component: LineConnectorComponent): void {
+    public once(component: LineComponent): void {
         const head = component.data.head.get(PoseComponent).data;
         const tail = component.data.tail.get(PoseComponent).data;
         const { pose, shape } = __fromPointsToLine(tail, head);

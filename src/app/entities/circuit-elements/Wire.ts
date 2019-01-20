@@ -2,7 +2,7 @@ import CursorEventComponent from '../../../engine/concretes/components/CursorEve
 import Entity from '../../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../../html5/enums/HTML5_COLOUR';
 import InputTerminal from './InputTerminal';
-import LineConnectorComponent from '../../../engine/concretes/components/LineConnectorComponent';
+import LineComponent from '../../components/LineComponent';
 import OutputTerminal from './OutputTerminal';
 import PoseComponent from '../../../engine/concretes/components/PoseComponent';
 import Rectangle from '../../../geometry/concretes/Rectangle';
@@ -18,15 +18,15 @@ export default class Wire extends Entity {
         this.add(PoseComponent, { x: - Infinity, y: -Infinity });
         this.add(ShapeComponent, new Rectangle({ width: -Infinity, height: -Infinity }));
         this.add(RenderingComponent, { colour: HTML5_COLOUR.WHITE });
-        this.add(LineConnectorComponent, { head, tail });
+        this.add(LineComponent, { head, tail });
     }
 
     public get head(): Entity {
-        return this.get(LineConnectorComponent).data.head;
+        return this.get(LineComponent).data.head;
     }
 
     public get tail(): Entity {
-        return this.get(LineConnectorComponent).data.tail;
+        return this.get(LineComponent).data.tail;
     }
 
 }
