@@ -8,6 +8,7 @@ import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import Gate from '../entities/circuit-elements/Gate';
 import GateRemovalButton from '../entities/buttons/GateRemovalButton';
 import GateRemovalCaret from '../entities/tool-carets/GateRemovalCaret';
+import Wire from '../entities/circuit-elements/Wire';
 
 export default class GateRemovalSystem extends CursorEventSystem {
 
@@ -34,9 +35,18 @@ export default class GateRemovalSystem extends CursorEventSystem {
     }
 
     private __removeAnyGatesIntersectedByCaret(caret: GateRemovalCaret): void {
-        this.store.entities.get(Gate).forEach((gate) => {
+        this.store.entities.get(Gate).forEach((gate: Gate) => {
             if (CursorIntersectsEntityValidator.invoke(gate.get(CursorEventComponent))) {
                 gate.unload();
+                this.__removeConnectedWires(gate);
+            }
+        });
+    }
+
+    private __removeConnectedWires(gate: Gate): void {
+        this.store.entities.get(Wire).forEach((wire: Wire) => {
+            if (wire.head === gate.input || wire.tail === gate.output) {
+                wire.unload();
             }
         });
     }

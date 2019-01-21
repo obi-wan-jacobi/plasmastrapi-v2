@@ -44,8 +44,7 @@ export default class CircuitDesignSystem extends CursorEventSystem {
             return;
         }
         const pose = component.entity.get(PoseComponent).data;
-        const translatedAreaShape = translateShape(areaShape.data, areaPose.data);
-        const bounds = getMinMaxShapeBounds(translatedAreaShape);
+        const bounds = getMinMaxShapeBounds(translateShape(areaShape.data, areaPose.data));
         if (pose.x > bounds.maxX) {
             pose.x = bounds.maxX;
         } else if (pose.x < bounds.minX) {
