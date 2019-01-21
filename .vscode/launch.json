@@ -23,7 +23,7 @@
                     "--runInBand",
                     "--config",
                     "${workspaceRoot}/jest.config.js",
-                    "gatecreation"
+                    "wirecreation"
                 ],
             },
             "console": "integratedTerminal",

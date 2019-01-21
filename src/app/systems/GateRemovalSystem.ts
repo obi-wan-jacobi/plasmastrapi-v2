@@ -13,21 +13,21 @@ import Wire from '../entities/circuit-elements/Wire';
 export default class GateRemovalSystem extends CursorEventSystem {
 
     public once(component: CursorEventComponent): void {
-        this.__onCursorCompleteActuation(component);
-        this.__onCursorCompleteCaretActuation(component);
+        this.__onCursorCompleteActuationWithButtonPrepGateRemoval(component);
+        this.__onCursorCompleteCaretActuationWithCaretRemoveIntersectedGate(component);
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)
     @OnlyIfEntityIsInstanceOf(GateRemovalButton)
     @OnCursorIntersection
-    private __onCursorCompleteActuation(component: CursorEventComponent): void {
+    private __onCursorCompleteActuationWithButtonPrepGateRemoval(component: CursorEventComponent): void {
         this.store.entities.create(GateRemovalCaret, component.data);
         this.store.entities.create(ActiveItemFrame, component.entity);
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)
     @OnlyIfEntityIsInstanceOf(GateRemovalCaret)
-    private __onCursorCompleteCaretActuation(component: CursorEventComponent): void {
+    private __onCursorCompleteCaretActuationWithCaretRemoveIntersectedGate(component: CursorEventComponent): void {
         const caret = component.entity;
         this.__removeAnyGatesIntersectedByCaret(caret);
         caret.unload();
@@ -38,12 +38,12 @@ export default class GateRemovalSystem extends CursorEventSystem {
         this.store.entities.get(Gate).forEach((gate: Gate) => {
             if (CursorIntersectsEntityValidator.invoke(gate.get(CursorEventComponent))) {
                 gate.unload();
-                this.__removeConnectedWires(gate);
+                this.__removeAnyWiresConnectedToGate(gate);
             }
         });
     }
 
-    private __removeConnectedWires(gate: Gate): void {
+    private __removeAnyWiresConnectedToGate(gate: Gate): void {
         this.store.entities.get(Wire).forEach((wire: Wire) => {
             if (wire.head === gate.input || wire.tail === gate.output) {
                 wire.unload();

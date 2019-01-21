@@ -1,4 +1,5 @@
 import ChildPoseOffsetSystem from '../../../src/app/systems/ChildPoseOffsetSystem';
+import CircuitDesignArea from '../../../src/app/entities/CircuitDesignArea';
 import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../src/app/entities/circuit-elements/Gate';
 import ImpostorCanvasRenderingContext2D from '../../src//impostors/ImpostorCanvasRenderingContext2D';
@@ -19,6 +20,7 @@ describe(ChildPoseOffsetSystem.name, () => {
             .withExactArgs('2d')
             .returns(impostorRenderingContext.unwrap());
         game = new Plasmastrapi(impostorHTMLCanvasElement.unwrap());
+        game.store.entities.create(CircuitDesignArea, { position: { x: 500, y: 500 }, width: 1000, height: 1000 });
     });
 
     afterEach(() => {

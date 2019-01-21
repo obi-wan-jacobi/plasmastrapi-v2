@@ -1,3 +1,5 @@
+/* tslint:disable:no-magic-numbers */
+import CircuitDesignArea from '../../../src/app/entities/CircuitDesignArea';
 import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../src/app/entities/circuit-elements/Gate';
 import ImpostorCanvasRenderingContext2D from '../../src//impostors/ImpostorCanvasRenderingContext2D';
@@ -23,6 +25,7 @@ describe(WireCreationSystem.name, () => {
             .withExactArgs('2d')
             .returns(impostorRenderingContext.unwrap());
         game = new Plasmastrapi(impostorHTMLCanvasElement.unwrap());
+        game.store.entities.create(CircuitDesignArea, { position: { x: 500, y: 500 }, width: 1000, height: 1000 });
     });
 
     afterEach(() => {
@@ -52,7 +55,8 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(OutputTerminal).length).toBe(1);
         expect(game.store.entities.get(Wire).length).toBe(1);
         expect(game.store.entities.get(WireCreationCaret).length).toBe(1);
-        expect(game.store.entities.length).toBe(5);
+        expect(game.store.entities.get(CircuitDesignArea).length).toBe(1);
+        expect(game.store.entities.length).toBe(6);
         game.store.entities.get(Wire).first((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
                 x: 552.5,
@@ -79,6 +83,7 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(OutputTerminal).length).toBe(1);
         expect(game.store.entities.get(Wire).length).toBe(0);
         expect(game.store.entities.get(WireCreationCaret).length).toBe(0);
+        expect(game.store.entities.length).toBe(4);
         done();
     });
 
@@ -104,7 +109,8 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(OutputTerminal).length).toBe(1);
         expect(game.store.entities.get(Wire).length).toBe(1);
         expect(game.store.entities.get(WireCreationCaret).length).toBe(1);
-        expect(game.store.entities.length).toBe(5);
+        expect(game.store.entities.get(CircuitDesignArea).length).toBe(1);
+        expect(game.store.entities.length).toBe(6);
         game.store.entities.get(Wire).first((wire) => {
             expect(wire.get(PoseComponent).data).toEqual({
                 x: 552.5,
@@ -131,6 +137,7 @@ describe(WireCreationSystem.name, () => {
         expect(game.store.entities.get(OutputTerminal).length).toBe(1);
         expect(game.store.entities.get(Wire).length).toBe(0);
         expect(game.store.entities.get(WireCreationCaret).length).toBe(0);
+        expect(game.store.entities.length).toBe(4);
         done();
     });
 

@@ -117,6 +117,7 @@ describe(`systems operating against ${CursorEventComponent.name}`, () => {
             eventName: expectedCursorEvent,
             x: clientX,
             y: clientY,
+            isShiftDown: false,
         });
         impostorCursorSystem.verify();
     };

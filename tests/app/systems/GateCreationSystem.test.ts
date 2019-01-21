@@ -36,6 +36,7 @@ describe(GateCreationSystem.name, () => {
         impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(10)
             .returns({ left: 0, top: 0 });
         game.store.entities.create(GateCreationButton, { x: 50, y: 50 });
+        game.store.entities.create(CircuitDesignArea, { position: { x: 1, y: 1 }, width: 1, height: 1 });
         __doFullClick(54, 45);
         fakeCanvas.simulateMouseMove(101, 102);
         fakeCanvas.simulateMouseMove(201, 202);

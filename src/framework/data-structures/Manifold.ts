@@ -18,10 +18,7 @@ implements IManifold<T> {
 
     public get(InstanceCtor: Ctor<T, any>): Index<T> {
         if (!this.unwrap().read(InstanceCtor.name)) {
-            this.unwrap().write({
-                key: InstanceCtor.name,
-                value: new Index<T>(),
-            });
+            return new Index<T>();
         }
         return this.unwrap().read(InstanceCtor.name);
     }
@@ -43,7 +40,12 @@ implements IManifold<T> {
     }
 
     public remove(instance: T): boolean {
-        return this.unwrap().read(instance.constructor.name).remove(instance.id);
+        const result = this.unwrap().read(instance.constructor.name).remove(instance.id);
+        if (this.unwrap().read(instance.constructor.name).length === 0) {
+            this.unwrap().delete(instance.constructor.name);
+        }
+        return result;
+
     }
 
     public prune(InstanceCtor: Ctor<T, any>): boolean {

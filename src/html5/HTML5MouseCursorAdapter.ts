@@ -37,6 +37,7 @@ export default class HTML5MouseCursorAdapter implements ICursorAdapter {
                 eventName: __mouseEventToCursorEventMap[ev.type],
                 x: ev.clientX - boundingClientRect.left,
                 y: ev.clientY - boundingClientRect.top,
+                isShiftDown: ev.shiftKey,
             });
             this.__buffer.unshift(component);
         };

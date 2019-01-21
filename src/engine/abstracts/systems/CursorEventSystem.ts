@@ -1,7 +1,6 @@
 import { CURSOR_EVENT } from '../../enums/CURSOR_EVENT';
 import CursorEventComponent from '../../components/CursorEventComponent';
 import { OnlyIfEntityHas } from '../Entity';
-import ISystem from '../../interfaces/ISystem';
 import Invocable from '../../../framework/abstracts/Invocable';
 import PoseComponent from '../../components/PoseComponent';
 import ShapeComponent from '../../components/ShapeComponent';
@@ -36,14 +35,40 @@ export function OnCursorEvent<TSystem extends CursorEventSystem>(event: CURSOR_E
     };
 }
 
-export function OnCursorIntersection<TComponent>(
-    target: ISystem<TComponent>,
+export function OnCursorIntersection(
+    target: CursorEventSystem,
     propertyKey: string | symbol,
     descriptor: PropertyDescriptor,
 ): any {
     const method = descriptor.value;
     descriptor.value = function(component: CursorEventComponent): any {
         return CursorIntersectsEntityValidator.invoke(component)
+            ? method.call(this, ...arguments)
+            : undefined;
+    };
+}
+
+export function WhenShiftKeyIsUp(
+    target: CursorEventSystem,
+    propertyKey: string | symbol,
+    descriptor: PropertyDescriptor,
+): any {
+    const method = descriptor.value;
+    descriptor.value = function(component: CursorEventComponent): any {
+        return (component.data.isShiftDown)
+            ? undefined
+            : method.call(this, ...arguments);
+    };
+}
+
+export function WhenShiftKeyIsDown(
+    target: CursorEventSystem,
+    propertyKey: string | symbol,
+    descriptor: PropertyDescriptor,
+): any {
+    const method = descriptor.value;
+    descriptor.value = function(component: CursorEventComponent): any {
+        return (component.data.isShiftDown)
             ? method.call(this, ...arguments)
             : undefined;
     };

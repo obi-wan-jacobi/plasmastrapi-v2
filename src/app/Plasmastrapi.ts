@@ -10,7 +10,6 @@ import PoseRenderingSystem from '../engine/systems/PoseRenderingSystem';
 import ShapeRenderingSystem from '../engine/systems/ShapeRenderingSystem';
 import TranslationSystem from './systems/TranslationSystem';
 import WireCreationSystem from './systems/WireCreationSystem';
-import LineDrawingSystem from './systems/WireCuttingPathSystem';
 import WireRemovalSystem from './systems/WireRemovalSystem';
 
 export default class Plasmastrapi extends HTML5CanvasGame {
@@ -24,7 +23,6 @@ export default class Plasmastrapi extends HTML5CanvasGame {
         this.systems.add(ChildPoseOffsetSystem);
         this.systems.add(LinePoseSystem);
         this.systems.add(DragSystem);
-        this.systems.add(LineDrawingSystem);
         this.systems.add(LineRenderingSystem, this.viewport);
         this.systems.add(PoseRenderingSystem, this.viewport);
         this.systems.add(ShapeRenderingSystem, this.viewport);
