@@ -1,4 +1,5 @@
 import ActiveItemFrame from '../entities/ActiveItemFrame';
+import Batch from '../../framework/invocables/Batch';
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
 import CursorEventComponent from '../../engine/components/CursorEventComponent';
 import CursorEventSystem, {
@@ -8,6 +9,8 @@ import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import Gate from '../entities/circuit-elements/Gate';
 import GateRemovalButton from '../entities/buttons/GateRemovalButton';
 import GateRemovalCaret from '../entities/tool-carets/GateRemovalCaret';
+import RemoveGateCommand from '../commands/RemoveGateCommand';
+import RemoveWireCommand from '../commands/RemoveWireCommand';
 import Wire from '../entities/circuit-elements/Wire';
 
 export default class GateRemovalSystem extends CursorEventSystem {
@@ -37,18 +40,20 @@ export default class GateRemovalSystem extends CursorEventSystem {
     private __removeAnyGatesIntersectedByCaret(caret: GateRemovalCaret): void {
         this.store.entities.get(Gate).forEach((gate: Gate) => {
             if (CursorIntersectsEntityValidator.invoke(gate.get(CursorEventComponent))) {
-                gate.unload();
+                new RemoveGateCommand(gate).invoke();
                 this.__removeAnyWiresConnectedToGate(gate);
             }
         });
     }
 
     private __removeAnyWiresConnectedToGate(gate: Gate): void {
+        const batch = new Batch();
         this.store.entities.get(Wire).forEach((wire: Wire) => {
             if (wire.head === gate.input || wire.tail === gate.output) {
-                wire.unload();
+                batch.add(new RemoveWireCommand(wire));
             }
         });
+        batch.invoke();
     }
 
 }

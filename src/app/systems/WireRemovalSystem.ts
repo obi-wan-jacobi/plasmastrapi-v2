@@ -1,4 +1,5 @@
 import ActiveItemFrame from '../entities/ActiveItemFrame';
+import Batch from '../../framework/invocables/Batch';
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
 import CursorEventComponent from '../../engine/components/CursorEventComponent';
 import CursorEventSystem, {
@@ -7,6 +8,7 @@ import CursorEventSystem, {
 import CurveComponent from '../components/CurveComponent';
 import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import PoseComponent from '../../engine/components/PoseComponent';
+import RemoveWireCommand from '../commands/RemoveWireCommand';
 import ShapeComponent from '../../engine/components/ShapeComponent';
 import Wire from '../entities/circuit-elements/Wire';
 import WireCuttingPath from '../entities/tool-carets/WireCuttingPath';
@@ -47,13 +49,15 @@ export default class WireRemovalSystem extends CursorEventSystem {
 
     private __cutAndRemoveWires(wireCuttingPath: WireCuttingPath): void {
         const line = wireCuttingPath.get(CurveComponent).data;
-        this.store.entities.get(Wire).forEach((wire) => {
+        const batch = new Batch();
+        this.store.entities.get(Wire).forEach((wire: Wire) => {
             const pose = wire.get(PoseComponent).data;
             const shape = wire.get(ShapeComponent).data;
             if (isShapeIntersectedByLine(shape, pose, line)) {
-                wire.unload();
+                batch.add(new RemoveWireCommand(wire));
             }
         });
+        batch.invoke();
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)

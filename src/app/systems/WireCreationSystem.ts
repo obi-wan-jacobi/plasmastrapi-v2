@@ -1,4 +1,5 @@
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
+import CreateWireCommand from '../commands/CreateWireCommand';
 import CursorEventComponent from '../../engine/components/CursorEventComponent';
 import CursorEventSystem, {
     OnCursorEvent, OnCursorIntersection,
@@ -48,7 +49,7 @@ export default class WireCreationSystem extends CursorEventSystem {
         if (!caret) {
             return;
         }
-        this.__createNewWireIfNoDuplicatesExist({ head: component.entity, tail: caret.wire.tail });
+        this.__createNewWireIfNotDuplicated({ head: component.entity, tail: caret.wire.tail });
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
@@ -59,7 +60,7 @@ export default class WireCreationSystem extends CursorEventSystem {
         if (!caret) {
             return;
         }
-        this.__createNewWireIfNoDuplicatesExist({ head: caret.wire.head, tail: component.entity });
+        this.__createNewWireIfNotDuplicated({ head: caret.wire.head, tail: component.entity });
     }
 
     private __findAnyExistingCaret(): Optional<WireCreationCaret> {
@@ -74,15 +75,15 @@ export default class WireCreationSystem extends CursorEventSystem {
         return caret;
     }
 
-    private __createNewWireIfNoDuplicatesExist({ head, tail}: { head: Entity, tail: Entity }): void {
+    private __createNewWireIfNotDuplicated({ head, tail}: { head: Entity, tail: Entity }): void {
         if (!(head instanceof InputTerminal) || !(tail instanceof OutputTerminal)) {
             return;
         }
-        const duplicate = this.store.entities.get(Wire).find((wire: Wire) => {
+        const isDuplicated = !!this.store.entities.get(Wire).find((wire: Wire) => {
             return wire.head === head && wire.tail === tail;
         });
-        if (!duplicate) {
-            this.store.entities.create(Wire, { head, tail });
+        if (!isDuplicated) {
+            new CreateWireCommand(this.store).invoke({ head, tail });
         }
     }
 

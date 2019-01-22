@@ -1,5 +1,6 @@
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
 import CircuitDesignArea from '../entities/CircuitDesignArea';
+import CreateGateCommand from '../commands/CreateGateCommand';
 import CursorEventComponent from '../../engine/components/CursorEventComponent';
 import CursorEventSystem, {
     OnCursorEvent,
@@ -55,8 +56,8 @@ export default class CircuitDesignSystem extends CursorEventSystem {
         } else if (pose.y < bounds.minY) {
             pose.y = bounds.minY;
         }
-        component.entity.get(PoseComponent).set(pose);
-        component.entity.remove(TranslationComponent);
+        new CreateGateCommand(this.store).invoke(pose);
+        component.entity.unload();
     }
 
     private __isCursorInsideCircuitDesignArea(component: CursorEventComponent): boolean {
