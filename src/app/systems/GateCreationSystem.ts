@@ -21,7 +21,7 @@ export default class GateCreationSystem extends CursorEventSystem {
     @OnCursorIntersection
     private __onCursorCompleteActuationWithButtonSpawnGate(component: CursorEventComponent): void {
         this.store.entities.create(ActiveItemFrame, component.entity);
-        this.__spawnGate(component);
+        this.store.entities.create(GateCreationCaret, component.data);
     }
 
     @WhenShiftKeyIsUp
@@ -41,10 +41,6 @@ export default class GateCreationSystem extends CursorEventSystem {
         component: CursorEventComponent,
     ): void {
         component.entity.unload();
-        this.__spawnGate(component);
-    }
-
-    private __spawnGate(component: CursorEventComponent): void {
         this.store.entities.create(GateCreationCaret, component.data);
     }
 
