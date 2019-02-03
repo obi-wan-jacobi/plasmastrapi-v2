@@ -1,4 +1,4 @@
-import IInputAdapter from '../interfaces/IInputAdapter';
+import ICursorAdapter from '../interfaces/ICursorAdapter';
 import ILoopable from '../interfaces/ILoopable';
 import IMaster from '../interfaces/IMaster';
 import IViewportAdapter from '../interfaces/IViewportAdapter';
@@ -13,13 +13,13 @@ export default class SystemLoopMaster implements IMaster<void>, ILoopable<void> 
 
     private __isStopped: boolean;
     private __viewport: IViewportAdapter<any, any>;
-    private __cursor: IInputAdapter;
+    private __cursor: ICursorAdapter;
     private __store: StoreMaster;
     private __systems: SystemMaster;
 
     constructor(
         viewport: IViewportAdapter<any, any>,
-        cursor: IInputAdapter,
+        cursor: ICursorAdapter,
         store: StoreMaster,
         systems: SystemMaster,
     ) {

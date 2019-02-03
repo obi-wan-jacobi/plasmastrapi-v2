@@ -1,28 +1,28 @@
 import { CURSOR_EVENT } from '../engine/enums/CURSOR_EVENT';
 import ComponentStoreManager from '../engine/store/ComponentStoreManager';
-import IInputAdapter from '../engine/interfaces/IInputAdapter';
-import InputComponent from '../engine/components/InputComponent';
+import CursorEventComponent from '../engine/components/CursorEventComponent';
+import ICursorAdapter from '../engine/interfaces/ICursorAdapter';
 
-export default class HTML5CanvasInputAdapter implements IInputAdapter {
+export default class HTML5MouseCursorAdapter implements ICursorAdapter {
 
     private __canvas: HTMLCanvasElement;
-    private __buffer: InputComponent[];
+    private __buffer: CursorEventComponent[];
 
     constructor(canvas: HTMLCanvasElement) {
         this.__canvas = canvas;
         this.__buffer = [];
-        this.__bindInputs();
+        this.__bindCursorEvents();
     }
 
     public sync(components: ComponentStoreManager): void {
         const next = this.__buffer.pop() || { data: { eventName: CURSOR_EVENT.UNDEFINED } };
-        components.get(InputComponent).forEach((component) => {
+        components.get(CursorEventComponent).forEach((component) => {
             component.mutate(next.data);
         });
     }
 
-    private __bindInputs(): void {
-        Object.keys(__mouseEventToInputMap)
+    private __bindCursorEvents(): void {
+        Object.keys(__mouseEventToCursorEventMap)
         .forEach((key) => {
             (this.__canvas as unknown as { [key: string]: (ev: MouseEvent) => void })[`on${key}`]
             = this.__getMouseEventHandler();
@@ -32,9 +32,9 @@ export default class HTML5CanvasInputAdapter implements IInputAdapter {
     private __getMouseEventHandler(): (ev: MouseEvent) => void {
         return (ev: MouseEvent): void => {
             const boundingClientRect = this.__canvas.getBoundingClientRect();
-            const component = new InputComponent();
+            const component = new CursorEventComponent();
             component.mutate({
-                eventName: __mouseEventToInputMap[ev.type],
+                eventName: __mouseEventToCursorEventMap[ev.type],
                 x: ev.clientX - boundingClientRect.left,
                 y: ev.clientY - boundingClientRect.top,
                 isShiftDown: ev.shiftKey,
@@ -45,7 +45,7 @@ export default class HTML5CanvasInputAdapter implements IInputAdapter {
 
 }
 
-const __mouseEventToInputMap: { [key: string]: CURSOR_EVENT } = {
+const __mouseEventToCursorEventMap: { [key: string]: CURSOR_EVENT } = {
     mouseenter: CURSOR_EVENT.CURSOR_ENABLE,
     mousemove: CURSOR_EVENT.CURSOR_TRANSLATE,
     mouseleave: CURSOR_EVENT.CURSOR_DISABLE,

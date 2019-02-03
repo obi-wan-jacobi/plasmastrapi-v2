@@ -1,8 +1,8 @@
 import ChildPoseOffsetComponent from '../../components/ChildPoseOffsetComponent';
+import CursorEventComponent from '../../../engine/components/CursorEventComponent';
 import Entity from '../../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../../html5/enums/HTML5_COLOUR';
 import IChild from '../../../framework/interfaces/IChild';
-import InputComponent from '../../../engine/components/InputComponent';
 import PoseComponent from '../../../engine/components/PoseComponent';
 import Rectangle from '../../../geometry/concretes/Rectangle';
 import RenderingComponent from '../../../engine/components/RenderingComponent';
@@ -16,7 +16,7 @@ export default class OutputTerminal extends Entity implements IChild<Entity> {
     constructor(parent: Entity) {
         super();
         this.parent = parent;
-        this.add(InputComponent);
+        this.add(CursorEventComponent);
         this.add(PoseComponent, { x: - Infinity, y: -Infinity });
         this.add(ShapeComponent, new Rectangle({
             width: settings.terminal.width,

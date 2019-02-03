@@ -1,28 +1,28 @@
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
 import CircuitDesignArea from '../entities/CircuitDesignArea';
 import CreateGateCommand from '../commands/CreateGateCommand';
+import CursorEventComponent from '../../engine/components/CursorEventComponent';
+import CursorEventSystem, {
+    OnCursorEvent,
+} from '../../engine/abstracts/systems/CursorEventSystem';
 import { OnlyIfEntityHas, OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import Gate from '../entities/circuit-elements/Gate';
 import GateCreationCaret from '../entities/tools/carets/GateCreationCaret';
-import InputComponent from '../../engine/components/InputComponent';
-import InputSystem, {
-    OnInputEvent,
-} from '../../engine/abstracts/systems/InputSystem';
 import PoseComponent from '../../engine/components/PoseComponent';
 import ShapeComponent from '../../engine/components/ShapeComponent';
 import TranslationComponent from '../components/TranslationComponent';
 import { getMinMaxShapeBounds, isPointInsideShape, translateShape } from '../../geometry/methods/shapes';
 
-export default class CircuitDesignSystem extends InputSystem {
+export default class CircuitDesignSystem extends CursorEventSystem {
 
-    public once(component: InputComponent): void {
+    public once(component: CursorEventComponent): void {
         this.__onCursorTranslate(component);
         this.__onCursorTranslateConstrainElementToDesignArea(component);
     }
 
-    @OnInputEvent(CURSOR_EVENT.CURSOR_TRANSLATE)
+    @OnCursorEvent(CURSOR_EVENT.CURSOR_TRANSLATE)
     @OnlyIfEntityIsInstanceOf(CircuitDesignArea)
-    private __onCursorTranslate(component: InputComponent): void {
+    private __onCursorTranslate(component: CursorEventComponent): void {
         this.store.entities.get(GateCreationCaret).first((instance: GateCreationCaret) => {
             if (!instance.gate && this.__isCursorInsideCircuitDesignArea(component)) {
                 instance.gate = new CreateGateCommand(this.store).invoke(component.data);
@@ -34,10 +34,10 @@ export default class CircuitDesignSystem extends InputSystem {
         });
     }
 
-    @OnInputEvent(CURSOR_EVENT.CURSOR_TRANSLATE)
+    @OnCursorEvent(CURSOR_EVENT.CURSOR_TRANSLATE)
     @OnlyIfEntityIsInstanceOf(Gate)
     @OnlyIfEntityHas(TranslationComponent)
-    private __onCursorTranslateConstrainElementToDesignArea(component: InputComponent): void {
+    private __onCursorTranslateConstrainElementToDesignArea(component: CursorEventComponent): void {
         const circuitDesignArea = this.__getCircuitDesignArea();
         const areaPose = circuitDesignArea.get(PoseComponent);
         const areaShape = circuitDesignArea.get(ShapeComponent);
@@ -59,7 +59,7 @@ export default class CircuitDesignSystem extends InputSystem {
         component.entity.get(PoseComponent).mutate(pose);
     }
 
-    private __isCursorInsideCircuitDesignArea(component: InputComponent): boolean {
+    private __isCursorInsideCircuitDesignArea(component: CursorEventComponent): boolean {
         let isCursorInsideCircuitDesignArea = false;
         const circuitDesignArea = this.__getCircuitDesignArea();
         isCursorInsideCircuitDesignArea = isPointInsideShape(

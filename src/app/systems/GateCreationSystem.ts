@@ -1,9 +1,9 @@
-import InputComponent from '../../engine/components/InputComponent';
-import InputSystem from '../../engine/abstracts/systems/InputSystem';
+import CursorEventComponent from '../../engine/components/CursorEventComponent';
+import CursorEventSystem from '../../engine/abstracts/systems/CursorEventSystem';
 
-export default class GateCreationSystem extends InputSystem {
+export default class GateCreationSystem extends CursorEventSystem {
 
-    public once(component: InputComponent): void {
+    public once(component: CursorEventComponent): void {
         return;
     }
 

@@ -1,21 +1,21 @@
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
+import CursorEventComponent from '../../engine/components/CursorEventComponent';
+import CursorEventSystem, { OnCursorEvent } from '../../engine/abstracts/systems/CursorEventSystem';
 import { OnlyIfEntityHas } from '../../engine/abstracts/Entity';
-import InputComponent from '../../engine/components/InputComponent';
-import InputSystem, { OnInputEvent } from '../../engine/abstracts/systems/InputSystem';
 import PoseComponent from '../../engine/components/PoseComponent';
 import TranslationComponent from '../components/TranslationComponent';
 
-export default class TranslationSystem extends InputSystem {
+export default class TranslationSystem extends CursorEventSystem {
 
-    public once(component: InputComponent): void {
+    public once(component: CursorEventComponent): void {
         this.__onCursorBeginActuation(component);
         this.__onCursorTranslation(component);
     }
 
-    @OnInputEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
+    @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
     @OnlyIfEntityHas(PoseComponent)
     @OnlyIfEntityHas(TranslationComponent)
-    private __onCursorBeginActuation(component: InputComponent): void {
+    private __onCursorBeginActuation(component: CursorEventComponent): void {
         const translatable = component.entity.get(TranslationComponent);
         if (translatable.data.previous.cursor.x > -Infinity && translatable.data.previous.cursor.y > -Infinity) {
             const pose = component.entity.get(PoseComponent);
@@ -35,10 +35,10 @@ export default class TranslationSystem extends InputSystem {
         });
     }
 
-    @OnInputEvent(CURSOR_EVENT.CURSOR_TRANSLATE)
+    @OnCursorEvent(CURSOR_EVENT.CURSOR_TRANSLATE)
     @OnlyIfEntityHas(PoseComponent)
     @OnlyIfEntityHas(TranslationComponent)
-    private __onCursorTranslation(component: InputComponent): void {
+    private __onCursorTranslation(component: CursorEventComponent): void {
         const translatable = component.entity.get(TranslationComponent);
         if (translatable.data.previous.cursor.x > -Infinity && translatable.data.previous.cursor.y > -Infinity) {
             const pose = component.entity.get(PoseComponent);
