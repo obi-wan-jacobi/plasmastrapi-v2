@@ -1,8 +1,8 @@
-import CursorEventComponent from '../../../engine/components/CursorEventComponent';
 import DragComponent from '../../components/DragComponent';
 import Entity from '../../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../../html5/enums/HTML5_COLOUR';
 import IPosition2D from '../../../geometry/interfaces/IPosition2D';
+import InputComponent from '../../../engine/components/InputComponent';
 import InputTerminal from './InputTerminal';
 import OutputTerminal from './OutputTerminal';
 import PoseComponent from '../../../engine/components/PoseComponent';
@@ -21,7 +21,7 @@ export default class Gate extends Entity {
         super();
         this.output = new OutputTerminal(this);
         this.input = new InputTerminal(this);
-        this.add(CursorEventComponent);
+        this.add(InputComponent);
         this.add(PoseComponent, { x: position.x, y: position.y });
         this.add(ShapeComponent, new Rectangle({
             width: settings.gate.width,

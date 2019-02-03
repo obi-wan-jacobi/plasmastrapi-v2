@@ -1,5 +1,4 @@
 import { CURSOR_EVENT } from '../../../src/engine/enums/CURSOR_EVENT';
-import CursorEventComponent from '../../../src/engine/components/CursorEventComponent';
 import Entity from '../../../src/engine/abstracts/Entity';
 import FakeCanvas from '../../src/fakes/FakeHTMLCanvasElement';
 import FakeSystem from '../../src/fakes/FakeSystem';
@@ -7,12 +6,13 @@ import HTML5CanvasGame from '../../../src/html5/HTML5CanvasGame';
 import Impostor from '../../src/impostors/Impostor';
 import ImpostorCanvasRenderingContext2D from '../../src/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../src/impostors/ImpostorHTMLCanvasElement';
+import InputComponent from '../../../src/engine/components/InputComponent';
 import PoseComponent from '../../../src/engine/components/PoseComponent';
 import Rectangle from '../../../src/geometry/concretes/Rectangle';
 import ShapeComponent from '../../../src/engine/components/ShapeComponent';
 import * as sinon from 'sinon';
 
-describe(`systems operating against ${CursorEventComponent.name}`, () => {
+describe(`systems operating against ${InputComponent.name}`, () => {
 
     let impostorRenderingContext: ImpostorCanvasRenderingContext2D;
     let impostorHTMLCanvasElement: ImpostorHTMLCanvasElement;
@@ -35,77 +35,77 @@ describe(`systems operating against ${CursorEventComponent.name}`, () => {
     });
 
     it('mouseenter event is converted to cursor enable', (done) => {
-        __validateMouseEventConversionIntoCursorEvent({
+        __validateMouseEventConversionIntoInput({
             simulateWhat: 'simulateMouseEnter',
             clientX: 10,
             clientY: 10,
-            expectedCursorEvent: CURSOR_EVENT.CURSOR_ENABLE,
+            expectedInput: CURSOR_EVENT.CURSOR_ENABLE,
         });
         done();
     });
 
     it('mousemove event is converted to cursor translation', (done) => {
-        __validateMouseEventConversionIntoCursorEvent({
+        __validateMouseEventConversionIntoInput({
             simulateWhat: 'simulateMouseMove',
             clientX: 20,
             clientY: 20,
-            expectedCursorEvent: CURSOR_EVENT.CURSOR_TRANSLATE,
+            expectedInput: CURSOR_EVENT.CURSOR_TRANSLATE,
         });
         done();
     });
 
     it('mouseleave event is converted to cursor disable', (done) => {
-        __validateMouseEventConversionIntoCursorEvent({
+        __validateMouseEventConversionIntoInput({
             simulateWhat: 'simulateMouseLeave',
             clientX: 30,
             clientY: 30,
-            expectedCursorEvent: CURSOR_EVENT.CURSOR_DISABLE,
+            expectedInput: CURSOR_EVENT.CURSOR_DISABLE,
         });
         done();
     });
 
     it('mousedown event is converted to cursor begin actuation', (done) => {
-        __validateMouseEventConversionIntoCursorEvent({
+        __validateMouseEventConversionIntoInput({
             simulateWhat: 'simulateMouseDown',
             clientX: 40,
             clientY: 40,
-            expectedCursorEvent: CURSOR_EVENT.CURSOR_BEGIN_ACTUATION,
+            expectedInput: CURSOR_EVENT.CURSOR_BEGIN_ACTUATION,
         });
         done();
     });
 
     it('mouseup event is converted to cursor end actuation', (done) => {
-        __validateMouseEventConversionIntoCursorEvent({
+        __validateMouseEventConversionIntoInput({
             simulateWhat: 'simulateMouseUp',
             clientX: 50,
             clientY: 50,
-            expectedCursorEvent: CURSOR_EVENT.CURSOR_END_ACTUATION,
+            expectedInput: CURSOR_EVENT.CURSOR_END_ACTUATION,
         });
         done();
     });
 
     it('click event is converted to cursor actuation', (done) => {
-        __validateMouseEventConversionIntoCursorEvent({
+        __validateMouseEventConversionIntoInput({
             simulateWhat: 'simulateClick',
             clientX: 60,
             clientY: 60,
-            expectedCursorEvent: CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION,
+            expectedInput: CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION,
         });
         done();
     });
 
-    const __validateMouseEventConversionIntoCursorEvent = ({ simulateWhat, clientX, clientY, expectedCursorEvent }: {
+    const __validateMouseEventConversionIntoInput = ({ simulateWhat, clientX, clientY, expectedInput }: {
         simulateWhat: string,
         clientX: number,
         clientY: number,
-        expectedCursorEvent: CURSOR_EVENT,
+        expectedInput: CURSOR_EVENT,
     }) => {
-        game.systems.add(FakeSystem, CursorEventComponent).sync();
+        game.systems.add(FakeSystem, InputComponent).sync();
         const fakeCursorSystem = game.systems.get(FakeSystem);
         const impostorCursorSystem = new Impostor({ fake: fakeCursorSystem });
         const spy = sinon.spy(fakeCursorSystem, 'once');
         const entity = game.store.entities.create(Entity);
-        entity.add(CursorEventComponent);
+        entity.add(InputComponent);
         entity.add(PoseComponent, { x: clientX, y: clientY });
         entity.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
         (impostorHTMLCanvasElement.unwrap() as unknown as FakeCanvas)[simulateWhat](clientX, clientY);
@@ -114,7 +114,7 @@ describe(`systems operating against ${CursorEventComponent.name}`, () => {
         //
         expect(spy.calledOnce).toBe(true);
         expect(spy.firstCall.args[0].data).toEqual({
-            eventName: expectedCursorEvent,
+            eventName: expectedInput,
             x: clientX,
             y: clientY,
             isShiftDown: false,

@@ -1,6 +1,6 @@
 import ComponentStoreManager from '../store/ComponentStoreManager';
 
-export default interface ICursorAdapter {
+export default interface IInputAdapter {
 
     sync(store: ComponentStoreManager): void;
 

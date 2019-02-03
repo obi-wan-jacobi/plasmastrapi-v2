@@ -1,19 +1,19 @@
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
 import CreateWireCommand from '../commands/CreateWireCommand';
-import CursorEventComponent from '../../engine/components/CursorEventComponent';
-import CursorEventSystem, {
-    OnCursorEvent, OnCursorIntersection,
-} from '../../engine/abstracts/systems/CursorEventSystem';
 import Entity, { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
+import InputComponent from '../../engine/components/InputComponent';
+import InputSystem, {
+    OnCursorIntersection, OnInputEvent,
+} from '../../engine/abstracts/systems/InputSystem';
 import InputTerminal from '../entities/circuit-elements/InputTerminal';
 import { Optional } from '../../framework/types/Optional';
 import OutputTerminal from '../entities/circuit-elements/OutputTerminal';
 import Wire from '../entities/circuit-elements/Wire';
 import WireCreationCaret from '../entities/tools/carets/WireCreationCaret';
 
-export default class WireCreationSystem extends CursorEventSystem {
+export default class WireCreationSystem extends InputSystem {
 
-    public once(component: CursorEventComponent): void {
+    public once(component: InputComponent): void {
         this.__onCursorBeginActuationWithInputTerminal(component);
         this.__onCursorBeginActuationWithOutputTerminal(component);
         this.__onCursorEndActuationWithInputTerminal(component);
@@ -21,30 +21,30 @@ export default class WireCreationSystem extends CursorEventSystem {
         this.__onCursorCompleteActuationWithCaret(component);
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
+    @OnInputEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
     @OnlyIfEntityIsInstanceOf(OutputTerminal)
     @OnCursorIntersection
-    private __onCursorBeginActuationWithOutputTerminal(component: CursorEventComponent): void {
+    private __onCursorBeginActuationWithOutputTerminal(component: InputComponent): void {
         const output = component.entity as OutputTerminal;
         const caret = this.store.entities.create(WireCreationCaret, { x: component.data.x, y: component.data.y });
         const wire = this.store.entities.create(Wire, { head: caret, tail: output });
         caret.wire = wire;
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
+    @OnInputEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
     @OnlyIfEntityIsInstanceOf(InputTerminal)
     @OnCursorIntersection
-    private __onCursorBeginActuationWithInputTerminal(component: CursorEventComponent): void {
+    private __onCursorBeginActuationWithInputTerminal(component: InputComponent): void {
         const input = component.entity as InputTerminal;
         const caret = this.store.entities.create(WireCreationCaret, { x: component.data.x, y: component.data.y });
         const wire = this.store.entities.create(Wire, { head: input, tail: caret });
         caret.wire = wire;
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
+    @OnInputEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
     @OnlyIfEntityIsInstanceOf(InputTerminal)
     @OnCursorIntersection
-    private __onCursorEndActuationWithInputTerminal(component: CursorEventComponent): void {
+    private __onCursorEndActuationWithInputTerminal(component: InputComponent): void {
         const caret = this.__findAnyExistingCaret();
         if (!caret) {
             return;
@@ -52,10 +52,10 @@ export default class WireCreationSystem extends CursorEventSystem {
         this.__createNewWireIfNotDuplicated({ head: component.entity, tail: caret.wire.tail });
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
+    @OnInputEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
     @OnlyIfEntityIsInstanceOf(OutputTerminal)
     @OnCursorIntersection
-    private __onCursorEndActuationWithOutputTerminal(component: CursorEventComponent): void {
+    private __onCursorEndActuationWithOutputTerminal(component: InputComponent): void {
         const caret = this.__findAnyExistingCaret();
         if (!caret) {
             return;
@@ -87,9 +87,9 @@ export default class WireCreationSystem extends CursorEventSystem {
         }
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)
+    @OnInputEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)
     @OnlyIfEntityIsInstanceOf(WireCreationCaret)
-    private __onCursorCompleteActuationWithCaret(component: CursorEventComponent): void {
+    private __onCursorCompleteActuationWithCaret(component: InputComponent): void {
         component.entity.unload();
     }
 

@@ -1,8 +1,8 @@
 import { Ctor } from '../../framework/types/Ctor';
-import CursorEventComponent from '../../engine/components/CursorEventComponent';
 import Entity from '../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
 import IPosition2D from '../../geometry/interfaces/IPosition2D';
+import InputComponent from '../../engine/components/InputComponent';
 import PoseComponent from '../../engine/components/PoseComponent';
 import Rectangle from '../../geometry/concretes/Rectangle';
 import RenderingComponent from '../../engine/components/RenderingComponent';
@@ -19,7 +19,7 @@ export default abstract class ToolButton extends Entity {
     constructor({ position, ToolCaretCtor }: { position: IPosition2D, ToolCaretCtor: Ctor<ToolCaret, IPosition2D> }) {
         super();
         this.ToolCaretCtor = ToolCaretCtor;
-        this.add(CursorEventComponent);
+        this.add(InputComponent);
         this.add(PoseComponent, { x: position.x, y: position.y, a: 0 });
         this.add(RenderingComponent, { colour: HTML5_COLOUR.WHITE });
         this.add(ShapeComponent, new Rectangle({

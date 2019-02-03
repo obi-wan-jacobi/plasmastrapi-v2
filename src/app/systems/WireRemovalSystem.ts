@@ -1,11 +1,11 @@
 import Batch from '../../framework/invocables/Batch';
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
-import CursorEventComponent from '../../engine/components/CursorEventComponent';
-import CursorEventSystem, {
-    OnCursorEvent,
-} from '../../engine/abstracts/systems/CursorEventSystem';
 import CurveComponent from '../components/CurveComponent';
 import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
+import InputComponent from '../../engine/components/InputComponent';
+import InputSystem, {
+    OnInputEvent,
+} from '../../engine/abstracts/systems/InputSystem';
 import PoseComponent from '../../engine/components/PoseComponent';
 import RemoveWireCommand from '../commands/RemoveWireCommand';
 import ShapeComponent from '../../engine/components/ShapeComponent';
@@ -14,30 +14,30 @@ import WireCuttingPath from '../entities/tools/carets/WireCuttingPath';
 import WireRemovalCaret from '../entities/tools/carets/WireRemovalCaret';
 import { isShapeIntersectedByLine } from '../../geometry/methods/shapes';
 
-export default class WireRemovalSystem extends CursorEventSystem {
+export default class WireRemovalSystem extends InputSystem {
 
-    public once(component: CursorEventComponent): void {
+    public once(component: InputComponent): void {
         this.__onCursorBeginActuationWithWireCuttingPath(component);
         this.__onCursorTranslateDrawWireCuttingPath(component);
         this.__onCursorEndActuationWithWireCuttingPath(component);
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
+    @OnInputEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
     @OnlyIfEntityIsInstanceOf(WireRemovalCaret)
-    private __onCursorBeginActuationWithWireCuttingPath(component: CursorEventComponent): void {
+    private __onCursorBeginActuationWithWireCuttingPath(component: InputComponent): void {
         this.store.entities.create(WireCuttingPath, { points: [{ x: component.data.x, y: component.data.y }] });
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_TRANSLATE)
+    @OnInputEvent(CURSOR_EVENT.CURSOR_TRANSLATE)
     @OnlyIfEntityIsInstanceOf(WireCuttingPath)
-    private __onCursorTranslateDrawWireCuttingPath(component: CursorEventComponent): void {
+    private __onCursorTranslateDrawWireCuttingPath(component: InputComponent): void {
         const line = component.entity.get(CurveComponent);
         line.data.points.push({ x: component.data.x, y: component.data.y });
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
+    @OnInputEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
     @OnlyIfEntityIsInstanceOf(WireCuttingPath)
-    private __onCursorEndActuationWithWireCuttingPath(component: CursorEventComponent): void {
+    private __onCursorEndActuationWithWireCuttingPath(component: InputComponent): void {
         component.entity.unload();
         this.__cutAndRemoveWires(component.entity);
     }

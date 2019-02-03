@@ -1,4 +1,4 @@
-import CursorEventComponent from '../../../src/engine/components/CursorEventComponent';
+import InputComponent from '../../../src/engine/components/InputComponent';
 import Entity from '../../../src/engine/abstracts/Entity';
 import FakeCanvas from '../../src/fakes/FakeHTMLCanvasElement';
 import ImpostorCanvasRenderingContext2D from '../../src//impostors/ImpostorCanvasRenderingContext2D';
@@ -32,7 +32,7 @@ describe(TranslationSystem.name, () => {
 
     it('translatable entity is translated with cursor movement', (done) => {
         const entity = game.store.entities.create(Entity);
-        entity.add(CursorEventComponent);
+        entity.add(InputComponent);
         entity.add(PoseComponent, { x: 0, y: 0 });
         const translatable = entity.add(TranslationComponent);
         const data = translatable.data;
