@@ -17,7 +17,7 @@ export default class HTML5MouseCursorAdapter implements ICursorAdapter {
     public sync(components: ComponentStoreManager): void {
         const next = this.__buffer.pop() || { data: { eventName: CURSOR_EVENT.UNDEFINED } };
         components.get(CursorEventComponent).forEach((component) => {
-            component.set(next.data);
+            component.mutate(next.data);
         });
     }
 
@@ -33,7 +33,7 @@ export default class HTML5MouseCursorAdapter implements ICursorAdapter {
         return (ev: MouseEvent): void => {
             const boundingClientRect = this.__canvas.getBoundingClientRect();
             const component = new CursorEventComponent();
-            component.set({
+            component.mutate({
                 eventName: __mouseEventToCursorEventMap[ev.type],
                 x: ev.clientX - boundingClientRect.left,
                 y: ev.clientY - boundingClientRect.top,

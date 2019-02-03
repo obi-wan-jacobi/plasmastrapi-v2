@@ -19,11 +19,20 @@ export default class TranslationSystem extends CursorEventSystem {
         const translatable = component.entity.get(TranslationComponent);
         if (translatable.data.previous.cursor.x > -Infinity && translatable.data.previous.cursor.y > -Infinity) {
             const pose = component.entity.get(PoseComponent);
-            pose.data.x = pose.data.x + (component.data.x - translatable.data.previous.cursor.x);
-            pose.data.y = pose.data.y + (component.data.y - translatable.data.previous.cursor.y);
+            pose.mutate({
+                x: pose.data.x + (component.data.x - translatable.data.previous.cursor.x),
+                y: pose.data.y + (component.data.y - translatable.data.previous.cursor.y),
+                a: pose.data.a,
+            });
         }
-        translatable.data.previous.cursor.x = component.data.x;
-        translatable.data.previous.cursor.y = component.data.y;
+        translatable.mutate({
+            previous: {
+                cursor: {
+                    x: component.data.x,
+                    y: component.data.y,
+                },
+            },
+        });
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_TRANSLATE)
@@ -33,11 +42,20 @@ export default class TranslationSystem extends CursorEventSystem {
         const translatable = component.entity.get(TranslationComponent);
         if (translatable.data.previous.cursor.x > -Infinity && translatable.data.previous.cursor.y > -Infinity) {
             const pose = component.entity.get(PoseComponent);
-            pose.data.x = pose.data.x + (component.data.x - translatable.data.previous.cursor.x);
-            pose.data.y = pose.data.y + (component.data.y - translatable.data.previous.cursor.y);
+            pose.mutate({
+                x: pose.data.x + (component.data.x - translatable.data.previous.cursor.x),
+                y: pose.data.y + (component.data.y - translatable.data.previous.cursor.y),
+                a: pose.data.a,
+            });
         }
-        translatable.data.previous.cursor.x = component.data.x;
-        translatable.data.previous.cursor.y = component.data.y;
+        translatable.mutate({
+            previous: {
+                cursor: {
+                    x: component.data.x,
+                    y: component.data.y,
+                },
+            },
+        });
     }
 
 }

@@ -1,3 +1,4 @@
+import ActiveToolSystem from './systems/ActiveToolSystem';
 import ChildPoseOffsetSystem from './systems/ChildPoseOffsetSystem';
 import CircuitDesignSystem from './systems/CircuitDesignSystem';
 import DragSystem from './systems/DragSystem';
@@ -8,6 +9,7 @@ import LinePoseSystem from './systems/LinePoseSystem';
 import LineRenderingSystem from './systems/LineRenderingSystem';
 import PoseRenderingSystem from '../engine/systems/PoseRenderingSystem';
 import ShapeRenderingSystem from '../engine/systems/ShapeRenderingSystem';
+import ToolButtonSystem from './systems/ToolButtonSystem';
 import TranslationSystem from './systems/TranslationSystem';
 import WireCreationSystem from './systems/WireCreationSystem';
 import WireRemovalSystem from './systems/WireRemovalSystem';
@@ -31,6 +33,8 @@ export default class Plasmastrapi extends HTML5CanvasGame {
         this.systems.add(WireCreationSystem);
         this.systems.add(WireRemovalSystem);
         this.systems.add(CircuitDesignSystem);
+        this.systems.add(ToolButtonSystem);
+        this.systems.add(ActiveToolSystem);
     }
 
 }

@@ -9,7 +9,7 @@ import OutputTerminal from '../../../src/app/entities/circuit-elements/OutputTer
 import Plasmastrapi from '../../../src/app/Plasmastrapi';
 import PoseComponent from '../../../src/engine/components/PoseComponent';
 import Wire from '../../../src/app/entities/circuit-elements/Wire';
-import WireCreationCaret from '../../../src/app/entities/tool-carets/WireCreationCaret';
+import WireCreationCaret from '../../../src/app/entities/tools/carets/WireCreationCaret';
 import WireCreationSystem from '../../../src/app/systems/WireCreationSystem';
 
 describe(WireCreationSystem.name, () => {

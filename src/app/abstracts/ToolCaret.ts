@@ -10,7 +10,7 @@ export default abstract class ToolCaret extends Entity {
         super();
         this.add(CursorEventComponent);
         this.add(PoseComponent, position);
-        this.add(TranslationComponent).set({ previous: { cursor: position } });
+        this.add(TranslationComponent).mutate({ previous: { cursor: position } });
     }
 
 }

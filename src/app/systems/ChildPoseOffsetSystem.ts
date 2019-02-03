@@ -16,9 +16,12 @@ export default class ChildPoseOffsetSystem extends System<ChildPoseOffsetCompone
     private __moveRelativeToParent(component: ChildPoseOffsetComponent): void {
         const parent = (component.entity as InputTerminal).parent;
         const parentPose = parent.get(PoseComponent);
-        const terminalPose = component.entity.get(PoseComponent).data;
-        terminalPose.x = parentPose.data.x + component.data.offsetX;
-        terminalPose.y = parentPose.data.y + component.data.offsetY;
+        const terminalPose = component.entity.get(PoseComponent);
+        terminalPose.mutate({
+            x: parentPose.data.x + component.data.offsetX,
+            y: parentPose.data.y + component.data.offsetY,
+            a: parentPose.data.a,
+        });
     }
 
 }

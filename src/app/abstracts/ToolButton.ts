@@ -1,3 +1,4 @@
+import { Ctor } from '../../framework/types/Ctor';
 import CursorEventComponent from '../../engine/components/CursorEventComponent';
 import Entity from '../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../html5/enums/HTML5_COLOUR';
@@ -6,12 +7,18 @@ import PoseComponent from '../../engine/components/PoseComponent';
 import Rectangle from '../../geometry/concretes/Rectangle';
 import RenderingComponent from '../../engine/components/RenderingComponent';
 import ShapeComponent from '../../engine/components/ShapeComponent';
+import ToolCaret from './ToolCaret';
 import { settings } from '../game.config';
 
-export default abstract class Button extends Entity {
+export default abstract class ToolButton extends Entity {
 
-    constructor(position: IPosition2D) {
+    /* tslint:disable:naming-convention */
+    public ToolCaretCtor: Ctor<ToolCaret, IPosition2D>;
+    /* tslint:enable:naming-convention */
+
+    constructor({ position, ToolCaretCtor }: { position: IPosition2D, ToolCaretCtor: Ctor<ToolCaret, IPosition2D> }) {
         super();
+        this.ToolCaretCtor = ToolCaretCtor;
         this.add(CursorEventComponent);
         this.add(PoseComponent, { x: position.x, y: position.y, a: 0 });
         this.add(RenderingComponent, { colour: HTML5_COLOUR.WHITE });

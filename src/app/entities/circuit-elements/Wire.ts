@@ -8,7 +8,7 @@ import PoseComponent from '../../../engine/components/PoseComponent';
 import Rectangle from '../../../geometry/concretes/Rectangle';
 import RenderingComponent from '../../../engine/components/RenderingComponent';
 import ShapeComponent from '../../../engine/components/ShapeComponent';
-import WireCreationCaret from '../tool-carets/WireCreationCaret';
+import WireCreationCaret from '../tools/carets/WireCreationCaret';
 
 export default class Wire extends Entity {
 
@@ -18,15 +18,15 @@ export default class Wire extends Entity {
         this.add(PoseComponent, { x: - Infinity, y: -Infinity });
         this.add(ShapeComponent, new Rectangle({ width: -Infinity, height: -Infinity }));
         this.add(RenderingComponent, { colour: HTML5_COLOUR.WHITE });
-        this.add(LineComponent, { head, tail });
+        this.add(LineComponent, { head: head.id, tail: tail.id });
     }
 
     public get head(): Entity {
-        return this.get(LineComponent).data.head;
+        return this._store.entities.find(this.get(LineComponent).data.head)!;
     }
 
     public get tail(): Entity {
-        return this.get(LineComponent).data.tail;
+        return this._store.entities.find(this.get(LineComponent).data.tail)!;
     }
 
 }

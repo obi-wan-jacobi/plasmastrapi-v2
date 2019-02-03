@@ -1,16 +1,16 @@
-import ActiveToolButtonFrame from '../../../src/app/entities/ActiveItemFrame';
+import ActiveToolButtonFrame from '../../../src/app/entities/tools/ActiveToolButtonFrame';
+import ActiveToolSystem from '../../../src/app/systems/ActiveToolSystem';
 import CircuitDesignArea from '../../../src/app/entities/CircuitDesignArea';
 import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../src/app/entities/circuit-elements/Gate';
 import GateCreationButton from '../../../src/app/entities/buttons/GateCreationButton';
-import GateCreationCaret from '../../../src/app/entities/tool-carets/GateCreationCaret';
-import ImpostorCanvasRenderingContext2D from '../../src//impostors/ImpostorCanvasRenderingContext2D';
-import ImpostorHTMLCanvasElement from '../../src//impostors/ImpostorHTMLCanvasElement';
+import GateCreationCaret from '../../../src/app/entities/tools/carets/GateCreationCaret';
+import ImpostorCanvasRenderingContext2D from '../../src/impostors/ImpostorCanvasRenderingContext2D';
+import ImpostorHTMLCanvasElement from '../../src/impostors/ImpostorHTMLCanvasElement';
 import Plasmastrapi from '../../../src/app/Plasmastrapi';
 import PoseComponent from '../../../src/engine/components/PoseComponent';
-import TranslationSystem from '../../../src/app/systems/TranslationSystem';
 
-describe(TranslationSystem.name, () => {
+describe(ActiveToolSystem.name, () => {
 
     let impostorRenderingContext: ImpostorCanvasRenderingContext2D;
     let impostorHTMLCanvasElement: ImpostorHTMLCanvasElement;

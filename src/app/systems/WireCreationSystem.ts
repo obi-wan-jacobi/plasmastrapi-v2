@@ -9,7 +9,7 @@ import InputTerminal from '../entities/circuit-elements/InputTerminal';
 import { Optional } from '../../framework/types/Optional';
 import OutputTerminal from '../entities/circuit-elements/OutputTerminal';
 import Wire from '../entities/circuit-elements/Wire';
-import WireCreationCaret from '../entities/tool-carets/WireCreationCaret';
+import WireCreationCaret from '../entities/tools/carets/WireCreationCaret';
 
 export default class WireCreationSystem extends CursorEventSystem {
 

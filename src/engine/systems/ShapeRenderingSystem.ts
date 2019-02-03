@@ -7,15 +7,14 @@ import RenderingComponent from '../components/RenderingComponent';
 import ShapeComponent from '../components/ShapeComponent';
 import { transformShape } from '../../geometry/methods/shapes';
 
-export default class ShapeRenderingSystem<T>
-extends RenderSystem<IRenderingProfile<T>> {
+export default class ShapeRenderingSystem extends RenderSystem<IRenderingProfile> {
 
     constructor(context: IRenderContext<any>) {
         super(context, RenderingComponent);
     }
 
     @OnlyIfEntityHas(ShapeComponent)
-    public once(component: RenderingComponent<IRenderingProfile<T>>): void {
+    public once(component: RenderingComponent<IRenderingProfile>): void {
         const pose = component.entity.get(PoseComponent);
         const shape = component.entity.get(ShapeComponent);
         const { vertices } = transformShape(shape.data, pose.data);

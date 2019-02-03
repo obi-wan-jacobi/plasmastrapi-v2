@@ -23,7 +23,7 @@
                     "--runInBand",
                     "--config",
                     "${workspaceRoot}/jest.config.js",
-                    "wirecreation"
+                    "manifold"
                 ],
             },
             "console": "integratedTerminal",

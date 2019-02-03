@@ -1,6 +1,8 @@
+import ActivateToolCommand from '../../../src/app/commands/ActivateToolCommand';
 import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../src/app/entities/circuit-elements/Gate';
-import GateRemovalCaret from '../../../src/app/entities/tool-carets/GateRemovalCaret';
+import GateRemovalButton from '../../../src/app/entities/buttons/GateRemovalButton';
+import GateRemovalCaret from '../../../src/app/entities/tools/carets/GateRemovalCaret';
 import GateRemovalSystem from '../../../src/app/systems/GateRemovalSystem';
 import IPosition2D from '../../../src/geometry/interfaces/IPosition2D';
 import ImpostorCanvasRenderingContext2D from '../../src//impostors/ImpostorCanvasRenderingContext2D';
@@ -42,7 +44,10 @@ describe(GateRemovalSystem.name, () => {
         impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(3)
             .returns({ left: 0, top: 0 });
         game.store.entities.create(Gate, gatePosition);
-        game.store.entities.create(GateRemovalCaret, clickPosition);
+        new ActivateToolCommand(game.store).invoke({
+            position: { x: 0, y: 0 },
+            toolButton: new GateRemovalButton({ x: 0, y: 0 }),
+        });
         fakeCanvas.simulateMouseDown(clickPosition.x, clickPosition.y);
         fakeCanvas.simulateMouseUp(clickPosition.x, clickPosition.y);
         fakeCanvas.simulateClick(clickPosition.x, clickPosition.y);

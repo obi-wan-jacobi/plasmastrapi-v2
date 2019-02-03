@@ -7,7 +7,7 @@ import CursorEventSystem, {
 } from '../../engine/abstracts/systems/CursorEventSystem';
 import { OnlyIfEntityHas, OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import Gate from '../entities/circuit-elements/Gate';
-import GateCreationCaret from '../entities/tool-carets/GateCreationCaret';
+import GateCreationCaret from '../entities/tools/carets/GateCreationCaret';
 import PoseComponent from '../../engine/components/PoseComponent';
 import ShapeComponent from '../../engine/components/ShapeComponent';
 import TranslationComponent from '../components/TranslationComponent';
@@ -25,7 +25,7 @@ export default class CircuitDesignSystem extends CursorEventSystem {
     private __onCursorTranslate(component: CursorEventComponent): void {
         this.store.entities.get(GateCreationCaret).first((instance: GateCreationCaret) => {
             if (!instance.gate && this.__isCursorInsideCircuitDesignArea(component)) {
-                instance.gate = this.store.entities.create(Gate, component.data);
+                instance.gate = new CreateGateCommand(this.store).invoke(component.data);
                 instance.gate.add(TranslationComponent);
             } else if (instance.gate && !this.__isCursorInsideCircuitDesignArea(component)) {
                 instance.gate.unload();
@@ -56,8 +56,7 @@ export default class CircuitDesignSystem extends CursorEventSystem {
         } else if (pose.y < bounds.minY) {
             pose.y = bounds.minY;
         }
-        new CreateGateCommand(this.store).invoke(pose);
-        component.entity.unload();
+        component.entity.get(PoseComponent).mutate(pose);
     }
 
     private __isCursorInsideCircuitDesignArea(component: CursorEventComponent): boolean {

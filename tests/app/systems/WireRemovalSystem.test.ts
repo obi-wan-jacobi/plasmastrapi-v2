@@ -1,11 +1,11 @@
 import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../src/app/entities/circuit-elements/Gate';
-import GateRemovalCaret from '../../../src/app/entities/tool-carets/GateRemovalCaret';
+import GateRemovalCaret from '../../../src/app/entities/tools/carets/GateRemovalCaret';
 import ImpostorCanvasRenderingContext2D from '../../src//impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../src//impostors/ImpostorHTMLCanvasElement';
 import Plasmastrapi from '../../../src/app/Plasmastrapi';
 import Wire from '../../../src/app/entities/circuit-elements/Wire';
-import WireRemovalCaret from '../../../src/app/entities/tool-carets/WireRemovalCaret';
+import WireRemovalCaret from '../../../src/app/entities/tools/carets/WireRemovalCaret';
 import WireRemovalSystem from '../../../src/app/systems/WireRemovalSystem';
 
 describe(WireRemovalSystem.name, () => {

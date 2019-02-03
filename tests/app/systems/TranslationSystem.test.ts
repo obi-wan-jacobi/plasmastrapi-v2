@@ -35,8 +35,10 @@ describe(TranslationSystem.name, () => {
         entity.add(CursorEventComponent);
         entity.add(PoseComponent, { x: 0, y: 0 });
         const translatable = entity.add(TranslationComponent);
-        translatable.data.previous.cursor.x = 0;
-        translatable.data.previous.cursor.y = 0;
+        const data = translatable.data;
+        data.previous.cursor.x = 0;
+        data.previous.cursor.y = 0;
+        translatable.mutate(data);
         (impostorHTMLCanvasElement.unwrap() as unknown as FakeCanvas).simulateMouseMove(50, 50);
         //
         game.loop.once();

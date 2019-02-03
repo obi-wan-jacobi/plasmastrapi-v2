@@ -16,15 +16,20 @@ implements IManifold<T> {
         return this.unwrap().length;
     }
 
+    public find(id: string): T | undefined {
+        let result;
+        this.unwrap().find((index) => {
+            result = index.find((t) => t.id === id);
+            return result !== undefined;
+        });
+        return result;
+    }
+
     public get(InstanceCtor: Ctor<T, any>): Index<T> {
         if (!this.unwrap().read(InstanceCtor.name)) {
             return new Index<T>();
         }
         return this.unwrap().read(InstanceCtor.name);
-    }
-
-    public getById(id: string): Index<T> {
-        return this.unwrap().read(id);
     }
 
     public add(instance: T): boolean {

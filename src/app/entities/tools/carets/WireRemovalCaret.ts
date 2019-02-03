@@ -1,5 +1,5 @@
-import IPosition2D from '../../../geometry/interfaces/IPosition2D';
-import ToolCaret from '../../abstracts/ToolCaret';
+import IPosition2D from '../../../../geometry/interfaces/IPosition2D';
+import ToolCaret from '../../../abstracts/ToolCaret';
 
 export default class WireRemovalCaret extends ToolCaret {
 

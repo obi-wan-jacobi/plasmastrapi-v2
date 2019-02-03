@@ -1,4 +1,3 @@
-import { HTML5_COLOUR } from './enums/HTML5_COLOUR';
 import IComponent from '../engine/interfaces/IComponent';
 import IPosition2D from '../geometry/interfaces/IPosition2D';
 import IRenderingProfile from '../engine/interfaces/IRenderingProfile';
@@ -11,7 +10,7 @@ const DEFAULT_RADIUS = 2;
 /* tslint:enable:no-magic-numbers */
 
 export default class HTML5CanvasViewportAdapter implements
- IViewportAdapter<CanvasRenderingContext2D, IRenderingProfile<HTML5_COLOUR>> {
+ IViewportAdapter<CanvasRenderingContext2D, IRenderingProfile> {
 
     public readonly ctx: CanvasRenderingContext2D;
     private __canvas: HTMLCanvasElement;
@@ -55,7 +54,7 @@ function Atomic(
 ): any {
     const method = descriptor.value;
     descriptor.value = function<TComponent extends IComponent<any>>(
-        component: TComponent, renderProfile: IComponent<IRenderingProfile<HTML5_COLOUR>>,
+        component: TComponent, renderProfile: IComponent<IRenderingProfile>,
     ): void {
         this.ctx.save();
         this.ctx.strokeStyle = renderProfile.data.colour;
@@ -74,7 +73,7 @@ function AtomicWithoutClosePath(
 ): any {
     const method = descriptor.value;
     descriptor.value = function<TComponent extends IComponent<any>>(
-        component: TComponent, renderProfile: IComponent<IRenderingProfile<HTML5_COLOUR>>,
+        component: TComponent, renderProfile: IComponent<IRenderingProfile>,
     ): void {
         this.ctx.save();
         this.ctx.strokeStyle = renderProfile.data.colour;

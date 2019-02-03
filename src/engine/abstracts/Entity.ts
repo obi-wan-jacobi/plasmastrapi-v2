@@ -1,5 +1,6 @@
 import { Ctor } from '../../framework/types/Ctor';
 import IComponent from '../interfaces/IComponent';
+import IDataPrimitive from '../interfaces/IDataPrimitive';
 import IEntity from '../interfaces/IEntity';
 import { Optional } from '../../framework/types/Optional';
 import StoreMaster from '../masters/StoreMaster';
@@ -7,7 +8,7 @@ import System from './System';
 import TypeIndex from '../../framework/data-structures/TypeIndex';
 import Unique from '../../framework/abstracts/Unique';
 
-export default class Entity extends TypeIndex<IComponent<any>> implements IEntity {
+export default class Entity extends TypeIndex<IComponent<any>, IDataPrimitive> implements IEntity {
 
     public readonly id: string;
     protected _store: StoreMaster;
@@ -24,7 +25,7 @@ export default class Entity extends TypeIndex<IComponent<any>> implements IEntit
         });
     }
 
-    public add<TComponent extends IComponent<TData>, TData>(
+    public add<TComponent extends IComponent<TData>, TData extends IDataPrimitive>(
         ComponentCtor: Ctor<TComponent, Optional<TData>>, data?: TData,
     ): TComponent {
         const component = super.add(ComponentCtor, data);
@@ -70,7 +71,8 @@ export function OnlyIfEntityHas<TComponent extends IComponent<any>>(ComponentCto
     };
 }
 
-export function OnlyIfEntityIsInstanceOf<TEntity extends Entity>(EntityCtor: Ctor<TEntity, any>)
+/* tslint:disable:ban-types */
+export function OnlyIfEntityIsInstanceOf<TEntity extends Entity>(EntityCtor: Function & { prototype: TEntity })
 : (target: any, propertyKey: string, descriptor: PropertyDescriptor) => any {
     return function(
         target: System<IComponent<any>>,
@@ -86,3 +88,4 @@ export function OnlyIfEntityIsInstanceOf<TEntity extends Entity>(EntityCtor: Cto
         };
     };
 }
+/* tslint:enable:ban-types */

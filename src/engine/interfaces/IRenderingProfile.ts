@@ -1,6 +1,7 @@
+import IDataPrimitive from './IDataPrimitive';
 
-export default interface IRenderingProfile<TColour> {
+export default interface IRenderingProfile extends IDataPrimitive {
 
-    colour: TColour;
+    colour: string;
 
 }

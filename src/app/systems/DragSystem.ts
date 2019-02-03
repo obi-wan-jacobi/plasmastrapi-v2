@@ -19,8 +19,14 @@ export default class DragSystem extends CursorEventSystem {
     @OnCursorIntersection
     private __onCursorBeginActuation(component: CursorEventComponent): void {
         const translatable = component.entity.add(TranslationComponent);
-        translatable.data.previous.cursor.x = component.data.x;
-        translatable.data.previous.cursor.y = component.data.y;
+        translatable.mutate({
+            previous: {
+                cursor: {
+                    x: component.data.x,
+                    y: component.data.y,
+                },
+            },
+        });
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)

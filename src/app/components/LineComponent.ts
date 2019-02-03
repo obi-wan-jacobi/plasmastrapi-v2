@@ -1,9 +1,8 @@
 import Component from '../../engine/abstracts/Component';
-import Entity from '../../engine/abstracts/Entity';
 
-export default class LineComponent extends Component<{ head: Entity, tail: Entity }> {
+export default class LineComponent extends Component<{ head: string, tail: string }> {
 
-    constructor({ head, tail }: { head: Entity, tail: Entity }) {
+    constructor({ head, tail }: { head: string, tail: string }) {
         super({ head, tail });
     }
 

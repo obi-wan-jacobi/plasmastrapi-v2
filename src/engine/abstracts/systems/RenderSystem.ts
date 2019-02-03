@@ -4,12 +4,12 @@ import IRenderingProfile from '../../interfaces/IRenderingProfile';
 import RenderingComponent from '../../components/RenderingComponent';
 import System from '../System';
 
-export default abstract class RenderSystem<TProfile extends IRenderingProfile<any>>
+export default abstract class RenderSystem<TProfile extends IRenderingProfile>
 extends System<RenderingComponent<TProfile>> {
 
     protected _ctx: IRenderContext<any>;
 
-    constructor(context: IRenderContext<any>, ComponentCtor: Ctor<RenderingComponent<TProfile>, {}>) {
+    constructor(context: IRenderContext<any>, ComponentCtor: Ctor<RenderingComponent<TProfile>, TProfile>) {
         super(ComponentCtor);
         this._ctx = context;
     }

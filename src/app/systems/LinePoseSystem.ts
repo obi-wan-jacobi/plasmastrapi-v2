@@ -16,11 +16,11 @@ export default class LinePoseSystem extends System<LineComponent> {
     }
 
     public once(component: LineComponent): void {
-        const head = component.data.head.get(PoseComponent).data;
-        const tail = component.data.tail.get(PoseComponent).data;
+        const head = this.store.entities.find(component.data.head)!.get(PoseComponent).data;
+        const tail = this.store.entities.find(component.data.tail)!.get(PoseComponent).data;
         const { pose, shape } = __fromPointsToLine(tail, head);
-        component.entity.get(PoseComponent).set(pose);
-        component.entity.get(ShapeComponent).set(shape);
+        component.entity.get(PoseComponent).mutate(pose);
+        component.entity.get(ShapeComponent).mutate(shape);
     }
 }
 

@@ -13,6 +13,10 @@ export default class EntityStoreManager extends StoreManager<Entity> {
         this.__store = store;
     }
 
+    public find(id: string): Entity | undefined {
+        return this.unwrap().find(id);
+    }
+
     public create<TEntity extends Entity, TData>(EntityCtor: Ctor<TEntity, Optional<TData>>, data?: TData): TEntity {
         const entity = super.create(EntityCtor, data);
         entity.bind(this.__store);

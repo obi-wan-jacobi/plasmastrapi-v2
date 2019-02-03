@@ -53,6 +53,12 @@ describe(Manifold.name, () => {
         manifold.add(testType33);
     });
 
+    it('Find a unique instance', (done) => {
+        const instance = manifold.find(testType11.id);
+        expect(instance).toBe(testType11);
+        done();
+    });
+
     it('Adding multiple instances of several types sorts and stores everything', (done) => {
         __validate(
             ['1', '2', '3', '4', '5'],

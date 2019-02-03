@@ -3,13 +3,13 @@ import Unique from '../../../src/framework/abstracts/Unique';
 
 describe(TypeIndex.name, () => {
 
-    let collection: TypeIndex<Unique>;
+    let collection: TypeIndex<Unique, any>;
     let testType1: TestType1;
     let testType2: TestType2;
     let testType3: TestType3;
 
     beforeEach(() => {
-        collection = new TypeIndex<Unique>();
+        collection = new TypeIndex<Unique, any>();
         expect(collection.get(TestType1)).toBeUndefined();
         expect(collection.get(TestType2)).toBeUndefined();
         expect(collection.get(TestType3)).toBeUndefined();

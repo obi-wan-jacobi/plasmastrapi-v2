@@ -1,14 +1,12 @@
-import ActiveItemFrame from '../entities/ActiveItemFrame';
 import Batch from '../../framework/invocables/Batch';
 import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
 import CursorEventComponent from '../../engine/components/CursorEventComponent';
 import CursorEventSystem, {
-    CursorIntersectsEntityValidator, OnCursorEvent, OnCursorIntersection,
+    CursorIntersectsEntityValidator, OnCursorEvent,
 } from '../../engine/abstracts/systems/CursorEventSystem';
 import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import Gate from '../entities/circuit-elements/Gate';
-import GateRemovalButton from '../entities/buttons/GateRemovalButton';
-import GateRemovalCaret from '../entities/tool-carets/GateRemovalCaret';
+import GateRemovalCaret from '../entities/tools/carets/GateRemovalCaret';
 import RemoveGateCommand from '../commands/RemoveGateCommand';
 import RemoveWireCommand from '../commands/RemoveWireCommand';
 import Wire from '../entities/circuit-elements/Wire';
@@ -16,28 +14,16 @@ import Wire from '../entities/circuit-elements/Wire';
 export default class GateRemovalSystem extends CursorEventSystem {
 
     public once(component: CursorEventComponent): void {
-        this.__onCursorCompleteActuationWithButtonPrepGateRemoval(component);
         this.__onCursorCompleteCaretActuationWithCaretRemoveIntersectedGate(component);
-    }
-
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)
-    @OnlyIfEntityIsInstanceOf(GateRemovalButton)
-    @OnCursorIntersection
-    private __onCursorCompleteActuationWithButtonPrepGateRemoval(component: CursorEventComponent): void {
-        this.store.entities.create(GateRemovalCaret, component.data);
-        this.store.entities.create(ActiveItemFrame, component.entity);
     }
 
     @OnCursorEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)
     @OnlyIfEntityIsInstanceOf(GateRemovalCaret)
     private __onCursorCompleteCaretActuationWithCaretRemoveIntersectedGate(component: CursorEventComponent): void {
-        const caret = component.entity;
-        this.__removeAnyGatesIntersectedByCaret(caret);
-        caret.unload();
-        this.store.entities.get(ActiveItemFrame).forEach((frame) => frame.unload());
+        this.__removeAnyGatesIntersectedByCaret();
     }
 
-    private __removeAnyGatesIntersectedByCaret(caret: GateRemovalCaret): void {
+    private __removeAnyGatesIntersectedByCaret(): void {
         this.store.entities.get(Gate).forEach((gate: Gate) => {
             if (CursorIntersectsEntityValidator.invoke(gate.get(CursorEventComponent))) {
                 new RemoveGateCommand(gate).invoke();

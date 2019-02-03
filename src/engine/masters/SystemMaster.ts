@@ -8,7 +8,7 @@ import TypeIndex from '../../framework/data-structures/TypeIndex';
 export default class SystemMaster implements IMaster<void>, IIterable<ISystem<any>> {
 
     private __engine: Engine;
-    private __systems: TypeIndex<ISystem<any>>;
+    private __systems: TypeIndex<ISystem<any>, any>;
     private __systemsToAdd: Array<{ Ctor: Ctor<ISystem<any>, any>, arg: any }>;
     private __systemsToRemove: Array<{ Ctor: Ctor<ISystem<any>, any> }>;
 
@@ -16,7 +16,7 @@ export default class SystemMaster implements IMaster<void>, IIterable<ISystem<an
         this.__engine = engine;
         this.__systemsToAdd = [];
         this.__systemsToRemove = [];
-        this.__systems = new TypeIndex<ISystem<any>>();
+        this.__systems = new TypeIndex<ISystem<any>, any>();
     }
 
     public add<TSystem extends ISystem<any>>(
