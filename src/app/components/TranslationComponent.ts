@@ -3,7 +3,7 @@ import Component from '../../engine/abstracts/Component';
 export default class TranslationComponent
 extends Component<{
     previous: {
-        cursor: {
+        mouse: {
             x: number,
             y: number,
         },
@@ -13,7 +13,7 @@ extends Component<{
     constructor() {
         super({
             previous: {
-                cursor: {
+                mouse: {
                     x: -Infinity,
                     y: -Infinity,
                 },

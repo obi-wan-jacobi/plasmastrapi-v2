@@ -1,4 +1,4 @@
-import CursorEventComponent from '../../engine/components/CursorEventComponent';
+import MouseEventComponent from '../../engine/components/MouseEventComponent';
 import Entity from '../../engine/abstracts/Entity';
 import IPosition2D from '../../geometry/interfaces/IPosition2D';
 import PoseComponent from '../../engine/components/PoseComponent';
@@ -8,9 +8,9 @@ export default abstract class ToolCaret extends Entity {
 
     constructor(position: IPosition2D) {
         super();
-        this.add(CursorEventComponent);
+        this.add(MouseEventComponent);
         this.add(PoseComponent, position);
-        this.add(TranslationComponent).mutate({ previous: { cursor: position } });
+        this.add(TranslationComponent).mutate({ previous: { mouse: position } });
     }
 
 }

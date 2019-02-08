@@ -1,43 +1,43 @@
-import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
 import CircuitDesignArea from '../entities/CircuitDesignArea';
 import CreateGateCommand from '../commands/CreateGateCommand';
-import CursorEventComponent from '../../engine/components/CursorEventComponent';
-import CursorEventSystem, {
-    OnCursorEvent,
-} from '../../engine/abstracts/systems/CursorEventSystem';
 import { OnlyIfEntityHas, OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import Gate from '../entities/circuit-elements/Gate';
 import GateCreationCaret from '../entities/tools/carets/GateCreationCaret';
+import { MOUSE_EVENT } from '../../engine/enums/MOUSE_EVENT';
+import MouseEventComponent from '../../engine/components/MouseEventComponent';
+import MouseEventSystem, {
+    OnMouseEvent,
+} from '../../engine/abstracts/systems/MouseEventSystem';
 import PoseComponent from '../../engine/components/PoseComponent';
 import ShapeComponent from '../../engine/components/ShapeComponent';
 import TranslationComponent from '../components/TranslationComponent';
 import { getMinMaxShapeBounds, isPointInsideShape, translateShape } from '../../geometry/methods/shapes';
 
-export default class CircuitDesignSystem extends CursorEventSystem {
+export default class CircuitDesignSystem extends MouseEventSystem {
 
-    public once(component: CursorEventComponent): void {
-        this.__onCursorTranslate(component);
-        this.__onCursorTranslateConstrainElementToDesignArea(component);
+    public once(component: MouseEventComponent): void {
+        this.__onMouseMove(component);
+        this.__onMouseMoveConstrainElementToDesignArea(component);
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_TRANSLATE)
+    @OnMouseEvent(MOUSE_EVENT.MOUSE_MOVE)
     @OnlyIfEntityIsInstanceOf(CircuitDesignArea)
-    private __onCursorTranslate(component: CursorEventComponent): void {
+    private __onMouseMove(component: MouseEventComponent): void {
         this.store.entities.get(GateCreationCaret).first((instance: GateCreationCaret) => {
-            if (!instance.gate && this.__isCursorInsideCircuitDesignArea(component)) {
+            if (!instance.gate && this.__isMouseInsideCircuitDesignArea(component)) {
                 instance.gate = new CreateGateCommand(this.store).invoke(component.data);
                 instance.gate.add(TranslationComponent);
-            } else if (instance.gate && !this.__isCursorInsideCircuitDesignArea(component)) {
+            } else if (instance.gate && !this.__isMouseInsideCircuitDesignArea(component)) {
                 instance.gate.unload();
                 instance.gate = undefined;
             }
         });
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_TRANSLATE)
+    @OnMouseEvent(MOUSE_EVENT.MOUSE_MOVE)
     @OnlyIfEntityIsInstanceOf(Gate)
     @OnlyIfEntityHas(TranslationComponent)
-    private __onCursorTranslateConstrainElementToDesignArea(component: CursorEventComponent): void {
+    private __onMouseMoveConstrainElementToDesignArea(component: MouseEventComponent): void {
         const circuitDesignArea = this.__getCircuitDesignArea();
         const areaPose = circuitDesignArea.get(PoseComponent);
         const areaShape = circuitDesignArea.get(ShapeComponent);
@@ -59,15 +59,15 @@ export default class CircuitDesignSystem extends CursorEventSystem {
         component.entity.get(PoseComponent).mutate(pose);
     }
 
-    private __isCursorInsideCircuitDesignArea(component: CursorEventComponent): boolean {
-        let isCursorInsideCircuitDesignArea = false;
+    private __isMouseInsideCircuitDesignArea(component: MouseEventComponent): boolean {
+        let isMouseInsideCircuitDesignArea = false;
         const circuitDesignArea = this.__getCircuitDesignArea();
-        isCursorInsideCircuitDesignArea = isPointInsideShape(
+        isMouseInsideCircuitDesignArea = isPointInsideShape(
                 component.data,
                 circuitDesignArea.get(ShapeComponent).data,
                 circuitDesignArea.get(PoseComponent).data,
             );
-        return isCursorInsideCircuitDesignArea;
+        return isMouseInsideCircuitDesignArea;
     }
 
     private __getCircuitDesignArea(): CircuitDesignArea {

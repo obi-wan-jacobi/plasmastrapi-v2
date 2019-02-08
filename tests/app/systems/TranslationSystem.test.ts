@@ -1,4 +1,4 @@
-import CursorEventComponent from '../../../src/engine/components/CursorEventComponent';
+import MouseEventComponent from '../../../src/engine/components/MouseEventComponent';
 import Entity from '../../../src/engine/abstracts/Entity';
 import FakeCanvas from '../../src/fakes/FakeHTMLCanvasElement';
 import ImpostorCanvasRenderingContext2D from '../../src//impostors/ImpostorCanvasRenderingContext2D';
@@ -30,14 +30,14 @@ describe(TranslationSystem.name, () => {
         impostorHTMLCanvasElement.assertMethodsCalledInOrder();
     });
 
-    it('translatable entity is translated with cursor movement', (done) => {
+    it('translatable entity is translated with mouse movement', (done) => {
         const entity = game.store.entities.create(Entity);
-        entity.add(CursorEventComponent);
+        entity.add(MouseEventComponent);
         entity.add(PoseComponent, { x: 0, y: 0 });
         const translatable = entity.add(TranslationComponent);
         const data = translatable.data;
-        data.previous.cursor.x = 0;
-        data.previous.cursor.y = 0;
+        data.previous.mouse.x = 0;
+        data.previous.mouse.y = 0;
         translatable.mutate(data);
         (impostorHTMLCanvasElement.unwrap() as unknown as FakeCanvas).simulateMouseMove(50, 50);
         //

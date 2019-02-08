@@ -1,33 +1,33 @@
-import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
-import CursorEventComponent from '../../engine/components/CursorEventComponent';
-import CursorEventSystem, { OnCursorEvent } from '../../engine/abstracts/systems/CursorEventSystem';
+import { MOUSE_EVENT } from '../../engine/enums/MOUSE_EVENT';
+import MouseEventComponent from '../../engine/components/MouseEventComponent';
+import MouseEventSystem, { OnMouseEvent } from '../../engine/abstracts/systems/MouseEventSystem';
 import { OnlyIfEntityHas } from '../../engine/abstracts/Entity';
 import PoseComponent from '../../engine/components/PoseComponent';
 import TranslationComponent from '../components/TranslationComponent';
 
-export default class TranslationSystem extends CursorEventSystem {
+export default class TranslationSystem extends MouseEventSystem {
 
-    public once(component: CursorEventComponent): void {
-        this.__onCursorBeginActuation(component);
-        this.__onCursorTranslation(component);
+    public once(component: MouseEventComponent): void {
+        this.__onMouseDown(component);
+        this.__onMouseTranslation(component);
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
+    @OnMouseEvent(MOUSE_EVENT.MOUSE_DOWN)
     @OnlyIfEntityHas(PoseComponent)
     @OnlyIfEntityHas(TranslationComponent)
-    private __onCursorBeginActuation(component: CursorEventComponent): void {
+    private __onMouseDown(component: MouseEventComponent): void {
         const translatable = component.entity.get(TranslationComponent);
-        if (translatable.data.previous.cursor.x > -Infinity && translatable.data.previous.cursor.y > -Infinity) {
+        if (translatable.data.previous.mouse.x > -Infinity && translatable.data.previous.mouse.y > -Infinity) {
             const pose = component.entity.get(PoseComponent);
             pose.mutate({
-                x: pose.data.x + (component.data.x - translatable.data.previous.cursor.x),
-                y: pose.data.y + (component.data.y - translatable.data.previous.cursor.y),
+                x: pose.data.x + (component.data.x - translatable.data.previous.mouse.x),
+                y: pose.data.y + (component.data.y - translatable.data.previous.mouse.y),
                 a: pose.data.a,
             });
         }
         translatable.mutate({
             previous: {
-                cursor: {
+                mouse: {
                     x: component.data.x,
                     y: component.data.y,
                 },
@@ -35,22 +35,22 @@ export default class TranslationSystem extends CursorEventSystem {
         });
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_TRANSLATE)
+    @OnMouseEvent(MOUSE_EVENT.MOUSE_MOVE)
     @OnlyIfEntityHas(PoseComponent)
     @OnlyIfEntityHas(TranslationComponent)
-    private __onCursorTranslation(component: CursorEventComponent): void {
+    private __onMouseTranslation(component: MouseEventComponent): void {
         const translatable = component.entity.get(TranslationComponent);
-        if (translatable.data.previous.cursor.x > -Infinity && translatable.data.previous.cursor.y > -Infinity) {
+        if (translatable.data.previous.mouse.x > -Infinity && translatable.data.previous.mouse.y > -Infinity) {
             const pose = component.entity.get(PoseComponent);
             pose.mutate({
-                x: pose.data.x + (component.data.x - translatable.data.previous.cursor.x),
-                y: pose.data.y + (component.data.y - translatable.data.previous.cursor.y),
+                x: pose.data.x + (component.data.x - translatable.data.previous.mouse.x),
+                y: pose.data.y + (component.data.y - translatable.data.previous.mouse.y),
                 a: pose.data.a,
             });
         }
         translatable.mutate({
             previous: {
-                cursor: {
+                mouse: {
                     x: component.data.x,
                     y: component.data.y,
                 },

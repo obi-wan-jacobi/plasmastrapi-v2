@@ -1,4 +1,4 @@
-import CursorEventComponent from '../../../../engine/components/CursorEventComponent';
+import MouseEventComponent from '../../../../engine/components/MouseEventComponent';
 import CurveComponent from '../../../components/CurveComponent';
 import Entity from '../../../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../../../html5/enums/HTML5_COLOUR';
@@ -9,7 +9,7 @@ export default class WireCuttingPath extends Entity {
 
     constructor({ points }: { points: IPosition2D[] }) {
         super();
-        this.add(CursorEventComponent);
+        this.add(MouseEventComponent);
         this.add(CurveComponent, { points });
         this.add(RenderingComponent, { colour: HTML5_COLOUR.LIGHTBLUE });
     }

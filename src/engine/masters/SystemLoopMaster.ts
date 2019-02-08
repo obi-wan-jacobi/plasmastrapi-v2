@@ -1,6 +1,6 @@
-import ICursorAdapter from '../interfaces/ICursorAdapter';
 import ILoopable from '../interfaces/ILoopable';
 import IMaster from '../interfaces/IMaster';
+import IMouseAdapter from '../interfaces/IMouseAdapter';
 import IViewportAdapter from '../interfaces/IViewportAdapter';
 import StoreMaster from './StoreMaster';
 import SystemMaster from './SystemMaster';
@@ -13,18 +13,18 @@ export default class SystemLoopMaster implements IMaster<void>, ILoopable<void> 
 
     private __isStopped: boolean;
     private __viewport: IViewportAdapter<any, any>;
-    private __cursor: ICursorAdapter;
+    private __mouse: IMouseAdapter;
     private __store: StoreMaster;
     private __systems: SystemMaster;
 
     constructor(
         viewport: IViewportAdapter<any, any>,
-        cursor: ICursorAdapter,
+        mouse: IMouseAdapter,
         store: StoreMaster,
         systems: SystemMaster,
     ) {
         this.__viewport = viewport;
-        this.__cursor = cursor;
+        this.__mouse = mouse;
         this.__store = store;
         this.__systems = systems;
         this.__isStopped = true;
@@ -34,7 +34,7 @@ export default class SystemLoopMaster implements IMaster<void>, ILoopable<void> 
         this.__systems.sync();
         this.__store.sync();
         this.__viewport.sync();
-        this.__cursor.sync(this.__store.components);
+        this.__mouse.sync(this.__store.components);
     }
 
     public start(): void {

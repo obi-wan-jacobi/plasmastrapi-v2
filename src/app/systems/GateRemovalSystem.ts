@@ -1,9 +1,9 @@
 import Batch from '../../framework/invocables/Batch';
-import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
-import CursorEventComponent from '../../engine/components/CursorEventComponent';
-import CursorEventSystem, {
-    CursorIntersectsEntityValidator, OnCursorEvent,
-} from '../../engine/abstracts/systems/CursorEventSystem';
+import { MOUSE_EVENT } from '../../engine/enums/MOUSE_EVENT';
+import MouseEventComponent from '../../engine/components/MouseEventComponent';
+import MouseEventSystem, {
+    MouseIntersectsEntityValidator, OnMouseEvent,
+} from '../../engine/abstracts/systems/MouseEventSystem';
 import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import Gate from '../entities/circuit-elements/Gate';
 import GateRemovalCaret from '../entities/tools/carets/GateRemovalCaret';
@@ -11,21 +11,21 @@ import RemoveGateCommand from '../commands/RemoveGateCommand';
 import RemoveWireCommand from '../commands/RemoveWireCommand';
 import Wire from '../entities/circuit-elements/Wire';
 
-export default class GateRemovalSystem extends CursorEventSystem {
+export default class GateRemovalSystem extends MouseEventSystem {
 
-    public once(component: CursorEventComponent): void {
-        this.__onCursorCompleteCaretActuationWithCaretRemoveIntersectedGate(component);
+    public once(component: MouseEventComponent): void {
+        this.__onMouseCompleteCaretActuationWithCaretRemoveIntersectedGate(component);
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)
+    @OnMouseEvent(MOUSE_EVENT.MOUSE_CLICK)
     @OnlyIfEntityIsInstanceOf(GateRemovalCaret)
-    private __onCursorCompleteCaretActuationWithCaretRemoveIntersectedGate(component: CursorEventComponent): void {
+    private __onMouseCompleteCaretActuationWithCaretRemoveIntersectedGate(component: MouseEventComponent): void {
         this.__removeAnyGatesIntersectedByCaret();
     }
 
     private __removeAnyGatesIntersectedByCaret(): void {
         this.store.entities.get(Gate).forEach((gate: Gate) => {
-            if (CursorIntersectsEntityValidator.invoke(gate.get(CursorEventComponent))) {
+            if (MouseIntersectsEntityValidator.invoke(gate.get(MouseEventComponent))) {
                 new RemoveGateCommand(gate).invoke();
                 this.__removeAnyWiresConnectedToGate(gate);
             }

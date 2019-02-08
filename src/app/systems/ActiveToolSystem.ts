@@ -1,34 +1,34 @@
-import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
 import ClearActiveToolCommand from '../commands/ClearActiveToolCommand';
-import CursorEventComponent from '../../engine/components/CursorEventComponent';
-import CursorEventSystem, {
-    OnCursorEvent, WhenShiftKeyIsDown, WhenShiftKeyIsUp,
-} from '../../engine/abstracts/systems/CursorEventSystem';
 import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
+import { MOUSE_EVENT } from '../../engine/enums/MOUSE_EVENT';
+import MouseEventComponent from '../../engine/components/MouseEventComponent';
+import MouseEventSystem, {
+    OnMouseEvent, WhenShiftKeyIsDown, WhenShiftKeyIsUp,
+} from '../../engine/abstracts/systems/MouseEventSystem';
 import ResetActiveToolCommand from '../commands/ResetActiveToolCommand';
 import ToolCaret from '../abstracts/ToolCaret';
 
-export default class ActiveToolSystem extends CursorEventSystem {
+export default class ActiveToolSystem extends MouseEventSystem {
 
-    public once(component: CursorEventComponent): void {
-        this.__onCursorCompleteActuationWithCaretDeactivateToolWhenShiftKeyIsUp(component);
-        this.__onCursorCompleteActuationWithCaretReactivateToolWhenShiftKeyIsDown(component);
+    public once(component: MouseEventComponent): void {
+        this.__onMouseClickWithCaretDeactivateToolWhenShiftKeyIsUp(component);
+        this.__onMouseClickWithCaretReactivateToolWhenShiftKeyIsDown(component);
     }
 
     @WhenShiftKeyIsUp
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)
+    @OnMouseEvent(MOUSE_EVENT.MOUSE_CLICK)
     @OnlyIfEntityIsInstanceOf(ToolCaret)
-    private __onCursorCompleteActuationWithCaretDeactivateToolWhenShiftKeyIsUp(
-        component: CursorEventComponent,
+    private __onMouseClickWithCaretDeactivateToolWhenShiftKeyIsUp(
+        component: MouseEventComponent,
     ): void {
         new ClearActiveToolCommand(this.store).invoke();
     }
 
     @WhenShiftKeyIsDown
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)
+    @OnMouseEvent(MOUSE_EVENT.MOUSE_CLICK)
     @OnlyIfEntityIsInstanceOf(ToolCaret)
-    private __onCursorCompleteActuationWithCaretReactivateToolWhenShiftKeyIsDown(
-        component: CursorEventComponent,
+    private __onMouseClickWithCaretReactivateToolWhenShiftKeyIsDown(
+        component: MouseEventComponent,
     ): void {
         new ResetActiveToolCommand(this.store).invoke();
     }

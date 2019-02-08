@@ -1,5 +1,5 @@
 /* tslint:disable:no-magic-numbers */
-import CursorEventComponent from '../../../src/engine/components/CursorEventComponent';
+import MouseEventComponent from '../../../src/engine/components/MouseEventComponent';
 import DragComponent from '../../../src/app/components/DragComponent';
 import DragSystem from '../../../src/app/systems/DragSystem';
 import Entity from '../../../src/engine/abstracts/Entity';
@@ -33,10 +33,10 @@ describe(DragSystem.name, () => {
         impostorHTMLCanvasElement.assertMethodsCalledInOrder();
     });
 
-    it('draggable entity is dragged by actuated cursor translation', (done) => {
+    it('draggable entity is dragged by actuated mouse translation', (done) => {
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
         const entity = game.store.entities.create(Entity);
-        entity.add(CursorEventComponent);
+        entity.add(MouseEventComponent);
         entity.add(PoseComponent, { x: 50, y: 50 });
         entity.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
         entity.add(DragComponent);
@@ -54,10 +54,10 @@ describe(DragSystem.name, () => {
         done();
     });
 
-    it('non-draggable entity is not dragged by actuated cursor translation', (done) => {
+    it('non-draggable entity is not dragged by actuated mouse translation', (done) => {
         const fakeCanvas = (impostorHTMLCanvasElement.unwrap() as unknown as FakeHTMLCanvasElement);
         const entity = game.store.entities.create(Entity);
-        entity.add(CursorEventComponent);
+        entity.add(MouseEventComponent);
         entity.add(PoseComponent, { x: 50, y: 50 });
         entity.add(ShapeComponent, new Rectangle({ width: 50, height: 50 }));
         fakeCanvas.simulateMouseDown(51, 52);

@@ -1,4 +1,4 @@
-import ICursorAdapter from './interfaces/ICursorAdapter';
+import IMouseAdapter from './interfaces/IMouseAdapter';
 import IViewportAdapter from './interfaces/IViewportAdapter';
 import StoreMaster from './masters/StoreMaster';
 import SystemLoopMaster from './masters/SystemLoopMaster';
@@ -7,19 +7,19 @@ import SystemMaster from './masters/SystemMaster';
 export default class Engine {
 
     public readonly viewport: IViewportAdapter<any, any>;
-    public readonly cursor: ICursorAdapter;
+    public readonly mouse: IMouseAdapter;
     public readonly store: StoreMaster;
     public readonly systems: SystemMaster;
     public readonly loop: SystemLoopMaster;
 
-    constructor(viewport: IViewportAdapter<any, any>, cursor: ICursorAdapter) {
+    constructor(viewport: IViewportAdapter<any, any>, mouse: IMouseAdapter) {
         this.viewport = viewport;
-        this.cursor = cursor;
+        this.mouse = mouse;
         this.store = new StoreMaster();
         this.systems = new SystemMaster(this);
         this.loop = new SystemLoopMaster(
             this.viewport,
-            this.cursor,
+            this.mouse,
             this.store,
             this.systems,
         );

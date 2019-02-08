@@ -1,9 +1,9 @@
 import Batch from '../../framework/invocables/Batch';
-import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
-import CursorEventComponent from '../../engine/components/CursorEventComponent';
-import CursorEventSystem, {
-    OnCursorEvent,
-} from '../../engine/abstracts/systems/CursorEventSystem';
+import { MOUSE_EVENT } from '../../engine/enums/MOUSE_EVENT';
+import MouseEventComponent from '../../engine/components/MouseEventComponent';
+import MouseEventSystem, {
+    OnMouseEvent,
+} from '../../engine/abstracts/systems/MouseEventSystem';
 import CurveComponent from '../components/CurveComponent';
 import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import PoseComponent from '../../engine/components/PoseComponent';
@@ -14,30 +14,30 @@ import WireCuttingPath from '../entities/tools/carets/WireCuttingPath';
 import WireRemovalCaret from '../entities/tools/carets/WireRemovalCaret';
 import { isShapeIntersectedByLine } from '../../geometry/methods/shapes';
 
-export default class WireRemovalSystem extends CursorEventSystem {
+export default class WireRemovalSystem extends MouseEventSystem {
 
-    public once(component: CursorEventComponent): void {
-        this.__onCursorBeginActuationWithWireCuttingPath(component);
-        this.__onCursorTranslateDrawWireCuttingPath(component);
-        this.__onCursorEndActuationWithWireCuttingPath(component);
+    public once(component: MouseEventComponent): void {
+        this.__onMouseDownWithWireCuttingPath(component);
+        this.__onMouseMoveDrawWireCuttingPath(component);
+        this.__onMouseUpWithWireCuttingPath(component);
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
+    @OnMouseEvent(MOUSE_EVENT.MOUSE_DOWN)
     @OnlyIfEntityIsInstanceOf(WireRemovalCaret)
-    private __onCursorBeginActuationWithWireCuttingPath(component: CursorEventComponent): void {
+    private __onMouseDownWithWireCuttingPath(component: MouseEventComponent): void {
         this.store.entities.create(WireCuttingPath, { points: [{ x: component.data.x, y: component.data.y }] });
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_TRANSLATE)
+    @OnMouseEvent(MOUSE_EVENT.MOUSE_MOVE)
     @OnlyIfEntityIsInstanceOf(WireCuttingPath)
-    private __onCursorTranslateDrawWireCuttingPath(component: CursorEventComponent): void {
+    private __onMouseMoveDrawWireCuttingPath(component: MouseEventComponent): void {
         const line = component.entity.get(CurveComponent);
         line.data.points.push({ x: component.data.x, y: component.data.y });
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
+    @OnMouseEvent(MOUSE_EVENT.MOUSE_UP)
     @OnlyIfEntityIsInstanceOf(WireCuttingPath)
-    private __onCursorEndActuationWithWireCuttingPath(component: CursorEventComponent): void {
+    private __onMouseUpWithWireCuttingPath(component: MouseEventComponent): void {
         component.entity.unload();
         this.__cutAndRemoveWires(component.entity);
     }

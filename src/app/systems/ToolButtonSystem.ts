@@ -1,22 +1,22 @@
 import ActivateToolCommand from '../commands/ActivateToolCommand';
-import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
-import CursorEventComponent from '../../engine/components/CursorEventComponent';
-import CursorEventSystem, {
-    OnCursorEvent, OnCursorIntersection,
-} from '../../engine/abstracts/systems/CursorEventSystem';
+import { MOUSE_EVENT } from '../../engine/enums/MOUSE_EVENT';
+import MouseEventComponent from '../../engine/components/MouseEventComponent';
+import MouseEventSystem, {
+    OnMouseEvent, OnMouseIntersection,
+} from '../../engine/abstracts/systems/MouseEventSystem';
 import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import ToolButton from '../abstracts/ToolButton';
 
-export default class ToolButtonSystem extends CursorEventSystem {
+export default class ToolButtonSystem extends MouseEventSystem {
 
-    public once(component: CursorEventComponent): void {
-        this.__onCursorCompleteActuationWithToolButton(component);
+    public once(component: MouseEventComponent): void {
+        this.__onMouseClickWithToolButton(component);
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_COMPLETE_ACTUATION)
+    @OnMouseEvent(MOUSE_EVENT.MOUSE_CLICK)
     @OnlyIfEntityIsInstanceOf(ToolButton)
-    @OnCursorIntersection
-    private __onCursorCompleteActuationWithToolButton(component: CursorEventComponent): void {
+    @OnMouseIntersection
+    private __onMouseClickWithToolButton(component: MouseEventComponent): void {
         new ActivateToolCommand(this.store).invoke({
             position: component.data,
             toolButton: component.entity as ToolButton,

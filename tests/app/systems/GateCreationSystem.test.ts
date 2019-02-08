@@ -32,7 +32,7 @@ describe(GateCreationSystem.name, () => {
         impostorHTMLCanvasElement.assertMethodsCalledInOrder();
     });
 
-    it('new gate not created when cursor isn\'t within circuit design area', (done) => {
+    it('new gate not created when mouse isn\'t within circuit design area', (done) => {
         impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(10)
             .returns({ left: 0, top: 0 });
         game.store.entities.create(GateCreationButton, { x: 50, y: 50 });
@@ -57,7 +57,7 @@ describe(GateCreationSystem.name, () => {
         done();
     });
 
-    it('new gate created when cursor is inside circuit design area', (done) => {
+    it('new gate created when mouse is inside circuit design area', (done) => {
         impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(10)
             .returns({ left: 0, top: 0 });
         game.store.entities.create(GateCreationButton, { x: 50, y: 50 });

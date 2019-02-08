@@ -33,7 +33,7 @@ describe(WireCreationSystem.name, () => {
         impostorHTMLCanvasElement.assertMethodsCalledInOrder();
     });
 
-    it('actuating output terminal creates new wire at cursor, but is destroyed if not immediately used', (done) => {
+    it('actuating output terminal creates new wire at mouse, but is destroyed if not immediately used', (done) => {
         // Arrange
         impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(5)
             .returns({ left: 0, top: 0 });
@@ -87,7 +87,7 @@ describe(WireCreationSystem.name, () => {
         done();
     });
 
-    it('actuating input terminal creates new wire at cursor, but is destroyed if not immediately used', (done) => {
+    it('actuating input terminal creates new wire at mouse, but is destroyed if not immediately used', (done) => {
         // Arrange
         impostorHTMLCanvasElement.expects('getBoundingClientRect').exactly(5)
             .returns({ left: 0, top: 0 });
@@ -141,7 +141,7 @@ describe(WireCreationSystem.name, () => {
         done();
     });
 
-    it(['activating output terminal creates new wire at cursor,',
+    it(['activating output terminal creates new wire at mouse,',
         'can be connected to an input terminal,',
         'and stays connected/resizes accordingly when either terminal is moved',
     ].join(' '), (done) => {
@@ -213,7 +213,7 @@ describe(WireCreationSystem.name, () => {
         done();
     });
 
-    it(['activating input terminal creates new wire at cursor,',
+    it(['activating input terminal creates new wire at mouse,',
         'can be connected to an output terminal,',
         'and stays connected/resizes accordingly when either terminal is moved',
     ].join(' '), (done) => {

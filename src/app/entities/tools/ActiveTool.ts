@@ -1,4 +1,4 @@
-import CursorEventComponent from '../../../engine/components/CursorEventComponent';
+import MouseEventComponent from '../../../engine/components/MouseEventComponent';
 import Entity from '../../../engine/abstracts/Entity';
 import IPosition2D from '../../../geometry/interfaces/IPosition2D';
 import PoseComponent from '../../../engine/components/PoseComponent';
@@ -11,7 +11,7 @@ export default class ActiveTool extends Entity {
     constructor({ position, toolButton }: { position: IPosition2D, toolButton: ToolButton }) {
         super();
         this.toolButton = toolButton;
-        this.add(CursorEventComponent);
+        this.add(MouseEventComponent);
         this.add(PoseComponent, position);
     }
 

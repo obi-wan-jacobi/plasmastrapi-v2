@@ -1,27 +1,27 @@
-import { CURSOR_EVENT } from '../../engine/enums/CURSOR_EVENT';
-import CursorEventComponent from '../../engine/components/CursorEventComponent';
-import CursorEventSystem, {
-    OnCursorEvent, OnCursorIntersection,
-} from '../../engine/abstracts/systems/CursorEventSystem';
+import { MOUSE_EVENT } from '../../engine/enums/MOUSE_EVENT';
+import MouseEventComponent from '../../engine/components/MouseEventComponent';
+import MouseEventSystem, {
+    OnMouseEvent, OnMouseIntersection,
+} from '../../engine/abstracts/systems/MouseEventSystem';
 import DragComponent from '../components/DragComponent';
 import { OnlyIfEntityHas } from '../../engine/abstracts/Entity';
 import TranslationComponent from '../components/TranslationComponent';
 
-export default class DragSystem extends CursorEventSystem {
+export default class DragSystem extends MouseEventSystem {
 
-    public once(component: CursorEventComponent): void {
-        this.__onCursorBeginActuation(component);
-        this.__onCursorEndActuation(component);
+    public once(component: MouseEventComponent): void {
+        this.__onMouseDown(component);
+        this.__onMouseUp(component);
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_BEGIN_ACTUATION)
+    @OnMouseEvent(MOUSE_EVENT.MOUSE_DOWN)
     @OnlyIfEntityHas(DragComponent)
-    @OnCursorIntersection
-    private __onCursorBeginActuation(component: CursorEventComponent): void {
+    @OnMouseIntersection
+    private __onMouseDown(component: MouseEventComponent): void {
         const translatable = component.entity.add(TranslationComponent);
         translatable.mutate({
             previous: {
-                cursor: {
+                mouse: {
                     x: component.data.x,
                     y: component.data.y,
                 },
@@ -29,9 +29,9 @@ export default class DragSystem extends CursorEventSystem {
         });
     }
 
-    @OnCursorEvent(CURSOR_EVENT.CURSOR_END_ACTUATION)
+    @OnMouseEvent(MOUSE_EVENT.MOUSE_UP)
     @OnlyIfEntityHas(DragComponent)
-    private __onCursorEndActuation(component: CursorEventComponent): void {
+    private __onMouseUp(component: MouseEventComponent): void {
         component.entity.remove(TranslationComponent);
     }
 

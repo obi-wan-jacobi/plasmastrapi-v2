@@ -1,9 +1,9 @@
-import CursorEventComponent from '../../engine/components/CursorEventComponent';
-import CursorEventSystem from '../../engine/abstracts/systems/CursorEventSystem';
+import MouseEventComponent from '../../engine/components/MouseEventComponent';
+import MouseEventSystem from '../../engine/abstracts/systems/MouseEventSystem';
 
-export default class GateCreationSystem extends CursorEventSystem {
+export default class GateCreationSystem extends MouseEventSystem {
 
-    public once(component: CursorEventComponent): void {
+    public once(component: MouseEventComponent): void {
         return;
     }
 
