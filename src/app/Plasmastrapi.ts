@@ -2,7 +2,6 @@ import ActiveToolSystem from './systems/ActiveToolSystem';
 import ChildPoseOffsetSystem from './systems/ChildPoseOffsetSystem';
 import CircuitDesignSystem from './systems/CircuitDesignSystem';
 import DragSystem from './systems/DragSystem';
-import GateCreationSystem from './systems/GateCreationSystem';
 import GateRemovalSystem from './systems/GateRemovalSystem';
 import HTML5CanvasGame from '../html5/HTML5CanvasGame';
 import LinePoseSystem from './systems/LinePoseSystem';
@@ -28,7 +27,6 @@ export default class Plasmastrapi extends HTML5CanvasGame {
         this.systems.add(LineRenderingSystem, this.viewport);
         this.systems.add(PoseRenderingSystem, this.viewport);
         this.systems.add(ShapeRenderingSystem, this.viewport);
-        this.systems.add(GateCreationSystem);
         this.systems.add(GateRemovalSystem);
         this.systems.add(WireCreationSystem);
         this.systems.add(WireRemovalSystem);

@@ -66,7 +66,7 @@ export function OnlyIfEntityHas<TComponent extends IComponent<any>>(ComponentCto
             if (!component.entity.get(ComponentCtor)) {
                 return;
             }
-            return method.apply(this, arguments);
+            return method.call(this, component);
         };
     };
 }
@@ -84,7 +84,7 @@ export function OnlyIfEntityIsInstanceOf<TEntity extends Entity>(EntityCtor: Fun
             if (!(component.entity instanceof EntityCtor)) {
                 return;
             }
-            return method.apply(this, arguments);
+            return method.call(this, component);
         };
     };
 }

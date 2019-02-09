@@ -1,8 +1,8 @@
-import MouseEventComponent from '../../../../engine/components/MouseEventComponent';
 import CurveComponent from '../../../components/CurveComponent';
 import Entity from '../../../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../../../html5/enums/HTML5_COLOUR';
 import IPosition2D from '../../../../geometry/interfaces/IPosition2D';
+import MouseEventComponent from '../../../../engine/components/MouseEventComponent';
 import RenderingComponent from '../../../../engine/components/RenderingComponent';
 
 export default class WireCuttingPath extends Entity {

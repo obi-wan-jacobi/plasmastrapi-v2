@@ -1,8 +1,8 @@
-import MouseEventComponent from '../../../engine/components/MouseEventComponent';
 import Entity from '../../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../../html5/enums/HTML5_COLOUR';
 import InputTerminal from './InputTerminal';
 import LineComponent from '../../components/LineComponent';
+import MouseEventComponent from '../../../engine/components/MouseEventComponent';
 import OutputTerminal from './OutputTerminal';
 import PoseComponent from '../../../engine/components/PoseComponent';
 import Rectangle from '../../../geometry/concretes/Rectangle';

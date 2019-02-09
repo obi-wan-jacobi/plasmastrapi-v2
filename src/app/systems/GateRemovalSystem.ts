@@ -1,25 +1,21 @@
 import Batch from '../../framework/invocables/Batch';
+import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
+import Gate from '../entities/circuit-elements/Gate';
+import GateRemovalCaret from '../entities/tools/carets/GateRemovalCaret';
 import { MOUSE_EVENT } from '../../engine/enums/MOUSE_EVENT';
 import MouseEventComponent from '../../engine/components/MouseEventComponent';
 import MouseEventSystem, {
     MouseIntersectsEntityValidator, OnMouseEvent,
 } from '../../engine/abstracts/systems/MouseEventSystem';
-import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
-import Gate from '../entities/circuit-elements/Gate';
-import GateRemovalCaret from '../entities/tools/carets/GateRemovalCaret';
 import RemoveGateCommand from '../commands/RemoveGateCommand';
 import RemoveWireCommand from '../commands/RemoveWireCommand';
 import Wire from '../entities/circuit-elements/Wire';
 
 export default class GateRemovalSystem extends MouseEventSystem {
 
-    public once(component: MouseEventComponent): void {
-        this.__onMouseCompleteCaretActuationWithCaretRemoveIntersectedGate(component);
-    }
-
     @OnMouseEvent(MOUSE_EVENT.MOUSE_CLICK)
     @OnlyIfEntityIsInstanceOf(GateRemovalCaret)
-    private __onMouseCompleteCaretActuationWithCaretRemoveIntersectedGate(component: MouseEventComponent): void {
+    public onMouseCompleteCaretActuationWithCaretRemoveIntersectedGate(component: MouseEventComponent): void {
         this.__removeAnyGatesIntersectedByCaret();
     }
 

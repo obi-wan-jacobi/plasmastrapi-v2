@@ -4,13 +4,12 @@ import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../src/app/entities/circuit-elements/Gate';
 import GateCreationButton from '../../../src/app/entities/buttons/GateCreationButton';
 import GateCreationCaret from '../../../src/app/entities/tools/carets/GateCreationCaret';
-import GateCreationSystem from '../../../src/app/systems/GateCreationSystem';
-import ImpostorCanvasRenderingContext2D from '../../src//impostors/ImpostorCanvasRenderingContext2D';
-import ImpostorHTMLCanvasElement from '../../src//impostors/ImpostorHTMLCanvasElement';
+import ImpostorCanvasRenderingContext2D from '../../src/impostors/ImpostorCanvasRenderingContext2D';
+import ImpostorHTMLCanvasElement from '../../src/impostors/ImpostorHTMLCanvasElement';
 import Plasmastrapi from '../../../src/app/Plasmastrapi';
 import PoseComponent from '../../../src/engine/components/PoseComponent';
 
-describe(GateCreationSystem.name, () => {
+describe('gate creation', () => {
 
     let impostorRenderingContext: ImpostorCanvasRenderingContext2D;
     let impostorHTMLCanvasElement: ImpostorHTMLCanvasElement;
@@ -92,7 +91,7 @@ describe(GateCreationSystem.name, () => {
     };
 
     const __doLoop = (times: number): void => {
-        while(times > 0) {
+        while (times > 0) {
             game.loop.once();
             times--;
         }

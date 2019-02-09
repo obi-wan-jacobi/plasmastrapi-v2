@@ -1,4 +1,3 @@
-
 import { OnlyIfEntityHas } from '../Entity';
 import Invocable from '../../../framework/abstracts/Invocable';
 import { MOUSE_EVENT } from '../../enums/MOUSE_EVENT';
@@ -14,6 +13,8 @@ export default abstract class MouseEventSystem extends System<MouseEventComponen
         super(MouseEventComponent);
     }
 
+    public once(component: MouseEventComponent): void { return; }
+
 }
 
 export function OnMouseEvent<TSystem extends MouseEventSystem>(event: MOUSE_EVENT)
@@ -27,16 +28,17 @@ export function OnMouseEvent<TSystem extends MouseEventSystem>(event: MOUSE_EVEN
         propertyKey: string | symbol,
         descriptor: PropertyDescriptor,
     ): void {
-        const method = descriptor.value;
-        descriptor.value = function(component: MouseEventComponent): void {
-            return (component.data.eventName === event)
-                ? method.call(this, ...arguments)
-                : undefined;
+        const method = target.constructor.prototype.once;
+        target.constructor.prototype.once = function(component: MouseEventComponent): void {
+            method.call(this, component);
+            if (component.data.eventName === event) {
+                descriptor.value.call(this, component);
+            }
         };
     };
 }
 
-export function OnMouseIntersection(
+export function OnCursorIntersection(
     target: MouseEventSystem,
     propertyKey: string | symbol,
     descriptor: PropertyDescriptor,

@@ -15,14 +15,9 @@ import { getMinMaxShapeBounds, isPointInsideShape, translateShape } from '../../
 
 export default class CircuitDesignSystem extends MouseEventSystem {
 
-    public once(component: MouseEventComponent): void {
-        this.__onMouseMove(component);
-        this.__onMouseMoveConstrainElementToDesignArea(component);
-    }
-
     @OnMouseEvent(MOUSE_EVENT.MOUSE_MOVE)
     @OnlyIfEntityIsInstanceOf(CircuitDesignArea)
-    private __onMouseMove(component: MouseEventComponent): void {
+    public onMouseMoveCreateNewElementIfCursorIsInsideDesignArea(component: MouseEventComponent): void {
         this.store.entities.get(GateCreationCaret).first((instance: GateCreationCaret) => {
             if (!instance.gate && this.__isMouseInsideCircuitDesignArea(component)) {
                 instance.gate = new CreateGateCommand(this.store).invoke(component.data);
@@ -37,7 +32,7 @@ export default class CircuitDesignSystem extends MouseEventSystem {
     @OnMouseEvent(MOUSE_EVENT.MOUSE_MOVE)
     @OnlyIfEntityIsInstanceOf(Gate)
     @OnlyIfEntityHas(TranslationComponent)
-    private __onMouseMoveConstrainElementToDesignArea(component: MouseEventComponent): void {
+    public onMouseMoveConstrainElementToDesignArea(component: MouseEventComponent): void {
         const circuitDesignArea = this.__getCircuitDesignArea();
         const areaPose = circuitDesignArea.get(PoseComponent);
         const areaShape = circuitDesignArea.get(ShapeComponent);

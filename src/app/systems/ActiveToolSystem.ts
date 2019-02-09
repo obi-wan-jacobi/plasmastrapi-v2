@@ -10,15 +10,10 @@ import ToolCaret from '../abstracts/ToolCaret';
 
 export default class ActiveToolSystem extends MouseEventSystem {
 
-    public once(component: MouseEventComponent): void {
-        this.__onMouseClickWithCaretDeactivateToolWhenShiftKeyIsUp(component);
-        this.__onMouseClickWithCaretReactivateToolWhenShiftKeyIsDown(component);
-    }
-
     @WhenShiftKeyIsUp
     @OnMouseEvent(MOUSE_EVENT.MOUSE_CLICK)
     @OnlyIfEntityIsInstanceOf(ToolCaret)
-    private __onMouseClickWithCaretDeactivateToolWhenShiftKeyIsUp(
+    public onMouseClickWithCaretDeactivateToolWhenShiftKeyIsUp(
         component: MouseEventComponent,
     ): void {
         new ClearActiveToolCommand(this.store).invoke();
@@ -27,7 +22,7 @@ export default class ActiveToolSystem extends MouseEventSystem {
     @WhenShiftKeyIsDown
     @OnMouseEvent(MOUSE_EVENT.MOUSE_CLICK)
     @OnlyIfEntityIsInstanceOf(ToolCaret)
-    private __onMouseClickWithCaretReactivateToolWhenShiftKeyIsDown(
+    public onMouseClickWithCaretReactivateToolWhenShiftKeyIsDown(
         component: MouseEventComponent,
     ): void {
         new ResetActiveToolCommand(this.store).invoke();
