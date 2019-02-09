@@ -2,12 +2,12 @@ import ActiveTool from '../entities/tools/ActiveTool';
 import ActiveToolButtonFrame from '../entities/tools/ActiveToolButtonFrame';
 import Command from '../../framework/invocables/Command';
 import IPosition2D from '../../geometry/interfaces/IPosition2D';
-import StoreMaster from '../../engine/masters/StoreMaster';
+import IStoreMaster from '../../engine/interfaces/IStoreMaster';
 import ToolButton from '../abstracts/ToolButton';
 
 export default class ActivateToolCommand extends Command<{ position: IPosition2D, toolButton: ToolButton }, void> {
 
-    constructor(store: StoreMaster) {
+    constructor(store: IStoreMaster) {
         super({ method: ({ position, toolButton }: { position: IPosition2D, toolButton: ToolButton }): void => {
             store.entities.create(ActiveTool, {
                 position,

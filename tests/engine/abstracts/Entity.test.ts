@@ -1,9 +1,9 @@
-import MouseEventComponent from '../../../src/engine/components/MouseEventComponent';
 import Entity from '../../../src/engine/abstracts/Entity';
 import HTML5CanvasGame from '../../../src/html5/HTML5CanvasGame';
 import { HTML5_COLOUR } from '../../../src/html5/enums/HTML5_COLOUR';
 import ImpostorCanvasRenderingContext2D from '../../src/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../src/impostors/ImpostorHTMLCanvasElement';
+import MouseEventComponent from '../../../src/engine/components/MouseEventComponent';
 import PoseComponent from '../../../src/engine/components/PoseComponent';
 import Rectangle from '../../../src/geometry/concretes/Rectangle';
 import RenderingComponent from '../../../src/engine/components/RenderingComponent';

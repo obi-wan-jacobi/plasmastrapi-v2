@@ -1,8 +1,8 @@
 /* tslint:disable:no-magic-numbers */
-import CircuitDesignArea from '../../../src/app/entities/CircuitDesignArea';
+import CircuitDesignArea from '../../../src/app/entities/editor/CircuitDesignArea';
 import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../src/app/entities/circuit-elements/Gate';
-import GateCreationButton from '../../../src/app/entities/buttons/GateCreationButton';
+import GateCreationButton from '../../../src/app/entities/editor/buttons/GateCreationButton';
 import GateCreationCaret from '../../../src/app/entities/tools/carets/GateCreationCaret';
 import ImpostorCanvasRenderingContext2D from '../../src/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../src/impostors/ImpostorHTMLCanvasElement';

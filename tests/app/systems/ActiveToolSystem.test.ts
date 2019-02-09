@@ -1,9 +1,9 @@
 import ActiveToolButtonFrame from '../../../src/app/entities/tools/ActiveToolButtonFrame';
 import ActiveToolSystem from '../../../src/app/systems/ActiveToolSystem';
-import CircuitDesignArea from '../../../src/app/entities/CircuitDesignArea';
+import CircuitDesignArea from '../../../src/app/entities/editor/CircuitDesignArea';
 import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../src/app/entities/circuit-elements/Gate';
-import GateCreationButton from '../../../src/app/entities/buttons/GateCreationButton';
+import GateCreationButton from '../../../src/app/entities/editor/buttons/GateCreationButton';
 import GateCreationCaret from '../../../src/app/entities/tools/carets/GateCreationCaret';
 import ImpostorCanvasRenderingContext2D from '../../src/impostors/ImpostorCanvasRenderingContext2D';
 import ImpostorHTMLCanvasElement from '../../src/impostors/ImpostorHTMLCanvasElement';
@@ -75,7 +75,7 @@ describe(ActiveToolSystem.name, () => {
     };
 
     const __doLoop = (times: number): void => {
-        while(times > 0) {
+        while (times > 0) {
             game.loop.once();
             times--;
         }

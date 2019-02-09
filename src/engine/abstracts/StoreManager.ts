@@ -1,12 +1,14 @@
+import Container from '../../framework/data-structures/Container';
 import { Ctor } from '../../framework/types/Ctor';
-import IIterable from '../../framework/interfaces/IIterable';
+import IContainer from '../../framework/interfaces/IContainer';
+import IManifold from '../../framework/interfaces/IManifold';
+import IStoreManager from '../interfaces/IStoreManager';
 import IUnique from '../../framework/interfaces/IUnique';
-import Index from '../../framework/data-structures/Index';
 import Manifold from '../../framework/data-structures/Manifold';
 import Wrapper from '../../framework/abstracts/Wrapper';
 
-export default abstract class StoreManager<T extends IUnique> extends Wrapper<Manifold<T>>
-implements IIterable<Index<T>> {
+export default abstract class StoreManager<T extends IUnique> extends Wrapper<IManifold<T>>
+implements IStoreManager<T> {
 
     private __itemsToLoad: T[];
     private __itemsToUnload: T[];
@@ -29,11 +31,11 @@ implements IIterable<Index<T>> {
         return instance;
     }
 
-    public get(TargetCtor: Ctor<T, any>): Index<T> {
+    public get(TargetCtor: Ctor<T, any>): IContainer<T> {
         return this.unwrap().get(TargetCtor);
     }
 
-    public forEach(method: (payload: Index<T>) => void): void {
+    public forEach(method: (payload: Container<T>) => void): void {
         return this.unwrap().forEach(method);
     }
 

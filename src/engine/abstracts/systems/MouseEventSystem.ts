@@ -1,4 +1,4 @@
-import { OnlyIfEntityHas } from '../Entity';
+import Entity, { OnlyIfEntityHas } from '../Entity';
 import Invocable from '../../../framework/abstracts/Invocable';
 import { MOUSE_EVENT } from '../../enums/MOUSE_EVENT';
 import MouseEventComponent from '../../components/MouseEventComponent';
@@ -45,7 +45,7 @@ export function OnCursorIntersection(
 ): any {
     const method = descriptor.value;
     descriptor.value = function(component: MouseEventComponent): any {
-        return MouseIntersectsEntityValidator.invoke(component)
+        return MouseIntersectsEntityValidator.invoke(component.entity)
             ? method.call(this, ...arguments)
             : undefined;
     };
@@ -79,12 +79,13 @@ export function WhenShiftKeyIsDown(
 
 export class MouseIntersectsEntityValidator extends Invocable<MouseEventComponent, boolean> {
 
+    @OnlyIfEntityHas(MouseEventComponent)
     @OnlyIfEntityHas(PoseComponent)
     @OnlyIfEntityHas(ShapeComponent)
-    public static invoke(component: MouseEventComponent): boolean {
-        const pose = component.entity.get(PoseComponent).data;
-        const shape = component.entity.get(ShapeComponent).data;
-        return isPointInsideShape(component.data, shape, pose);
+    public static invoke(entity: Entity): boolean {
+        const pose = entity.get(PoseComponent).data;
+        const shape = entity.get(ShapeComponent).data;
+        return isPointInsideShape(entity.get(MouseEventComponent).data, shape, pose);
     }
 
 }

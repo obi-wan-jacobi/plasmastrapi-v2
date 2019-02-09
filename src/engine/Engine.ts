@@ -1,4 +1,5 @@
 import IMouseAdapter from './interfaces/IMouseAdapter';
+import IStoreMaster from './interfaces/IStoreMaster';
 import IViewportAdapter from './interfaces/IViewportAdapter';
 import StoreMaster from './masters/StoreMaster';
 import SystemLoopMaster from './masters/SystemLoopMaster';
@@ -8,7 +9,7 @@ export default class Engine {
 
     public readonly viewport: IViewportAdapter<any, any>;
     public readonly mouse: IMouseAdapter;
-    public readonly store: StoreMaster;
+    public readonly store: IStoreMaster;
     public readonly systems: SystemMaster;
     public readonly loop: SystemLoopMaster;
 

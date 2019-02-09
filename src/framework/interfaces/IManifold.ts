@@ -1,13 +1,15 @@
 import { Ctor } from '../types/Ctor';
+import IContainer from './IContainer';
 import IIterable from './IIterable';
 import IUnique from './IUnique';
-import Index from '../data-structures/Index';
 
-export default interface IManifold<T extends IUnique> extends IIterable<Index<T>> {
+export default interface IManifold<T extends IUnique> extends IIterable<IIterable<T>> {
 
     length: number;
 
-    get(InstanceCtor: Ctor<T, any>): Index<T>;
+    find(id: string): T | undefined;
+
+    get(InstanceCtor: Ctor<T, any>): IContainer<T>;
 
     add(instance: T): void;
 

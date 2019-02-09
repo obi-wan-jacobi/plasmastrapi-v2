@@ -1,8 +1,8 @@
 import ILoopable from '../interfaces/ILoopable';
 import IMaster from '../interfaces/IMaster';
 import IMouseAdapter from '../interfaces/IMouseAdapter';
+import IStoreMaster from '../interfaces/IStoreMaster';
 import IViewportAdapter from '../interfaces/IViewportAdapter';
-import StoreMaster from './StoreMaster';
 import SystemMaster from './SystemMaster';
 
 const ONE_SECOND_IN_MS = 1000.00;
@@ -14,13 +14,13 @@ export default class SystemLoopMaster implements IMaster<void>, ILoopable<void> 
     private __isStopped: boolean;
     private __viewport: IViewportAdapter<any, any>;
     private __mouse: IMouseAdapter;
-    private __store: StoreMaster;
+    private __store: IStoreMaster;
     private __systems: SystemMaster;
 
     constructor(
         viewport: IViewportAdapter<any, any>,
         mouse: IMouseAdapter,
-        store: StoreMaster,
+        store: IStoreMaster,
         systems: SystemMaster,
     ) {
         this.__viewport = viewport;

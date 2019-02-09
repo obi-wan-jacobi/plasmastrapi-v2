@@ -1,10 +1,10 @@
 import { Ctor } from '../../framework/types/Ctor';
-import Entity from '../abstracts/Entity';
+import IEntity from '../interfaces/IEntity';
 import { Optional } from '../../framework/types/Optional';
 import StoreManager from '../abstracts/StoreManager';
 import StoreMaster from '../masters/StoreMaster';
 
-export default class EntityStoreManager extends StoreManager<Entity> {
+export default class EntityStoreManager extends StoreManager<IEntity> {
 
     private readonly __store: StoreMaster;
 
@@ -13,24 +13,24 @@ export default class EntityStoreManager extends StoreManager<Entity> {
         this.__store = store;
     }
 
-    public find(id: string): Entity | undefined {
+    public find(id: string): IEntity | undefined {
         return this.unwrap().find(id);
     }
 
-    public create<TEntity extends Entity, TData>(EntityCtor: Ctor<TEntity, Optional<TData>>, data?: TData): TEntity {
+    public create<TEntity extends IEntity, TData>(EntityCtor: Ctor<TEntity, Optional<TData>>, data?: TData): TEntity {
         const entity = super.create(EntityCtor, data);
         entity.bind(this.__store);
         return entity;
     }
 
-    public load(entity: Entity): void {
+    public load(entity: IEntity): void {
         entity.forEach((component) => {
             this.__store.components.load(component);
         });
         super.load(entity);
     }
 
-    public unload(entity: Entity): void {
+    public unload(entity: IEntity): void {
         entity.forEach((component) => {
             this.__store.components.unload(component);
         });

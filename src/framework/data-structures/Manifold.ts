@@ -1,15 +1,15 @@
+import Container from './Container';
 import { Ctor } from '../types/Ctor';
 import Dictionary from './Dictionary';
 import IManifold from '../interfaces/IManifold';
 import IUnique from '../interfaces/IUnique';
-import Index from './Index';
 import Wrapper from '../abstracts/Wrapper';
 
-export default class Manifold<T extends IUnique> extends Wrapper<Dictionary<Index<T>>>
+export default class Manifold<T extends IUnique> extends Wrapper<Dictionary<Container<T>>>
 implements IManifold<T> {
 
     constructor() {
-        super(new Dictionary<Index<T>>());
+        super(new Dictionary<Container<T>>());
     }
 
     public get length(): number {
@@ -25,9 +25,9 @@ implements IManifold<T> {
         return result;
     }
 
-    public get(InstanceCtor: Ctor<T, any>): Index<T> {
+    public get(InstanceCtor: Ctor<T, any>): Container<T> {
         if (!this.unwrap().read(InstanceCtor.name)) {
-            return new Index<T>();
+            return new Container<T>();
         }
         return this.unwrap().read(InstanceCtor.name);
     }
@@ -36,7 +36,7 @@ implements IManifold<T> {
         if (!this.unwrap().read(instance.constructor.name)) {
             this.unwrap().write({
                 key: instance.constructor.name,
-                value: new Index<T>(),
+                value: new Container<T>(),
             });
         }
         return this.unwrap()
@@ -45,7 +45,7 @@ implements IManifold<T> {
     }
 
     public remove(instance: T): boolean {
-        const result = this.unwrap().read(instance.constructor.name).remove(instance.id);
+        const result = this.unwrap().read(instance.constructor.name).remove(instance);
         if (this.unwrap().read(instance.constructor.name).length === 0) {
             this.unwrap().delete(instance.constructor.name);
         }
@@ -63,7 +63,7 @@ implements IManifold<T> {
         return true;
     }
 
-    public forEach(method: (payload: Index<T>) => void): void {
+    public forEach(method: (payload: Container<T>) => void): void {
         this.unwrap().forEach((collection) => {
             method(collection);
         });

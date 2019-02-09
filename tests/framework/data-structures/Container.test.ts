@@ -1,12 +1,11 @@
-import Index from '../../../src/framework/data-structures/Index';
-import TypeIndex from '../../../src/framework/data-structures/TypeIndex';
+import Container from '../../../src/framework/data-structures/Container';
 
-describe(TypeIndex.name, () => {
+describe(Container.name, () => {
 
-    let index: Index<{ id: string, value: string }>;
+    let index: Container<{ id: string, value: string }>;
 
     beforeEach(() => {
-        index = new Index();
+        index = new Container();
     });
 
     it('get first element', (done) => {

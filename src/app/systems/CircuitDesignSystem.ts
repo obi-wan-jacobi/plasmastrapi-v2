@@ -1,8 +1,9 @@
-import CircuitDesignArea from '../entities/CircuitDesignArea';
+import CircuitDesignArea from '../entities/editor/CircuitDesignArea';
 import CreateGateCommand from '../commands/CreateGateCommand';
 import { OnlyIfEntityHas, OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
 import Gate from '../entities/circuit-elements/Gate';
 import GateCreationCaret from '../entities/tools/carets/GateCreationCaret';
+import IEntity from '../../engine/interfaces/IEntity';
 import { MOUSE_EVENT } from '../../engine/enums/MOUSE_EVENT';
 import MouseEventComponent from '../../engine/components/MouseEventComponent';
 import MouseEventSystem, {
@@ -65,7 +66,7 @@ export default class CircuitDesignSystem extends MouseEventSystem {
         return isMouseInsideCircuitDesignArea;
     }
 
-    private __getCircuitDesignArea(): CircuitDesignArea {
+    private __getCircuitDesignArea(): IEntity {
         return this.store.entities.get(CircuitDesignArea).first()!;
     }
 

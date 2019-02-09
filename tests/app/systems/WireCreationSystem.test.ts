@@ -1,5 +1,5 @@
 /* tslint:disable:no-magic-numbers */
-import CircuitDesignArea from '../../../src/app/entities/CircuitDesignArea';
+import CircuitDesignArea from '../../../src/app/entities/editor/CircuitDesignArea';
 import FakeHTMLCanvasElement from '../../src/fakes/FakeHTMLCanvasElement';
 import Gate from '../../../src/app/entities/circuit-elements/Gate';
 import ImpostorCanvasRenderingContext2D from '../../src//impostors/ImpostorCanvasRenderingContext2D';

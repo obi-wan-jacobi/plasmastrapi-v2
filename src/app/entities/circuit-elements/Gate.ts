@@ -2,6 +2,7 @@ import DragComponent from '../../components/DragComponent';
 import Entity from '../../../engine/abstracts/Entity';
 import { HTML5_COLOUR } from '../../../html5/enums/HTML5_COLOUR';
 import IPosition2D from '../../../geometry/interfaces/IPosition2D';
+import IStoreMaster from '../../../engine/interfaces/IStoreMaster';
 import InputTerminal from './InputTerminal';
 import MouseEventComponent from '../../../engine/components/MouseEventComponent';
 import OutputTerminal from './OutputTerminal';
@@ -9,7 +10,6 @@ import PoseComponent from '../../../engine/components/PoseComponent';
 import Rectangle from '../../../geometry/concretes/Rectangle';
 import RenderingComponent from '../../../engine/components/RenderingComponent';
 import ShapeComponent from '../../../engine/components/ShapeComponent';
-import StoreMaster from '../../../engine/masters/StoreMaster';
 import { settings } from '../../game.config';
 
 export default class Gate extends Entity {
@@ -31,7 +31,7 @@ export default class Gate extends Entity {
         this.add(DragComponent);
     }
 
-    public bind(store: StoreMaster): void {
+    public bind(store: IStoreMaster): void {
         super.bind(store);
         this._store.entities.load(this.output);
         this._store.entities.load(this.input);

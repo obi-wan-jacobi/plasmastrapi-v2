@@ -1,11 +1,11 @@
 import Dictionary from './Dictionary';
-import IIterable from '../interfaces/IIterable';
+import IContainer from '../interfaces/IContainer';
 import IUnique from '../interfaces/IUnique';
 import { Optional } from '../types/Optional';
 import Wrapper from '../abstracts/Wrapper';
 
-export default class Index<T extends IUnique> extends Wrapper<Dictionary<T>>
-implements IIterable<T> {
+export default class Container<T extends IUnique> extends Wrapper<Dictionary<T>>
+implements IContainer<T> {
 
     constructor() {
         super(new Dictionary<T>());
@@ -30,11 +30,11 @@ implements IIterable<T> {
         return true;
     }
 
-    public remove(key: string): boolean {
-        if (!this.unwrap().read(key)) {
+    public remove(instance: T): boolean {
+        if (!this.unwrap().read(instance.id)) {
             return false;
         }
-        this.unwrap().delete(key);
+        this.unwrap().delete(instance.id);
         return true;
     }
 

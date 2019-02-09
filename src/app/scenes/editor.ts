@@ -1,8 +1,7 @@
-import CircuitDesignArea from '../entities/CircuitDesignArea';
-import GateCreationButton from '../entities/buttons/GateCreationButton';
-import GateRemovalButton from '../entities/buttons/GateRemovalButton';
-import StageArea from '../entities/StageArea';
-import WireRemovalButton from '../entities/buttons/WireRemovalButton';
+import CircuitDesignArea from '../entities/editor/CircuitDesignArea';
+import GateCreationButton from '../entities/editor/buttons/GateCreationButton';
+import GateRemovalButton from '../entities/editor/buttons/GateRemovalButton';
+import WireRemovalButton from '../entities/editor/buttons/WireRemovalButton';
 
 export default [
     {
@@ -16,10 +15,6 @@ export default [
     {
         Ctor: CircuitDesignArea,
         args: { position: { x: 430, y: 340 }, width: 820, height: 520 },
-    },
-    {
-        Ctor: StageArea,
-        args: { position: { x: 1060, y: 340 }, width: 400, height: 400 },
     },
     {
         Ctor: GateCreationButton,

@@ -1,14 +1,13 @@
-
 import ActivateToolCommand from './ActivateToolCommand';
 import ActiveTool from '../entities/tools/ActiveTool';
 import ActiveToolButtonFrame from '../entities/tools/ActiveToolButtonFrame';
 import Command from '../../framework/invocables/Command';
+import IStoreMaster from '../../engine/interfaces/IStoreMaster';
 import PoseComponent from '../../engine/components/PoseComponent';
-import StoreMaster from '../../engine/masters/StoreMaster';
 
 export default class ResetActiveToolCommand extends Command<void, void> {
 
-    constructor(store: StoreMaster) {
+    constructor(store: IStoreMaster) {
         super({ method: (): void => {
             store.entities.get(ActiveTool).first((tool: ActiveTool) => {
                 store.entities.get(ActiveToolButtonFrame)

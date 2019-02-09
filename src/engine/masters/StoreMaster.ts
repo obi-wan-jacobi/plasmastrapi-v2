@@ -1,22 +1,25 @@
 import ComponentStoreManager from '../store/ComponentStoreManager';
 import EntityStoreManager from '../store/EntityStoreManager';
-import IMaster from '../interfaces/IMaster';
+import IComponent from '../interfaces/IComponent';
+import IEntity from '../interfaces/IEntity';
+import IStoreManager from '../interfaces/IStoreManager';
+import IStoreMaster from '../interfaces/IStoreMaster';
 
-export default class StoreMaster implements IMaster<void> {
+export default class StoreMaster implements IStoreMaster{
 
-    private __componentStoreManager: ComponentStoreManager;
-    private __entityStoreManager: EntityStoreManager;
+    private __componentStoreManager: IStoreManager<IComponent<any>>;
+    private __entityStoreManager: IStoreManager<IEntity>;
 
     constructor() {
         this.__componentStoreManager = new ComponentStoreManager();
         this.__entityStoreManager = new EntityStoreManager(this);
     }
 
-    get components(): ComponentStoreManager {
+    get components(): IStoreManager<IComponent<any>> {
         return this.__componentStoreManager;
     }
 
-    get entities(): EntityStoreManager {
+    get entities(): IStoreManager<IEntity> {
         return this.__entityStoreManager;
     }
 

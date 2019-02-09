@@ -2,8 +2,8 @@ import { Ctor } from '../../framework/types/Ctor';
 import IComponent from '../interfaces/IComponent';
 import IDataPrimitive from '../interfaces/IDataPrimitive';
 import IEntity from '../interfaces/IEntity';
+import IStoreMaster from '../interfaces/IStoreMaster';
 import { Optional } from '../../framework/types/Optional';
-import StoreMaster from '../masters/StoreMaster';
 import System from './System';
 import TypeIndex from '../../framework/data-structures/TypeIndex';
 import Unique from '../../framework/abstracts/Unique';
@@ -11,14 +11,14 @@ import Unique from '../../framework/abstracts/Unique';
 export default class Entity extends TypeIndex<IComponent<any>, IDataPrimitive> implements IEntity {
 
     public readonly id: string;
-    protected _store: StoreMaster;
+    protected _store: IStoreMaster;
 
     constructor() {
         super();
         this.id = Unique.generateUuid();
     }
 
-    public bind(store: StoreMaster): void {
+    public bind(store: IStoreMaster): void {
         this._store = store;
         this.forEach((component) => {
             this._store.components.load(component);
@@ -62,17 +62,18 @@ export function OnlyIfEntityHas<TComponent extends IComponent<any>>(ComponentCto
         descriptor: PropertyDescriptor,
     ): any {
         const method = descriptor.value;
-        descriptor.value = function(component: IComponent<any>): any {
-            if (!component.entity.get(ComponentCtor)) {
+        descriptor.value = function(source: IEntity | IComponent<any>): any {
+            const entity = source instanceof Entity ? source : (source as IComponent<any>).entity;
+            if (!entity.get(ComponentCtor)) {
                 return;
             }
-            return method.call(this, component);
+            return method.call(this, source);
         };
     };
 }
 
 /* tslint:disable:ban-types */
-export function OnlyIfEntityIsInstanceOf<TEntity extends Entity>(EntityCtor: Function & { prototype: TEntity })
+export function OnlyIfEntityIsInstanceOf<TEntity extends IEntity>(EntityCtor: Function & { prototype: TEntity })
 : (target: any, propertyKey: string, descriptor: PropertyDescriptor) => any {
     return function(
         target: System<IComponent<any>>,
@@ -80,11 +81,12 @@ export function OnlyIfEntityIsInstanceOf<TEntity extends Entity>(EntityCtor: Fun
         descriptor: PropertyDescriptor,
     ): any {
         const method = descriptor.value;
-        descriptor.value = function(component: IComponent<any>): any {
-            if (!(component.entity instanceof EntityCtor)) {
+        descriptor.value = function(source: IEntity | IComponent<any>): any {
+            const entity = source instanceof Entity ? source : (source as IComponent<any>).entity;
+            if (!(entity instanceof EntityCtor)) {
                 return;
             }
-            return method.call(this, component);
+            return method.call(this, source);
         };
     };
 }
