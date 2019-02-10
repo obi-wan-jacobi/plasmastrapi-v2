@@ -54,6 +54,19 @@ export default class Entity extends TypeIndex<IComponent<any>, IDataPrimitive> i
 
 }
 
+export function EntityHas(ComponentCtor: Ctor<IComponent<any>, any>):
+    (constructor: Ctor<IEntity, any>) => any
+{
+    return function(constructor: Ctor<IEntity, any>): any {
+        return class extends constructor {
+            constructor() {
+                super(arguments[0]);
+                this.add(ComponentCtor);
+            }
+        };
+    };
+}
+
 export function OnlyIfEntityHas<TComponent extends IComponent<any>>(ComponentCtor: Ctor<TComponent, any>)
 : (target: any, propertyKey: string, descriptor: PropertyDescriptor) => any {
     return function(

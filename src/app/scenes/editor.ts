@@ -1,3 +1,4 @@
+import Battery from '../entities/circuit-elements/Battery';
 import CircuitDesignArea from '../entities/editor/CircuitDesignArea';
 import GateCreationButton from '../entities/editor/buttons/GateCreationButton';
 import GateRemovalButton from '../entities/editor/buttons/GateRemovalButton';
@@ -15,6 +16,10 @@ export default [
     {
         Ctor: CircuitDesignArea,
         args: { position: { x: 430, y: 340 }, width: 820, height: 520 },
+    },
+    {
+        Ctor: Battery,
+        args: { x: 430, y: 575 },
     },
     {
         Ctor: GateCreationButton,

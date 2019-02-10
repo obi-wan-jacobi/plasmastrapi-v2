@@ -4,6 +4,7 @@ import Plasmastrapi from './Plasmastrapi';
 import editor from './scenes/editor';
 import { settings } from './game.config';
 import $ from 'jquery';
+import stage from './scenes/stage';
 
 if (process.env.NODE_ENV === 'development') {
     require('./index.html');
@@ -15,6 +16,9 @@ $(() => {
     canvas.height = settings.canvas.height;
     const game = new Plasmastrapi(canvas);
     editor.forEach((entity: { Ctor: Ctor<IEntity, any>, args: any }) => {
+        game.store.entities.create(entity.Ctor, entity.args as any);
+    });
+    stage.forEach((entity: { Ctor: Ctor<IEntity, any>, args: any }) => {
         game.store.entities.create(entity.Ctor, entity.args as any);
     });
     game.loop.start();

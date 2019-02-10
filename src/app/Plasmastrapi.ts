@@ -8,6 +8,7 @@ import LinePoseSystem from './systems/LinePoseSystem';
 import LineRenderingSystem from './systems/LineRenderingSystem';
 import PoseRenderingSystem from '../engine/systems/PoseRenderingSystem';
 import ShapeRenderingSystem from '../engine/systems/ShapeRenderingSystem';
+import StartButtonSystem from './systems/StartButtonSystem';
 import ToolButtonSystem from './systems/ToolButtonSystem';
 import TranslationSystem from './systems/TranslationSystem';
 import WireCreationSystem from './systems/WireCreationSystem';
@@ -33,6 +34,7 @@ export default class Plasmastrapi extends HTML5CanvasGame {
         this.systems.add(CircuitDesignSystem);
         this.systems.add(ToolButtonSystem);
         this.systems.add(ActiveToolSystem);
+        this.systems.add(StartButtonSystem);
     }
 
 }

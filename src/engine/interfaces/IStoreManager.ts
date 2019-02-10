@@ -16,6 +16,8 @@ extends IWrapper<IManifold<T>>, IIterable<IContainer<T>> {
 
     get(TargetCtor: Ctor<T, any>): IContainer<T>;
 
+    find(id: string): T | undefined;
+
     load(target: T): void;
 
     unload(target: T): void;

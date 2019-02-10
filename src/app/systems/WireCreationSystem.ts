@@ -1,5 +1,6 @@
 import CreateWireCommand from '../commands/CreateWireCommand';
-import Entity, { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
+import { OnlyIfEntityIsInstanceOf } from '../../engine/abstracts/Entity';
+import IEntity from '../../engine/interfaces/IEntity';
 import InputTerminal from '../entities/circuit-elements/InputTerminal';
 import { MOUSE_EVENT } from '../../engine/enums/MOUSE_EVENT';
 import MouseEventComponent from '../../engine/components/MouseEventComponent';
@@ -73,7 +74,7 @@ export default class WireCreationSystem extends MouseEventSystem {
         return caret;
     }
 
-    private __createNewWireIfNotDuplicated({ head, tail}: { head: Entity, tail: Entity }): void {
+    private __createNewWireIfNotDuplicated({ head, tail}: { head: IEntity, tail: IEntity }): void {
         if (!(head instanceof InputTerminal) || !(tail instanceof OutputTerminal)) {
             return;
         }

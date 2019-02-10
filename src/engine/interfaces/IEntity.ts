@@ -12,7 +12,7 @@ export default interface IEntity
 extends IUnique, ILoadable, IBindable<StoreMaster>, ITypeIndex<IComponent<any>, IDataPrimitive> {
 
     add<TComponent extends IComponent<TData>, TData extends IDataPrimitive>(
-        ComponentCtor: Ctor<TComponent, TData>, data: TData,
+        ComponentCtor: Ctor<TComponent, Optional<TData>>, data?: TData,
     ): TComponent;
 
     remove<TComponent extends IComponent<any>>(ComponentCtor: Ctor<TComponent, any>): Optional<TComponent>;

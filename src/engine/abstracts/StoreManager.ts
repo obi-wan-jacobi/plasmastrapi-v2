@@ -31,6 +31,10 @@ implements IStoreManager<T> {
         return instance;
     }
 
+    public find(id: string): T | undefined {
+        return this.unwrap().find(id);
+    }
+
     public get(TargetCtor: Ctor<T, any>): IContainer<T> {
         return this.unwrap().get(TargetCtor);
     }

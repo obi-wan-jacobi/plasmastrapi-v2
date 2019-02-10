@@ -8,6 +8,10 @@ export const settings = {
         width: 40,
         height: 40,
     },
+    battery: {
+        width: 100,
+        height: 40,
+    },
     gate: {
         width: 40,
         height: 40,
