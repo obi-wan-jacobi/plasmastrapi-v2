@@ -1,64 +1,62 @@
-import ChildPoseOffsetSystem from './concretes/systems/ChildPoseOffsetSystem';
-import DraggableSystem from './concretes/systems/DraggableSystem';
-import ICursorAdapter from './interfaces/ICursorAdapter';
-import IViewportAdapter from './interfaces/IViewportAdapter';
-import LineConnectorSystem from './concretes/systems/LineConnectorSystem';
-import RenderablePoseSystem from './concretes/systems/RenderablePoseSystem';
-import RenderableShapeSystem from './concretes/systems/RenderableShapeSystem';
-import StoreMaster from './concretes/masters/StoreMaster';
-import SystemLoopMaster from './concretes/masters/SystemLoopMaster';
-import SystemMaster from './concretes/masters/SystemMaster';
-import TranslatableSystem from './concretes/systems/TranslatableSystem';
+import ComponentFactory from './ComponentFactory';
+import EntityMaster from './EntityMaster';
+import Factory from '../framework/concretes/Factory';
+import IAdaptedKeyboardEvent from './interfaces/IAdaptedKeyboardEvent';
+import IAdaptedMouseEvent from './interfaces/IAdaptedMouseEvent';
+import IComponentFactory from './interfaces/IComponentFactory';
+import IEngine from './interfaces/IEngine';
+import IEntityFactory from './interfaces/IEntityMaster';
+import IFactory from '../framework/interfaces/IFactory';
+import ISystem from './interfaces/ISystem';
+import IViewportAdaptor from './interfaces/IViewportAdaptor';
+import { InteractiveSystem } from './systems/InteractiveSystem';
+import LabelSystem from './systems/LabelSystem';
+import ShapeSystem from './systems/ShapeSystem';
+import { Ctor } from '../framework/types';
 
-export default class Engine {
+export default class Engine implements IEngine {
 
-    private __viewport: IViewportAdapter<any, any>;
-    private __cursor: ICursorAdapter;
-    private __storeMaster: StoreMaster;
-    private __systemMaster: SystemMaster;
-    private __loopMaster: SystemLoopMaster;
+    public viewport: IViewportAdaptor;
+    public components: IComponentFactory;
+    public entities: IEntityFactory;
 
-    constructor(viewport: IViewportAdapter<any, any>, cursor: ICursorAdapter) {
-        this.__viewport = viewport;
-        this.__cursor = cursor;
-        this.__storeMaster = new StoreMaster();
-        this.__systemMaster = new SystemMaster(this.__storeMaster);
-        this.__loopMaster = new SystemLoopMaster(
-            this.__viewport,
-            this.__cursor,
-            this.__storeMaster,
-            this.__systemMaster,
-            );
-        this.__initSystemsInPriorityOrder();
+    public mouse: IAdaptedMouseEvent;
+    public keyboard: IAdaptedKeyboardEvent;
+
+    public delta: number;
+
+    private __t: Date;
+    private __systems: IFactory<ISystem>;
+
+    constructor(viewport: IViewportAdaptor) {
+        this.viewport = viewport;
+        this.components = new ComponentFactory();
+        this.entities = new EntityMaster(this);
+        this.__systems = new Factory<ISystem>();
+        this.__t = new Date();
+        this.__initSystems();
     }
 
-    public get viewport(): IViewportAdapter<any, any> {
-        return this.__viewport;
+    public once(): void {
+        const now = new Date();
+        this.delta = now.getTime() - this.__t.getTime();
+        this.__t = now;
+        this.__systems.forEach((system: ISystem) => system.once());
+        this.entities.once();
     }
 
-    public get cursor(): ICursorAdapter {
-        return this.__cursor;
+    public draw(): void {
+        this.__systems.forEach((system: ISystem) => system.draw());
     }
 
-    public get store(): StoreMaster {
-        return this.__storeMaster;
+    public add(SystemCtor: Ctor<ISystem, any>): void {
+        this.__systems.create(SystemCtor, this);
     }
 
-    public get systems(): SystemMaster {
-        return this.__systemMaster;
-    }
-
-    public get loop(): SystemLoopMaster {
-        return this.__loopMaster;
-    }
-
-    private __initSystemsInPriorityOrder(): void {
-        this.systems.add(TranslatableSystem);
-        this.systems.add(ChildPoseOffsetSystem);
-        this.systems.add(LineConnectorSystem);
-        this.systems.add(DraggableSystem);
-        this.systems.add(RenderablePoseSystem, this.viewport);
-        this.systems.add(RenderableShapeSystem, this.viewport);
+    private __initSystems(): void {
+        this.add(LabelSystem);
+        this.add(ShapeSystem);
+        this.add(InteractiveSystem);
     }
 
 }

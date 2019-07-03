@@ -1,14 +1,9 @@
-import Entity from '../concretes/Entity';
-import IUnique from './IUnique';
+import IEntity from './IEntity';
+import IUnique from '../../framework/interfaces/IUnique';
 
-export default interface IComponent<T> extends IUnique {
-
-    data: T;
-
-    entity: Entity;
-
-    set(data: T): void;
-
-    bind(entity: Entity): void;
-
+export default interface IComponent<T extends {}> extends IUnique {
+    $entity: IEntity;
+    inject(entity: IEntity): void;
+    copy(): T;
+    mutate(data: T): void;
 }

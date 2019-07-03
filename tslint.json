@@ -1,11 +1,13 @@
 {
     "extends": ["tslint:recommended", "tslint-consistent-codestyle"],
     "rules": {
+        "no-magic-numbers": false,
         "trailing-comma": [true, { 
             "multiline": "always",
             "singleline": "never"
         }],
         "one-line": false,
+        "object-literal-key-quotes": [true, "as-needed"],
         "object-literal-sort-keys": false,
         "no-empty-interface": false,
         "no-var-requires": false,
@@ -32,6 +34,7 @@
         "no-duplicate-variable": true,
         "no-invalid-template-strings": true,
         "no-consecutive-blank-lines": true,
+        "no-string-literal": false,
         "arrow-parens": true,
         "class-name": true,
         "typedef": [

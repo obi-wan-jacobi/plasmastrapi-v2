@@ -1,32 +1,18 @@
-import { Ctor } from '../types/Ctor';
+import IEngine from '../interfaces/IEngine';
 import ISystem from '../interfaces/ISystem';
-import StoreMaster from '../concretes/masters/StoreMaster';
+import Unique from '../../framework/abstracts/Unique';
 
-export default abstract class System<TComponent extends {}> implements ISystem<TComponent> {
+export abstract class System extends Unique implements ISystem {
 
-    /* tslint:disable:naming-convention */
-    private __ComponentCtor: Ctor<TComponent, any>;
-    /* tslint:enable:naming-convention */
-    private __store: StoreMaster;
+    public $engine: IEngine;
 
-    constructor(ComponentCtor: Ctor<TComponent, {}>) {
-        this.__ComponentCtor = ComponentCtor;
+    constructor(engine: IEngine) {
+        super();
+        this.$engine = engine;
     }
 
-    /* tslint:disable:naming-convention */
-    public get ComponentCtor(): Ctor<TComponent, any> {
-        return this.__ComponentCtor;
-    }
-    /* tslint:enable:naming-convention */
+    public once(): void { return; }
 
-    public get store(): StoreMaster {
-        return this.__store;
-    }
-
-    public bind(store: StoreMaster): void {
-        this.__store = store;
-    }
-
-    public abstract once(payload: TComponent): void;
+    public draw(): void { return; }
 
 }

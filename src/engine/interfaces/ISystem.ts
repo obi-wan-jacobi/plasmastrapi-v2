@@ -1,12 +1,9 @@
-import { Ctor } from '../types/Ctor';
-import StoreMaster from '../concretes/masters/StoreMaster';
+import IUnique from '../../framework/interfaces/IUnique';
 
-export default interface ISystem<TComponent> {
+export default interface ISystem extends IUnique {
 
-    ComponentCtor: Ctor<TComponent, any>;
+    once(): void;
 
-    bind(store: StoreMaster): void;
-
-    once(payload: TComponent): void;
+    draw(): void;
 
 }
