@@ -34,6 +34,11 @@ export class SceneButton extends Button {
 
 export class PlayButton extends Button {
 
+    public constructor() {
+        super(arguments[0]);
+        this.mutate(RenderingProfile)({ colour: 'LIGHTGREEN' });
+    }
+
     public click(): void {
         super.click();
         this.$engine.entities.forEvery(ToolHandle)((handle) => {
@@ -52,6 +57,11 @@ export class PlayButton extends Button {
 }
 
 export class StopButton extends Button {
+
+    public constructor() {
+        super(arguments[0]);
+        this.mutate(RenderingProfile)({ colour: 'PINK' });
+    }
 
     public click(): void {
         super.click();
@@ -477,4 +487,13 @@ export class BuildArea extends Panel {
 
     public inputs: InputTerminal[] = [];
     public outputs: OutputTerminal[] = [];
+    public power: OutputTerminal;
+
+    public constructor() {
+        super(arguments[0]);
+        this.power = this.$engine.entities.create(OutputTerminal, {
+            x: 100,
+            y: 100,
+        });
+    }
 }
