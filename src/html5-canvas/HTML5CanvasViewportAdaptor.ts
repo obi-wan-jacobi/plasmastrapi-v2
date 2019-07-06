@@ -1,5 +1,5 @@
 import IViewportAdaptor from '../engine/interfaces/IViewportAdaptor';
-import { ILabel, IPoint, IPose, IRenderingProfile, IShape } from '../engine/components';
+import { IImageRenderingProfile, ILabel, IPoint, IPose, IShape, IShapeRenderingProfile } from '../engine/components';
 
 function Atomic(target: HTML5CanvasViewportAdaptor, key: string, descriptor: PropertyDescriptor): void {
     const fn = descriptor.value;
@@ -16,6 +16,8 @@ export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
     public width: number;
     public height: number;
 
+    private __imageBuffer: { [key: string]: HTMLImageElement } = {};
+
     constructor(canvas: HTMLCanvasElement) {
         this.ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
         this.width = canvas.clientWidth;
@@ -27,7 +29,22 @@ export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
     }
 
     @Atomic
-    public drawShape({ shape, rendering }: { shape: IShape, rendering: IRenderingProfile }): void {
+    public drawImage({ pose, rendering }: { pose: IPose, rendering: IImageRenderingProfile }): void {
+        if (!this.__imageBuffer[rendering.src]) {
+            this.__imageBuffer[rendering.src] = new Image();
+            this.__imageBuffer[rendering.src].src = rendering.src;
+        }
+        const image = this.__imageBuffer[rendering.src];
+        const dx = pose.x - image.width / 2;
+        const dy = pose.y - image.height / 2;
+        this.ctx.drawImage(image, dx, dy);
+    }
+
+    @Atomic
+    public drawShape({ shape, rendering }: { shape: IShape, rendering: IShapeRenderingProfile }): void {
+        if (rendering.opacity) {
+            this.ctx.globalAlpha = rendering.opacity;
+        }
         this.ctx.strokeStyle = rendering.colour;
         this.ctx.beginPath();
         shape.points.forEach((p: IPoint) => {
@@ -38,7 +55,7 @@ export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
     }
 
     @Atomic
-    public drawLine({ points, rendering }: { points: IPoint[], rendering: IRenderingProfile }): void {
+    public drawLine({ points, rendering }: { points: IPoint[], rendering: IShapeRenderingProfile }): void {
         this.ctx.strokeStyle = rendering.colour;
         this.ctx.beginPath();
         points.forEach((p: IPoint) => {

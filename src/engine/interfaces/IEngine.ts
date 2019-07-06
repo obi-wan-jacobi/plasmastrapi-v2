@@ -20,4 +20,5 @@ export default interface IEngine {
     once(): void;
     draw(): void;
     add(SystemCtor: Ctor<ISystem, any>): void;
+    remove(SystemCtor: Ctor<ISystem, any>): void;
 }

@@ -5,13 +5,14 @@ import HTML5CanvasMouseAdaptor from '../html5-canvas/HTML5CanvasMouseAdaptor';
 import { HTML5CanvasViewportAdaptor } from '../html5-canvas/HTML5CanvasViewportAdaptor';
 import IAdaptedKeyboardEvent from '../engine/interfaces/IAdaptedKeyboardEvent';
 import IAdaptedMouseEvent from '../engine/interfaces/IAdaptedMouseEvent';
+import {
+    AndGateCreatorButton, BuildArea, GateDestructorButton, NandGateCreatorButton, OrGateCreatorButton, WireDestructorButton, XorGateCreatorButton,
+} from './entities/editor';
 import $ from 'jquery';
+import { ClawMachine, PowerSupply } from './entities/machines';
+import { PlayButton, SceneArea, StopButton } from './entities/scenes';
 import {
-    BuildArea, GateCreatorButton, GateDestructorButton, PlayButton,
-    SceneArea, StopButton, WireDestructorButton,
-} from './materials';
-import {
-    GateMaskSystem, InputTerminalHandleSystem, OutputTerminalHandleSystem, WireDestructorHandleSystem,
+    GateMaskSystem, InputTerminalHandleSystem, OutputTerminalHandleSystem, TerminalWireSystem, WireDestructorHandleSystem,
 } from './systems';
 
 const canvas = $('#app-target').get(0) as HTMLCanvasElement;
@@ -53,13 +54,24 @@ game.add(GateMaskSystem);
 game.add(WireDestructorHandleSystem);
 game.add(InputTerminalHandleSystem);
 game.add(OutputTerminalHandleSystem);
+game.add(TerminalWireSystem);
 app.start();
 
-app.engine.entities.create(GateCreatorButton, { x: 30, y: 30 });
-app.engine.entities.create(WireDestructorButton, { x: 80, y: 30 });
-app.engine.entities.create(GateDestructorButton, { x: 130, y: 30 });
-app.engine.entities.create(BuildArea, { x: 400, y: 340, width: 800, height: 560 });
+app.engine.entities.create(AndGateCreatorButton, { x: 30, y: 30 });
+app.engine.entities.create(NandGateCreatorButton, { x: 80, y: 30 });
+app.engine.entities.create(OrGateCreatorButton, { x: 130, y: 30 });
+app.engine.entities.create(XorGateCreatorButton, { x: 180, y: 30 });
+app.engine.entities.create(WireDestructorButton, { x: 720, y: 30 });
+app.engine.entities.create(GateDestructorButton, { x: 770, y: 30 });
+const editor = app.engine.entities.create(BuildArea, { x: 400, y: 340, width: 800, height: 560 });
 
 app.engine.entities.create(PlayButton, { x: 1200, y: 30 });
 app.engine.entities.create(StopButton, { x: 1250, y: 30 });
 app.engine.entities.create(SceneArea, { x: 1040, y: 340, width: 440, height: 560 });
+const claw = app.engine.entities.create(ClawMachine, { x: 1040, y: 340 });
+
+const power = app.engine.entities.create(PowerSupply, { x: 0, y: 0 });
+
+editor.inputs = claw.inputs;
+editor.outputs = [power].concat(claw.outputs);
+editor.init();

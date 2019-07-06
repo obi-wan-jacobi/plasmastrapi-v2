@@ -1,14 +1,15 @@
 import ComponentFactory from './ComponentFactory';
+import Dictionary from '../framework/concretes/Dictionary';
 import EntityMaster from './EntityMaster';
-import Factory from '../framework/concretes/Factory';
 import IAdaptedKeyboardEvent from './interfaces/IAdaptedKeyboardEvent';
 import IAdaptedMouseEvent from './interfaces/IAdaptedMouseEvent';
 import IComponentFactory from './interfaces/IComponentFactory';
+import IDictionary from '../framework/interfaces/IDictionary';
 import IEngine from './interfaces/IEngine';
 import IEntityFactory from './interfaces/IEntityMaster';
-import IFactory from '../framework/interfaces/IFactory';
 import ISystem from './interfaces/ISystem';
 import IViewportAdaptor from './interfaces/IViewportAdaptor';
+import ImageSystem from './systems/ImageSystem';
 import { InteractiveSystem } from './systems/InteractiveSystem';
 import LabelSystem from './systems/LabelSystem';
 import ShapeSystem from './systems/ShapeSystem';
@@ -26,13 +27,13 @@ export default class Engine implements IEngine {
     public delta: number;
 
     private __t: Date;
-    private __systems: IFactory<ISystem>;
+    private __systems: IDictionary<ISystem>;
 
     constructor(viewport: IViewportAdaptor) {
         this.viewport = viewport;
         this.components = new ComponentFactory();
         this.entities = new EntityMaster(this);
-        this.__systems = new Factory<ISystem>();
+        this.__systems = new Dictionary<ISystem>();
         this.__t = new Date();
         this.__initSystems();
     }
@@ -50,12 +51,20 @@ export default class Engine implements IEngine {
     }
 
     public add(SystemCtor: Ctor<ISystem, any>): void {
-        this.__systems.create(SystemCtor, this);
+        this.__systems.write({
+            key: SystemCtor.name,
+            value: new SystemCtor(this),
+        });
+    }
+
+    public remove(SystemCtor: Ctor<ISystem, any>): void {
+        this.__systems.delete(SystemCtor.name);
     }
 
     private __initSystems(): void {
         this.add(LabelSystem);
         this.add(ShapeSystem);
+        this.add(ImageSystem);
         this.add(InteractiveSystem);
     }
 

@@ -72,7 +72,7 @@ export default class EntityMaster extends Wrapper<IDictionary<IFactory<IEntity>>
     private __destroyTargets(): void {
         while (this.destructionTargets.length) {
             const entity = this.destructionTargets.shift()!;
-            entity.forEach((component) => {
+            entity.$forEach((component) => {
                 this.$engine.components.destroy(component);
             });
             let target: any = entity;

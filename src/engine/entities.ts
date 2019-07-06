@@ -2,7 +2,7 @@ import booleanContains from '@turf/boolean-contains';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import Entity from './Entity';
 import IEntity from './interfaces/IEntity';
-import { IPoint, Pose, RenderingProfile, Shape } from './components';
+import { IPoint, Pose, Shape, ShapeRenderingProfile } from './components';
 import { fromPointsToGeoJSON, fromShapeToGeoJSON, transformShape } from './geometry';
 import turf from 'turf';
 const booleanOverlaps = require('@turf/boolean-overlap').default;
@@ -17,69 +17,70 @@ export class Interactive extends Entity {
 
     constructor({ x, y, a }: { x: number, y: number, a: number }) {
         super(arguments[0]);
-        this.add(Pose)({ x, y, a });
+        this.$add(Pose)({ x, y, a });
     }
 
-    public enable(): void {
+    public $enable(): void {
         this.__isDisabled = false;
     }
 
-    public disable(): void {
+    public $disable(): void {
         this.__isDisabled = true;
     }
 
-    public once(): void {
+    public $once(): void {
         if (this.__isDisabled) {
             return;
         }
-        if (this.$engine.mouse.name === 'mousemove') {
-            this['mousemove']();
+        if (this.$engine.mouse.name === 'none') {
             return;
         }
         if (!entityContainsPoint(this, this.$engine.mouse)) {
+            if (this.$engine.mouse.name === 'mousemove') {
+                this['$mousemove']();
+            }
             if (this.__isHovered) {
                 this.__isHovered = false;
-                this.mouseleave();
+                this.$mouseleave();
             }
             return;
         }
         if (!this.__isHovered) {
             this.__isHovered = true;
-            this.mouseenter();
+            this.$mouseenter();
         }
-        this[this.$engine.mouse.name]();
+        this[`$${this.$engine.mouse.name}`]();
     }
 
-    public mouseenter(): void { return; }
-    public mouseleave(): void { return; }
-    public mousemove(): void { return; }
-    public mousedown(): void { return; }
-    public mouseup(): void { return; }
-    public click(): void { return; }
+    public $mouseenter(): void { return; }
+    public $mouseleave(): void { return; }
+    public $mousemove(): void { return; }
+    public $mousedown(): void { return; }
+    public $mouseup(): void { return; }
+    public $click(): void { return; }
 }
 
-export class Button extends Interactive {
+export class InteractiveElement extends Interactive {
 
-    constructor({ x, y }: { x: number, y: number }) {
+    constructor({ x, y, width, height }: { x: number, y: number, width: number, height: number }) {
         super(Object.assign({ a: 0 }, arguments[0]));
-        this.add(Shape)({ points: [
-            { x: 20, y: 20 },
-            { x: -20, y: 20 },
-            { x: -20, y: -20 },
-            { x: 20, y: -20 },
+        this.$add(Shape)({ points: [
+            { x: width / 2, y: height / 2 },
+            { x: -width / 2, y: height / 2 },
+            { x: -width / 2, y: -height / 2 },
+            { x: width / 2, y: -height / 2 },
         ]});
-        this.add(RenderingProfile)({ colour: 'WHITE' });
     }
 }
 
 export const entityContainsPoint = (entity: IEntity, point: IPoint): boolean => {
-    const shape = transformShape(entity.copy(Shape), entity.copy(Pose));
+    const shape = transformShape(entity.$copy(Shape), entity.$copy(Pose));
     return booleanPointInPolygon(turf.point([point.x, point.y]), fromShapeToGeoJSON(shape));
 };
 
 export const entitiesTouch = (entity1: IEntity, entity2: IEntity): boolean => {
-    const shape1 = transformShape(entity1.copy(Shape), entity1.copy(Pose));
-    const shape2 = transformShape(entity2.copy(Shape), entity2.copy(Pose));
+    const shape1 = transformShape(entity1.$copy(Shape), entity1.$copy(Pose));
+    const shape2 = transformShape(entity2.$copy(Shape), entity2.$copy(Pose));
     return booleanContains(fromShapeToGeoJSON(shape1), fromShapeToGeoJSON(shape2)) ||
         booleanContains(fromShapeToGeoJSON(shape2), fromShapeToGeoJSON(shape1)) ||
         booleanOverlaps(fromShapeToGeoJSON(shape1), fromShapeToGeoJSON(shape2)) ||
@@ -87,7 +88,7 @@ export const entitiesTouch = (entity1: IEntity, entity2: IEntity): boolean => {
 };
 
 export const entityTouchesLine = (entity: IEntity, points: IPoint[]): boolean => {
-    const shape = transformShape(entity.copy(Shape), entity.copy(Pose));
+    const shape = transformShape(entity.$copy(Shape), entity.$copy(Pose));
     const polygon = fromShapeToGeoJSON(shape);
     const line = fromPointsToGeoJSON(points);
     return lineIntersect(polygon, line).features.length > 0;

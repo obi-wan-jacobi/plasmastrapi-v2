@@ -5,7 +5,7 @@ export class InteractiveSystem extends System {
 
     public once(): void {
         this.$engine.entities.forEvery(Interactive)((target) => {
-            target.once();
+            target.$once();
         });
     }
 }
