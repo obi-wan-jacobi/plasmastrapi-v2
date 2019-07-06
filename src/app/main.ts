@@ -6,13 +6,15 @@ import { HTML5CanvasViewportAdaptor } from '../html5-canvas/HTML5CanvasViewportA
 import IAdaptedKeyboardEvent from '../engine/interfaces/IAdaptedKeyboardEvent';
 import IAdaptedMouseEvent from '../engine/interfaces/IAdaptedMouseEvent';
 import {
-    AndGateCreatorButton, BuildArea, GateDestructorButton, NandGateCreatorButton, OrGateCreatorButton, WireDestructorButton, XorGateCreatorButton,
+    AndGateCreatorButton, BuildArea, GateDestructorButton, NandGateCreatorButton,
+    OrGateCreatorButton, WireDestructorButton, XorGateCreatorButton,
 } from './entities/editor';
 import $ from 'jquery';
 import { ClawMachine, PowerSupply } from './entities/machines';
 import { PlayButton, SceneArea, StopButton } from './entities/scenes';
 import {
-    GateMaskSystem, InputTerminalHandleSystem, OutputTerminalHandleSystem, TerminalWireSystem, WireDestructorHandleSystem,
+    GateMaskSystem, InputTerminalHandleSystem, OutputTerminalHandleSystem,
+    TerminalWireSystem, WireDestructorHandleSystem,
 } from './systems';
 
 const canvas = $('#app-target').get(0) as HTMLCanvasElement;

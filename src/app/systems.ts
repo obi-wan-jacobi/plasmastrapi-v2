@@ -147,10 +147,10 @@ const fromTerminalHandleToWireRendering = (handle: IEntity, terminal: IEntity) =
     };
     const length = getEuclideanDistanceBetweenPoints(handlePose, terminalPose);
     const shape = transformShape({ points: [
-        { x: length / 2, y: 5 },
-        { x: -length / 2, y: 5 },
-        { x: -length / 2, y: -5 },
-        { x: length / 2, y: -5 },
+        { x: length / 2, y: 2 },
+        { x: -length / 2, y: 2 },
+        { x: -length / 2, y: -2 },
+        { x: length / 2, y: -2 },
     ]}, pose);
     const rendering = { colour: 'WHITE' };
     return { shape, rendering };

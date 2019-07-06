@@ -43,10 +43,10 @@ export class Wire extends Entity {
         const outPose = this.output.$copy(Pose);
         const length = getEuclideanDistanceBetweenPoints(inPose, outPose);
         this.$add(Shape)({ points: [
-            { x: length / 2, y: 5 },
-            { x: - length / 2, y: 5 },
-            { x: - length / 2, y: -5 },
-            { x: length / 2, y: -5 },
+            { x: length / 2, y: 2 },
+            { x: - length / 2, y: 2 },
+            { x: - length / 2, y: -2 },
+            { x: length / 2, y: -2 },
         ]});
     }
 
