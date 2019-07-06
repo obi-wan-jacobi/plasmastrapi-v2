@@ -77,3 +77,18 @@ const power = app.engine.entities.create(PowerSupply, { x: 0, y: 0 });
 editor.inputs = claw.inputs;
 editor.outputs = [power].concat(claw.outputs);
 editor.init();
+
+[
+    './threaded-axle-1.png',
+    './threaded-axle-2.png',
+    './threaded-axle-3.png',
+    './threaded-axle-4.png',
+    './threaded-axle-5.png',
+    './threaded-axle-6.png',
+    './threaded-axle-7.png',
+    './threaded-axle-8.png',
+    './threaded-axle-9.png',
+    './threaded-axle-10.png',
+].forEach((src) => {
+    app.engine.viewport.load(src);
+});

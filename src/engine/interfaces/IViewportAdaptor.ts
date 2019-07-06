@@ -2,6 +2,8 @@ import { IImageRenderingProfile, ILabel, IPoint, IPose, IShape, IShapeRenderingP
 
 export default interface IViewportAdaptor {
 
+    load(src: string): CanvasImageSource;
+
     refresh(): void;
 
     drawImage({ pose, rendering }: { pose: IPose, rendering: IImageRenderingProfile }): void;

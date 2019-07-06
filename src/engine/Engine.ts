@@ -1,3 +1,4 @@
+import { AnimatedImageSystem } from './systems/AnimatedImageSystem';
 import ComponentFactory from './ComponentFactory';
 import Dictionary from '../framework/concretes/Dictionary';
 import EntityMaster from './EntityMaster';
@@ -65,6 +66,7 @@ export default class Engine implements IEngine {
         this.add(LabelSystem);
         this.add(ShapeSystem);
         this.add(ImageSystem);
+        this.add(AnimatedImageSystem);
         this.add(InteractiveSystem);
     }
 

@@ -19,6 +19,21 @@ export class ShapeRenderingProfile extends Component<IShapeRenderingProfile> {}
 
 export interface IImageRenderingProfile {
     src: string;
+    width?: number;
+    height?: number;
     opacity?: number;
 }
 export class ImageRenderingProfile extends Component<IImageRenderingProfile> {}
+
+export interface IAnimatedImageRenderingProfile {
+    src: string[];
+    frame: number;
+    speed: number;
+    cooldown: number;
+    width?: number;
+    height?: number;
+    opacity?: number;
+    isPaused?: boolean;
+    isReversed?: boolean;
+}
+export class AnimatedImageRenderingProfile extends Component<IAnimatedImageRenderingProfile> {}

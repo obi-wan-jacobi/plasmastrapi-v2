@@ -24,20 +24,30 @@ export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
         this.height = canvas.clientHeight;
     }
 
+    public load(src: string): CanvasImageSource {
+        if (!this.__imageBuffer[src]) {
+            this.__imageBuffer[src] = new Image();
+            this.__imageBuffer[src].src = src;
+        }
+        return this.__imageBuffer[src];
+    }
+
     public refresh(): void {
         this.ctx.clearRect(0, 0, this.width, this.height);
     }
 
     @Atomic
     public drawImage({ pose, rendering }: { pose: IPose, rendering: IImageRenderingProfile }): void {
-        if (!this.__imageBuffer[rendering.src]) {
-            this.__imageBuffer[rendering.src] = new Image();
-            this.__imageBuffer[rendering.src].src = rendering.src;
-        }
-        const image = this.__imageBuffer[rendering.src];
-        const dx = pose.x - image.width / 2;
-        const dy = pose.y - image.height / 2;
-        this.ctx.drawImage(image, dx, dy);
+        const image = this.load(rendering.src);
+        const dx = pose.x - (rendering.width || image.width as number) / 2;
+        const dy = pose.y - (rendering.height || image.height as number) / 2;
+        this.ctx.drawImage(
+            image,
+            dx,
+            dy,
+            rendering.width || image.width as number,
+            rendering.height || image.height as number,
+        );
     }
 
     @Atomic

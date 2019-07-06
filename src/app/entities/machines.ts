@@ -1,5 +1,7 @@
 import Entity from '../../engine/Entity';
-import { IShape, Label, Pose, Shape, ShapeRenderingProfile } from '../../engine/components';
+import {
+    AnimatedImageRenderingProfile, IShape, Label, Pose, Shape, ShapeRenderingProfile,
+} from '../../engine/components';
 import { entitiesTouch } from '../../engine/entities';
 import { InputTerminal, OutputTerminal } from './terminals';
 
@@ -32,18 +34,101 @@ export class MachinePart extends Entity {
     public constructor({ x, y, shape }: { x: number, y: number, shape: IShape }) {
         super(arguments[0]);
         this.$add(Pose)({ x, y, a: 0 });
-        this.$add(Shape)(shape);
-        this.$add(ShapeRenderingProfile)({ colour: 'WHITE' });
+        if (shape) {
+            this.$add(Shape)(shape);
+            this.$add(ShapeRenderingProfile)({ colour: 'WHITE' });
+        }
+    }
+}
+
+export class ThreadedAxle extends MachinePart {
+
+    private __threads: MachinePart[] = [];
+
+    public constructor({ x, y, width, height }: { x: number, y: number, width: number, height: number }) {
+        super(arguments[0]);
+        for (let i = 0, L = width / 10; i < L; i++) {
+            const thread = this.$engine.entities.create(MachinePart, {
+                x: x - width / 2 + i * 10 + 5,
+                y,
+            });
+            thread.$add(AnimatedImageRenderingProfile)({
+                src: [
+                    './threaded-axle-1.png',
+                    './threaded-axle-2.png',
+                    './threaded-axle-3.png',
+                    './threaded-axle-4.png',
+                    './threaded-axle-5.png',
+                    './threaded-axle-6.png',
+                    './threaded-axle-7.png',
+                    './threaded-axle-8.png',
+                    './threaded-axle-9.png',
+                    './threaded-axle-10.png',
+                ],
+                frame: 0,
+                speed: 1,
+                cooldown: 0,
+                width: 10,
+                height,
+                isPaused: true,
+            });
+            this.__threads.push(thread);
+        }
+    }
+
+    public forward(): void {
+        this.__threads.forEach((thread) => {
+            const profile = thread.$copy(AnimatedImageRenderingProfile);
+            thread.$mutate(AnimatedImageRenderingProfile)(Object.assign(profile, {
+                isPaused: false,
+                isReversed: false,
+            }));
+        });
+    }
+
+    public reverse(): void {
+        this.__threads.forEach((thread) => {
+            const profile = thread.$copy(AnimatedImageRenderingProfile);
+            thread.$mutate(AnimatedImageRenderingProfile)(Object.assign(profile, {
+                isPaused: false,
+                isReversed: true,
+            }));
+        });
+    }
+
+    public idle(): void {
+        this.__threads.forEach((thread) => {
+            const profile = thread.$copy(AnimatedImageRenderingProfile);
+            thread.$mutate(AnimatedImageRenderingProfile)(Object.assign(profile, {
+                isPaused: true,
+            }));
+        });
+    }
+
+    public $destroy(): void {
+        super.$destroy();
+        this.__threads.forEach((thread) => {
+            thread.$destroy();
+        });
     }
 }
 
 export class Motor extends InputTerminal {
 
-    private __action: () => void;
+    private __high: () => void;
+    private __low: () => void;
+    private __off: () => void;
 
-    public constructor({ action, label }: { action: () => void, label: string }) {
+    public constructor({ high, low, off, label }: {
+        high: () => void,
+        low: () => void,
+        off: () => void,
+        label: string,
+    }) {
         super(Object.assign({ x: 0, y: 0 }, arguments[0]));
-        this.__action = action;
+        this.__high = high;
+        this.__low = low;
+        this.__off = off;
         this.$add(ShapeRenderingProfile)({ colour: 'WHITE' });
         this.$add(Label)({
             text: label,
@@ -52,10 +137,19 @@ export class Motor extends InputTerminal {
         });
     }
 
-    public once(): void {
-        if (this.isHigh) {
-            this.__action();
-        }
+    public high(): void {
+        super.high();
+        this.__high();
+    }
+
+    public low(): void {
+        super.low();
+        this.__low();
+    }
+
+    public off(): void {
+        super.off();
+        this.__off();
     }
 }
 
@@ -100,7 +194,7 @@ export class TouchActivator extends MachinePart {
 
 export class ClawMachine extends Machine {
 
-    private __horizontalRail: MachinePart;
+    private __horizontalRail: ThreadedAxle;
     private __verticalRail: MachinePart;
     private __carriage: TouchActivator;
 
@@ -114,15 +208,7 @@ export class ClawMachine extends Machine {
 
     public constructor({ x, y }: { x: number, y: number }) {
         super(arguments[0]);
-        this.__horizontalRail = this.$engine.entities.create(MachinePart, {
-            x, y,
-            shape: { points: [
-                { x: 150, y: 5 },
-                { x: -150, y: 5 },
-                { x: -150, y: -5 },
-                { x: 150, y: -5 },
-            ]},
-        });
+        this.__horizontalRail = this.$engine.entities.create(ThreadedAxle, { x, y, width: 300, height: 20 });
         this.__carriage = this.$engine.entities.create(TouchActivator, {
             x: x - 130, y,
             shape: { points: [
@@ -152,8 +238,18 @@ export class ClawMachine extends Machine {
             ]},
             label: 'right-sensor',
         });
-        this.__leftMotor = this.$engine.entities.create(Motor, { action: () => this.left(), label: 'move-left' });
-        this.__rightMotor = this.$engine.entities.create(Motor, { action: () => this.right(), label: 'move-right' });
+        this.__leftMotor = this.$engine.entities.create(Motor, {
+            high: () => this.left(),
+            low: () => this.off(),
+            off: () => this.off(),
+            label: 'move-left',
+        });
+        this.__rightMotor = this.$engine.entities.create(Motor, {
+            high: () => this.right(),
+            low: () => this.off(),
+            off: () => this.off(),
+            label: 'move-right',
+        });
         this.inputs = [this.__leftMotor, this.__rightMotor];
         this.outputs = [this.__leftSensor.output, this.__rightSensor.output];
     }
@@ -161,6 +257,7 @@ export class ClawMachine extends Machine {
     public left(): void {
         const pose = this.__carriage.$copy(Pose);
         if (pose.x <= this.$copy(Pose).x - 130) {
+            this.__horizontalRail.idle();
             return;
         }
         this.__carriage.$mutate(Pose)({
@@ -168,11 +265,13 @@ export class ClawMachine extends Machine {
             y: pose.y,
             a: pose.a,
         });
+        this.__horizontalRail.forward();
     }
 
     public right(): void {
         const pose = this.__carriage.$copy(Pose);
         if (pose.x >= this.$copy(Pose).x + 130) {
+            this.__horizontalRail.idle();
             return;
         }
         this.__carriage.$mutate(Pose)({
@@ -180,5 +279,12 @@ export class ClawMachine extends Machine {
             y: pose.y,
             a: pose.a,
         });
+        this.__horizontalRail.reverse();
+    }
+
+    public off(): void {
+        if (!this.__leftMotor.isHigh && !this.__rightMotor.isHigh) {
+            this.__horizontalRail.idle();
+        }
     }
 }

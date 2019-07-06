@@ -79,9 +79,6 @@ export class MotorSystem extends System {
                 wire.input.off();
             }
         });
-        this.$engine.entities.forEvery(Motor)((motor) => {
-            motor.once();
-        });
     }
 }
 
