@@ -3,7 +3,7 @@ import { AnimatedImageRenderingProfile, Pose } from '../components';
 
 export class AnimatedImageSystem extends System {
 
-    public once(): void {
+    public draw(): void {
         this.$engine.components.forEvery(AnimatedImageRenderingProfile)((profile) => {
             const data = profile.copy();
             if (data.cooldown === data.speed) {

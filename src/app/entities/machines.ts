@@ -1,6 +1,6 @@
 import Entity from '../../engine/Entity';
 import {
-    AnimatedImageRenderingProfile, IShape, Label, Pose, Shape, ShapeRenderingProfile,
+    AnimatedImageRenderingProfile, IShape, Label, Pose, PoseStepperComponent, Shape, ShapeRenderingProfile,
 } from '../../engine/components';
 import { entitiesTouch } from '../../engine/entities';
 import { InputTerminal, OutputTerminal } from './terminals';
@@ -27,6 +27,15 @@ export class Machine extends Entity {
         super(arguments[0]);
         this.$add(Pose)({ x, y, a: 0 });
     }
+
+    public once(): void { return; }
+    public off(): void { return; }
+
+    public $destroy(): void {
+        super.$destroy();
+        this.inputs.forEach((input) => input.$destroy());
+        this.outputs.forEach((output) => output.$destroy());
+    }
 }
 
 export class MachinePart extends Entity {
@@ -36,7 +45,7 @@ export class MachinePart extends Entity {
         this.$add(Pose)({ x, y, a: 0 });
         if (shape) {
             this.$add(Shape)(shape);
-            this.$add(ShapeRenderingProfile)({ colour: 'WHITE' });
+            this.$add(ShapeRenderingProfile)({ colour: 'WHITE', fillStyle: 'BLACK' });
         }
     }
 }
@@ -113,43 +122,16 @@ export class ThreadedAxle extends MachinePart {
     }
 }
 
-export class Motor extends InputTerminal {
+export class Actuator extends InputTerminal {
 
-    private __high: () => void;
-    private __low: () => void;
-    private __off: () => void;
-
-    public constructor({ high, low, off, label }: {
-        high: () => void,
-        low: () => void,
-        off: () => void,
-        label: string,
-    }) {
+    public constructor({ label }: { label: string }) {
         super(Object.assign({ x: 0, y: 0 }, arguments[0]));
-        this.__high = high;
-        this.__low = low;
-        this.__off = off;
         this.$add(ShapeRenderingProfile)({ colour: 'WHITE' });
         this.$add(Label)({
             text: label,
             fontSize: 20,
             offset: { x: 15, y: 7 },
         });
-    }
-
-    public high(): void {
-        super.high();
-        this.__high();
-    }
-
-    public low(): void {
-        super.low();
-        this.__low();
-    }
-
-    public off(): void {
-        super.off();
-        this.__off();
     }
 }
 
@@ -168,13 +150,26 @@ export class Sensor extends MachinePart {
         this.output.$add(ShapeRenderingProfile)({ colour: 'WHITE' });
     }
 
+    public get isHigh(): boolean {
+        return this.output.isHigh;
+    }
+
+    public get isLow(): boolean {
+        return this.output.isLow;
+    }
+
+    public get isOff(): boolean {
+        return this.output.isOff;
+    }
+
     public once(): void {
-        this.output.low();
         const target = this.$engine.entities.find(TouchActivator)((activator) => {
             return entitiesTouch(this, activator);
         });
         if (target) {
             this.output.high();
+        } else {
+            this.output.low();
         }
     }
 
@@ -198,8 +193,8 @@ export class ClawMachine extends Machine {
     private __verticalRail: MachinePart;
     private __carriage: TouchActivator;
 
-    private __leftMotor: Motor;
-    private __rightMotor: Motor;
+    private __leftMotor: Actuator;
+    private __rightMotor: Actuator;
 
     private __leftSensor: TouchSensor;
     private __rightSensor: TouchSensor;
@@ -218,6 +213,8 @@ export class ClawMachine extends Machine {
                 { x: 20, y: -30 },
             ]},
         });
+        this.__carriage.$add(PoseStepperComponent)({ x: 0, y: 0, a: 0 });
+        this.__carriage.$add(ShapeRenderingProfile)({ colour: 'WHITE', fillStyle: 'BLACK', zIndex: 1 });
         this.__leftSensor = this.$engine.entities.create(TouchSensor, {
             x: x - 155, y,
             shape: { points: [
@@ -238,53 +235,50 @@ export class ClawMachine extends Machine {
             ]},
             label: 'right-sensor',
         });
-        this.__leftMotor = this.$engine.entities.create(Motor, {
-            high: () => this.left(),
-            low: () => this.off(),
-            off: () => this.off(),
+        this.__leftMotor = this.$engine.entities.create(Actuator, {
             label: 'move-left',
         });
-        this.__rightMotor = this.$engine.entities.create(Motor, {
-            high: () => this.right(),
-            low: () => this.off(),
-            off: () => this.off(),
+        this.__rightMotor = this.$engine.entities.create(Actuator, {
             label: 'move-right',
         });
         this.inputs = [this.__leftMotor, this.__rightMotor];
         this.outputs = [this.__leftSensor.output, this.__rightSensor.output];
     }
 
-    public left(): void {
-        const pose = this.__carriage.$copy(Pose);
-        if (pose.x <= this.$copy(Pose).x - 130) {
-            this.__horizontalRail.idle();
-            return;
+    public once(): void {
+        if (this.__leftMotor.isHigh && this.__rightMotor.isHigh) {
+            return this.off();
         }
-        this.__carriage.$mutate(Pose)({
-            x: pose.x - 1,
-            y: pose.y,
-            a: pose.a,
-        });
+        if (this.__leftMotor.isLow && this.__rightMotor.isLow) {
+            return this.off();
+        }
+        if (this.__leftMotor.isHigh) {
+            if (this.__leftSensor.isHigh) {
+                return this.off();
+            }
+            return this.left();
+        }
+        if (this.__rightMotor.isHigh) {
+            if (this.__rightSensor.isHigh) {
+                return this.off();
+            }
+            return this.right();
+        }
+        return this.off();
+    }
+
+    public left(): void {
+        this.__carriage.$mutate(PoseStepperComponent)({ x: -1, y: 0, a: 0 });
         this.__horizontalRail.forward();
     }
 
     public right(): void {
-        const pose = this.__carriage.$copy(Pose);
-        if (pose.x >= this.$copy(Pose).x + 130) {
-            this.__horizontalRail.idle();
-            return;
-        }
-        this.__carriage.$mutate(Pose)({
-            x: pose.x + 1,
-            y: pose.y,
-            a: pose.a,
-        });
+        this.__carriage.$mutate(PoseStepperComponent)({ x: 1, y: 0, a: 0 });
         this.__horizontalRail.reverse();
     }
 
     public off(): void {
-        if (!this.__leftMotor.isHigh && !this.__rightMotor.isHigh) {
-            this.__horizontalRail.idle();
-        }
+        this.__carriage.$mutate(PoseStepperComponent)({ x: 0, y: 0, a: 0 });
+        this.__horizontalRail.idle();
     }
 }

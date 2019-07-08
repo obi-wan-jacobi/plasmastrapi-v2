@@ -1,7 +1,7 @@
 import IDictionary from '../interfaces/IDictionary';
 import Wrapper from '../abstracts/Wrapper';
 
-export default class Dictionary<T extends object> extends Wrapper<{ [key: string]: any }> implements IDictionary<T> {
+export default class Dictionary<T extends object> extends Wrapper<{ [key: string]: T }> implements IDictionary<T> {
 
     constructor() {
         super({});
@@ -29,6 +29,12 @@ export default class Dictionary<T extends object> extends Wrapper<{ [key: string
                 fn(this.unwrap()[key]);
             }
         });
+    }
+
+    public toArray(): T[] {
+        return Object.keys(this.unwrap()).map((key) => {
+            return this.unwrap()[key];
+        }).filter((target) => target !== undefined && target !== null);
     }
 
 }

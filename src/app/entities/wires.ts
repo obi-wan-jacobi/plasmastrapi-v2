@@ -18,11 +18,11 @@ export class Wire extends Entity {
     }
 
     public high(): void {
-        this.$mutate(ShapeRenderingProfile)({ colour: 'LIGHTGREEN' });
+        this.$mutate(ShapeRenderingProfile)({ colour: 'GREEN' });
     }
 
     public low(): void {
-        this.$mutate(ShapeRenderingProfile)({ colour: 'PINK' });
+        this.$mutate(ShapeRenderingProfile)({ colour: 'RED' });
     }
 
     public off(): void {
@@ -52,9 +52,7 @@ export class Wire extends Entity {
 
     public $destroy(): void {
         super.$destroy();
-        let idx = this.input.wires.indexOf(this);
-        this.input.wires.splice(idx, 0);
-        idx = this.output.wires.indexOf(this);
-        this.output.wires.splice(idx, 0);
+        this.input.wires.delete(this.id);
+        this.output.wires.delete(this.id);
     }
 }

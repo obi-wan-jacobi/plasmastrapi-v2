@@ -14,23 +14,18 @@ export abstract class Component<T extends {}> extends Unique implements ICompone
     }
 
     public inject(entity: IEntity): void {
-        if (this.$entity) {
-            throw new Error(
-                `${this.constructor.name} has already been injected with ${this.$entity.constructor.name}!`,
-            );
-        }
         this.$entity = entity;
     }
 
     public copy(): T {
-        return this._clone(this.__data);
+        return this.__clone(this.__data);
     }
 
     public mutate(data: T): void {
-        this.__data = this._clone(data);
+        this.__data = this.__clone(data);
     }
 
-    protected _clone(data: T): T {
+    private __clone(data: T): T {
         return JSON.parse(JSON.stringify(data));
     }
 

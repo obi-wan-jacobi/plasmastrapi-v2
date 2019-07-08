@@ -1,4 +1,5 @@
-import { IPose, ImageRenderingProfile, Pose, ShapeRenderingProfile } from '../../engine/components';
+import { STATE } from '../enums/STATE';
+import { IPose, ImageRenderingProfile, Pose } from '../../engine/components';
 import { InteractiveElement } from '../../engine/entities';
 import { InputTerminal, OutputTerminal } from './terminals';
 import { GatePlacerHandle, ToolHandle } from './tools';
@@ -7,6 +8,8 @@ export class Gate extends InteractiveElement {
 
     public input: InputTerminal;
     public output: OutputTerminal;
+
+    private __state: STATE = STATE.OFF;
 
     constructor({ x, y, src }: { x: number, y: number, src: string }) {
         super(Object.assign({ width: 30, height: 30 }, arguments[0]));
@@ -17,17 +20,32 @@ export class Gate extends InteractiveElement {
 
     public once(): void { return; }
 
+    public get isHigh(): boolean {
+        return this.__state === STATE.HIGH;
+    }
+
+    public get isLow(): boolean {
+        return this.__state === STATE.LOW;
+    }
+
+    public get isOff(): boolean {
+        return this.__state === STATE.OFF;
+    }
+
     public high(): void {
+        this.__state = STATE.HIGH;
         this.input.high();
         this.output.high();
     }
 
     public low(): void {
+        this.__state = STATE.LOW;
         this.input.low();
         this.output.low();
     }
 
     public off(): void {
+        this.__state = STATE.OFF;
         this.input.off();
         this.output.off();
     }
@@ -73,16 +91,19 @@ export class AndGate extends Gate {
 
     public once(): void {
         if (!this.input.wires.length) {
-            this.off();
-            return;
+            return this.off();
         }
-        for (const wire of this.input.wires) {
+        const wires = this.input.wires.toArray();
+        for (const wire of wires) {
             if (wire.output.isLow) {
-                this.low();
-                return;
+                return this.low();
             }
         }
-        this.high();
+        if (wires.find((wire) => wire.output.isHigh)) {
+            this.high();
+        } else {
+            this.off();
+        }
     }
 }
 
@@ -94,16 +115,19 @@ export class NandGate extends Gate {
 
     public once(): void {
         if (!this.input.wires.length) {
-            this.off();
-            return;
+            return this.off();
         }
-        for (const wire of this.input.wires) {
+        const wires = this.input.wires.toArray();
+        for (const wire of wires) {
             if (wire.output.isLow) {
-                this.high();
-                return;
+                return this.high();
             }
         }
-        this.low();
+        if (wires.find((wire) => wire.output.isHigh)) {
+            this.low();
+        } else {
+            this.off();
+        }
     }
 }
 
@@ -114,17 +138,17 @@ export class OrGate extends Gate {
     }
 
     public once(): void {
-        if (!this.input.wires.length) {
-            this.off();
-            return;
-        }
-        for (const wire of this.input.wires) {
-            if (wire.output.isLow) {
-                this.high();
-                return;
-            }
-        }
-        this.low();
+        // if (!this.input.wires.length) {
+        //     this.off();
+        //     return;
+        // }
+        // for (const wire of this.input.wires) {
+        //     if (wire.output.isLow) {
+        //         this.high();
+        //         return;
+        //     }
+        // }
+        // this.low();
     }
 }
 
@@ -135,16 +159,16 @@ export class XorGate extends Gate {
     }
 
     public once(): void {
-        if (!this.input.wires.length) {
-            this.off();
-            return;
-        }
-        for (const wire of this.input.wires) {
-            if (wire.output.isLow) {
-                this.high();
-                return;
-            }
-        }
-        this.low();
+        // if (!this.input.wires.length) {
+        //     this.off();
+        //     return;
+        // }
+        // for (const wire of this.input.wires) {
+        //     if (wire.output.isLow) {
+        //         this.high();
+        //         return;
+        //     }
+        // }
+        // this.low();
     }
 }

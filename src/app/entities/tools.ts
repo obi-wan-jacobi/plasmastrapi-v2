@@ -165,8 +165,14 @@ export class OutputTerminalHandle extends ToolHandle {
                 input: this.input,
                 output: target,
             });
-            this.input.wires.push(wire);
-            target.wires.push(wire);
+            this.input.wires.write({
+                key: wire.id,
+                value: wire,
+            });
+            target.wires.write({
+                key: wire.id,
+                value: wire,
+            });
         }
     }
 }
@@ -189,8 +195,14 @@ export class InputTerminalHandle extends ToolHandle {
                 input: target,
                 output: this.output,
             });
-            this.output.wires.push(wire);
-            target.wires.push(wire);
+            this.output.wires.write({
+                key: wire.id,
+                value: wire,
+            });
+            target.wires.write({
+                key: wire.id,
+                value: wire,
+            });
         }
     }
 }

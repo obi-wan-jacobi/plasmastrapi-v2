@@ -13,6 +13,7 @@ import IViewportAdaptor from './interfaces/IViewportAdaptor';
 import ImageSystem from './systems/ImageSystem';
 import { InteractiveSystem } from './systems/InteractiveSystem';
 import LabelSystem from './systems/LabelSystem';
+import { PoseStepperSystem } from './systems/PoseStepperSystem';
 import ShapeSystem from './systems/ShapeSystem';
 import { Ctor } from '../framework/types';
 
@@ -49,6 +50,7 @@ export default class Engine implements IEngine {
 
     public draw(): void {
         this.__systems.forEach((system: ISystem) => system.draw());
+        this.viewport.once();
     }
 
     public add(SystemCtor: Ctor<ISystem, any>): void {
@@ -68,6 +70,7 @@ export default class Engine implements IEngine {
         this.add(ImageSystem);
         this.add(AnimatedImageSystem);
         this.add(InteractiveSystem);
+        this.add(PoseStepperSystem);
     }
 
 }

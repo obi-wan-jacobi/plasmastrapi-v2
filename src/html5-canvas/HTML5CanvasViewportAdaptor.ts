@@ -12,11 +12,15 @@ function Atomic(target: HTML5CanvasViewportAdaptor, key: string, descriptor: Pro
 
 export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
 
+    [key: string]: any;
+
     public ctx: CanvasRenderingContext2D;
     public width: number;
     public height: number;
 
     private __imageBuffer: { [key: string]: HTMLImageElement } = {};
+
+    private __zBuffer: Array<{ method: string, payload: any }> = [];
 
     constructor(canvas: HTMLCanvasElement) {
         this.ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -36,8 +40,43 @@ export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
         this.ctx.clearRect(0, 0, this.width, this.height);
     }
 
-    @Atomic
+    public once(): void {
+        const zBuffer = this.__zBuffer.map((target) => {
+            if (!target.payload.rendering) {
+                target.payload.rendering = { zIndex: 0 };
+                return target;
+            }
+            if (!target.payload.rendering.zIndex) {
+                target.payload.rendering.zIndex = 0;
+                return target;
+            }
+            return target;
+        });
+        const zOrdered = zBuffer.sort((a, b) => a.payload.rendering.zIndex - b.payload.rendering.zIndex);
+        zOrdered.forEach((target) => {
+            this[`__${target.method}`](target.payload);
+        });
+        this.__zBuffer = [];
+    }
+
     public drawImage({ pose, rendering }: { pose: IPose, rendering: IImageRenderingProfile }): void {
+        this.__zBuffer.push({ method: 'drawImage', payload: arguments[0] });
+    }
+
+    public drawShape({ shape, rendering }: { shape: IShape, rendering: IShapeRenderingProfile }): void {
+        this.__zBuffer.push({ method: 'drawShape', payload: arguments[0] });
+    }
+
+    public drawLine({ points, rendering }: { points: IPoint[], rendering: IShapeRenderingProfile }): void {
+        this.__zBuffer.push({ method: 'drawLine', payload: arguments[0] });
+    }
+
+    public drawLabel({ pose, label }: { pose: IPose, label: ILabel }): void {
+        this.__zBuffer.push({ method: 'drawLabel', payload: arguments[0] });
+    }
+
+    @Atomic
+    private __drawImage({ pose, rendering }: { pose: IPose, rendering: IImageRenderingProfile }): void {
         const image = this.load(rendering.src);
         const dx = pose.x - (rendering.width || image.width as number) / 2;
         const dy = pose.y - (rendering.height || image.height as number) / 2;
@@ -51,7 +90,7 @@ export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
     }
 
     @Atomic
-    public drawShape({ shape, rendering }: { shape: IShape, rendering: IShapeRenderingProfile }): void {
+    private __drawShape({ shape, rendering }: { shape: IShape, rendering: IShapeRenderingProfile }): void {
         if (rendering.opacity) {
             this.ctx.globalAlpha = rendering.opacity;
         }
@@ -60,12 +99,16 @@ export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
         shape.points.forEach((p: IPoint) => {
             this.ctx.lineTo(p.x, p.y);
         });
+        if (rendering.fillStyle) {
+            this.ctx.fillStyle = rendering.fillStyle;
+            this.ctx.fill();
+        }
         this.ctx.closePath();
         this.ctx.stroke();
     }
 
     @Atomic
-    public drawLine({ points, rendering }: { points: IPoint[], rendering: IShapeRenderingProfile }): void {
+    private __drawLine({ points, rendering }: { points: IPoint[], rendering: IShapeRenderingProfile }): void {
         this.ctx.strokeStyle = rendering.colour;
         this.ctx.beginPath();
         points.forEach((p: IPoint) => {
@@ -75,16 +118,10 @@ export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
     }
 
     @Atomic
-    public drawLabel({ pose, label }: { pose: IPose, label: ILabel }): void {
-        this.ctx.fillStyle = 'white';
+    private __drawLabel({ pose, label }: { pose: IPose, label: ILabel }): void {
+        this.ctx.fillStyle = label.colour || 'white';
         this.ctx.font = `${label.fontSize}px Arial`;
         this.ctx.fillText(label.text, pose.x + label.offset.x, pose.y + label.offset.y);
-    }
-
-    @Atomic
-    public drawPoint({ point }: { point: IPoint }): void {
-        this.ctx.fillStyle = 'magenta';
-        this.ctx.fillRect(point.x, point.y, 4, 4);
     }
 
 }

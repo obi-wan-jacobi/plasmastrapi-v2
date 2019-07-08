@@ -13,4 +13,6 @@ export default interface IDictionary<T> extends IWrapper<Indexed<{}>> {
 
     forEach(fn: (value: T) => void): void;
 
+    toArray(): T[];
+
 }

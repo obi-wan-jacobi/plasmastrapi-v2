@@ -5,7 +5,7 @@ import { BuildArea, GateMask } from './entities/editor';
 import { entityContainsPoint } from '../engine/entities';
 import { Gate } from './entities/gates';
 import { getEuclideanDistanceBetweenPoints, transformShape } from '../engine/geometry';
-import { Motor, Sensor } from './entities/machines';
+import { Actuator, Machine, Sensor } from './entities/machines';
 import { GateCreatorHandle, InputTerminalHandle, OutputTerminalHandle, WireDestructorHandle } from './entities/tools';
 import { Wire } from './entities/wires';
 
@@ -64,7 +64,41 @@ export class InputTerminalHandleSystem extends System {
     }
 }
 
-export class MotorSystem extends System {
+export class TerminalWireSystem extends System {
+
+    public draw(): void {
+        this.$engine.entities.forEvery(Gate)((gate) => {
+            const gatePose = gate.$copy(Pose);
+            const inPose = gate.input.$copy(Pose);
+            const outPose = gate.output.$copy(Pose);
+            const wire = { points: [
+                { x: 5, y: 5 },
+                { x: -5, y: 5 },
+                { x: -5, y: -5 },
+                { x: 5, y: -5 },
+            ]};
+            const rendering = { colour: 'WHITE', opacity: 1 };
+            this.$engine.viewport.drawShape({
+                shape: transformShape(wire, {
+                    x: (gatePose.x + inPose.x) / 2,
+                    y: (gatePose.y + inPose.y) / 2 + 5,
+                    a: 0,
+                }),
+                rendering,
+            });
+            this.$engine.viewport.drawShape({
+                shape: transformShape(wire, {
+                    x: (gatePose.x + outPose.x) / 2,
+                    y: (gatePose.y + outPose.y) / 2 - 5,
+                    a: 0,
+                }),
+                rendering,
+            });
+        });
+    }
+}
+
+export class ActuatorSystem extends System {
 
     public once(): void {
         this.$engine.entities.forEvery(Wire)((wire) => {
@@ -100,36 +134,11 @@ export class GateSystem extends System {
     }
 }
 
-export class TerminalWireSystem extends System {
+export class MachineSystem extends System {
 
-    public draw(): void {
-        this.$engine.entities.forEvery(Gate)((gate) => {
-            const gatePose = gate.$copy(Pose);
-            const inPose = gate.input.$copy(Pose);
-            const outPose = gate.output.$copy(Pose);
-            const wire = { points: [
-                { x: 5, y: 5 },
-                { x: -5, y: 5 },
-                { x: -5, y: -5 },
-                { x: 5, y: -5 },
-            ]};
-            const rendering = { colour: 'WHITE', opacity: 1 };
-            this.$engine.viewport.drawShape({
-                shape: transformShape(wire, {
-                    x: (gatePose.x + inPose.x) / 2,
-                    y: (gatePose.y + inPose.y) / 2 + 5,
-                    a: 0,
-                }),
-                rendering,
-            });
-            this.$engine.viewport.drawShape({
-                shape: transformShape(wire, {
-                    x: (gatePose.x + outPose.x) / 2,
-                    y: (gatePose.y + outPose.y) / 2 - 5,
-                    a: 0,
-                }),
-                rendering,
-            });
+    public once(): void {
+        this.$engine.entities.forEvery(Machine)((machine) => {
+            machine.once();
         });
     }
 }

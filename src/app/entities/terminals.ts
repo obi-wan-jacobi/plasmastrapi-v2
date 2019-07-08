@@ -1,3 +1,4 @@
+import Dictionary from '../../framework/concretes/Dictionary';
 import { STATE } from '../enums/STATE';
 import { IPose, ImageRenderingProfile, Label, Pose, ShapeRenderingProfile } from '../../engine/components';
 import { InteractiveElement } from '../../engine/entities';
@@ -7,13 +8,13 @@ import { Wire } from './wires';
 
 export class Terminal extends InteractiveElement {
 
-    public wires: Wire[] = [];
+    public wires: Dictionary<Wire> = new Dictionary();
 
     private __state: STATE = STATE.OFF;
     private __src: string;
 
     constructor({ x, y, src }: { x: number, y: number, src: string }) {
-        super(Object.assign({ width: 15, height: 15 }, arguments[0]));
+        super(Object.assign({ width: 20, height: 20 }, arguments[0]));
         this.__src = src;
         this.$add(ImageRenderingProfile)({ src });
     }
@@ -32,14 +33,32 @@ export class Terminal extends InteractiveElement {
 
     public high(): void {
         this.__state = STATE.HIGH;
+        const label = this.$copy(Label);
+        if (label) {
+            this.$mutate(Label)(Object.assign(label, {
+                colour: 'GREEN',
+            }));
+        }
     }
 
     public low(): void {
         this.__state = STATE.LOW;
+        const label = this.$copy(Label);
+        if (label) {
+            this.$mutate(Label)(Object.assign(label, {
+                colour: 'RED',
+            }));
+        }
     }
 
     public off(): void {
         this.__state = STATE.OFF;
+        const label = this.$copy(Label);
+        if (label) {
+            this.$mutate(Label)(Object.assign(label, {
+                colour: 'WHITE',
+            }));
+        }
     }
 
     public move(pose: IPose): void {
