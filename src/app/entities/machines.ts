@@ -50,7 +50,7 @@ export class MachinePart extends Entity {
     }
 }
 
-export class ThreadedAxle extends MachinePart {
+export class HorizontalThreadedAxle extends MachinePart {
 
     private __threads: MachinePart[] = [];
 
@@ -85,32 +85,29 @@ export class ThreadedAxle extends MachinePart {
         }
     }
 
-    public forward(): void {
+    public left(): void {
         this.__threads.forEach((thread) => {
-            const profile = thread.$copy(AnimatedImageRenderingProfile);
-            thread.$mutate(AnimatedImageRenderingProfile)(Object.assign(profile, {
+            thread.$patch(AnimatedImageRenderingProfile)({
                 isPaused: false,
                 isReversed: false,
-            }));
+            });
         });
     }
 
-    public reverse(): void {
+    public right(): void {
         this.__threads.forEach((thread) => {
-            const profile = thread.$copy(AnimatedImageRenderingProfile);
-            thread.$mutate(AnimatedImageRenderingProfile)(Object.assign(profile, {
+            thread.$patch(AnimatedImageRenderingProfile)({
                 isPaused: false,
                 isReversed: true,
-            }));
+            });
         });
     }
 
-    public idle(): void {
+    public off(): void {
         this.__threads.forEach((thread) => {
-            const profile = thread.$copy(AnimatedImageRenderingProfile);
-            thread.$mutate(AnimatedImageRenderingProfile)(Object.assign(profile, {
+            thread.$patch(AnimatedImageRenderingProfile)({
                 isPaused: true,
-            }));
+            });
         });
     }
 
@@ -189,12 +186,14 @@ export class TouchActivator extends MachinePart {
 
 export class ClawMachine extends Machine {
 
-    private __horizontalRail: ThreadedAxle;
+    private __horizontalRail: HorizontalThreadedAxle;
     private __verticalRail: MachinePart;
     private __carriage: TouchActivator;
 
     private __leftMotor: Actuator;
     private __rightMotor: Actuator;
+    private __topMotor: Actuator;
+    private __bottomMotor: Actuator;
 
     private __leftSensor: TouchSensor;
     private __rightSensor: TouchSensor;
@@ -203,7 +202,7 @@ export class ClawMachine extends Machine {
 
     public constructor({ x, y }: { x: number, y: number }) {
         super(arguments[0]);
-        this.__horizontalRail = this.$engine.entities.create(ThreadedAxle, { x, y, width: 300, height: 20 });
+        this.__horizontalRail = this.$engine.entities.create(HorizontalThreadedAxle, { x, y, width: 300, height: 20 });
         this.__carriage = this.$engine.entities.create(TouchActivator, {
             x: x - 130, y,
             shape: { points: [
@@ -215,70 +214,177 @@ export class ClawMachine extends Machine {
         });
         this.__carriage.$add(PoseStepperComponent)({ x: 0, y: 0, a: 0 });
         this.__carriage.$add(ShapeRenderingProfile)({ colour: 'WHITE', fillStyle: 'BLACK', zIndex: 1 });
-        this.__leftSensor = this.$engine.entities.create(TouchSensor, {
-            x: x - 155, y,
+        this.__verticalRail = this.$engine.entities.create(MachinePart, {
+            x: x - 130, y,
             shape: { points: [
-                { x: 5, y: 20 },
-                { x: -5, y: 20 },
-                { x: -5, y: -20 },
-                { x: 5, y: -20 },
+                { x: 10, y: 100 },
+                { x: -10, y: 100 },
+                { x: -10, y: -100 },
+                { x: 10, y: -100 },
+            ]},
+        });
+        this.__verticalRail.$add(PoseStepperComponent)({ x: 0, y: 0, a: 0 });
+        this.__leftSensor = this.$engine.entities.create(TouchSensor, {
+            x: x - 170, y,
+            shape: { points: [
+                { x: 20, y: 20 },
+                { x: -20, y: 20 },
+                { x: -20, y: -20 },
+                { x: 20, y: -20 },
             ]},
             label: 'left-sensor',
         });
         this.__rightSensor = this.$engine.entities.create(TouchSensor, {
-            x: x + 155, y,
+            x: x + 170, y,
             shape: { points: [
-                { x: 5, y: 20 },
-                { x: -5, y: 20 },
-                { x: -5, y: -20 },
-                { x: 5, y: -20 },
+                { x: 20, y: 20 },
+                { x: -20, y: 20 },
+                { x: -20, y: -20 },
+                { x: 20, y: -20 },
             ]},
             label: 'right-sensor',
         });
+        this.__topSensor = this.$engine.entities.create(TouchSensor, {
+            x: x - 130, y: y - 105,
+            shape: { points: [
+                { x: 20, y: 5 },
+                { x: -20, y: 5 },
+                { x: -20, y: -5 },
+                { x: 20, y: -5 },
+            ]},
+            label: 'top-sensor',
+        });
+        this.__topSensor.$add(PoseStepperComponent)({ x: 0, y: 0, a: 0 });
+        this.__bottomSensor = this.$engine.entities.create(TouchSensor, {
+            x: x - 130, y: y + 105,
+            shape: { points: [
+                { x: 20, y: 5 },
+                { x: -20, y: 5 },
+                { x: -20, y: -5 },
+                { x: 20, y: -5 },
+            ]},
+            label: 'bottom-sensor',
+        });
+        this.__bottomSensor.$add(PoseStepperComponent)({ x: 0, y: 0, a: 0 });
         this.__leftMotor = this.$engine.entities.create(Actuator, {
             label: 'move-left',
         });
         this.__rightMotor = this.$engine.entities.create(Actuator, {
             label: 'move-right',
         });
-        this.inputs = [this.__leftMotor, this.__rightMotor];
-        this.outputs = [this.__leftSensor.output, this.__rightSensor.output];
+        this.__topMotor = this.$engine.entities.create(Actuator, {
+            label: 'move-up',
+        });
+        this.__bottomMotor = this.$engine.entities.create(Actuator, {
+            label: 'move-down',
+        });
+        this.inputs = [
+            this.__leftMotor,
+            this.__rightMotor,
+            this.__topMotor,
+            this.__bottomMotor,
+        ];
+        this.outputs = [
+            this.__leftSensor.output,
+            this.__rightSensor.output,
+            this.__topSensor.output,
+            this.__bottomSensor.output,
+        ];
     }
 
     public once(): void {
-        if (this.__leftMotor.isHigh && this.__rightMotor.isHigh) {
-            return this.off();
-        }
-        if (this.__leftMotor.isLow && this.__rightMotor.isLow) {
-            return this.off();
-        }
-        if (this.__leftMotor.isHigh) {
-            if (this.__leftSensor.isHigh) {
-                return this.off();
-            }
-            return this.left();
-        }
-        if (this.__rightMotor.isHigh) {
-            if (this.__rightSensor.isHigh) {
-                return this.off();
-            }
-            return this.right();
-        }
-        return this.off();
-    }
-
-    public left(): void {
-        this.__carriage.$mutate(PoseStepperComponent)({ x: -1, y: 0, a: 0 });
-        this.__horizontalRail.forward();
-    }
-
-    public right(): void {
-        this.__carriage.$mutate(PoseStepperComponent)({ x: 1, y: 0, a: 0 });
-        this.__horizontalRail.reverse();
+        this.__updateHorizontalState();
+        this.__updateVerticalState();
     }
 
     public off(): void {
-        this.__carriage.$mutate(PoseStepperComponent)({ x: 0, y: 0, a: 0 });
-        this.__horizontalRail.idle();
+        this.__offX();
+        this.__offY();
+    }
+
+    private __updateHorizontalState(): void {
+        if (this.__leftMotor.isHigh && this.__rightMotor.isHigh) {
+            return this.__offX();
+        }
+        if (this.__leftMotor.isLow && this.__rightMotor.isLow) {
+            return this.__offX();
+        }
+        if (this.__leftMotor.isHigh) {
+            if (this.__leftSensor.isHigh) {
+                return this.__offX();
+            }
+            return this.__left();
+        }
+        if (this.__rightMotor.isHigh) {
+            if (this.__rightSensor.isHigh) {
+                return this.__offX();
+            }
+            return this.__right();
+        }
+        return this.__offX();
+    }
+
+    private __updateVerticalState(): void {
+        if (this.__topMotor.isHigh && this.__bottomMotor.isHigh) {
+            return this.__offY();
+        }
+        if (this.__topMotor.isLow && this.__bottomMotor.isLow) {
+            return this.__offY();
+        }
+        if (this.__topMotor.isHigh) {
+            if (this.__bottomSensor.isHigh) {
+                return this.__offY();
+            }
+            return this.__up();
+        }
+        if (this.__bottomMotor.isHigh) {
+            if (this.__topSensor.isHigh) {
+                return this.__offY();
+            }
+            return this.__down();
+        }
+        return this.__offY();
+    }
+
+    private __left(): void {
+        this.__carriage.$patch(PoseStepperComponent)({ x: -1 });
+        this.__verticalRail.$patch(PoseStepperComponent)({ x: -1 });
+        this.__topSensor.$patch(PoseStepperComponent)({ x: -1 });
+        this.__bottomSensor.$patch(PoseStepperComponent)({ x: -1 });
+        this.__horizontalRail.left();
+    }
+
+    private __right(): void {
+        this.__carriage.$patch(PoseStepperComponent)({ x: 1 });
+        this.__verticalRail.$patch(PoseStepperComponent)({ x: 1 });
+        this.__topSensor.$patch(PoseStepperComponent)({ x: 1 });
+        this.__bottomSensor.$patch(PoseStepperComponent)({ x: 1 });
+        this.__horizontalRail.right();
+    }
+
+    private __up(): void {
+        this.__verticalRail.$patch(PoseStepperComponent)({ y: -1 });
+        this.__topSensor.$patch(PoseStepperComponent)({ y: -1 });
+        this.__bottomSensor.$patch(PoseStepperComponent)({ y: -1 });
+    }
+
+    private __down(): void {
+        this.__verticalRail.$patch(PoseStepperComponent)({ y: 1 });
+        this.__topSensor.$patch(PoseStepperComponent)({ y: 1 });
+        this.__bottomSensor.$patch(PoseStepperComponent)({ y: 1 });
+    }
+
+    private __offX(): void {
+        this.__carriage.$patch(PoseStepperComponent)({ x: 0 });
+        this.__verticalRail.$patch(PoseStepperComponent)({ x: 0 });
+        this.__topSensor.$patch(PoseStepperComponent)({ x: 0 });
+        this.__bottomSensor.$patch(PoseStepperComponent)({ x: 0 });
+        this.__horizontalRail.off();
+    }
+
+    private __offY(): void {
+        this.__verticalRail.$patch(PoseStepperComponent)({ y: 0 });
+        this.__topSensor.$patch(PoseStepperComponent)({ y: 0 });
+        this.__bottomSensor.$patch(PoseStepperComponent)({ y: 0 });
     }
 }

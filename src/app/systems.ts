@@ -1,13 +1,13 @@
 import IEntity from '../engine/interfaces/IEntity';
 import { System } from '../engine/abstracts/System';
+import Wire from './entities/Wire';
 import { Pose } from '../engine/components';
 import { BuildArea, GateMask } from './entities/editor';
 import { entityContainsPoint } from '../engine/entities';
 import { Gate } from './entities/gates';
 import { getEuclideanDistanceBetweenPoints, transformShape } from '../engine/geometry';
-import { Actuator, Machine, Sensor } from './entities/machines';
+import { Machine, Sensor } from './entities/machines';
 import { GateCreatorHandle, InputTerminalHandle, OutputTerminalHandle, WireDestructorHandle } from './entities/tools';
-import { Wire } from './entities/wires';
 
 export class GateMaskSystem extends System {
 

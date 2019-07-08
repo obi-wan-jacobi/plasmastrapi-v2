@@ -50,6 +50,12 @@ export default class Entity extends Unique implements IEntity {
         };
     }
 
+    public $patch<T>(ComponentCtor: Ctor<IComponent<T>, T>): (data: {}) => void {
+        return (data: {}) => {
+            this.__data[ComponentCtor.name].mutate(Object.assign(this.__data[ComponentCtor.name].copy(), data));
+        };
+    }
+
     public $forEach(fn: (component: IComponent<any>) => void): void {
         Object.keys(this.__data).forEach((key) => {
             fn(this.__data[key]);

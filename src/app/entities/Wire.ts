@@ -3,7 +3,7 @@ import { Pose, Shape, ShapeRenderingProfile } from '../../engine/components';
 import { getEuclideanDistanceBetweenPoints } from '../../engine/geometry';
 import { InputTerminal, OutputTerminal } from './terminals';
 
-export class Wire extends Entity {
+export default class Wire extends Entity {
 
     public input: InputTerminal;
     public output: OutputTerminal;

@@ -1,10 +1,10 @@
 import Dictionary from '../../framework/concretes/Dictionary';
 import { STATE } from '../enums/STATE';
+import Wire from './Wire';
 import { IPose, ImageRenderingProfile, Label, Pose, ShapeRenderingProfile } from '../../engine/components';
 import { InteractiveElement } from '../../engine/entities';
 import { Gate } from './gates';
 import { InputTerminalHandle, OutputTerminalHandle } from './tools';
-import { Wire } from './wires';
 
 export class Terminal extends InteractiveElement {
 

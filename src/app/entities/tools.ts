@@ -1,10 +1,10 @@
+import Wire from './Wire';
 import { IPoint, Pose, ShapeRenderingProfile } from '../../engine/components';
 import { BuildArea, GateCreatorButton, GateDestructorButton, WireDestructorButton } from './editor';
 import { InteractiveElement, entityContainsPoint, entityTouchesLine } from '../../engine/entities';
 import { Gate } from './gates';
 import { InputTerminal, OutputTerminal } from './terminals';
 import { Ctor } from '../../framework/types';
-import { Wire } from './wires';
 
 export class ToolHandle extends InteractiveElement {
 
