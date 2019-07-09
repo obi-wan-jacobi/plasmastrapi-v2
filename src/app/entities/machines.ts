@@ -47,6 +47,7 @@ export class MachinePart extends Entity {
             this.$add(Shape)(shape);
             this.$add(ShapeRenderingProfile)({ colour: 'WHITE', fillStyle: 'BLACK' });
         }
+        this.$add(PoseStepperComponent)({ x: 0, y: 0, a: 0 });
     }
 }
 
@@ -108,6 +109,90 @@ export class HorizontalThreadedAxle extends MachinePart {
             thread.$patch(AnimatedImageRenderingProfile)({
                 isPaused: true,
             });
+        });
+    }
+
+    public step(poseStep: {}): void {
+        this.$patch(PoseStepperComponent)(poseStep);
+        this.__threads.forEach((thread) => {
+            thread.$patch(PoseStepperComponent)(poseStep);
+        });
+    }
+
+    public $destroy(): void {
+        super.$destroy();
+        this.__threads.forEach((thread) => {
+            thread.$destroy();
+        });
+    }
+}
+
+export class VerticalThreadedAxle extends MachinePart {
+
+    private __threads: MachinePart[] = [];
+
+    public constructor({ x, y, width, height }: { x: number, y: number, width: number, height: number }) {
+        super(arguments[0]);
+        for (let i = 0, L = height / 10; i < L; i++) {
+            const thread = this.$engine.entities.create(MachinePart, {
+                x,
+                y: y - height / 2 + i * 10 + 5,
+            });
+            thread.$add(AnimatedImageRenderingProfile)({
+                src: [
+                    './threaded-axle-1.png',
+                    './threaded-axle-2.png',
+                    './threaded-axle-3.png',
+                    './threaded-axle-4.png',
+                    './threaded-axle-5.png',
+                    './threaded-axle-6.png',
+                    './threaded-axle-7.png',
+                    './threaded-axle-8.png',
+                    './threaded-axle-9.png',
+                    './threaded-axle-10.png',
+                ],
+                frame: 0,
+                speed: 1,
+                cooldown: 0,
+                width: 10,
+                height: width,
+                isPaused: true,
+                rotate: -Math.PI / 2,
+            });
+            this.__threads.push(thread);
+        }
+    }
+
+    public up(): void {
+        this.__threads.forEach((thread) => {
+            thread.$patch(AnimatedImageRenderingProfile)({
+                isPaused: false,
+                isReversed: true,
+            });
+        });
+    }
+
+    public down(): void {
+        this.__threads.forEach((thread) => {
+            thread.$patch(AnimatedImageRenderingProfile)({
+                isPaused: false,
+                isReversed: false,
+            });
+        });
+    }
+
+    public off(): void {
+        this.__threads.forEach((thread) => {
+            thread.$patch(AnimatedImageRenderingProfile)({
+                isPaused: true,
+            });
+        });
+    }
+
+    public step(poseStep: {}): void {
+        this.$patch(PoseStepperComponent)(poseStep);
+        this.__threads.forEach((thread) => {
+            thread.$patch(PoseStepperComponent)(poseStep);
         });
     }
 
@@ -187,7 +272,7 @@ export class TouchActivator extends MachinePart {
 export class ClawMachine extends Machine {
 
     private __horizontalRail: HorizontalThreadedAxle;
-    private __verticalRail: MachinePart;
+    private __verticalRail: VerticalThreadedAxle;
     private __carriage: TouchActivator;
 
     private __leftMotor: Actuator;
@@ -212,18 +297,10 @@ export class ClawMachine extends Machine {
                 { x: 20, y: -30 },
             ]},
         });
-        this.__carriage.$add(PoseStepperComponent)({ x: 0, y: 0, a: 0 });
         this.__carriage.$add(ShapeRenderingProfile)({ colour: 'WHITE', fillStyle: 'BLACK', zIndex: 1 });
-        this.__verticalRail = this.$engine.entities.create(MachinePart, {
-            x: x - 130, y,
-            shape: { points: [
-                { x: 10, y: 100 },
-                { x: -10, y: 100 },
-                { x: -10, y: -100 },
-                { x: 10, y: -100 },
-            ]},
+        this.__verticalRail = this.$engine.entities.create(VerticalThreadedAxle, {
+            x: x - 130, y, width: 20, height: 200,
         });
-        this.__verticalRail.$add(PoseStepperComponent)({ x: 0, y: 0, a: 0 });
         this.__leftSensor = this.$engine.entities.create(TouchSensor, {
             x: x - 170, y,
             shape: { points: [
@@ -254,7 +331,6 @@ export class ClawMachine extends Machine {
             ]},
             label: 'top-sensor',
         });
-        this.__topSensor.$add(PoseStepperComponent)({ x: 0, y: 0, a: 0 });
         this.__bottomSensor = this.$engine.entities.create(TouchSensor, {
             x: x - 130, y: y + 105,
             shape: { points: [
@@ -265,7 +341,6 @@ export class ClawMachine extends Machine {
             ]},
             label: 'bottom-sensor',
         });
-        this.__bottomSensor.$add(PoseStepperComponent)({ x: 0, y: 0, a: 0 });
         this.__leftMotor = this.$engine.entities.create(Actuator, {
             label: 'move-left',
         });
@@ -348,7 +423,7 @@ export class ClawMachine extends Machine {
 
     private __left(): void {
         this.__carriage.$patch(PoseStepperComponent)({ x: -1 });
-        this.__verticalRail.$patch(PoseStepperComponent)({ x: -1 });
+        this.__verticalRail.step({ x: -1 });
         this.__topSensor.$patch(PoseStepperComponent)({ x: -1 });
         this.__bottomSensor.$patch(PoseStepperComponent)({ x: -1 });
         this.__horizontalRail.left();
@@ -356,35 +431,38 @@ export class ClawMachine extends Machine {
 
     private __right(): void {
         this.__carriage.$patch(PoseStepperComponent)({ x: 1 });
-        this.__verticalRail.$patch(PoseStepperComponent)({ x: 1 });
+        this.__verticalRail.step({ x: 1 });
         this.__topSensor.$patch(PoseStepperComponent)({ x: 1 });
         this.__bottomSensor.$patch(PoseStepperComponent)({ x: 1 });
         this.__horizontalRail.right();
     }
 
     private __up(): void {
-        this.__verticalRail.$patch(PoseStepperComponent)({ y: -1 });
+        this.__verticalRail.step({ y: -1 });
         this.__topSensor.$patch(PoseStepperComponent)({ y: -1 });
         this.__bottomSensor.$patch(PoseStepperComponent)({ y: -1 });
+        this.__verticalRail.up();
     }
 
     private __down(): void {
-        this.__verticalRail.$patch(PoseStepperComponent)({ y: 1 });
+        this.__verticalRail.step({ y: 1 });
         this.__topSensor.$patch(PoseStepperComponent)({ y: 1 });
         this.__bottomSensor.$patch(PoseStepperComponent)({ y: 1 });
+        this.__verticalRail.down();
     }
 
     private __offX(): void {
         this.__carriage.$patch(PoseStepperComponent)({ x: 0 });
-        this.__verticalRail.$patch(PoseStepperComponent)({ x: 0 });
+        this.__verticalRail.step({ x: 0 });
         this.__topSensor.$patch(PoseStepperComponent)({ x: 0 });
         this.__bottomSensor.$patch(PoseStepperComponent)({ x: 0 });
         this.__horizontalRail.off();
     }
 
     private __offY(): void {
-        this.__verticalRail.$patch(PoseStepperComponent)({ y: 0 });
+        this.__verticalRail.step({ y: 0 });
         this.__topSensor.$patch(PoseStepperComponent)({ y: 0 });
         this.__bottomSensor.$patch(PoseStepperComponent)({ y: 0 });
+        this.__verticalRail.off();
     }
 }

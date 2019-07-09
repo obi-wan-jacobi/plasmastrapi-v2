@@ -78,12 +78,14 @@ export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
     @Atomic
     private __drawImage({ pose, rendering }: { pose: IPose, rendering: IImageRenderingProfile }): void {
         const image = this.load(rendering.src);
-        const dx = pose.x - (rendering.width || image.width as number) / 2;
-        const dy = pose.y - (rendering.height || image.height as number) / 2;
+        this.ctx.translate(pose.x, pose.y);
+        if (rendering.rotate) {
+            this.ctx.rotate(rendering.rotate);
+        }
         this.ctx.drawImage(
             image,
-            dx,
-            dy,
+            -(rendering.width || image.width as number) / 2,
+            -(rendering.height || image.height as number) / 2,
             rendering.width || image.width as number,
             rendering.height || image.height as number,
         );

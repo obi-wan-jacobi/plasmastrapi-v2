@@ -30,6 +30,7 @@ export interface IImageRenderingProfile {
     height?: number;
     opacity?: number;
     zIndex?: number;
+    rotate?: number;
 }
 export class ImageRenderingProfile extends Component<IImageRenderingProfile> {}
 
@@ -44,6 +45,7 @@ export interface IAnimatedImageRenderingProfile {
     isPaused?: boolean;
     isReversed?: boolean;
     zIndex?: number;
+    rotate?: number;
 }
 export class AnimatedImageRenderingProfile extends Component<IAnimatedImageRenderingProfile> {}
 
