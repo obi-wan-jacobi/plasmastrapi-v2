@@ -14,7 +14,7 @@ import { ClawMachine, PowerSupply } from './entities/machines';
 import { PlayButton, SceneArea, StopButton } from './entities/scenes';
 import {
     GateMaskSystem, InputTerminalHandleSystem, OutputTerminalHandleSystem,
-    TerminalWireSystem, WireDestructorHandleSystem,
+    RivetSystem, TerminalWireSystem, WireDestructorHandleSystem,
 } from './systems';
 
 const canvas = $('#app-target').get(0) as HTMLCanvasElement;
@@ -57,6 +57,7 @@ game.add(WireDestructorHandleSystem);
 game.add(InputTerminalHandleSystem);
 game.add(OutputTerminalHandleSystem);
 game.add(TerminalWireSystem);
+game.add(RivetSystem);
 app.start();
 
 app.engine.entities.create(AndGateCreatorButton, { x: 30, y: 30 });

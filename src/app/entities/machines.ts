@@ -2,6 +2,7 @@ import Entity from '../../engine/Entity';
 import {
     AnimatedImageRenderingProfile, IShape, Label, Pose, PoseStepperComponent, Shape, ShapeRenderingProfile,
 } from '../../engine/components';
+import { RivetComponent } from '../components';
 import { entitiesTouch } from '../../engine/entities';
 import { InputTerminal, OutputTerminal } from './terminals';
 
@@ -311,6 +312,9 @@ export class ClawMachine extends Machine {
             ]},
             label: 'left-sensor',
         });
+        this.__leftSensor.$add(RivetComponent)({
+            colour: 'WHITE', radius: 3,
+        });
         this.__rightSensor = this.$engine.entities.create(TouchSensor, {
             x: x + 170, y,
             shape: { points: [
@@ -320,6 +324,9 @@ export class ClawMachine extends Machine {
                 { x: 20, y: -20 },
             ]},
             label: 'right-sensor',
+        });
+        this.__rightSensor.$add(RivetComponent)({
+            colour: 'WHITE', radius: 3,
         });
         this.__topSensor = this.$engine.entities.create(TouchSensor, {
             x: x - 130, y: y - 105,

@@ -75,6 +75,12 @@ export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
         this.__zBuffer.push({ method: 'drawLabel', payload: arguments[0] });
     }
 
+    public drawCircle({ point, radius, rendering }: {
+        point: IPoint, radius: number, rendering: IShapeRenderingProfile,
+    }): void {
+        this.__zBuffer.push({ method: 'drawCircle', payload: arguments[0] });
+    }
+
     @Atomic
     private __drawImage({ pose, rendering }: { pose: IPose, rendering: IImageRenderingProfile }): void {
         const image = this.load(rendering.src);
@@ -124,6 +130,16 @@ export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
         this.ctx.fillStyle = label.colour || 'white';
         this.ctx.font = `${label.fontSize}px Arial`;
         this.ctx.fillText(label.text, pose.x + label.offset.x, pose.y + label.offset.y);
+    }
+
+    @Atomic
+    private __drawCircle({ point, radius, rendering }: {
+        point: IPoint, radius: number, rendering: IShapeRenderingProfile,
+    }): void {
+        this.ctx.strokeStyle = rendering.colour || 'white';
+        this.ctx.beginPath();
+        this.ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
+        this.ctx.stroke();
     }
 
 }

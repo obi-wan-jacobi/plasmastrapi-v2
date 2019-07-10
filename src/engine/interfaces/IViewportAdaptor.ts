@@ -16,4 +16,7 @@ export default interface IViewportAdaptor {
 
     drawLine({ points, rendering }: { points: IPoint[], rendering: IShapeRenderingProfile }): void;
 
+    drawCircle({ point, radius, rendering }: {
+        point: IPoint, radius: number, rendering: IShapeRenderingProfile,
+    }): void;
 }

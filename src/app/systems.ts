@@ -1,7 +1,8 @@
 import IEntity from '../engine/interfaces/IEntity';
 import { System } from '../engine/abstracts/System';
 import Wire from './entities/Wire';
-import { Pose } from '../engine/components';
+import { Pose, Shape } from '../engine/components';
+import { RivetComponent } from './components';
 import { BuildArea, GateMask } from './entities/editor';
 import { entityContainsPoint } from '../engine/entities';
 import { Gate } from './entities/gates';
@@ -161,3 +162,27 @@ const fromTerminalHandleToWireRendering = (handle: IEntity, terminal: IEntity) =
     const rendering = { colour: 'WHITE' };
     return { shape, rendering };
 };
+
+export class RivetSystem extends System {
+
+    public draw(): void {
+        this.$engine.components.forEvery(RivetComponent)((rivet) => {
+            const rendering = rivet.copy();
+            const pose = rivet.$entity.$copy(Pose);
+            const corners = rivet.$entity.$copy(Shape).points;
+            const points = [
+                { x: corners[0].x - 7, y: corners[0].y - 7 },
+                { x: corners[1].x + 7, y: corners[1].y - 7 },
+                { x: corners[2].x + 7, y: corners[2].y + 7 },
+                { x: corners[3].x - 7, y: corners[3].y + 7 },
+            ];
+            points.forEach((point) => {
+                this.$engine.viewport.drawCircle({
+                    point: { x: point.x + pose.x, y: point.y + pose.y },
+                    radius: rendering.radius,
+                    rendering,
+                });
+            });
+        });
+    }
+}
