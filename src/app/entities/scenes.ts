@@ -50,10 +50,10 @@ export class PlayButton extends SceneButton {
     }
 }
 
-export class StopButton extends SceneButton {
+export class ResetButton extends SceneButton {
 
     public constructor() {
-        super(Object.assign({ label: 'stop' }, arguments[0]));
+        super(Object.assign({ label: 'reset' }, arguments[0]));
         this.$disable();
     }
 
@@ -76,6 +76,7 @@ export class StopButton extends SceneButton {
         });
         this.$engine.entities.forEvery(Machine)((machine) => {
             machine.off();
+            machine.reset();
         });
     }
 }

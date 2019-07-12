@@ -11,7 +11,7 @@ import {
 } from './entities/editor';
 import $ from 'jquery';
 import { ClawMachine, PowerSupply } from './entities/machines';
-import { PlayButton, SceneArea, StopButton } from './entities/scenes';
+import { PlayButton, SceneArea, ResetButton } from './entities/scenes';
 import {
     GateMaskSystem, InputTerminalHandleSystem, OutputTerminalHandleSystem,
     RivetSystem, TerminalWireSystem, WireDestructorHandleSystem,
@@ -69,7 +69,7 @@ app.engine.entities.create(GateDestructorButton, { x: 770, y: 30 });
 const editor = app.engine.entities.create(BuildArea, { x: 400, y: 340, width: 800, height: 560 });
 
 app.engine.entities.create(PlayButton, { x: 1200, y: 30 });
-app.engine.entities.create(StopButton, { x: 1250, y: 30 });
+app.engine.entities.create(ResetButton, { x: 1250, y: 30 });
 app.engine.entities.create(SceneArea, { x: 1040, y: 340, width: 440, height: 560 });
 const claw = app.engine.entities.create(ClawMachine, { x: 1040, y: 340 });
 
