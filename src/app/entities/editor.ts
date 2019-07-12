@@ -124,32 +124,42 @@ export class BuildArea extends Panel {
     private __initInputs(): void {
         const pose = this.$copy(Pose);
         const { width, height } = this.$copy(Shape).points.map((p) => ({ width: 2 * p.x, height: 2 * p.y }))[0];
-        const horizontalSpacer = width / (this.inputs.length + 1);
+        const horizontalSpacer = width / 5;
         const verticalSpacer = 20;
         let cursor = 1;
+        let row = 1;
         for (const input of this.inputs) {
             input.$mutate(Pose)({
-                x: pose.x - width / 2 + cursor * horizontalSpacer,
-                y: pose.y - height / 2 + verticalSpacer,
+                x: pose.x - width / 2 + cursor * horizontalSpacer - 50,
+                y: pose.y - height / 2 + row * verticalSpacer,
                 a: 0,
             });
             cursor++;
+            if (cursor % 5 === 0) {
+                cursor = 1;
+                row++;
+            }
         }
     }
 
     private __initOutputs(): void {
         const pose = this.$copy(Pose);
         const { width, height } = this.$copy(Shape).points.map((p) => ({ width: 2 * p.x, height: 2 * p.y }))[0];
-        const horizontalSpacer = width / (this.outputs.length + 1);
+        const horizontalSpacer = width / 5;
         const verticalSpacer = 20;
         let cursor = 1;
+        let row = 1;
         for (const output of this.outputs) {
             output.$mutate(Pose)({
-                x: pose.x - width / 2 + cursor * horizontalSpacer,
-                y: pose.y + height / 2 - verticalSpacer,
+                x: pose.x - width / 2 + cursor * horizontalSpacer - 50,
+                y: pose.y + height / 2 - row * verticalSpacer,
                 a: 0,
             });
             cursor++;
+            if (cursor % 5 === 0) {
+                cursor = 1;
+                row++;
+            }
         }
     }
 }

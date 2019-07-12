@@ -1,6 +1,6 @@
 import Entity from '../../engine/Entity';
 import {
-    AnimatedImageRenderingProfile, IShape, Label, Pose, PoseStepperComponent, Shape, ShapeRenderingProfile,
+    AnimatedImageRenderingProfile, IPose, IShape, Label, Pose, PoseStepperComponent, Shape, ShapeRenderingProfile,
 } from '../../engine/components';
 import { RivetComponent } from '../components';
 import { entitiesTouch } from '../../engine/entities';
@@ -19,15 +19,18 @@ export class PowerSupply extends OutputTerminal {
     }
 }
 
-export class Machine extends Entity {
-
-    public inputs: InputTerminal[] = [];
-    public outputs: OutputTerminal[] = [];
+export class MachineEntity extends Entity {
 
     public constructor({ x, y }: { x: number, y: number }) {
         super(arguments[0]);
         this.$add(Pose)({ x, y, a: 0 });
     }
+}
+
+export class Machine extends Entity {
+
+    public inputs: InputTerminal[] = [];
+    public outputs: OutputTerminal[] = [];
 
     public once(): void { return; }
     public off(): void { return; }
@@ -42,14 +45,21 @@ export class Machine extends Entity {
 
 export class MachinePart extends Entity {
 
+    private __initialPose: IPose;
+
     public constructor({ x, y, shape }: { x: number, y: number, shape: IShape }) {
         super(arguments[0]);
+        this.__initialPose = { x, y, a: 0 };
         this.$add(Pose)({ x, y, a: 0 });
         if (shape) {
             this.$add(Shape)(shape);
             this.$add(ShapeRenderingProfile)({ colour: 'WHITE', fillStyle: 'BLACK' });
         }
         this.$add(PoseStepperComponent)({ x: 0, y: 0, a: 0 });
+    }
+
+    public reset(): void {
+        this.$mutate(Pose)(this.__initialPose);
     }
 
     public step(poseStep: {}): void {
@@ -122,6 +132,13 @@ export class HorizontalThreadedAxle extends MachinePart {
         super.step(poseStep);
         this.__threads.forEach((thread) => {
             thread.step(poseStep);
+        });
+    }
+
+    public reset(): void {
+        super.reset();
+        this.__threads.forEach((thread) => {
+            thread.reset();
         });
     }
 
@@ -199,6 +216,13 @@ export class VerticalThreadedAxle extends MachinePart {
         super.step(poseStep);
         this.__threads.forEach((thread) => {
             thread.step(poseStep);
+        });
+    }
+
+    public reset(): void {
+        super.reset();
+        this.__threads.forEach((thread) => {
+            thread.reset();
         });
     }
 
@@ -404,16 +428,15 @@ export class Claw extends Machine {
     }
 
     public reset(): void {
-        const { x, y } = this.$copy(Pose);
-        this.__wrist.$patch(Pose)({ x, y: y - 15 });
-        this.__palm.$patch(Pose)({ x, y: y + 10 });
-        this.__leftHub.$patch(Pose)({ x: x - 52, y: y + 10 });
-        this.__rightHub.$patch(Pose)({ x: x + 52, y: y + 10 });
-        this.__leftThread.$patch(Pose)({ x: x - 30, y: y + 10 });
-        this.__rightThread.$patch(Pose)({ x: x + 30, y: y + 10 });
-        this.__leftTooth.$patch(Pose)({ x: x - 40, y: y + 10 });
-        this.__leftTooth.$patch(ShapeRenderingProfile)({ zIndex: 1 });
-        this.__rightTooth.$patch(Pose)({ x: x + 40, y: y + 10 });
+        this.__wrist.reset();
+        this.__palm.reset();
+        this.__leftHub.reset();
+        this.__rightHub.reset();
+        this.__leftThread.reset();
+        this.__rightThread.reset();
+        this.__leftTooth.reset();
+        this.__leftTooth.reset();
+        this.__rightTooth.reset();
     }
 
     public step(poseStep: {}): void {
@@ -562,15 +585,14 @@ export class ClawMachine extends Machine {
     }
 
     public reset(): void {
-        const { x, y } = this.$copy(Pose);
-        this.__horizontalRail.$patch(Pose)({ x, y });
-        this.__carriage.$patch(Pose)({ x: x - 130 });
-        this.__verticalRail.$patch(Pose)({ x: x - 130, y });
-        this.__leftSensor.$patch(Pose)({ x: x - 170, y });
-        this.__rightSensor.$patch(Pose)({  x: x + 170, y });
-        this.__topSensor.$patch(Pose)({  x: x - 130, y: y - 105 });
-        this.__bottomSensor.$patch(Pose)({ x: x - 130, y: y + 105 });
-        this.__claw.$patch(Pose)({ x: x - 130, y: y + 130 });
+        this.__horizontalRail.reset();
+        this.__carriage.reset();
+        this.__verticalRail.reset();
+        this.__leftSensor.reset();
+        this.__rightSensor.reset();
+        this.__topSensor.reset();
+        this.__bottomSensor.reset();
+        this.__claw.reset();
         this.__claw.reset();
     }
 

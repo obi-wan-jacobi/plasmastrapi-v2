@@ -11,7 +11,7 @@ import {
 } from './entities/editor';
 import $ from 'jquery';
 import { ClawMachine, PowerSupply } from './entities/machines';
-import { PlayButton, SceneArea, ResetButton } from './entities/scenes';
+import { PlayButton, ResetButton, SceneArea } from './entities/scenes';
 import {
     GateMaskSystem, InputTerminalHandleSystem, OutputTerminalHandleSystem,
     RivetSystem, TerminalWireSystem, WireDestructorHandleSystem,
