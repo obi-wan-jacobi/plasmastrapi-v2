@@ -270,6 +270,139 @@ export class TouchActivator extends MachinePart {
 
 }
 
+export class Claw extends Machine {
+
+    public inputs: InputTerminal[] = [];
+    public outputs: OutputTerminal[] = [];
+
+    private __wrist: MachinePart;
+    private __palm: TouchActivator;
+    private __leftHub: TouchActivator;
+    private __leftThread: HorizontalThreadedAxle;
+    private __rightThread: HorizontalThreadedAxle;
+    private __leftTooth: TouchSensor;
+    private __rightTooth: TouchSensor;
+    private __openMotor: Actuator;
+    private __closeMotor: Actuator;
+
+    public constructor({ x, y }: { x: number, y: number }) {
+        super(arguments[0]);
+        this.__wrist = this.$engine.entities.create(MachinePart, {
+            x, y: y - 15, shape: { points: [
+                { x: 10, y: 5 },
+                { x: -10, y: 5 },
+                { x: -20, y: -5 },
+                { x: 20, y: -5 },
+            ]},
+        });
+        this.__palm = this.$engine.entities.create(TouchActivator, {
+            x, y: y + 10, shape: { points: [
+                { x: 10, y: 10 },
+                { x: -10, y: 10 },
+                { x: -10, y: -20 },
+                { x: 10, y: -20 },
+            ]},
+        });
+        this.__leftHub = this.$engine.entities.create(TouchActivator, {
+            x: x - 52, y: y + 10, shape: { points: [
+                { x: 2, y: 10 },
+                { x: -2, y: 10 },
+                { x: -2, y: -10 },
+                { x: 2, y: -10 },
+            ]},
+        });
+        this.__leftThread = this.$engine.entities.create(HorizontalThreadedAxle, {
+            x: x - 30, y: y + 10, width: 40, height: 20,
+        });
+        this.__rightThread = this.$engine.entities.create(HorizontalThreadedAxle, {
+            x: x + 30, y: y + 10, width: 40, height: 20,
+        });
+        this.__leftTooth = this.$engine.entities.create(TouchSensor, {
+            x: x - 40, y: y + 10, shape: { points: [
+                { x: 10, y: 60 },
+                { x: -0, y: 60 },
+                { x: -0, y: 20 },
+                { x: -10, y: 20 },
+                { x: -10, y: -20 },
+                { x: 10, y: -20 },
+            ]},
+            label: 'left-tooth',
+        });
+        this.__leftTooth.$patch(ShapeRenderingProfile)({ zIndex: 1 });
+        this.__rightTooth = this.$engine.entities.create(TouchSensor, {
+            x: x + 40, y: y + 10, shape: { points: [
+                { x: 0, y: 20 },
+                { x: 0, y: 60 },
+                { x: -10, y: 60 },
+                { x: -10, y: -20 },
+                { x: 10, y: -20 },
+                { x: 10, y: 20 },
+            ]},
+            label: 'right-tooth',
+        });
+        this.__rightTooth.$patch(ShapeRenderingProfile)({ zIndex: 1 });
+        this.__openMotor = this.$engine.entities.create(Actuator, {
+            label: 'open',
+        });
+        this.__closeMotor = this.$engine.entities.create(Actuator, {
+            label: 'close',
+        });
+        this.inputs = [this.__openMotor, this.__closeMotor];
+        this.outputs = [this.__leftTooth.output, this.__rightTooth.output];
+    }
+
+    public once(): void {
+        if (this.__leftTooth.isHigh && this.__rightTooth.isHigh && this.__closeMotor.isHigh) {
+            return this.off();
+        }
+        if (this.__openMotor.isHigh && this.__closeMotor.isHigh) {
+            return this.off();
+        }
+        if (this.__openMotor.isHigh && this.__leftTooth.isHigh && !this.__rightTooth.isHigh) {
+            return this.off();
+        }
+        if (this.__closeMotor.isHigh) {
+            this.__leftThread.right();
+            this.__rightThread.left();
+            const leftToothPose = this.__leftTooth.$copy(Pose);
+            const rightToothPose = this.__rightTooth.$copy(Pose);
+            this.__leftTooth.$patch(Pose)({
+                x: leftToothPose.x + 1,
+            });
+            this.__rightTooth.$patch(Pose)({
+                x: rightToothPose.x - 1,
+            });
+        }
+        if (this.__openMotor.isHigh) {
+            this.__leftThread.left();
+            this.__rightThread.right();
+            const leftToothPose = this.__leftTooth.$copy(Pose);
+            const rightToothPose = this.__rightTooth.$copy(Pose);
+            this.__leftTooth.$patch(Pose)({
+                x: leftToothPose.x - 1,
+            });
+            this.__rightTooth.$patch(Pose)({
+                x: rightToothPose.x + 1,
+            });
+        }
+    }
+
+    public off(): void {
+        this.__leftThread.off();
+        this.__rightThread.off();
+    }
+
+    public step(poseStep: {}): void {
+        this.__wrist.$patch(PoseStepperComponent)(poseStep);
+        this.__palm.$patch(PoseStepperComponent)(poseStep);
+        this.__leftHub.$patch(PoseStepperComponent)(poseStep);
+        this.__leftThread.step(poseStep);
+        this.__rightThread.step(poseStep);
+        this.__leftTooth.$patch(PoseStepperComponent)(poseStep);
+        this.__rightTooth.$patch(PoseStepperComponent)(poseStep);
+    }
+}
+
 export class ClawMachine extends Machine {
 
     private __horizontalRail: HorizontalThreadedAxle;
@@ -285,6 +418,8 @@ export class ClawMachine extends Machine {
     private __rightSensor: TouchSensor;
     private __topSensor: TouchSensor;
     private __bottomSensor: TouchSensor;
+
+    private __claw: Claw;
 
     public constructor({ x, y }: { x: number, y: number }) {
         super(arguments[0]);
@@ -360,18 +495,21 @@ export class ClawMachine extends Machine {
         this.__bottomMotor = this.$engine.entities.create(Actuator, {
             label: 'move-down',
         });
+        this.__claw = this.$engine.entities.create(Claw, {
+            x: x - 130, y: y + 130,
+        });
         this.inputs = [
             this.__leftMotor,
             this.__rightMotor,
             this.__topMotor,
             this.__bottomMotor,
-        ];
+        ].concat(this.__claw.inputs);
         this.outputs = [
             this.__leftSensor.output,
             this.__rightSensor.output,
             this.__topSensor.output,
             this.__bottomSensor.output,
-        ];
+        ].concat(this.__claw.outputs);
     }
 
     public once(): void {
@@ -434,6 +572,7 @@ export class ClawMachine extends Machine {
         this.__topSensor.$patch(PoseStepperComponent)({ x: -1 });
         this.__bottomSensor.$patch(PoseStepperComponent)({ x: -1 });
         this.__horizontalRail.left();
+        this.__claw.step({ x: -1 });
     }
 
     private __right(): void {
@@ -442,6 +581,7 @@ export class ClawMachine extends Machine {
         this.__topSensor.$patch(PoseStepperComponent)({ x: 1 });
         this.__bottomSensor.$patch(PoseStepperComponent)({ x: 1 });
         this.__horizontalRail.right();
+        this.__claw.step({ x: 1 });
     }
 
     private __up(): void {
@@ -449,6 +589,7 @@ export class ClawMachine extends Machine {
         this.__topSensor.$patch(PoseStepperComponent)({ y: -1 });
         this.__bottomSensor.$patch(PoseStepperComponent)({ y: -1 });
         this.__verticalRail.up();
+        this.__claw.step({ y: -1 });
     }
 
     private __down(): void {
@@ -456,6 +597,7 @@ export class ClawMachine extends Machine {
         this.__topSensor.$patch(PoseStepperComponent)({ y: 1 });
         this.__bottomSensor.$patch(PoseStepperComponent)({ y: 1 });
         this.__verticalRail.down();
+        this.__claw.step({ y: 1 });
     }
 
     private __offX(): void {
@@ -464,6 +606,7 @@ export class ClawMachine extends Machine {
         this.__topSensor.$patch(PoseStepperComponent)({ x: 0 });
         this.__bottomSensor.$patch(PoseStepperComponent)({ x: 0 });
         this.__horizontalRail.off();
+        this.__claw.step({ x: 0 });
     }
 
     private __offY(): void {
@@ -471,5 +614,6 @@ export class ClawMachine extends Machine {
         this.__topSensor.$patch(PoseStepperComponent)({ y: 0 });
         this.__bottomSensor.$patch(PoseStepperComponent)({ y: 0 });
         this.__verticalRail.off();
+        this.__claw.step({ y: 0 });
     }
 }
