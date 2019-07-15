@@ -1,6 +1,7 @@
 import { ImageRenderingProfile, Pose, Shape, ShapeRenderingProfile } from '../../engine/components';
 import { InteractiveElement } from '../../engine/entities';
 import { AndGate, Gate, NandGate, OrGate, XorGate } from './gates';
+import { PowerSupply } from './machines';
 import { InputTerminal, OutputTerminal } from './terminals';
 import { GateCreatorHandle, GateDestructorHandle, ToolHandle, WireDestructorHandle } from './tools';
 import { Ctor } from '../../framework/types';
@@ -109,6 +110,7 @@ export class GateMask extends InteractiveElement {
 
 export class BuildArea extends Panel {
 
+    public power: PowerSupply;
     public inputs: InputTerminal[] = [];
     public outputs: OutputTerminal[] = [];
 
@@ -117,14 +119,24 @@ export class BuildArea extends Panel {
     }
 
     public init(): void {
+        this.__initPowerSupply();
         this.__initInputs();
         this.__initOutputs();
+    }
+
+    private __initPowerSupply(): void {
+        const pose = this.$copy(Pose);
+        const { width, height } = this.$copy(Shape).points.map((p) => ({ width: 2 * p.x, height: 2 * p.y }))[0];
+        this.power = this.$engine.entities.create(PowerSupply, {
+            x: pose.x - width / 2 + 20,
+            y: pose.y + height / 2 - 30,
+        });
     }
 
     private __initInputs(): void {
         const pose = this.$copy(Pose);
         const { width, height } = this.$copy(Shape).points.map((p) => ({ width: 2 * p.x, height: 2 * p.y }))[0];
-        const horizontalSpacer = width / 5;
+        const horizontalSpacer = width / 4;
         const verticalSpacer = 20;
         let cursor = 1;
         let row = 1;
@@ -135,7 +147,7 @@ export class BuildArea extends Panel {
                 a: 0,
             });
             cursor++;
-            if (cursor % 5 === 0) {
+            if (cursor % 4 === 0) {
                 cursor = 1;
                 row++;
             }
@@ -145,7 +157,7 @@ export class BuildArea extends Panel {
     private __initOutputs(): void {
         const pose = this.$copy(Pose);
         const { width, height } = this.$copy(Shape).points.map((p) => ({ width: 2 * p.x, height: 2 * p.y }))[0];
-        const horizontalSpacer = width / 5;
+        const horizontalSpacer = width / 4;
         const verticalSpacer = 20;
         let cursor = 1;
         let row = 1;
@@ -156,7 +168,7 @@ export class BuildArea extends Panel {
                 a: 0,
             });
             cursor++;
-            if (cursor % 5 === 0) {
+            if (cursor % 4 === 0) {
                 cursor = 1;
                 row++;
             }

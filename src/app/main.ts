@@ -73,10 +73,8 @@ app.engine.entities.create(ResetButton, { x: 1250, y: 30 });
 app.engine.entities.create(SceneArea, { x: 1040, y: 340, width: 440, height: 560 });
 const claw = app.engine.entities.create(ClawMachine, { x: 1040, y: 340 });
 
-const power = app.engine.entities.create(PowerSupply, { x: 0, y: 0 });
-
 editor.inputs = claw.inputs;
-editor.outputs = [power].concat(claw.outputs);
+editor.outputs = claw.outputs;
 editor.init();
 
 [

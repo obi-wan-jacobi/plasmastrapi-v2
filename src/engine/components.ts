@@ -51,3 +51,13 @@ export class AnimatedImageRenderingProfile extends Component<IAnimatedImageRende
 
 export interface IPoseStepper { x: number; y: number; a: number; }
 export class PoseStepperComponent extends Component<IPoseStepper> {}
+
+export interface IVelocity {
+    x: number; y: number; w: number;
+}
+export class VelocityComponent extends Component<IVelocity> {}
+
+export interface IBody {
+    mass: number;
+    restitution: number;
+}

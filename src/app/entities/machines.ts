@@ -562,16 +562,20 @@ export class ClawMachine extends Machine {
         });
         this.inputs = [
             this.__leftMotor,
-            this.__rightMotor,
             this.__topMotor,
+            this.__claw.inputs[0],
+            this.__rightMotor,
             this.__bottomMotor,
-        ].concat(this.__claw.inputs);
+            this.__claw.inputs[1],
+        ];
         this.outputs = [
             this.__leftSensor.output,
+            this.__bottomSensor.output,
+            this.__claw.outputs[1],
             this.__rightSensor.output,
             this.__topSensor.output,
-            this.__bottomSensor.output,
-        ].concat(this.__claw.outputs);
+            this.__claw.outputs[0],
+        ];
     }
 
     public once(): void {

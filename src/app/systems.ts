@@ -1,7 +1,7 @@
 import IEntity from '../engine/interfaces/IEntity';
 import { System } from '../engine/abstracts/System';
 import Wire from './entities/Wire';
-import { Pose, Shape } from '../engine/components';
+import { Pose, Shape, VelocityComponent } from '../engine/components';
 import { RivetComponent } from './components';
 import { BuildArea, GateMask } from './entities/editor';
 import { entityContainsPoint } from '../engine/entities';
@@ -184,5 +184,12 @@ export class RivetSystem extends System {
                 });
             });
         });
+    }
+}
+
+export class CollisionSystem extends System {
+
+    public once(): void {
+        return;
     }
 }
