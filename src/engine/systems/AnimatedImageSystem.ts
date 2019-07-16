@@ -1,10 +1,10 @@
 import { System } from '../abstracts/System';
-import { AnimatedImageRenderingProfile, Pose } from '../components';
+import { AnimatedImageRenderingProfileComponent, PoseComponent } from '../components';
 
 export class AnimatedImageSystem extends System {
 
     public draw(): void {
-        this.$engine.components.forEvery(AnimatedImageRenderingProfile)((profile) => {
+        this.$engine.components.forEvery(AnimatedImageRenderingProfileComponent)((profile) => {
             const data = profile.copy();
             if (data.cooldown === data.speed) {
                 data.cooldown = 0;
@@ -22,9 +22,9 @@ export class AnimatedImageSystem extends System {
             } else if (!data.isPaused) {
                 data.cooldown++;
             }
-            profile.$entity.$mutate(AnimatedImageRenderingProfile)(data);
+            profile.$entity.$mutate(AnimatedImageRenderingProfileComponent)(data);
             this.$engine.viewport.drawImage({
-                pose: profile.$entity.$copy(Pose),
+                pose: profile.$entity.$copy(PoseComponent),
                 rendering: Object.assign(data, {
                     src: data.src[data.frame],
                 }),

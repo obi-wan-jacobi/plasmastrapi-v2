@@ -1,5 +1,5 @@
 import { STATE } from '../enums/STATE';
-import { IPose, ImageRenderingProfile, Pose } from '../../engine/components';
+import { IPose, ImageRenderingProfileComponent, PoseComponent } from '../../engine/components';
 import { InteractiveElement } from '../../engine/entities';
 import { InputTerminal, OutputTerminal } from './terminals';
 import { GatePlacerHandle, ToolHandle } from './tools';
@@ -13,7 +13,7 @@ export class Gate extends InteractiveElement {
 
     constructor({ x, y, src }: { x: number, y: number, src: string }) {
         super(Object.assign({ width: 30, height: 30 }, arguments[0]));
-        this.$add(ImageRenderingProfile)({ src });
+        this.$add(ImageRenderingProfileComponent)({ src });
         this.input = this.$engine.entities.create(InputTerminal, { gate: this, x, y: y + 30 });
         this.output = this.$engine.entities.create(OutputTerminal, { x, y: y - 30 });
     }
@@ -63,7 +63,7 @@ export class Gate extends InteractiveElement {
     }
 
     public move(pose: IPose): void {
-        this.$mutate(Pose)(pose);
+        this.$mutate(PoseComponent)(pose);
         this.input.move({
             x: pose.x,
             y: pose.y + 30,

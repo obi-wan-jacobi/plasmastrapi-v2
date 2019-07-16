@@ -3,10 +3,10 @@ import { Component } from './Component';
 export interface IPoint { x: number; y: number; }
 
 export interface IPose { x: number; y: number; a: number; }
-export class Pose extends Component<IPose> {}
+export class PoseComponent extends Component<IPose> {}
 
-export interface IShape { points: IPoint[]; rendering?: IShapeRenderingProfile; }
-export class Shape extends Component<IShape> {}
+export interface IShape { points: IPoint[]; }
+export class ShapeComponent extends Component<IShape> {}
 
 export interface ILabel {
     text: string;
@@ -14,7 +14,7 @@ export interface ILabel {
     offset: { x: number, y: number };
     colour?: string;
 }
-export class Label extends Component<ILabel> {}
+export class LabelComponent extends Component<ILabel> {}
 
 export interface IShapeRenderingProfile {
     colour: string;
@@ -22,7 +22,7 @@ export interface IShapeRenderingProfile {
     fillStyle?: string;
     zIndex?: number;
 }
-export class ShapeRenderingProfile extends Component<IShapeRenderingProfile> {}
+export class ShapeRenderingProfileComponent extends Component<IShapeRenderingProfile> {}
 
 export interface IImageRenderingProfile {
     src: string;
@@ -32,7 +32,7 @@ export interface IImageRenderingProfile {
     zIndex?: number;
     rotate?: number;
 }
-export class ImageRenderingProfile extends Component<IImageRenderingProfile> {}
+export class ImageRenderingProfileComponent extends Component<IImageRenderingProfile> {}
 
 export interface IAnimatedImageRenderingProfile {
     src: string[];
@@ -47,7 +47,7 @@ export interface IAnimatedImageRenderingProfile {
     zIndex?: number;
     rotate?: number;
 }
-export class AnimatedImageRenderingProfile extends Component<IAnimatedImageRenderingProfile> {}
+export class AnimatedImageRenderingProfileComponent extends Component<IAnimatedImageRenderingProfile> {}
 
 export interface IPoseStepper { x: number; y: number; a: number; }
 export class PoseStepperComponent extends Component<IPoseStepper> {}
@@ -57,7 +57,12 @@ export interface IVelocity {
 }
 export class VelocityComponent extends Component<IVelocity> {}
 
-export interface IBody {
+export interface IAcceleration {
+    x: number; y: number; w: number;
+}
+export class AccelerationComponent extends Component<IAcceleration> {}
+
+export interface ICollisionProfile {
     mass: number;
     restitution: number;
 }

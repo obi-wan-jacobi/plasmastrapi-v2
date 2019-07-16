@@ -1,5 +1,5 @@
 import Wire from './Wire';
-import { IPoint, Pose, ShapeRenderingProfile } from '../../engine/components';
+import { IPoint, PoseComponent, ShapeRenderingProfileComponent } from '../../engine/components';
 import { BuildArea, GateCreatorButton, GateDestructorButton, WireDestructorButton } from './editor';
 import { InteractiveElement, entityContainsPoint, entityTouchesLine } from '../../engine/entities';
 import { Gate } from './gates';
@@ -13,7 +13,7 @@ export class ToolHandle extends InteractiveElement {
     }
 
     public $mousemove(): void {
-        this.$mutate(Pose)({
+        this.$mutate(PoseComponent)({
             x: this.$engine.mouse.x,
             y: this.$engine.mouse.y,
             a: 0,
@@ -39,7 +39,7 @@ export class GateCreatorHandle extends ToolHandle {
 
     constructor({ GateCtor, x, y }: { GateCtor: Ctor<Gate, {}>, x: number, y: number }) {
         super(arguments[0]);
-        this.$add(ShapeRenderingProfile)({ colour: 'YELLOW' });
+        this.$add(ShapeRenderingProfileComponent)({ colour: 'YELLOW' });
         this.__GateCtor = GateCtor;
     }
 
@@ -62,7 +62,7 @@ export class GateDestructorHandle extends ToolHandle {
 
     constructor({ x, y }: { x: number, y: number }) {
         super(arguments[0]);
-        this.$add(ShapeRenderingProfile)({ colour: 'ORANGE' });
+        this.$add(ShapeRenderingProfileComponent)({ colour: 'ORANGE' });
     }
 
     public action(): void {
@@ -90,7 +90,7 @@ export class WireDestructorHandle extends ToolHandle {
 
     constructor({ x, y }: { x: number, y: number }) {
         super(arguments[0]);
-        this.$add(ShapeRenderingProfile)({ colour: 'RED' });
+        this.$add(ShapeRenderingProfileComponent)({ colour: 'RED' });
     }
 
     public $mousedown(): void {
@@ -127,7 +127,7 @@ export class GatePlacerHandle extends ToolHandle {
 
     constructor({ x, y, gate }: { x: number, y: number, gate: Gate }) {
         super(arguments[0]);
-        this.$add(ShapeRenderingProfile)({ colour: 'LIGHTBLUE' });
+        this.$add(ShapeRenderingProfileComponent)({ colour: 'LIGHTBLUE' });
         this.gate = gate;
     }
 

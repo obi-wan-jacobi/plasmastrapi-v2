@@ -1,3 +1,4 @@
+import AccelerationSystem from './systems/AccelerationSystem';
 import { AnimatedImageSystem } from './systems/AnimatedImageSystem';
 import ComponentFactory from './ComponentFactory';
 import Dictionary from '../framework/concretes/Dictionary';
@@ -15,6 +16,7 @@ import { InteractiveSystem } from './systems/InteractiveSystem';
 import LabelSystem from './systems/LabelSystem';
 import { PoseStepperSystem } from './systems/PoseStepperSystem';
 import ShapeSystem from './systems/ShapeSystem';
+import VelocitySystem from './systems/VelocitySystem';
 import { Ctor } from '../framework/types';
 
 export default class Engine implements IEngine {
@@ -71,6 +73,8 @@ export default class Engine implements IEngine {
         this.add(AnimatedImageSystem);
         this.add(InteractiveSystem);
         this.add(PoseStepperSystem);
+        this.add(AccelerationSystem);
+        this.add(VelocitySystem);
     }
 
 }

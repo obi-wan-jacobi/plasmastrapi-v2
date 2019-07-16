@@ -1,4 +1,7 @@
-import { ImageRenderingProfile, Pose, Shape, ShapeRenderingProfile } from '../../engine/components';
+import {
+    ImageRenderingProfileComponent, PoseComponent,
+    ShapeComponent, ShapeRenderingProfileComponent,
+} from '../../engine/components';
 import { InteractiveElement } from '../../engine/entities';
 import { AndGate, Gate, NandGate, OrGate, XorGate } from './gates';
 import { PowerSupply } from './machines';
@@ -11,7 +14,7 @@ export class ToolButton extends Button {
 
     public constructor({ x, y, src }: { x: number, y: number, src: string }) {
         super(arguments[0]);
-        this.$add(ImageRenderingProfile)({ src });
+        this.$add(ImageRenderingProfileComponent)({ src });
     }
 
     public $click(): void {
@@ -104,7 +107,7 @@ export class GateMask extends InteractiveElement {
 
     constructor({ x, y }: { x: number, y: number }) {
         super(Object.assign({ width: 40, height: 40 }, arguments[0]));
-        this.$add(ShapeRenderingProfile)({ colour: 'LIGHTBLUE' });
+        this.$add(ShapeRenderingProfileComponent)({ colour: 'LIGHTBLUE' });
     }
 }
 
@@ -125,8 +128,9 @@ export class BuildArea extends Panel {
     }
 
     private __initPowerSupply(): void {
-        const pose = this.$copy(Pose);
-        const { width, height } = this.$copy(Shape).points.map((p) => ({ width: 2 * p.x, height: 2 * p.y }))[0];
+        const pose = this.$copy(PoseComponent);
+        const { width, height } = this.$copy(ShapeComponent)
+            .points.map((p) => ({ width: 2 * p.x, height: 2 * p.y }))[0];
         this.power = this.$engine.entities.create(PowerSupply, {
             x: pose.x - width / 2 + 20,
             y: pose.y + height / 2 - 30,
@@ -134,14 +138,15 @@ export class BuildArea extends Panel {
     }
 
     private __initInputs(): void {
-        const pose = this.$copy(Pose);
-        const { width, height } = this.$copy(Shape).points.map((p) => ({ width: 2 * p.x, height: 2 * p.y }))[0];
+        const pose = this.$copy(PoseComponent);
+        const { width, height } = this.$copy(ShapeComponent)
+            .points.map((p) => ({ width: 2 * p.x, height: 2 * p.y }))[0];
         const horizontalSpacer = width / 4;
         const verticalSpacer = 20;
         let cursor = 1;
         let row = 1;
         for (const input of this.inputs) {
-            input.$mutate(Pose)({
+            input.$mutate(PoseComponent)({
                 x: pose.x - width / 2 + cursor * horizontalSpacer - 50,
                 y: pose.y - height / 2 + row * verticalSpacer,
                 a: 0,
@@ -155,14 +160,15 @@ export class BuildArea extends Panel {
     }
 
     private __initOutputs(): void {
-        const pose = this.$copy(Pose);
-        const { width, height } = this.$copy(Shape).points.map((p) => ({ width: 2 * p.x, height: 2 * p.y }))[0];
+        const pose = this.$copy(PoseComponent);
+        const { width, height } = this.$copy(ShapeComponent)
+            .points.map((p) => ({ width: 2 * p.x, height: 2 * p.y }))[0];
         const horizontalSpacer = width / 4;
         const verticalSpacer = 20;
         let cursor = 1;
         let row = 1;
         for (const output of this.outputs) {
-            output.$mutate(Pose)({
+            output.$mutate(PoseComponent)({
                 x: pose.x - width / 2 + cursor * horizontalSpacer - 50,
                 y: pose.y + height / 2 - row * verticalSpacer,
                 a: 0,

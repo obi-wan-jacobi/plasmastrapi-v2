@@ -1,7 +1,7 @@
 import IEntity from '../engine/interfaces/IEntity';
 import { System } from '../engine/abstracts/System';
 import Wire from './entities/Wire';
-import { Pose, Shape, VelocityComponent } from '../engine/components';
+import { PoseComponent, ShapeComponent, VelocityComponent } from '../engine/components';
 import { RivetComponent } from './components';
 import { BuildArea, GateMask } from './entities/editor';
 import { entityContainsPoint } from '../engine/entities';
@@ -69,9 +69,9 @@ export class TerminalWireSystem extends System {
 
     public draw(): void {
         this.$engine.entities.forEvery(Gate)((gate) => {
-            const gatePose = gate.$copy(Pose);
-            const inPose = gate.input.$copy(Pose);
-            const outPose = gate.output.$copy(Pose);
+            const gatePose = gate.$copy(PoseComponent);
+            const inPose = gate.input.$copy(PoseComponent);
+            const outPose = gate.output.$copy(PoseComponent);
             const wire = { points: [
                 { x: 5, y: 5 },
                 { x: -5, y: 5 },
@@ -145,8 +145,8 @@ export class MachineSystem extends System {
 }
 
 const fromTerminalHandleToWireRendering = (handle: IEntity, terminal: IEntity) => {
-    const handlePose = handle.$copy(Pose);
-    const terminalPose = terminal.$copy(Pose);
+    const handlePose = handle.$copy(PoseComponent);
+    const terminalPose = terminal.$copy(PoseComponent);
     const pose = {
         x: (handlePose.x + terminalPose.x) / 2,
         y: (handlePose.y + terminalPose.y) / 2,
@@ -168,8 +168,8 @@ export class RivetSystem extends System {
     public draw(): void {
         this.$engine.components.forEvery(RivetComponent)((rivet) => {
             const rendering = rivet.copy();
-            const pose = rivet.$entity.$copy(Pose);
-            const corners = rivet.$entity.$copy(Shape).points;
+            const pose = rivet.$entity.$copy(PoseComponent);
+            const corners = rivet.$entity.$copy(ShapeComponent).points;
             const points = [
                 { x: corners[0].x - 7, y: corners[0].y - 7 },
                 { x: corners[1].x + 7, y: corners[1].y - 7 },

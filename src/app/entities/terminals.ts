@@ -1,7 +1,7 @@
 import Dictionary from '../../framework/concretes/Dictionary';
 import { STATE } from '../enums/STATE';
 import Wire from './Wire';
-import { IPose, ImageRenderingProfile, Label, Pose, ShapeRenderingProfile } from '../../engine/components';
+import { IPose, ImageRenderingProfileComponent, LabelComponent, PoseComponent } from '../../engine/components';
 import { InteractiveElement } from '../../engine/entities';
 import { Gate } from './gates';
 import { InputTerminalHandle, OutputTerminalHandle } from './tools';
@@ -16,7 +16,7 @@ export class Terminal extends InteractiveElement {
     constructor({ x, y, src }: { x: number, y: number, src: string }) {
         super(Object.assign({ width: 20, height: 20 }, arguments[0]));
         this.__src = src;
-        this.$add(ImageRenderingProfile)({ src });
+        this.$add(ImageRenderingProfileComponent)({ src });
     }
 
     public get isHigh(): boolean {
@@ -33,9 +33,9 @@ export class Terminal extends InteractiveElement {
 
     public high(): void {
         this.__state = STATE.HIGH;
-        const label = this.$copy(Label);
+        const label = this.$copy(LabelComponent);
         if (label) {
-            this.$mutate(Label)(Object.assign(label, {
+            this.$mutate(LabelComponent)(Object.assign(label, {
                 colour: 'GREEN',
             }));
         }
@@ -43,9 +43,9 @@ export class Terminal extends InteractiveElement {
 
     public low(): void {
         this.__state = STATE.LOW;
-        const label = this.$copy(Label);
+        const label = this.$copy(LabelComponent);
         if (label) {
-            this.$mutate(Label)(Object.assign(label, {
+            this.$mutate(LabelComponent)(Object.assign(label, {
                 colour: 'RED',
             }));
         }
@@ -53,16 +53,16 @@ export class Terminal extends InteractiveElement {
 
     public off(): void {
         this.__state = STATE.OFF;
-        const label = this.$copy(Label);
+        const label = this.$copy(LabelComponent);
         if (label) {
-            this.$mutate(Label)(Object.assign(label, {
+            this.$mutate(LabelComponent)(Object.assign(label, {
                 colour: 'WHITE',
             }));
         }
     }
 
     public move(pose: IPose): void {
-        this.$mutate(Pose)(pose);
+        this.$mutate(PoseComponent)(pose);
         this.wires.forEach((wire) => {
             wire.updatePose();
             wire.updateShape();
@@ -70,11 +70,11 @@ export class Terminal extends InteractiveElement {
     }
 
     public $mouseenter(): void {
-        this.$mutate(ImageRenderingProfile)({ src: './Terminal_hovered.png' });
+        this.$mutate(ImageRenderingProfileComponent)({ src: './Terminal_hovered.png' });
     }
 
     public $mouseleave(): void {
-        this.$mutate(ImageRenderingProfile)({ src: this.__src });
+        this.$mutate(ImageRenderingProfileComponent)({ src: this.__src });
     }
 
     public $destroy(): void {

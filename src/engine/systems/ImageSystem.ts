@@ -1,12 +1,12 @@
 import { System } from '../abstracts/System';
-import { ImageRenderingProfile, Pose } from '../components';
+import { ImageRenderingProfileComponent, PoseComponent } from '../components';
 
 export default class ImageSystem extends System {
 
     public draw(): void {
-        this.$engine.components.forEvery(ImageRenderingProfile)((rendering) => {
+        this.$engine.components.forEvery(ImageRenderingProfileComponent)((rendering) => {
             this.$engine.viewport.drawImage({
-                pose: rendering.$entity.$copy(Pose),
+                pose: rendering.$entity.$copy(PoseComponent),
                 rendering: rendering.copy(),
             });
         });
