@@ -73,11 +73,12 @@ export class NextButton extends Button {
     }
 
     public $click(): void {
+        const w = Math.PI / 48;
         const pose = body.$copy(PoseComponent);
-        body.$patch(PoseComponent)({ y: pose.y + 20 });
-        body.$patch(VelocityComponent)({ y: 20 });
+        body.$patch(PoseComponent)({ y: pose.y + 5 * this.$engine.delta, a: pose.a + w * this.$engine.delta });
+        body.$patch(VelocityComponent)({ y: 5, w });
         this.__system.once();
-        body.$patch(VelocityComponent)({ y: 0 });
+        body.$patch(VelocityComponent)({ y: 0, w: 0 });
     }
 }
 
@@ -91,7 +92,7 @@ app.start();
 
 app.engine.entities.create(NextButton, { x: 30, y: 30 });
 app.engine.entities.create(CollisionWindow, { x: 1280 / 2, y: 680 / 2, width: 500, height: 500 });
-const body = app.engine.entities.create(CollisionBody, { x: 1280 / 2, y: 500, a: -Math.PI / 6, shape: { points: [
+const body = app.engine.entities.create(CollisionBody, { x: 1280 / 2, y: 500, a: 0, shape: { points: [
     { x: 50, y: 50 },
     { x: -50, y: 50 },
     { x: -50, y: -50 },

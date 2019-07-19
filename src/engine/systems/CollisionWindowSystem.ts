@@ -1,30 +1,30 @@
 import { System } from '../abstracts/System';
 import { IPoint, PoseComponent, ShapeComponent, VelocityComponent } from '../components';
 import { CollisionBody, CollisionWindow, entityContainsEntity } from '../entities';
-import { getEuclideanDistanceBetweenPoints, transformShape } from '../geometry';
+import { getAngleBetweenPoints, getEuclideanDistanceBetweenPoints, pow2, transformShape } from '../geometry';
 
 export default class CollisionWindowSystem extends System {
-
-    private __last: IPoint = { x: 0, y: 0 };
 
     public once(): void {
         this.$engine.entities.forEvery(CollisionWindow)((cWindow) => {
             const wPose = cWindow.$copy(PoseComponent);
-            const { width, height } = cWindow.$copy(ShapeComponent).points.map((p) => (
-                { width: Math.abs(2 * p.x), height: Math.abs(2 * p.y) }
-            ))[0];
+            const { width, height } = cWindow.$copy(ShapeComponent).points.map((p) => ({
+                width: Math.abs(2 * p.x),
+                height: Math.abs(2 * p.y),
+            }))[0];
+            const dt = this.$engine.delta;
             this.$engine.entities.forEvery(CollisionBody)((cBody) => {
                 if (entityContainsEntity(cWindow, cBody)) {
                     return;
                 }
                 const bPose = cBody.$copy(PoseComponent);
-                const pose = {
-                    x: bPose.x - wPose.x, y: bPose.y - wPose.x, a: bPose.a,
-                };
                 const shape = cBody.$copy(ShapeComponent);
                 const velocity = cBody.$copy(VelocityComponent);
-                const dt = this.$engine.delta;
-                // get deepest vertex
+                const initialPose = {
+                    x: bPose.x - velocity.x * dt,
+                    y: bPose.y - velocity.y * dt,
+                    a: bPose.a - velocity.w * dt,
+                };
                 let deepestVertex: IPoint = { x: 0, y: 0 };
                 const vertices = transformShape(shape, bPose).points;
                 let cursor = 0;
@@ -36,25 +36,45 @@ export default class CollisionWindowSystem extends System {
                     }
                     cursor++;
                 }
-                const initialDeepestVertex = transformShape(shape, {
-                    x: bPose.x - velocity.x * dt,
-                    y: bPose.y - velocity.y * dt,
-                    a: bPose.a - velocity.w * dt,
-                }).points[deepestCursor];
-                // x = 0 + t * 1
-                // y = height
-                const r = getEuclideanDistanceBetweenPoints(bPose, deepestVertex);
-                const t = (height - initialDeepestVertex.y) / (velocity.y + r * Math.sin(velocity.w));
-                const correction = {
-                    x: initialDeepestVertex.x + velocity.x * t,
-                    y: initialDeepestVertex.y + velocity.y * t,
+                const initialDeepestVertex = transformShape(shape, initialPose).points[deepestCursor];
+                const dtMiddle = dt / 2;
+                const middlePose = {
+                    x: bPose.x - velocity.x * dtMiddle,
+                    y: bPose.y - velocity.y * dtMiddle,
+                    a: bPose.a - velocity.w * dtMiddle,
                 };
-                this.__last = correction;
+                const middleDeepestVertex = transformShape(shape, middlePose).points[deepestCursor];
+                const { a, b, c } = fromPointsToParabola(initialDeepestVertex, middleDeepestVertex, deepestVertex);
+                const x1 = (-b + Math.sqrt(pow2(b) - 4 * a * (c - (height / 2 + wPose.y)))) / ( 2 * a );
+                const x2 = (-b - Math.sqrt(pow2(b) - 4 * a * (c - (height / 2 + wPose.y)))) / ( 2 * a );
             });
         });
     }
-
-    public draw(): void {
-        this.$engine.viewport.drawCircle({ point: this.__last, radius: 3, rendering: { colour: 'WHITE' }});
-    }
 }
+
+const fromPointsToParabola = (p1: IPoint, p2: IPoint, p3: IPoint): { a: number, b: number, c: number } => {
+    const y1 = p1.y;
+    const a1 = pow2(p1.x);
+    const b1 = p1.x;
+    // -------------------
+    const y2 = p2.y;
+    const a2 = pow2(p2.x);
+    const b2 = p2.x;
+    // -------------------
+    const y3 = p3.y;
+    const a3 = pow2(p3.x);
+    const b3 = p3.x;
+    // -------------------
+    const y4 = y1 - y2;
+    const a4 = a1 - a2;
+    const b4 = b1 - b2;
+    // -------------------
+    const y5 = y3 - y2;
+    const a5 = a3 - a2;
+    const b5 = b3 - b2;
+    // -------------------
+    const a = (y5 - (b5 / b4) * y4) / (a5 - (b5 / b4) * a4);
+    const b = (y5 - a5 * a) / b5;
+    const c = y1 - a1 * a - b1 * b;
+    return { a, b, c };
+};

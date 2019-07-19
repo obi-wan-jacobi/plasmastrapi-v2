@@ -74,3 +74,11 @@ export const fromShapeToBoundary = (shape: IShape): IBoundary => {
 export const getEuclideanDistanceBetweenPoints = (p1: IPoint, p2: IPoint): number => {
     return Math.sqrt(Math.pow((p2.x - p1.x), 2) + Math.pow(p2.y - p1.y, 2));
 };
+
+export const getAngleBetweenPoints = (p1: IPoint, p2: IPoint): number => {
+    return Math.atan2(p2.y - p1.y, p2.x - p1.x);
+};
+
+export const pow2 = (target: number) => {
+    return Math.pow(target, 2);
+};
