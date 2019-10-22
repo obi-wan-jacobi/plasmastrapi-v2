@@ -14,11 +14,11 @@ const __defaultHandler = {
 
 export default class HTML5CanvasMouseAdaptor implements IMouseAdaptor {
 
-    private __canvas: HTMLCanvasElement;
+    private __canvas: HTMLCanvasElement & { [key: string]: (me: MouseEvent) => void };
     private __buffer: IAdaptedMouseEvent[];
     private __handler: IMouseHandler;
 
-    constructor(canvas: HTMLCanvasElement) {
+    constructor(canvas: HTMLCanvasElement & { [key: string]: (me: MouseEvent) => void }) {
         this.__canvas = canvas;
         this.__buffer = [];
         this.__handler = __defaultHandler;
@@ -54,8 +54,7 @@ export default class HTML5CanvasMouseAdaptor implements IMouseAdaptor {
             'click',
         ]
         .forEach((key) => {
-            const canvas = (this.__canvas as unknown as { [key: string]: (ev: MouseEvent) => void });
-            canvas[`on${key}`] = (ev: MouseEvent): void => {
+            this.__canvas[`on${key}`] = (ev: MouseEvent): void => {
                 const boundingClientRect = this.__canvas.getBoundingClientRect();
                 this.__buffer.push({
                     name: ev.type,
