@@ -25251,14 +25251,14 @@ class XorGate extends Gate {
 /*!**************************************!*\
   !*** ./src/app/entities/machines.ts ***!
   \**************************************/
-/*! exports provided: PowerSupply, MachineEntity, Machine, MachineTarget, MachinePart, HorizontalThreadedAxle, VerticalThreadedAxle, Actuator, Sensor, TouchSensor, TouchActivator, Claw, ClawMachine */
+/*! exports provided: PowerSupply, MachineEntity, contraption, MachineTarget, MachinePart, HorizontalThreadedAxle, VerticalThreadedAxle, Actuator, Sensor, TouchSensor, TouchActivator, Claw, ClawMachine */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PowerSupply", function() { return PowerSupply; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MachineEntity", function() { return MachineEntity; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Machine", function() { return Machine; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "contraption", function() { return contraption; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MachineTarget", function() { return MachineTarget; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MachinePart", function() { return MachinePart; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HorizontalThreadedAxle", function() { return HorizontalThreadedAxle; });
@@ -25296,7 +25296,7 @@ class MachineEntity extends _engine_Entity__WEBPACK_IMPORTED_MODULE_0__["default
         this.$add(_engine_components__WEBPACK_IMPORTED_MODULE_1__["PoseComponent"])({ x, y, a: 0 });
     }
 }
-class Machine extends _engine_Entity__WEBPACK_IMPORTED_MODULE_0__["default"] {
+class contraption extends _engine_Entity__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor() {
         super(...arguments);
         this.inputs = [];
@@ -25539,7 +25539,7 @@ class TouchSensor extends Sensor {
 }
 class TouchActivator extends MachinePart {
 }
-class Claw extends Machine {
+class Claw extends contraption {
     constructor({ x, y }) {
         super(arguments[0]);
         this.__wrist = this.$engine.entities.create(MachinePart, {
@@ -25687,7 +25687,7 @@ class Claw extends Machine {
         this.__closeMotor.$destroy();
     }
 }
-class ClawMachine extends Machine {
+class ClawMachine extends contraption {
     constructor({ x, y }) {
         super(arguments[0]);
         this.__horizontalRail = this.$engine.entities.create(HorizontalThreadedAxle, { x, y, width: 300, height: 20 });
@@ -25994,9 +25994,9 @@ class ResetButton extends SceneButton {
             gate.$enable();
             gate.off();
         });
-        this.$engine.entities.forEvery(_machines__WEBPACK_IMPORTED_MODULE_2__["Machine"])((machine) => {
-            machine.off();
-            machine.reset();
+        this.$engine.entities.forEvery(_machines__WEBPACK_IMPORTED_MODULE_2__["contraption"])((contraption) => {
+            contraption.off();
+            contraption.reset();
         });
     }
 }
@@ -26667,8 +26667,8 @@ class GateSystem extends _engine_abstracts_System__WEBPACK_IMPORTED_MODULE_0__["
 }
 class MachineSystem extends _engine_abstracts_System__WEBPACK_IMPORTED_MODULE_0__["System"] {
     once() {
-        this.$engine.entities.forEvery(_entities_machines__WEBPACK_IMPORTED_MODULE_8__["Machine"])((machine) => {
-            machine.once();
+        this.$engine.entities.forEvery(_entities_machines__WEBPACK_IMPORTED_MODULE_8__["contraption"])((contraption) => {
+            contraption.once();
         });
     }
 }

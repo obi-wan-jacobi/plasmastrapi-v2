@@ -1,6 +1,6 @@
 import Wire from './Wire';
 import { IPoint, PoseComponent, ShapeRenderingProfileComponent } from '../../engine/components';
-import { BuildArea, GateCreatorButton, GateDestructorButton, WireDestructorButton } from './editor';
+import { BuildArea, GateCreatorButton, GateDestructorButton, WireDestructorButton } from './designer';
 import { InteractiveElement, entityContainsPoint, entityTouchesLine } from '../../engine/entities';
 import { Gate } from './gates';
 import { InputTerminal, OutputTerminal } from './terminals';

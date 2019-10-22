@@ -18,7 +18,6 @@ export class Button extends InteractiveElement {
 
     public $enable(): void {
         super.$enable();
-        const rendering = this.$copy(ShapeRenderingProfileComponent);
         this.$patch(ShapeRenderingProfileComponent)({ opacity: 1 });
     }
 

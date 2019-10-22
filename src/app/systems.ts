@@ -3,11 +3,11 @@ import { System } from '../engine/abstracts/System';
 import Wire from './entities/Wire';
 import { PoseComponent, ShapeComponent } from '../engine/components';
 import { RivetComponent } from './components';
-import { BuildArea, GateMask } from './entities/editor';
+import { Contraption, Sensor } from './entities/contraptions';
+import { BuildArea, GateMask } from './entities/designer';
 import { entityContainsPoint } from '../engine/entities';
 import { Gate } from './entities/gates';
 import { getEuclideanDistanceBetweenPoints, transformShape } from '../engine/geometry';
-import { Machine, Sensor } from './entities/machines';
 import { GateCreatorHandle, InputTerminalHandle, OutputTerminalHandle, WireDestructorHandle } from './entities/tools';
 
 export class GateMaskSystem extends System {
@@ -132,11 +132,11 @@ export class GateSystem extends System {
     }
 }
 
-export class MachineSystem extends System {
+export class ContraptionSystem extends System {
 
     public once(): void {
-        this.$engine.entities.forEvery(Machine)((machine) => {
-            machine.once();
+        this.$engine.entities.forEvery(Contraption)((contraption) => {
+            contraption.once();
         });
     }
 }

@@ -1,8 +1,8 @@
 import Entity from '../../engine/Entity';
 import {
-    AccelerationComponent, AnimatedImageRenderingProfileComponent, IPose, IShape,
+    AnimatedImageRenderingProfileComponent, IPose, IShape,
     LabelComponent, PoseComponent, PoseStepperComponent, ShapeComponent,
-    ShapeRenderingProfileComponent, VelocityComponent,
+    ShapeRenderingProfileComponent,
 } from '../../engine/components';
 import { RivetComponent } from '../components';
 import { entitiesTouch } from '../../engine/entities';
@@ -29,7 +29,7 @@ export class MachineEntity extends Entity {
     }
 }
 
-export class Machine extends Entity {
+export class Contraption extends Entity {
 
     public inputs: InputTerminal[] = [];
     public outputs: OutputTerminal[] = [];
@@ -52,8 +52,6 @@ export class MachineTarget extends Entity {
         this.$add(PoseComponent)({ x, y, a: a || 0 });
         this.$add(ShapeComponent)(shape);
         this.$add(ShapeRenderingProfileComponent)({ colour: 'WHITE' });
-        this.$add(VelocityComponent)({ x: 0, y: 0, w: 0 });
-        this.$add(AccelerationComponent)({ x: 0, y: 0, w: 0 });
     }
 }
 
@@ -313,7 +311,7 @@ export class TouchActivator extends MachinePart {
 
 }
 
-export class Claw extends Machine {
+export class Claw extends Contraption {
 
     private __wrist: MachinePart;
     private __palm: TouchActivator;
@@ -479,7 +477,7 @@ export class Claw extends Machine {
     }
 }
 
-export class ClawMachine extends Machine {
+export class TheClaw extends Contraption {
 
     private __horizontalRail: HorizontalThreadedAxle;
     private __verticalRail: VerticalThreadedAxle;
@@ -496,6 +494,8 @@ export class ClawMachine extends Machine {
     private __bottomSensor: TouchSensor;
 
     private __claw: Claw;
+
+    private __prize: MachineTarget;
 
     public constructor({ x, y }: { x: number, y: number }) {
         super(arguments[0]);
@@ -574,6 +574,16 @@ export class ClawMachine extends Machine {
         this.__claw = this.$engine.entities.create(Claw, {
             x: x - 130, y: y + 130,
         });
+        this.__prize = this.$engine.entities.create(MachineTarget, {
+            x: x + 130,
+            y: y + 250,
+            shape: { points: [
+                { x: 10, y: 20 },
+                { x: -10, y: 20 },
+                { x: -10, y: -20 },
+                { x: 10, y: -20 },
+            ]},
+        });
         this.inputs = [
             this.__leftMotor,
             this.__topMotor,
@@ -611,7 +621,6 @@ export class ClawMachine extends Machine {
         this.__topSensor.reset();
         this.__bottomSensor.reset();
         this.__claw.reset();
-        this.__claw.reset();
     }
 
     public $destroy(): void {
@@ -628,6 +637,7 @@ export class ClawMachine extends Machine {
         this.__topSensor.$destroy();
         this.__bottomSensor.$destroy();
         this.__claw.$destroy();
+        this.__prize.$destroy();
     }
 
     private __updateHorizontalState(): void {
