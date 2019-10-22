@@ -1,7 +1,7 @@
 import Entity from '../../engine/Entity';
 import {
-    AnimatedImageRenderingProfileComponent, IPose, IShape, LabelComponent,
-    PoseComponent, PoseStepperComponent, ShapeComponent, ShapeRenderingProfileComponent,
+    AccelerationComponent, AnimatedImageRenderingProfileComponent, IPose, IShape,
+    LabelComponent, PoseComponent, PoseStepperComponent, ShapeComponent, ShapeRenderingProfileComponent, VelocityComponent,
 } from '../../engine/components';
 import { RivetComponent } from '../components';
 import { entitiesTouch } from '../../engine/entities';
@@ -41,6 +41,18 @@ export class Machine extends Entity {
         super.$destroy();
         this.inputs.forEach((input) => input.$destroy());
         this.outputs.forEach((output) => output.$destroy());
+    }
+}
+
+export class MachineTarget extends Entity {
+
+    public constructor({ x, y, a, shape }: { x: number, y: number, a: number, shape: IShape }) {
+        super(arguments[0]);
+        this.$add(PoseComponent)({ x, y, a: a || 0 });
+        this.$add(ShapeComponent)(shape);
+        this.$add(ShapeRenderingProfileComponent)({ colour: 'WHITE' });
+        this.$add(VelocityComponent)({ x: 0, y: 0, w: 0 });
+        this.$add(AccelerationComponent)({ x: 0, y: 0, w: 0 });
     }
 }
 
