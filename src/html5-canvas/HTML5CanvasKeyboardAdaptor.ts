@@ -5,11 +5,11 @@ import KeyboardHandler from '../engine/KeyboardHandler';
 
 export default class HTML5CanvasKeyboardAdapter implements IKeyboardAdaptor {
 
-    private __canvas: HTMLCanvasElement;
+    private __canvas: HTMLCanvasElement & { [key: string]: (ke: KeyboardEvent) => void };
     private __buffer: IAdaptedKeyboardEvent[];
     private __handler: IKeyboardHandler;
 
-    constructor(canvas: HTMLCanvasElement) {
+    constructor(canvas: HTMLCanvasElement & { [key: string]: (ke: KeyboardEvent) => void }) {
         this.__canvas = canvas;
         this.__buffer = [];
         this.__handler = new KeyboardHandler();
@@ -34,8 +34,7 @@ export default class HTML5CanvasKeyboardAdapter implements IKeyboardAdaptor {
             'keyup',
         ]
         .forEach((key) => {
-            const canvas = (this.__canvas as unknown as { [key: string]: (ke: KeyboardEvent) => void });
-            canvas[`on${key}`] = (ke: KeyboardEvent): void => {
+            this.__canvas[`on${key}`] = (ke: KeyboardEvent): void => {
                 this.__buffer.push({
                     name: key,
                     key: ke.key,

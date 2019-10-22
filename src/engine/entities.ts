@@ -40,7 +40,7 @@ export class Interactive extends Entity {
         }
         if (!entityContainsPoint(this, this.$engine.mouse)) {
             if (this.$engine.mouse.name === 'mousemove') {
-                this['$mousemove']();
+                this.$mousemove();
             }
             if (this.__isHovered) {
                 this.__isHovered = false;
