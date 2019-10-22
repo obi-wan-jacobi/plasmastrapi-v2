@@ -87,11 +87,8 @@ export class Terminal extends InteractiveElement {
 
 export class InputTerminal extends Terminal {
 
-    public $gate: Gate;
-
     public constructor({ gate, x, y }: { gate: Gate, x: number, y: number }) {
         super(Object.assign({ src: './Terminal_in.png' }, arguments[0]));
-        this.$gate = gate;
     }
 
     public $mousedown(): void {

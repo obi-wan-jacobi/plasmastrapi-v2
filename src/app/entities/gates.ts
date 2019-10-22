@@ -14,7 +14,7 @@ export class Gate extends InteractiveElement {
     constructor({ x, y, src }: { x: number, y: number, src: string }) {
         super(Object.assign({ width: 30, height: 30 }, arguments[0]));
         this.$add(ImageRenderingProfileComponent)({ src });
-        this.input = this.$engine.entities.create(InputTerminal, { gate: this, x, y: y + 30 });
+        this.input = this.$engine.entities.create(InputTerminal, { x, y: y + 30 });
         this.output = this.$engine.entities.create(OutputTerminal, { x, y: y - 30 });
     }
 

@@ -1,7 +1,8 @@
 import Entity from '../../engine/Entity';
 import {
     AccelerationComponent, AnimatedImageRenderingProfileComponent, IPose, IShape,
-    LabelComponent, PoseComponent, PoseStepperComponent, ShapeComponent, ShapeRenderingProfileComponent, VelocityComponent,
+    LabelComponent, PoseComponent, PoseStepperComponent, ShapeComponent,
+    ShapeRenderingProfileComponent, VelocityComponent,
 } from '../../engine/components';
 import { RivetComponent } from '../components';
 import { entitiesTouch } from '../../engine/entities';

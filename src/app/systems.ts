@@ -1,7 +1,7 @@
 import IEntity from '../engine/interfaces/IEntity';
 import { System } from '../engine/abstracts/System';
 import Wire from './entities/Wire';
-import { PoseComponent, ShapeComponent, VelocityComponent } from '../engine/components';
+import { PoseComponent, ShapeComponent } from '../engine/components';
 import { RivetComponent } from './components';
 import { BuildArea, GateMask } from './entities/editor';
 import { entityContainsPoint } from '../engine/entities';
@@ -103,9 +103,6 @@ export class ActuatorSystem extends System {
 
     public once(): void {
         this.$engine.entities.forEvery(Wire)((wire) => {
-            if (wire.input.$gate) {
-                return;
-            }
             if (wire.output.isHigh) {
                 wire.input.high();
             } else if (wire.output.isLow) {
@@ -184,12 +181,5 @@ export class RivetSystem extends System {
                 });
             });
         });
-    }
-}
-
-export class CollisionSystem extends System {
-
-    public once(): void {
-        return;
     }
 }
