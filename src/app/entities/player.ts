@@ -6,17 +6,17 @@ import { Terminal } from './terminals';
 import { ToolHandle } from './tools';
 import { Button, Panel } from './ui';
 
-export class ConsoleButton extends Button {
+export class LatchButton extends Button {
 
     public $click(): void {
-        this.$engine.entities.forEvery(ConsoleButton)((button) => {
+        this.$engine.entities.forEvery(LatchButton)((button) => {
             button.$enable();
         });
         this.$disable();
     }
 }
 
-export class PlayButton extends ConsoleButton {
+export class PlayButton extends LatchButton {
 
     public constructor() {
         super(Object.assign({ label: 'play' }, arguments[0]));
@@ -46,7 +46,7 @@ export class PlayButton extends ConsoleButton {
     }
 }
 
-export class ResetButton extends ConsoleButton {
+export class ResetButton extends LatchButton {
 
     public constructor() {
         super(Object.assign({ label: 'reset' }, arguments[0]));
@@ -79,7 +79,7 @@ export class ResetButton extends ConsoleButton {
 
 export class PlayerConsole extends Panel {
 
-    private __buttons: ConsoleButton[] = [];
+    private __buttons: LatchButton[] = [];
 
     public constructor() {
         super(arguments[0]);

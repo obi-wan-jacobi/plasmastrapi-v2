@@ -47,7 +47,7 @@ export class Contraption extends Entity {
 
 export class MachineTarget extends Entity {
 
-    public constructor({ x, y, a, shape }: { x: number, y: number, a: number, shape: IShape }) {
+    public constructor({ x, y, a, shape }: { x: number, y: number, a?: number, shape: IShape }) {
         super(arguments[0]);
         this.$add(PoseComponent)({ x, y, a: a || 0 });
         this.$add(ShapeComponent)(shape);
@@ -59,7 +59,7 @@ export class MachinePart extends Entity {
 
     private __initialPose: IPose;
 
-    public constructor({ x, y, shape }: { x: number, y: number, shape: IShape }) {
+    public constructor({ x, y, shape }: { x: number, y: number, shape?: IShape }) {
         super(arguments[0]);
         this.__initialPose = { x, y, a: 0 };
         this.$add(PoseComponent)({ x, y, a: 0 });
