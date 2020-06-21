@@ -1,8 +1,8 @@
 import IComponent from './interfaces/IComponent';
 import IEngine from './interfaces/IEngine';
 import IEntity from './interfaces/IEntity';
-import Unique from '../framework/abstracts/Unique';
-import { Ctor } from '../framework/types';
+import Unique from '../data-structures/abstracts/Unique';
+import { Ctor } from '../data-structures/types';
 
 export default class Entity extends Unique implements IEntity {
 

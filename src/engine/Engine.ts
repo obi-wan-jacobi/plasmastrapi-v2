@@ -1,27 +1,19 @@
-import AccelerationSystem from './systems/AccelerationSystem';
-import { AnimatedImageSystem } from './systems/AnimatedImageSystem';
 import ComponentFactory from './ComponentFactory';
-import Dictionary from '../framework/concretes/Dictionary';
+import Dictionary from '../data-structures/concretes/Dictionary';
 import EntityMaster from './EntityMaster';
 import IAdaptedKeyboardEvent from './interfaces/IAdaptedKeyboardEvent';
 import IAdaptedMouseEvent from './interfaces/IAdaptedMouseEvent';
 import IComponentFactory from './interfaces/IComponentFactory';
-import IDictionary from '../framework/interfaces/IDictionary';
+import IDictionary from '../data-structures/interfaces/IDictionary';
 import IEngine from './interfaces/IEngine';
 import IEntityFactory from './interfaces/IEntityMaster';
 import ISystem from './interfaces/ISystem';
 import IViewportAdaptor from './interfaces/IViewportAdaptor';
-import ImageSystem from './systems/ImageSystem';
-import { InteractiveSystem } from './systems/InteractiveSystem';
-import LabelSystem from './systems/LabelSystem';
-import { PoseStepperSystem } from './systems/PoseStepperSystem';
-import ShapeSystem from './systems/ShapeSystem';
-import VelocitySystem from './systems/VelocitySystem';
-import { Ctor } from '../framework/types';
+import { Ctor } from 'src/data-structures/types';
 
 export default class Engine implements IEngine {
 
-    public viewport: IViewportAdaptor;
+    public viewport: IViewportAdaptor<any>;
     public components: IComponentFactory;
     public entities: IEntityFactory;
 
@@ -33,13 +25,12 @@ export default class Engine implements IEngine {
     private __t: Date;
     private __systems: IDictionary<ISystem>;
 
-    constructor(viewport: IViewportAdaptor) {
+    constructor(viewport: IViewportAdaptor<any>) {
         this.viewport = viewport;
         this.components = new ComponentFactory();
         this.entities = new EntityMaster(this);
         this.__systems = new Dictionary<ISystem>();
         this.__t = new Date();
-        this.__initSystems();
     }
 
     public once(): void {
@@ -64,17 +55,6 @@ export default class Engine implements IEngine {
 
     public remove(SystemCtor: Ctor<ISystem, any>): void {
         this.__systems.delete(SystemCtor.name);
-    }
-
-    private __initSystems(): void {
-        this.add(LabelSystem);
-        this.add(ShapeSystem);
-        this.add(ImageSystem);
-        this.add(AnimatedImageSystem);
-        this.add(InteractiveSystem);
-        this.add(PoseStepperSystem);
-        this.add(AccelerationSystem);
-        this.add(VelocitySystem);
     }
 
 }

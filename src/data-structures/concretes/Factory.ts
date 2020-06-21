@@ -32,14 +32,7 @@ export default class Factory<T extends IUnique> extends Wrapper<IDictionary<T>> 
         this.unwrap().forEach(fn);
     }
 
-    public first(fn: (value: T) => void): void {
-        const first = Object.keys(this.unwrap().unwrap()).find(() => true);
-        if (first) {
-            fn(this.unwrap().unwrap()[first]);
-        }
-    }
-
-    public find(fn: (value: T) => boolean): T | undefined {
+    public first(fn: (value: T) => boolean): T | undefined {
         const keys = Object.keys(this.unwrap().unwrap());
         for (const key of keys) {
             const target = this.unwrap().unwrap()[key];

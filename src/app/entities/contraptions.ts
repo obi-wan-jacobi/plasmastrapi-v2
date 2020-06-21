@@ -1,11 +1,11 @@
 import Entity from '../../engine/Entity';
-import {
-    AnimatedImageRenderingProfileComponent, IPose, IShape,
-    LabelComponent, PoseComponent, PoseStepperComponent, ShapeComponent,
-    ShapeRenderingProfileComponent,
-} from '../../engine/components';
 import { RivetComponent } from '../components';
-import { entitiesTouch } from '../../engine/entities';
+import { IPose, PoseComponent } from 'src/framework/geometry/components/PoseComponent';
+import { IShape, ShapeComponent } from 'src/framework/geometry/components/ShapeComponent';
+import { entitiesTouch } from 'src/framework/helpers/entities';
+import { AnimationComponent } from 'src/framework/presentation/components/AnimationComponent';
+import { LabelComponent } from 'src/framework/presentation/components/LabelComponent';
+import { StyleComponent } from 'src/framework/presentation/components/StyleComponent';
 import { InputTerminal, OutputTerminal } from './terminals';
 
 export class PowerSupply extends OutputTerminal {
@@ -17,7 +17,7 @@ export class PowerSupply extends OutputTerminal {
             fontSize: 20,
             offset: { x: 15, y: 7 },
         });
-        this.$add(ShapeRenderingProfileComponent)({ colour: 'WHITE' });
+        this.$add(StyleComponent)({ colour: 'WHITE' });
     }
 }
 
@@ -51,8 +51,14 @@ export class MachineTarget extends Entity {
         super(arguments[0]);
         this.$add(PoseComponent)({ x, y, a: a || 0 });
         this.$add(ShapeComponent)(shape);
-        this.$add(ShapeRenderingProfileComponent)({ colour: 'WHITE' });
+        this.$add(StyleComponent)({ colour: 'WHITE' });
     }
+}
+
+interface IPoseIncrement {
+    x?: number;
+    y?: number;
+    a?: number;
 }
 
 export class MachinePart extends Entity {
@@ -65,17 +71,20 @@ export class MachinePart extends Entity {
         this.$add(PoseComponent)({ x, y, a: 0 });
         if (shape) {
             this.$add(ShapeComponent)(shape);
-            this.$add(ShapeRenderingProfileComponent)({ colour: 'WHITE', fillStyle: 'BLACK' });
+            this.$add(StyleComponent)({ colour: 'WHITE', fill: 'BLACK' });
         }
-        this.$add(PoseStepperComponent)({ x: 0, y: 0, a: 0 });
     }
 
     public reset(): void {
         this.$mutate(PoseComponent)(this.__initialPose);
     }
 
-    public step(poseStep: {}): void {
-        this.$patch(PoseStepperComponent)(poseStep);
+    public step(poseStep: IPoseIncrement): void {
+        const pose = this.$copy(PoseComponent);
+        pose.x += poseStep.x || 0;
+        pose.y += poseStep.y || 0;
+        pose.a += poseStep.a || 0;
+        this.$mutate(PoseComponent)(pose);
     }
 }
 
@@ -90,8 +99,8 @@ export class HorizontalThreadedAxle extends MachinePart {
                 x: x - width / 2 + i * 10 + 5,
                 y,
             });
-            thread.$add(AnimatedImageRenderingProfileComponent)({
-                src: [
+            thread.$add(AnimationComponent)({
+                images: [
                     './threaded-axle-1.png',
                     './threaded-axle-2.png',
                     './threaded-axle-3.png',
@@ -102,12 +111,10 @@ export class HorizontalThreadedAxle extends MachinePart {
                     './threaded-axle-8.png',
                     './threaded-axle-9.png',
                     './threaded-axle-10.png',
-                ],
+                ].map((src) => ({ src, width: 10, height })),
                 frame: 0,
                 speed: 1,
                 cooldown: 0,
-                width: 10,
-                height,
                 isPaused: true,
             });
             this.__threads.push(thread);
@@ -116,7 +123,7 @@ export class HorizontalThreadedAxle extends MachinePart {
 
     public left(): void {
         this.__threads.forEach((thread) => {
-            thread.$patch(AnimatedImageRenderingProfileComponent)({
+            thread.$patch(AnimationComponent)({
                 isPaused: false,
                 isReversed: false,
             });
@@ -125,7 +132,7 @@ export class HorizontalThreadedAxle extends MachinePart {
 
     public right(): void {
         this.__threads.forEach((thread) => {
-            thread.$patch(AnimatedImageRenderingProfileComponent)({
+            thread.$patch(AnimationComponent)({
                 isPaused: false,
                 isReversed: true,
             });
@@ -134,13 +141,13 @@ export class HorizontalThreadedAxle extends MachinePart {
 
     public off(): void {
         this.__threads.forEach((thread) => {
-            thread.$patch(AnimatedImageRenderingProfileComponent)({
+            thread.$patch(AnimationComponent)({
                 isPaused: true,
             });
         });
     }
 
-    public step(poseStep: {}): void {
+    public step(poseStep: IPoseIncrement): void {
         super.step(poseStep);
         this.__threads.forEach((thread) => {
             thread.step(poseStep);
@@ -173,8 +180,8 @@ export class VerticalThreadedAxle extends MachinePart {
                 x,
                 y: y - height / 2 + i * 10 + 5,
             });
-            thread.$add(AnimatedImageRenderingProfileComponent)({
-                src: [
+            thread.$add(AnimationComponent)({
+                images: [
                     './threaded-axle-1.png',
                     './threaded-axle-2.png',
                     './threaded-axle-3.png',
@@ -185,14 +192,11 @@ export class VerticalThreadedAxle extends MachinePart {
                     './threaded-axle-8.png',
                     './threaded-axle-9.png',
                     './threaded-axle-10.png',
-                ],
+                ].map((src) => ({ src, width: 10, height: width, rotate: -Math.PI / 2 })),
                 frame: 0,
                 speed: 1,
                 cooldown: 0,
-                width: 10,
-                height: width,
                 isPaused: true,
-                rotate: -Math.PI / 2,
             });
             this.__threads.push(thread);
         }
@@ -200,7 +204,7 @@ export class VerticalThreadedAxle extends MachinePart {
 
     public up(): void {
         this.__threads.forEach((thread) => {
-            thread.$patch(AnimatedImageRenderingProfileComponent)({
+            thread.$patch(AnimationComponent)({
                 isPaused: false,
                 isReversed: true,
             });
@@ -209,7 +213,7 @@ export class VerticalThreadedAxle extends MachinePart {
 
     public down(): void {
         this.__threads.forEach((thread) => {
-            thread.$patch(AnimatedImageRenderingProfileComponent)({
+            thread.$patch(AnimationComponent)({
                 isPaused: false,
                 isReversed: false,
             });
@@ -218,13 +222,13 @@ export class VerticalThreadedAxle extends MachinePart {
 
     public off(): void {
         this.__threads.forEach((thread) => {
-            thread.$patch(AnimatedImageRenderingProfileComponent)({
+            thread.$patch(AnimationComponent)({
                 isPaused: true,
             });
         });
     }
 
-    public step(poseStep: {}): void {
+    public step(poseStep: IPoseIncrement): void {
         super.step(poseStep);
         this.__threads.forEach((thread) => {
             thread.step(poseStep);
@@ -250,7 +254,7 @@ export class Actuator extends InputTerminal {
 
     public constructor({ label }: { label: string }) {
         super(Object.assign({ x: 0, y: 0 }, arguments[0]));
-        this.$add(ShapeRenderingProfileComponent)({ colour: 'WHITE' });
+        this.$add(StyleComponent)({ colour: 'WHITE' });
         this.$add(LabelComponent)({
             text: label,
             fontSize: 20,
@@ -271,7 +275,7 @@ export class Sensor extends MachinePart {
             fontSize: 20,
             offset: { x: 15, y: 7 },
         });
-        this.output.$add(ShapeRenderingProfileComponent)({ colour: 'WHITE' });
+        this.output.$add(StyleComponent)({ colour: 'WHITE' });
     }
 
     public get isHigh(): boolean {
@@ -287,7 +291,7 @@ export class Sensor extends MachinePart {
     }
 
     public once(): void {
-        const target = this.$engine.entities.find(TouchActivator)((activator) => {
+        const target = this.$engine.entities.first(TouchActivator)((activator) => {
             return entitiesTouch(this, activator);
         });
         if (target) {
@@ -375,7 +379,7 @@ export class Claw extends Contraption {
                 { x: 10, y: -20 },
             ]},
         });
-        this.__leftTooth.$patch(ShapeRenderingProfileComponent)({ zIndex: 1 });
+        this.__leftTooth.$patch(StyleComponent)({ zIndex: 1 });
         this.__rightTooth = this.$engine.entities.create(TouchSensor, {
             x: x + 40, y: y + 10, shape: { points: [
                 { x: 0, y: 20 },
@@ -387,7 +391,7 @@ export class Claw extends Contraption {
             ]},
             label: 'closed-sensor',
         });
-        this.__rightTooth.$patch(ShapeRenderingProfileComponent)({ zIndex: 1 });
+        this.__rightTooth.$patch(StyleComponent)({ zIndex: 1 });
         this.__openMotor = this.$engine.entities.create(Actuator, {
             label: 'open',
         });
@@ -451,7 +455,7 @@ export class Claw extends Contraption {
         this.__rightTooth.reset();
     }
 
-    public step(poseStep: {}): void {
+    public step(poseStep: IPoseIncrement): void {
         this.__wrist.step(poseStep);
         this.__palm.step(poseStep);
         this.__leftHub.step(poseStep);
@@ -509,7 +513,7 @@ export class TheClaw extends Contraption {
                 { x: 20, y: -30 },
             ]},
         });
-        this.__carriage.$add(ShapeRenderingProfileComponent)({ colour: 'WHITE', fillStyle: 'BLACK', zIndex: 1 });
+        this.__carriage.$add(StyleComponent)({ colour: 'WHITE', fill: 'BLACK', zIndex: 1 });
         this.__verticalRail = this.$engine.entities.create(VerticalThreadedAxle, {
             x: x - 130, y, width: 20, height: 200,
         });

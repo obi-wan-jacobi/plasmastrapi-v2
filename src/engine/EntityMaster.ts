@@ -1,12 +1,12 @@
-import Dictionary from '../framework/concretes/Dictionary';
-import Factory from '../framework/concretes/Factory';
-import IDictionary from '../framework/interfaces/IDictionary';
+import Dictionary from '../data-structures/concretes/Dictionary';
+import Factory from '../data-structures/concretes/Factory';
+import IDictionary from '../data-structures/interfaces/IDictionary';
 import IEngine from './interfaces/IEngine';
 import IEntity from './interfaces/IEntity';
 import IEntityMaster from './interfaces/IEntityMaster';
-import IFactory from '../framework/interfaces/IFactory';
-import Wrapper from '../framework/abstracts/Wrapper';
-import { Ctor, Optional } from '../framework/types';
+import IFactory from '../data-structures/interfaces/IFactory';
+import Wrapper from '../data-structures/abstracts/Wrapper';
+import { Ctor, Optional } from '../data-structures/types';
 
 export default class EntityMaster extends Wrapper<IDictionary<IFactory<IEntity>>> implements IEntityMaster {
 
@@ -35,14 +35,9 @@ export default class EntityMaster extends Wrapper<IDictionary<IFactory<IEntity>>
         return collection ? collection.forEach.bind(collection) : function(): void { return; };
     }
 
-    public first<T extends IEntity>(EntityCtor: Ctor<T, any>): (fn: (entity: T) => void) => void {
+    public first<T extends IEntity>(EntityCtor: Ctor<T, any>): (fn: (entity: T) => boolean) => T | undefined {
         const collection = this.unwrap().read(EntityCtor.name);
         return collection ? collection.first.bind(collection) : function(): void { return; };
-    }
-
-    public find<T extends IEntity>(EntityCtor: Ctor<T, any>): (fn: (entity: T) => boolean) => T | undefined {
-        const collection = this.unwrap().read(EntityCtor.name);
-        return collection ? collection.find.bind(collection) : function(): void { return; };
     }
 
     public once(): void {

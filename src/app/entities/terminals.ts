@@ -1,10 +1,25 @@
-import Dictionary from '../../framework/concretes/Dictionary';
+import Dictionary from '../../data-structures/concretes/Dictionary';
 import { STATE } from '../enums/STATE';
 import Wire from './Wire';
-import { IPose, ImageRenderingProfileComponent, LabelComponent, PoseComponent } from '../../engine/components';
-import { InteractiveElement } from '../../engine/entities';
-import { Gate } from './gates';
-import { InputTerminalHandle, OutputTerminalHandle } from './tools';
+import { Logical } from './gates';
+import { IPose, PoseComponent } from 'src/framework/geometry/components/PoseComponent';
+import { ShapeComponent } from 'src/framework/geometry/components/ShapeComponent';
+import { InteractiveEntity } from 'src/framework/interactive/InteractiveEntity';
+import { ImageComponent } from 'src/framework/presentation/components/ImageComponent';
+import { LabelComponent } from 'src/framework/presentation/components/LabelComponent';
+
+class InteractiveElement extends InteractiveEntity {
+
+    public constructor({ x, y, width, height }: { x: number, y: number, width: number, height: number }) {
+        super(Object.assign({ a: 0 }, arguments[0]));
+        this.$add(ShapeComponent)({ points: [
+            { x: width / 2, y: height / 2 },
+            { x: -width / 2, y: height / 2 },
+            { x: -width / 2, y: -height / 2 },
+            { x: width / 2, y: -height / 2 },
+        ]});
+    }
+}
 
 export class Terminal extends InteractiveElement {
 
@@ -16,7 +31,7 @@ export class Terminal extends InteractiveElement {
     constructor({ x, y, src }: { x: number, y: number, src: string }) {
         super(Object.assign({ width: 20, height: 20 }, arguments[0]));
         this.__src = src;
-        this.$add(ImageRenderingProfileComponent)({ src });
+        this.$add(ImageComponent)({ src });
     }
 
     public get isHigh(): boolean {
@@ -70,11 +85,11 @@ export class Terminal extends InteractiveElement {
     }
 
     public $mouseenter(): void {
-        this.$mutate(ImageRenderingProfileComponent)({ src: './Terminal_hovered.png' });
+        this.$mutate(ImageComponent)({ src: './Terminal_hovered.png' });
     }
 
     public $mouseleave(): void {
-        this.$mutate(ImageRenderingProfileComponent)({ src: this.__src });
+        this.$mutate(ImageComponent)({ src: this.__src });
     }
 
     public $destroy(): void {
@@ -87,7 +102,7 @@ export class Terminal extends InteractiveElement {
 
 export class InputTerminal extends Terminal {
 
-    public constructor({ gate, x, y }: { gate: Gate, x: number, y: number }) {
+    public constructor({ gate, x, y }: { gate: Logical, x: number, y: number }) {
         super(Object.assign({ src: './Terminal_in.png' }, arguments[0]));
     }
 

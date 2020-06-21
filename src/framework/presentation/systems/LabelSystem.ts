@@ -1,5 +1,6 @@
-import { System } from '../abstracts/System';
-import { LabelComponent, PoseComponent } from '../components';
+import { LabelComponent } from '../components/LabelComponent';
+import { System } from '../../../engine/abstracts/System';
+import { PoseComponent } from 'src/framework/geometry/components/PoseComponent';
 
 export default class LabelSystem extends System {
 

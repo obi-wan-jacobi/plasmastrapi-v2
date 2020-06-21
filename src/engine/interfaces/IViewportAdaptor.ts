@@ -1,22 +1,23 @@
-import { IImageRenderingProfile, ILabel, IPoint, IPose, IShape, IShapeRenderingProfile } from '../components';
+import { IPoint, IPose } from 'src/framework/geometry/components/PoseComponent';
+import { IImage } from 'src/framework/presentation/components/ImageComponent';
+import { ILabel } from 'src/framework/presentation/components/LabelComponent';
+import { IStyle } from 'src/framework/presentation/components/StyleComponent';
 
-export default interface IViewportAdaptor {
+export default interface IViewportAdaptor<TImageSource> {
 
-    load(src: string): CanvasImageSource;
+    load(src: string): TImageSource;
 
     refresh(): void;
 
     once(): void;
 
-    drawImage({ pose, rendering }: { pose: IPose, rendering: IImageRenderingProfile }): void;
+    drawImage({ pose, image }: { pose: IPose, image: IImage }): void;
 
     drawLabel({ pose, label }: { pose: IPose, label: ILabel }): void;
 
-    drawShape({ shape, rendering }: { shape: IShape, rendering: IShapeRenderingProfile }): void;
+    drawShape({ path, styling }: { path: IPoint[], styling: IStyle }): void;
 
-    drawLine({ points, rendering }: { points: IPoint[], rendering: IShapeRenderingProfile }): void;
+    drawLine({ path, styling }: { path: IPoint[], styling: IStyle }): void;
 
-    drawCircle({ point, radius, rendering }: {
-        point: IPoint, radius: number, rendering: IShapeRenderingProfile,
-    }): void;
+    drawCircle({ position, radius, styling }: { position: IPoint, radius: number, styling: IStyle }): void;
 }

@@ -1,5 +1,5 @@
 import IEntity from './IEntity';
-import { Ctor, Optional } from '../../framework/types';
+import { Ctor, Optional } from '../../data-structures/types';
 
 export default interface IEntityMaster {
 
@@ -9,9 +9,7 @@ export default interface IEntityMaster {
 
     forEvery<T extends IEntity>(EntityCtor: Ctor<T, any>): (fn: (entity: T) => void) => void;
 
-    first<T extends IEntity>(EntityCtor: Ctor<T, any>): (fn: (entity: T) => void) => void;
-
-    find<T extends IEntity>(EntityCtor: Ctor<T, any>): (fn: (entity: T) => boolean) => T | undefined;
+    first<T extends IEntity>(EntityCtor: Ctor<T, any>): (fn: (entity: T) => boolean) => T | undefined;
 
     once(): void;
 }

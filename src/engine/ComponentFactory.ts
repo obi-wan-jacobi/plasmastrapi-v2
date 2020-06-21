@@ -1,11 +1,11 @@
-import Dictionary from '../framework/concretes/Dictionary';
-import Factory from '../framework/concretes/Factory';
+import Dictionary from '../data-structures/concretes/Dictionary';
+import Factory from '../data-structures/concretes/Factory';
 import IComponent from './interfaces/IComponent';
 import IComponentFactory from './interfaces/IComponentFactory';
-import IDictionary from '../framework/interfaces/IDictionary';
-import IFactory from '../framework/interfaces/IFactory';
-import Wrapper from '../framework/abstracts/Wrapper';
-import { Ctor } from '../framework/types';
+import IDictionary from '../data-structures/interfaces/IDictionary';
+import IFactory from '../data-structures/interfaces/IFactory';
+import Wrapper from '../data-structures/abstracts/Wrapper';
+import { Ctor } from '../data-structures/types';
 
 export default class ComponentFactory extends Wrapper<IDictionary<IFactory<IComponent<any>>>>
 implements IComponentFactory {

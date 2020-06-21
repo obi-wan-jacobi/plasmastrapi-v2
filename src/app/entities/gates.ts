@@ -1,57 +1,106 @@
-import { STATE } from '../enums/STATE';
-import { IPose, ImageRenderingProfileComponent, PoseComponent } from '../../engine/components';
-import { InteractiveElement } from '../../engine/entities';
+import { Digital } from '../abstracts/Digital';
+import Unique from 'src/data-structures/abstracts/Unique';
+import Dictionary from 'src/data-structures/concretes/Dictionary';
+import { IPose, PoseComponent } from 'src/framework/geometry/components/PoseComponent';
+import { InteractiveEntity } from 'src/framework/interactive/InteractiveEntity';
+import { ImageComponent } from 'src/framework/presentation/components/ImageComponent';
 import { InputTerminal, OutputTerminal } from './terminals';
-import { GatePlacerHandle, ToolHandle } from './tools';
+import { ToolHandle } from './tools';
 
-export class Gate extends InteractiveElement {
+export class AndGate extends Digital {
+
+    public once(): void {
+        const sources = this.sources();
+        if (sources.find((source) => source.isLow)) {
+            return this.low();
+        }
+        if (sources.find((source) => source.isHigh)) {
+            return this.high();
+        }
+        return this.off();
+    }
+}
+
+export class NandGate extends Digital {
+
+    public constructor() {
+        super(Object.assign({ src: './NandGate.png' }, arguments[0]));
+    }
+
+    public once(): void {
+        if (!this.input.wires.length) {
+            return this.off();
+        }
+        const wires = this.input.wires.toArray();
+        for (const wire of wires) {
+            if (wire.output.isLow) {
+                return this.high();
+            }
+        }
+        if (wires.find((wire) => wire.output.isHigh)) {
+            this.low();
+        } else {
+            this.off();
+        }
+    }
+}
+
+export class OrGate extends Digital {
+
+    public constructor() {
+        super(Object.assign({ src: './OrGate.png' }, arguments[0]));
+    }
+
+    public once(): void {
+        // if (!this.input.wires.length) {
+        //     this.off();
+        //     return;
+        // }
+        // for (const wire of this.input.wires) {
+        //     if (wire.output.isLow) {
+        //         this.high();
+        //         return;
+        //     }
+        // }
+        // this.low();
+    }
+}
+
+export class XorGate extends Digital {
+
+    public constructor() {
+        super(Object.assign({ src: './XorGate.png' }, arguments[0]));
+    }
+
+    public once(): void {
+        // if (!this.input.wires.length) {
+        //     this.off();
+        //     return;
+        // }
+        // for (const wire of this.input.wires) {
+        //     if (wire.output.isLow) {
+        //         this.high();
+        //         return;
+        //     }
+        // }
+        // this.low();
+    }
+}
+
+export class Gate2 extends InteractiveEntity {
 
     public input: InputTerminal;
     public output: OutputTerminal;
 
-    private __state: STATE = STATE.OFF;
-
     constructor({ x, y, src }: { x: number, y: number, src: string }) {
         super(Object.assign({ width: 30, height: 30 }, arguments[0]));
-        this.$add(ImageRenderingProfileComponent)({ src });
+        this.$add(ImageComponent)({ src });
         this.input = this.$engine.entities.create(InputTerminal, { gate: this, x, y: y + 30 });
         this.output = this.$engine.entities.create(OutputTerminal, { x, y: y - 30 });
     }
 
-    public once(): void { return; }
-
-    public get isHigh(): boolean {
-        return this.__state === STATE.HIGH;
-    }
-
-    public get isLow(): boolean {
-        return this.__state === STATE.LOW;
-    }
-
-    public get isOff(): boolean {
-        return this.__state === STATE.OFF;
-    }
-
-    public high(): void {
-        this.__state = STATE.HIGH;
-        this.input.high();
-        this.output.high();
-    }
-
-    public low(): void {
-        this.__state = STATE.LOW;
-        this.input.low();
-        this.output.low();
-    }
-
-    public off(): void {
-        this.__state = STATE.OFF;
-        this.input.off();
-        this.output.off();
-    }
-
     public $mousedown(): void {
-        const handle = this.$engine.entities.find(ToolHandle)(() => true);
+        const handle = this.$engine.entities.first(ToolHandle)(() => true);
         if (handle) {
             return;
         }
@@ -80,95 +129,5 @@ export class Gate extends InteractiveElement {
         this.input.$destroy();
         this.output.$destroy();
         return super.$destroy();
-    }
-}
-
-export class AndGate extends Gate {
-
-    public constructor() {
-        super(Object.assign({ src: './AndGate.png' }, arguments[0]));
-    }
-
-    public once(): void {
-        if (!this.input.wires.length) {
-            return this.off();
-        }
-        const wires = this.input.wires.toArray();
-        for (const wire of wires) {
-            if (wire.output.isLow) {
-                return this.low();
-            }
-        }
-        if (wires.find((wire) => wire.output.isHigh)) {
-            this.high();
-        } else {
-            this.off();
-        }
-    }
-}
-
-export class NandGate extends Gate {
-
-    public constructor() {
-        super(Object.assign({ src: './NandGate.png' }, arguments[0]));
-    }
-
-    public once(): void {
-        if (!this.input.wires.length) {
-            return this.off();
-        }
-        const wires = this.input.wires.toArray();
-        for (const wire of wires) {
-            if (wire.output.isLow) {
-                return this.high();
-            }
-        }
-        if (wires.find((wire) => wire.output.isHigh)) {
-            this.low();
-        } else {
-            this.off();
-        }
-    }
-}
-
-export class OrGate extends Gate {
-
-    public constructor() {
-        super(Object.assign({ src: './OrGate.png' }, arguments[0]));
-    }
-
-    public once(): void {
-        // if (!this.input.wires.length) {
-        //     this.off();
-        //     return;
-        // }
-        // for (const wire of this.input.wires) {
-        //     if (wire.output.isLow) {
-        //         this.high();
-        //         return;
-        //     }
-        // }
-        // this.low();
-    }
-}
-
-export class XorGate extends Gate {
-
-    public constructor() {
-        super(Object.assign({ src: './XorGate.png' }, arguments[0]));
-    }
-
-    public once(): void {
-        // if (!this.input.wires.length) {
-        //     this.off();
-        //     return;
-        // }
-        // for (const wire of this.input.wires) {
-        //     if (wire.output.isLow) {
-        //         this.high();
-        //         return;
-        //     }
-        // }
-        // this.low();
     }
 }

@@ -1,6 +1,6 @@
 import { Contraption, PowerSupply } from './contraptions';
 import { ToolButton } from './designer';
-import { Gate } from './gates';
+import { Logical } from './gates';
 import { ActuatorSystem, ContraptionSystem, GateSystem, SensorSystem } from '../systems';
 import { Terminal } from './terminals';
 import { ToolHandle } from './tools';
@@ -30,7 +30,7 @@ export class PlayButton extends LatchButton {
         this.$engine.entities.forEvery(ToolButton)((button) => {
             button.$disable();
         });
-        this.$engine.entities.forEvery(Gate)((gate) => {
+        this.$engine.entities.forEvery(Logical)((gate) => {
             gate.$disable();
         });
         this.$engine.entities.forEvery(Terminal)((terminal) => {
@@ -66,7 +66,7 @@ export class ResetButton extends LatchButton {
             terminal.$enable();
             terminal.off();
         });
-        this.$engine.entities.forEvery(Gate)((gate) => {
+        this.$engine.entities.forEvery(Logical)((gate) => {
             gate.$enable();
             gate.off();
         });

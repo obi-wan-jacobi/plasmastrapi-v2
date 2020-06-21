@@ -1,5 +1,8 @@
 import IViewportAdaptor from '../engine/interfaces/IViewportAdaptor';
-import { IImageRenderingProfile, ILabel, IPoint, IPose, IShape, IShapeRenderingProfile } from '../engine/components';
+import { IPoint, IPose } from 'src/framework/geometry/components/PoseComponent';
+import { IImage } from 'src/framework/presentation/components/ImageComponent';
+import { ILabel } from 'src/framework/presentation/components/LabelComponent';
+import { IStyle } from 'src/framework/presentation/components/StyleComponent';
 
 function Atomic(target: HTML5CanvasViewportAdaptor, key: string, descriptor: PropertyDescriptor): void {
     const fn = descriptor.value;
@@ -10,7 +13,7 @@ function Atomic(target: HTML5CanvasViewportAdaptor, key: string, descriptor: Pro
     };
 }
 
-export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
+export class HTML5CanvasViewportAdaptor implements IViewportAdaptor<CanvasImageSource> {
 
     [key: string]: any;
 
@@ -42,32 +45,32 @@ export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
 
     public once(): void {
         const zBuffer = this.__zBuffer.map((target) => {
-            if (!target.payload.rendering) {
-                target.payload.rendering = { zIndex: 0 };
+            if (!target.payload.styling) {
+                target.payload.styling = { zIndex: 0 };
                 return target;
             }
-            if (!target.payload.rendering.zIndex) {
-                target.payload.rendering.zIndex = 0;
+            if (!target.payload.styling.zIndex) {
+                target.payload.styling.zIndex = 0;
                 return target;
             }
             return target;
         });
-        const zOrdered = zBuffer.sort((a, b) => a.payload.rendering.zIndex - b.payload.rendering.zIndex);
+        const zOrdered = zBuffer.sort((a, b) => a.payload.styling.zIndex - b.payload.styling.zIndex);
         zOrdered.forEach((target) => {
             this[`__${target.method}`](target.payload);
         });
         this.__zBuffer = [];
     }
 
-    public drawImage({ pose, rendering }: { pose: IPose, rendering: IImageRenderingProfile }): void {
+    public drawImage({ pose, image }: { pose: IPose, image: IImage }): void {
         this.__zBuffer.push({ method: 'drawImage', payload: arguments[0] });
     }
 
-    public drawShape({ shape, rendering }: { shape: IShape, rendering: IShapeRenderingProfile }): void {
+    public drawShape({ path, styling }: { path: IPoint[], styling: IStyle }): void {
         this.__zBuffer.push({ method: 'drawShape', payload: arguments[0] });
     }
 
-    public drawLine({ points, rendering }: { points: IPoint[], rendering: IShapeRenderingProfile }): void {
+    public drawLine({ path, styling }: { path: IPoint[], styling: IStyle }): void {
         this.__zBuffer.push({ method: 'drawLine', payload: arguments[0] });
     }
 
@@ -75,40 +78,38 @@ export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
         this.__zBuffer.push({ method: 'drawLabel', payload: arguments[0] });
     }
 
-    public drawCircle({ point, radius, rendering }: {
-        point: IPoint, radius: number, rendering: IShapeRenderingProfile,
+    public drawCircle({ position, radius, styling }: {
+        position: IPoint, radius: number, styling: IStyle,
     }): void {
         this.__zBuffer.push({ method: 'drawCircle', payload: arguments[0] });
     }
 
     @Atomic
-    private __drawImage({ pose, rendering }: { pose: IPose, rendering: IImageRenderingProfile }): void {
-        const image = this.load(rendering.src);
+    private __drawImage({ pose, styling }: { pose: IPose, styling: IImage }): void {
+        const image = this.load(styling.src);
         this.ctx.translate(pose.x, pose.y);
-        if (rendering.rotate) {
-            this.ctx.rotate(rendering.rotate);
-        }
+        this.ctx.rotate(pose.a);
         this.ctx.drawImage(
             image,
-            -(rendering.width || image.width as number) / 2,
-            -(rendering.height || image.height as number) / 2,
-            rendering.width || image.width as number,
-            rendering.height || image.height as number,
+            -(styling.width || image.width as number) / 2,
+            -(styling.height || image.height as number) / 2,
+            styling.width || image.width as number,
+            styling.height || image.height as number,
         );
     }
 
     @Atomic
-    private __drawShape({ shape, rendering }: { shape: IShape, rendering: IShapeRenderingProfile }): void {
-        if (rendering.opacity) {
-            this.ctx.globalAlpha = rendering.opacity;
+    private __drawShape({ path, styling }: { path: IPoint[], styling: IStyle }): void {
+        if (styling.opacity) {
+            this.ctx.globalAlpha = styling.opacity;
         }
-        this.ctx.strokeStyle = rendering.colour;
+        this.ctx.strokeStyle = styling.colour || 'white';
         this.ctx.beginPath();
-        shape.points.forEach((p: IPoint) => {
+        path.forEach((p: IPoint) => {
             this.ctx.lineTo(p.x, p.y);
         });
-        if (rendering.fillStyle) {
-            this.ctx.fillStyle = rendering.fillStyle;
+        if (styling.fill) {
+            this.ctx.fillStyle = styling.fill;
             this.ctx.fill();
         }
         this.ctx.closePath();
@@ -116,8 +117,8 @@ export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
     }
 
     @Atomic
-    private __drawLine({ points, rendering }: { points: IPoint[], rendering: IShapeRenderingProfile }): void {
-        this.ctx.strokeStyle = rendering.colour;
+    private __drawLine({ points, styling }: { points: IPoint[], styling: IStyle }): void {
+        this.ctx.strokeStyle = styling.colour || 'white';
         this.ctx.beginPath();
         points.forEach((p: IPoint) => {
             this.ctx.lineTo(p.x, p.y);
@@ -133,12 +134,12 @@ export class HTML5CanvasViewportAdaptor implements IViewportAdaptor {
     }
 
     @Atomic
-    private __drawCircle({ point, radius, rendering }: {
-        point: IPoint, radius: number, rendering: IShapeRenderingProfile,
+    private __drawCircle({ position, radius, styling }: {
+        position: IPoint, radius: number, styling: IStyle,
     }): void {
-        this.ctx.strokeStyle = rendering.colour || 'white';
+        this.ctx.strokeStyle = styling.colour || 'white';
         this.ctx.beginPath();
-        this.ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
+        this.ctx.arc(position.x, position.y, radius, 0, 2 * Math.PI);
         this.ctx.stroke();
     }
 

@@ -1,6 +1,6 @@
-import IComponent from './interfaces/IComponent';
-import IEntity from './interfaces/IEntity';
-import Unique from '../framework/abstracts/Unique';
+import IComponent from '../interfaces/IComponent';
+import IEntity from '../interfaces/IEntity';
+import Unique from '../../data-structures/abstracts/Unique';
 
 export abstract class Component<T extends {}> extends Unique implements IComponent<T> {
 

@@ -1,5 +1,6 @@
-import { IPoint, IPose, IShape } from './components';
 import { Feature, GeoJsonProperties, MultiPolygon, Polygon } from 'geojson';
+import { IPoint, IPose } from 'src/framework/geometry/components/PoseComponent';
+import { IShape } from 'src/framework/geometry/components/ShapeComponent';
 import turf from 'turf';
 
 export const rotatePointAboutOrigin = ({ point, orientation }: {
@@ -14,18 +15,15 @@ export const rotatePointAboutOrigin = ({ point, orientation }: {
 };
 
 export const transformShape = (shape: IShape, pose: IPose): IShape => {
-    const points = shape.points.map((point) => rotatePointAboutOrigin({ point, orientation: pose.a }));
-    return translateShape({ shape: { points }, position: pose });
-};
-
-export const translateShape = ({ shape, position }: { shape: IShape, position: IPoint }): IShape => {
-    const points = shape.points.map((point) => {
-        return {
-            x: point.x + position.x,
-            y: point.y + position.y,
-        };
-    });
-    return { points };
+    return {
+        points: shape.points.map((p) => {
+            const point = rotatePointAboutOrigin({ point: p, orientation: pose.a });
+            return {
+                x: point.x + pose.x,
+                y: point.y + pose.y,
+            };
+        }),
+    };
 };
 
 export const fromPointsToGeoJSON = (points: IPoint[]) => {

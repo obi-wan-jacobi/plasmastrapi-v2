@@ -11,8 +11,6 @@ export default interface IFactory<T extends IUnique> {
 
     forEach(fn: (value: T) => void): void;
 
-    first(fn: (value: T) => void): void;
-
-    find(fn: (value: T) => boolean): T | undefined;
+    first(fn: (value: T) => boolean): T | undefined;
 
 }

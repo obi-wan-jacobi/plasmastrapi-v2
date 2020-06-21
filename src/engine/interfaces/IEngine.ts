@@ -4,11 +4,11 @@ import IComponentFactory from './IComponentFactory';
 import IEntityFactory from './IEntityMaster';
 import ISystem from './ISystem';
 import IViewportAdaptor from './IViewportAdaptor';
-import { Ctor } from '../../framework/types';
+import { Ctor } from '../../data-structures/types';
 
 export default interface IEngine {
 
-    viewport: IViewportAdaptor;
+    viewport: IViewportAdaptor<any>;
     components: IComponentFactory;
     entities: IEntityFactory;
 

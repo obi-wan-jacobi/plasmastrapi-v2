@@ -1,6 +1,6 @@
 import IComponent from './IComponent';
-import IUnique from '../../framework/interfaces/IUnique';
-import { Ctor } from '../../framework/types';
+import IUnique from '../../data-structures/interfaces/IUnique';
+import { Ctor } from '../../data-structures/types';
 
 export default interface IEntity extends IUnique {
 

@@ -1,14 +1,15 @@
 import IEntity from '../engine/interfaces/IEntity';
 import { System } from '../engine/abstracts/System';
-import Wire from './entities/Wire';
-import { PoseComponent, ShapeComponent } from '../engine/components';
+import Wire, { WireDestructorHandle } from './entities/Wire';
 import { RivetComponent } from './components';
 import { Contraption, Sensor } from './entities/contraptions';
 import { BuildArea, GateMask } from './entities/designer';
-import { entityContainsPoint } from '../engine/entities';
-import { Gate } from './entities/gates';
-import { getEuclideanDistanceBetweenPoints, transformShape } from '../engine/geometry';
-import { GateCreatorHandle, InputTerminalHandle, OutputTerminalHandle, WireDestructorHandle } from './entities/tools';
+import { GateCreatorHandle, Logical } from './entities/gates';
+import { getEuclideanDistanceBetweenPoints, transformShape } from '../framework/helpers/geometry';
+import { PoseComponent } from 'src/framework/geometry/components/PoseComponent';
+import { ShapeComponent } from 'src/framework/geometry/components/ShapeComponent';
+import { entityContainsPoint } from 'src/framework/helpers/entities';
+import { InputTerminalHandle, OutputTerminalHandle } from './entities/terminals';
 
 export class GateMaskSystem extends System {
 
@@ -38,8 +39,8 @@ export class WireDestructorHandleSystem extends System {
     public draw(): void {
         this.$engine.entities.forEvery(WireDestructorHandle)((handle) => {
             this.$engine.viewport.drawLine({
-                points: handle.points,
-                rendering: { colour: 'RED' },
+                path: handle.points,
+                styling: { colour: 'RED' },
             });
         });
     }
@@ -49,8 +50,8 @@ export class OutputTerminalHandleSystem extends System {
 
     public draw(): void {
         this.$engine.entities.forEvery(OutputTerminalHandle)((handle) => {
-            const { shape, rendering } = fromTerminalHandleToWireRendering(handle, handle.input);
-            this.$engine.viewport.drawShape({ shape, rendering });
+            const { shape, styling } = fromTerminalHandleToWirestyling(handle, handle.input);
+            this.$engine.viewport.drawShape({ path: shape.points, styling });
         });
     }
 }
@@ -59,8 +60,8 @@ export class InputTerminalHandleSystem extends System {
 
     public draw(): void {
         this.$engine.entities.forEvery(InputTerminalHandle)((handle) => {
-            const { shape, rendering } = fromTerminalHandleToWireRendering(handle, handle.output);
-            this.$engine.viewport.drawShape({ shape, rendering });
+            const { shape, styling } = fromTerminalHandleToWirestyling(handle, handle.output);
+            this.$engine.viewport.drawShape({ path: shape.points, styling });
         });
     }
 }
@@ -68,7 +69,7 @@ export class InputTerminalHandleSystem extends System {
 export class TerminalWireSystem extends System {
 
     public draw(): void {
-        this.$engine.entities.forEvery(Gate)((gate) => {
+        this.$engine.entities.forEvery(Logical)((gate) => {
             const gatePose = gate.$copy(PoseComponent);
             const inPose = gate.input.$copy(PoseComponent);
             const outPose = gate.output.$copy(PoseComponent);
@@ -78,22 +79,22 @@ export class TerminalWireSystem extends System {
                 { x: -5, y: -5 },
                 { x: 5, y: -5 },
             ]};
-            const rendering = { colour: 'WHITE', opacity: 1 };
+            const styling = { colour: 'WHITE', opacity: 1 };
             this.$engine.viewport.drawShape({
-                shape: transformShape(wire, {
+                path: transformShape(wire, {
                     x: (gatePose.x + inPose.x) / 2,
                     y: (gatePose.y + inPose.y) / 2 + 5,
                     a: 0,
-                }),
-                rendering,
+                }).points,
+                styling,
             });
             this.$engine.viewport.drawShape({
-                shape: transformShape(wire, {
+                path: transformShape(wire, {
                     x: (gatePose.x + outPose.x) / 2,
                     y: (gatePose.y + outPose.y) / 2 - 5,
                     a: 0,
-                }),
-                rendering,
+                }).points,
+                styling,
             });
         });
     }
@@ -126,7 +127,7 @@ export class SensorSystem extends System {
 export class GateSystem extends System {
 
     public once(): void {
-        this.$engine.entities.forEvery(Gate)((gate) => {
+        this.$engine.entities.forEvery(Logical)((gate) => {
             gate.once();
         });
     }
@@ -141,7 +142,7 @@ export class ContraptionSystem extends System {
     }
 }
 
-const fromTerminalHandleToWireRendering = (handle: IEntity, terminal: IEntity) => {
+const fromTerminalHandleToWirestyling = (handle: IEntity, terminal: IEntity) => {
     const handlePose = handle.$copy(PoseComponent);
     const terminalPose = terminal.$copy(PoseComponent);
     const pose = {
@@ -156,15 +157,15 @@ const fromTerminalHandleToWireRendering = (handle: IEntity, terminal: IEntity) =
         { x: -length / 2, y: -2 },
         { x: length / 2, y: -2 },
     ]}, pose);
-    const rendering = { colour: 'WHITE' };
-    return { shape, rendering };
+    const styling = { colour: 'WHITE' };
+    return { shape, styling };
 };
 
 export class RivetSystem extends System {
 
     public draw(): void {
         this.$engine.components.forEvery(RivetComponent)((rivet) => {
-            const rendering = rivet.copy();
+            const styling = rivet.copy();
             const pose = rivet.$entity.$copy(PoseComponent);
             const corners = rivet.$entity.$copy(ShapeComponent).points;
             const points = [
@@ -175,9 +176,9 @@ export class RivetSystem extends System {
             ];
             points.forEach((point) => {
                 this.$engine.viewport.drawCircle({
-                    point: { x: point.x + pose.x, y: point.y + pose.y },
-                    radius: rendering.radius,
-                    rendering,
+                    position: { x: point.x + pose.x, y: point.y + pose.y },
+                    radius: styling.radius,
+                    styling,
                 });
             });
         });

@@ -1,5 +1,5 @@
 import IComponent from './IComponent';
-import { Ctor, Optional } from '../../framework/types';
+import { Ctor, Optional } from '../../data-structures/types';
 
 export default interface IComponentFactory {
 

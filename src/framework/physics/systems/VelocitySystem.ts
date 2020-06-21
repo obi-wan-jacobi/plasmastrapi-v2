@@ -1,5 +1,6 @@
-import { System } from '../abstracts/System';
-import { PoseComponent, VelocityComponent } from '../components';
+import { VelocityComponent } from '../components/VelocityComponent';
+import { System } from 'src/engine/abstracts/System';
+import { PoseComponent } from 'src/framework/geometry/components/PoseComponent';
 
 export default class VelocitySystem extends System {
 

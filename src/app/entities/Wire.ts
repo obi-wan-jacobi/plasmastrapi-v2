@@ -1,6 +1,8 @@
 import Entity from '../../engine/Entity';
-import { PoseComponent, ShapeComponent, ShapeRenderingProfileComponent } from '../../engine/components';
-import { getEuclideanDistanceBetweenPoints } from '../../engine/geometry';
+import { getEuclideanDistanceBetweenPoints } from '../../framework/helpers/geometry';
+import { PoseComponent } from 'src/framework/geometry/components/PoseComponent';
+import { ShapeComponent } from 'src/framework/geometry/components/ShapeComponent';
+import { StyleComponent } from 'src/framework/presentation/components/StyleComponent';
 import { InputTerminal, OutputTerminal } from './terminals';
 
 export default class Wire extends Entity {
@@ -12,21 +14,21 @@ export default class Wire extends Entity {
         super(arguments[0]);
         this.input = input;
         this.output = output;
-        this.$add(ShapeRenderingProfileComponent)({ colour: 'WHITE' });
+        this.$add(StyleComponent)({ colour: 'WHITE' });
         this.updatePose();
         this.updateShape();
     }
 
     public high(): void {
-        this.$mutate(ShapeRenderingProfileComponent)({ colour: 'GREEN' });
+        this.$mutate(StyleComponent)({ colour: 'GREEN' });
     }
 
     public low(): void {
-        this.$mutate(ShapeRenderingProfileComponent)({ colour: 'RED' });
+        this.$mutate(StyleComponent)({ colour: 'RED' });
     }
 
     public off(): void {
-        this.$mutate(ShapeRenderingProfileComponent)({ colour: 'WHITE' });
+        this.$mutate(StyleComponent)({ colour: 'WHITE' });
     }
 
     public updatePose(): void {

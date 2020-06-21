@@ -1,5 +1,6 @@
-import { System } from '../abstracts/System';
-import { AccelerationComponent, VelocityComponent } from '../components';
+import { AccelerationComponent } from '../components/AccelerationComponent';
+import { System } from '../../../engine/abstracts/System';
+import { VelocityComponent } from '../components/VelocityComponent';
 
 export default class AccelerationSystem extends System {
 

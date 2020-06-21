@@ -8,6 +8,14 @@ import IEngine from '../engine/interfaces/IEngine';
 import IKeyboardAdaptor from '../engine/interfaces/IKeyboardAdaptor';
 import IMouseAdaptor from '../engine/interfaces/IMouseAdaptor';
 import IViewportAdaptor from '../engine/interfaces/IViewportAdaptor';
+import { MotionSystem } from 'src/framework/geometry/systems/MotionSystem';
+import { InteractiveSystem } from 'src/framework/interactive/InteractiveSystem';
+import AccelerationSystem from 'src/framework/physics/systems/AccelerationSystem';
+import VelocitySystem from 'src/framework/physics/systems/VelocitySystem';
+import { AnimatedImageSystem } from 'src/framework/presentation/systems/AnimationSystem';
+import ImageSystem from 'src/framework/presentation/systems/ImageSystem';
+import LabelSystem from 'src/framework/presentation/systems/LabelSystem';
+import ShapeSystem from 'src/framework/presentation/systems/ShapeSystem';
 import {
     GateMaskSystem, InputTerminalHandleSystem, OutputTerminalHandleSystem, RivetSystem,
     TerminalWireSystem, WireDestructorHandleSystem,
@@ -15,7 +23,7 @@ import {
 
 export default class App {
 
-    public viewport: IViewportAdaptor;
+    public viewport: IViewportAdaptor<CanvasImageSource>;
     public mouse: IMouseAdaptor;
     public keyboard: IKeyboardAdaptor;
     public engine: IEngine;
@@ -61,6 +69,15 @@ export default class App {
     }
 
     private __initSystems(): void {
+        this.engine.add(LabelSystem);
+        this.engine.add(ShapeSystem);
+        this.engine.add(ImageSystem);
+        this.engine.add(AnimatedImageSystem);
+        this.engine.add(InteractiveSystem);
+        this.engine.add(MotionSystem);
+        this.engine.add(AccelerationSystem);
+        this.engine.add(VelocitySystem);
+
         this.engine.add(GateMaskSystem);
         this.engine.add(WireDestructorHandleSystem);
         this.engine.add(InputTerminalHandleSystem);
