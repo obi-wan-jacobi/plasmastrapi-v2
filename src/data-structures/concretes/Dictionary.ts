@@ -23,6 +23,11 @@ export default class Dictionary<T extends object> extends Wrapper<{ [key: string
         delete this.unwrap()[key];
     }
 
+    public find(fn: (value: T) => boolean): T | undefined {
+        const key: string | undefined = Object.keys(this.unwrap()).find((k) => fn(this.unwrap()[k]));
+        return this.unwrap()[key || -1];
+    }
+
     public forEach(fn: (value: T) => void): void {
         Object.keys(this.unwrap()).forEach((key) => {
             if (this.unwrap()[key]) {
@@ -34,7 +39,7 @@ export default class Dictionary<T extends object> extends Wrapper<{ [key: string
     public toArray(): T[] {
         return Object.keys(this.unwrap()).map((key) => {
             return this.unwrap()[key];
-        }).filter((target) => target !== undefined && target !== null);
+        }).filter((target) => !!target);
     }
 
 }

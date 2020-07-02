@@ -11,6 +11,8 @@ export default interface IDictionary<T> extends IWrapper<Indexed<{}>> {
 
     delete(key: string): void;
 
+    find(fn: (value: T) => boolean): T | undefined;
+
     forEach(fn: (value: T) => void): void;
 
     toArray(): T[];

@@ -4,8 +4,6 @@ import Entity from 'src/engine/Entity';
 
 export abstract class InteractiveEntity extends Entity {
 
-    [key: string]: any;
-
     private __isDisabled: boolean = false;
     private __isHovered: boolean = false;
 
@@ -43,7 +41,7 @@ export abstract class InteractiveEntity extends Entity {
             this.__isHovered = true;
             this.$mouseenter();
         }
-        this[`$${this.$engine.mouse.name}`]();
+        (this as {[key: string]: any})[`$${this.$engine.mouse.name}`]();
     }
 
     public abstract $mouseenter(): void;

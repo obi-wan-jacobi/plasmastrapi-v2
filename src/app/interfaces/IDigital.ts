@@ -1,16 +1,15 @@
+import IUnique from 'src/data-structures/interfaces/IUnique';
 
-export interface IDigital {
+export interface IDigital extends IUnique {
     isHigh: boolean;
     isLow: boolean;
     isOff: boolean;
     high(): void;
     low(): void;
     off(): void;
-    sources(): IDigital[];
-    lead(target: IDigital): void;
-    unlead(target: IDigital): void;
-    follow(souce: IDigital): void;
-    unfollow(source: IDigital): void;
-    once(): void;
+    to(target: IDigital): void;
+    from(target: IDigital): void;
+    detach(target: IDigital): void;
+    compute(): void;
     dispose(): void;
 }

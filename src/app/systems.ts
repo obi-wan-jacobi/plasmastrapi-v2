@@ -4,35 +4,12 @@ import Wire, { WireDestructorHandle } from './entities/Wire';
 import { RivetComponent } from './components';
 import { Contraption, Sensor } from './entities/contraptions';
 import { BuildArea, GateMask } from './entities/designer';
-import { GateCreatorHandle, Logical } from './entities/gates';
+import { Digital, GateCreatorHandle } from './entities/gates';
 import { getEuclideanDistanceBetweenPoints, transformShape } from '../framework/helpers/geometry';
 import { PoseComponent } from 'src/framework/geometry/components/PoseComponent';
 import { ShapeComponent } from 'src/framework/geometry/components/ShapeComponent';
 import { entityContainsPoint } from 'src/framework/helpers/entities';
 import { InputTerminalHandle, OutputTerminalHandle } from './entities/terminals';
-
-export class GateMaskSystem extends System {
-
-    public once(): void {
-        this.$engine.entities.forEvery(BuildArea)((area) => {
-            if (this.$engine.mouse.name === 'none') {
-                return;
-            }
-            this.$engine.entities.forEvery(GateMask)((mask) => {
-                mask.$destroy();
-            });
-            this.$engine.entities.forEvery(GateCreatorHandle)(() => {
-                if (entityContainsPoint(area, this.$engine.mouse)) {
-                    this.$engine.entities.create(GateMask, {
-                        x: this.$engine.mouse.x,
-                        y: this.$engine.mouse.y,
-                    });
-                    return;
-                }
-            });
-        });
-    }
-}
 
 export class WireDestructorHandleSystem extends System {
 
@@ -69,7 +46,7 @@ export class InputTerminalHandleSystem extends System {
 export class TerminalWireSystem extends System {
 
     public draw(): void {
-        this.$engine.entities.forEvery(Logical)((gate) => {
+        this.$engine.entities.forEvery(Digital)((gate) => {
             const gatePose = gate.$copy(PoseComponent);
             const inPose = gate.input.$copy(PoseComponent);
             const outPose = gate.output.$copy(PoseComponent);
@@ -124,10 +101,10 @@ export class SensorSystem extends System {
     }
 }
 
-export class GateSystem extends System {
+export class DigitalSystem extends System {
 
     public once(): void {
-        this.$engine.entities.forEvery(Logical)((gate) => {
+        this.$engine.entities.forEvery(Digital)((gate) => {
             gate.once();
         });
     }

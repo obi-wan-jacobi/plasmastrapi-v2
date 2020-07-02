@@ -2,12 +2,13 @@ import { IDigital as IDigital } from '../interfaces/IDigital';
 import { STATE } from '../enums/STATE';
 import Unique from 'src/data-structures/abstracts/Unique';
 import Dictionary from 'src/data-structures/concretes/Dictionary';
+import IDictionary from 'src/data-structures/interfaces/IDictionary';
 
 export abstract class Digital extends Unique implements IDigital {
 
+    protected _inputs: IDictionary<IDigital> = new Dictionary();
     private __state: STATE = STATE.OFF;
-    private __sources: Dictionary<Digital> = new Dictionary();
-    private __targets: Dictionary<Digital> = new Dictionary();
+    private __outputs: IDictionary<IDigital> = new Dictionary();
 
     public get isHigh(): boolean {
         return this.__state === STATE.HIGH;
@@ -33,38 +34,32 @@ export abstract class Digital extends Unique implements IDigital {
         this.__state = STATE.OFF;
     }
 
-    public sources(): Digital[] {
-        return this.__sources.toArray();
-    }
-
-    public lead(target: Digital): void {
-        if (this.__targets.read(target.id)) {
+    public to(target: IDigital): void {
+        if (this.__outputs.read(target.id)) {
             return;
         }
-        this.__targets.write({ key: target.id, value: target });
-        target.follow(this);
+        this.__outputs.write({ key: target.id, value: target });
+        target.from(this);
     }
 
-    public unlead(source: Digital): void {
-        this.__targets.delete(source.id);
+    public from(target: IDigital): void {
+        this.__inputs.write({ key: target.id, value: target });
+        target.to(this);
     }
 
-    public follow(source: Digital): void {
-        if (this.__sources.read(source.id)) {
+    public detach(target: IDigital): void {
+        if (!this.__inputs.read(target.id) && !this.__outputs.read(target.id)) {
             return;
         }
-        this.__sources.write({ key: source.id, value: source });
-        source.lead(this);
+        this.__inputs.delete(target.id);
+        this.__outputs.delete(target.id);
+        target.detach(this);
     }
 
-    public unfollow(source: Digital): void {
-        this.__sources.delete(source.id);
-    }
-
-    public abstract once(): void;
+    public abstract compute(): void;
 
     public dispose(): void {
-        this.__sources.forEach((source) => source.unlead(this));
-        this.__targets.forEach((target) => target.unfollow(this));
+        this.__inputs.forEach((source) => source.detach(this));
+        this.__outputs.forEach((target) => target.detach(this));
     }
 }

@@ -1,247 +1,114 @@
 import Wire from './Wire';
 import { Contraption, PowerSupply } from './contraptions';
-import { AndGate, Logical, NandGate, OrGate, XorGate } from './gates';
 import { Player } from './player';
+import IEntity from 'src/engine/interfaces/IEntity';
 import { IPoint, PoseComponent } from 'src/framework/geometry/components/PoseComponent';
 import { ShapeComponent } from 'src/framework/geometry/components/ShapeComponent';
 import { entityContainsPoint, entityTouchesLine } from 'src/framework/helpers/entities';
 import { ImageComponent } from 'src/framework/presentation/components/ImageComponent';
 import { StyleComponent } from 'src/framework/presentation/components/StyleComponent';
 import { InputTerminal, OutputTerminal } from './terminals';
-import { ToolHandle } from './tools';
 import { Ctor } from '../../data-structures/types';
-import { Button, Panel } from './ui';
+import { Button, Panel, UIElement } from './ui';
 
 export class ToolButton extends Button {
 
-    public constructor({ x, y, src }: { x: number, y: number, src: string }) {
+    // tslint:disable-next-line:naming-convention
+    private __Tool: Ctor<Tool, {}>;
+
+    public constructor({ x, y, src, ToolCtor }: { x: number, y: number, src: string, ToolCtor: Ctor<Tool, {}> }) {
         super(arguments[0]);
         this.$add(ImageComponent)({ src });
+        this.__Tool = ToolCtor;
     }
 
     public $click(): void {
-        this.$engine.entities.forEvery(ToolHandle)((handle) => {
-            handle.$destroy();
-        });
-        this.$disable();
+        this.$engine.entities.create(this.__Tool);
     }
 }
 
-export class GateCreatorButton extends ToolButton {
+export class DigitalElement extends UIElement {
 
-    // tslint:disable-next-line:naming-convention
-    private __GateCtor: Ctor<Logical, {}>;
+}
 
-    public constructor({ GateCtor }: { GateCtor: Ctor<Logical, {}> }) {
+export abstract class Tool extends UIElement {
+
+    public constructor({ x, y, src }: { x: number, y: number, src?: string }) {
         super(arguments[0]);
-        this.__GateCtor = GateCtor;
+        if (src) {
+            this.$add(ImageComponent)({ src });
+        }
     }
 
-    public $click(): void {
-        super.$click();
-        this.$engine.entities.create(GateCreatorHandle, {
-            GateCtor: this.__GateCtor,
+    public $mousemove(): void {
+        this.$patch(PoseComponent)({
             x: this.$engine.mouse.x,
             y: this.$engine.mouse.y,
         });
     }
-}
-
-export class AndGateCreatorButton extends GateCreatorButton {
-
-    public constructor() {
-        super(Object.assign({ GateCtor: AndGate, src: './AndGate.png' }, arguments[0]));
-    }
-}
-
-export class NandGateCreatorButton extends GateCreatorButton {
-
-    public constructor() {
-        super(Object.assign({ GateCtor: NandGate, src: './NandGate.png' }, arguments[0]));
-    }
-}
-
-export class OrGateCreatorButton extends GateCreatorButton {
-
-    public constructor() {
-        super(Object.assign({ GateCtor: OrGate, src: './OrGate.png' }, arguments[0]));
-    }
-}
-
-export class XorGateCreatorButton extends GateCreatorButton {
-
-    public constructor() {
-        super(Object.assign({ GateCtor: XorGate, src: './XorGate.png' }, arguments[0]));
-    }
-}
-
-export class GateDestructorButton extends ToolButton {
-
-    public constructor() {
-        super(Object.assign({ src: './TRASHCAN.png' }, arguments[0]));
-    }
 
     public $click(): void {
-        super.$click();
-        this.$engine.entities.create(GateDestructorHandle, {
-            x: this.$engine.mouse.x,
-            y: this.$engine.mouse.y,
-        });
+        this.$destroy();
     }
 }
 
-export class GateCreatorHandle extends ToolHandle {
+export class CreatorTool<T extends DigitalElement> extends Tool {
 
     // tslint:disable-next-line:naming-convention
-    private __GateCtor: Ctor<Logical, {}>;
+    private __DigitalElement: Ctor<T, {}>;
 
-    constructor({ GateCtor, x, y }: { GateCtor: Ctor<Logical, {}>, x: number, y: number }) {
+    constructor({ x, y, DigitalElementCtor }: { x: number, y: number, DigitalElementCtor: Ctor<T, {}> }) {
         super(arguments[0]);
         this.$add(StyleComponent)({ colour: 'YELLOW' });
-        this.__GateCtor = GateCtor;
+        this.__DigitalElement = DigitalElementCtor;
     }
 
-    public action(): void {
-        this.$engine.entities.create(this.__GateCtor, {
+    public $mouseup(): void {
+        this.$engine.entities.create(this.__DigitalElement, {
             x: this.$engine.mouse.x,
             y: this.$engine.mouse.y,
         });
     }
-
-    public $destroy(): void {
-        super.$destroy();
-        this.$engine.entities.forEvery(GateCreatorButton)((button) => {
-            button.$enable();
-        });
-    }
 }
 
-export class GateDestructorHandle extends ToolHandle {
+export class DestructorTool extends Tool {
 
     constructor({ x, y }: { x: number, y: number }) {
-        super(arguments[0]);
+        super(Object.assign({ width: 10, height: 10 }, arguments[0]));
         this.$add(StyleComponent)({ colour: 'ORANGE' });
     }
 
-    public action(): void {
-        const target = this.$engine.entities.first(Logical)((gate) => {
-            return entityContainsPoint(gate, this.$engine.mouse);
+    public $click(): void {
+        super.$click();
+        const target = this.$engine.entities.first(DigitalElement)((element) => {
+            return entityContainsPoint(element, this.$engine.mouse);
         });
         if (target) {
             target.$destroy();
         }
     }
-
-    public $destroy(): void {
-        super.$destroy();
-        this.$engine.entities.forEvery(GateDestructorButton)((button) => {
-            button.$enable();
-        });
-    }
 }
 
-export class GatePlacerHandle extends ToolHandle {
+export class PlacerTool extends Tool {
 
-    public gate: Logical;
+    private __element: DigitalElement;
 
-    constructor({ x, y, gate }: { x: number, y: number, gate: Logical }) {
+    constructor({ x, y, element }: { x: number, y: number, element: DigitalElement }) {
         super(arguments[0]);
         this.$add(StyleComponent)({ colour: 'LIGHTBLUE' });
-        this.gate = gate;
+        this.__element = element;
     }
 
     public $mousemove(): void {
-        this.$engine.entities.forEvery(BuildArea)((area) => {
-            if (!entityContainsPoint(area, this.$engine.mouse)) {
-                this.$destroy();
-                return;
-            }
-            super.$mousemove();
-            this.gate.move({
-                x: this.$engine.mouse.x,
-                y: this.$engine.mouse.y,
-                a: 0,
-            });
-        });
-    }
-}
-
-export class OutputTerminalHandle extends ToolHandle {
-
-    public input: InputTerminal;
-
-    constructor({ x, y, input }: { x: number, y: number, input: InputTerminal }) {
-        super(arguments[0]);
-        this.input = input;
-    }
-
-    public action(): void {
-        const target = this.$engine.entities.first(OutputTerminal)((terminal) => {
-            return entityContainsPoint(terminal, this.$engine.mouse);
-        });
-        if (target) {
-            const wire = this.$engine.entities.create(Wire, {
-                input: this.input,
-                output: target,
-            });
-            this.input.wires.write({
-                key: wire.id,
-                value: wire,
-            });
-            target.wires.write({
-                key: wire.id,
-                value: wire,
-            });
-        }
-    }
-}
-
-export class InputTerminalHandle extends ToolHandle {
-
-    public output: OutputTerminal;
-
-    constructor({ x, y, output }: { x: number, y: number, output: OutputTerminal }) {
-        super(arguments[0]);
-        this.output = output;
-    }
-
-    public action(): void {
-        const target = this.$engine.entities.first(InputTerminal)((terminal) => {
-            return entityContainsPoint(terminal, this.$engine.mouse);
-        });
-        if (target) {
-            const wire = this.$engine.entities.create(Wire, {
-                input: target,
-                output: this.output,
-            });
-            this.output.wires.write({
-                key: wire.id,
-                value: wire,
-            });
-            target.wires.write({
-                key: wire.id,
-                value: wire,
-            });
-        }
-    }
-}
-
-export class WireDestructorButton extends ToolButton {
-
-    public constructor() {
-        super(Object.assign({ src: './CUTTER_CLOSED.png' }, arguments[0]));
-    }
-
-    public $click(): void {
-        super.$click();
-        this.$engine.entities.create(WireDestructorHandle, {
+        super.$mousemove();
+        this.__element.$patch(PoseComponent)({
             x: this.$engine.mouse.x,
             y: this.$engine.mouse.y,
         });
     }
 }
 
-export class WireDestructorHandle extends ToolHandle {
+export class WireCutterTool extends Tool {
 
     public points: IPoint[] = [];
 
@@ -267,24 +134,13 @@ export class WireDestructorHandle extends ToolHandle {
         });
     }
 
-    public $destroy(): void {
-        super.$destroy();
-        this.$engine.entities.forEvery(WireDestructorButton)((button) => {
-            button.$enable();
-        });
+    public $click(): void {
+        super.$click();
         this.$engine.entities.forEvery(Wire)((wire) => {
             if (entityTouchesLine(wire, this.points)) {
                 wire.$destroy();
             }
         });
-    }
-}
-
-export class GateMask extends Panel {
-
-    constructor({ x, y }: { x: number, y: number }) {
-        super(Object.assign({ width: 40, height: 40 }, arguments[0]));
-        this.$add(StyleComponent)({ colour: 'LIGHTBLUE' });
     }
 }
 

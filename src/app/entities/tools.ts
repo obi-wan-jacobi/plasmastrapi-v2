@@ -1,6 +1,5 @@
 import Wire from './Wire';
 import { BuildArea, GateCreatorButton, GateDestructorButton, WireDestructorButton } from './designer';
-import { Logical } from './gates';
 import { IPoint, PoseComponent } from 'src/framework/geometry/components/PoseComponent';
 import { ShapeComponent } from 'src/framework/geometry/components/ShapeComponent';
 import { entityContainsPoint, entityTouchesLine } from 'src/framework/helpers/entities';

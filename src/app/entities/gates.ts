@@ -1,93 +1,54 @@
 import { Digital } from '../abstracts/Digital';
-import Unique from 'src/data-structures/abstracts/Unique';
-import Dictionary from 'src/data-structures/concretes/Dictionary';
+import { IDigital } from '../interfaces/IDigital';
 import { IPose, PoseComponent } from 'src/framework/geometry/components/PoseComponent';
 import { InteractiveEntity } from 'src/framework/interactive/InteractiveEntity';
 import { ImageComponent } from 'src/framework/presentation/components/ImageComponent';
 import { InputTerminal, OutputTerminal } from './terminals';
 import { ToolHandle } from './tools';
 
-export class AndGate extends Digital {
+export class And extends Digital {
 
-    public once(): void {
-        const sources = this.sources();
-        if (sources.find((source) => source.isLow)) {
+    public compute(): void {
+        if (this._inputs.find((input) => input.isLow)) {
             return this.low();
         }
-        if (sources.find((source) => source.isHigh)) {
+        if (this._inputs.find((input) => input.isHigh)) {
             return this.high();
         }
         return this.off();
     }
 }
 
-export class NandGate extends Digital {
+export class Nand extends Digital {
 
-    public constructor() {
-        super(Object.assign({ src: './NandGate.png' }, arguments[0]));
-    }
-
-    public once(): void {
-        if (!this.input.wires.length) {
+    public compute(): void {
+        const high = this._inputs.find((input) => input.isHigh);
+        const low = this._inputs.find((input) => input.isLow);
+        if (!(high || low)) {
             return this.off();
         }
-        const wires = this.input.wires.toArray();
-        for (const wire of wires) {
-            if (wire.output.isLow) {
-                return this.high();
-            }
+        if (low) {
+            return this.high();
         }
-        if (wires.find((wire) => wire.output.isHigh)) {
-            this.low();
-        } else {
-            this.off();
-        }
+        return this.low();
     }
 }
 
-export class OrGate extends Digital {
+export class Or extends Digital {
 
-    public constructor() {
-        super(Object.assign({ src: './OrGate.png' }, arguments[0]));
-    }
-
-    public once(): void {
-        // if (!this.input.wires.length) {
-        //     this.off();
-        //     return;
-        // }
-        // for (const wire of this.input.wires) {
-        //     if (wire.output.isLow) {
-        //         this.high();
-        //         return;
-        //     }
-        // }
-        // this.low();
+    public compute(): void {
+        //
     }
 }
 
-export class XorGate extends Digital {
+export class Xor extends Digital {
 
-    public constructor() {
-        super(Object.assign({ src: './XorGate.png' }, arguments[0]));
-    }
-
-    public once(): void {
-        // if (!this.input.wires.length) {
-        //     this.off();
-        //     return;
-        // }
-        // for (const wire of this.input.wires) {
-        //     if (wire.output.isLow) {
-        //         this.high();
-        //         return;
-        //     }
-        // }
-        // this.low();
+    public compute(): void {
+        //
     }
 }
 
-export class Gate2 extends InteractiveEntity {
+export class Gate extends InteractiveEntity {
 
     public input: InputTerminal;
     public output: OutputTerminal;

@@ -1,7 +1,6 @@
 import { Contraption, PowerSupply } from './contraptions';
 import { ToolButton } from './designer';
-import { Logical } from './gates';
-import { ActuatorSystem, ContraptionSystem, GateSystem, SensorSystem } from '../systems';
+import { ActuatorSystem, ContraptionSystem, DigitalSystem, SensorSystem } from '../systems';
 import { Terminal } from './terminals';
 import { ToolHandle } from './tools';
 import { Button, Panel } from './ui';
@@ -41,7 +40,7 @@ export class PlayButton extends LatchButton {
         });
         this.$engine.add(ActuatorSystem);
         this.$engine.add(SensorSystem);
-        this.$engine.add(GateSystem);
+        this.$engine.add(DigitalSystem);
         this.$engine.add(ContraptionSystem);
     }
 }
@@ -57,7 +56,7 @@ export class ResetButton extends LatchButton {
         super.$click();
         this.$engine.remove(ActuatorSystem);
         this.$engine.remove(SensorSystem);
-        this.$engine.remove(GateSystem);
+        this.$engine.remove(DigitalSystem);
         this.$engine.remove(ContraptionSystem);
         this.$engine.entities.forEvery(ToolButton)((button) => {
             button.$enable();
