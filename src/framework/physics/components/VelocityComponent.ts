@@ -1,6 +1,6 @@
-import { Component } from 'src/engine/abstracts/Component';
+import Component from 'src/engine/abstracts/Component';
 
 export interface IVelocity {
-    x: number; y: number; w: number;
+  x: number; y: number; w: number;
 }
-export class VelocityComponent extends Component<IVelocity> {}
+export default class VelocityComponent extends Component<IVelocity> { }

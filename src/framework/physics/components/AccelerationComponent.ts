@@ -1,6 +1,6 @@
-import { Component } from 'src/engine/abstracts/Component';
+import Component from 'src/engine/abstracts/Component';
 
 export interface IAcceleration {
-    x: number; y: number; w: number;
+  x: number; y: number; w: number;
 }
-export class AccelerationComponent extends Component<IAcceleration> {}
+export default class AccelerationComponent extends Component<IAcceleration> { }

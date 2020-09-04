@@ -1,4 +1,4 @@
 import { IPose } from './PoseComponent';
-import { Component } from 'src/engine/abstracts/Component';
+import Component from 'src/engine/abstracts/Component';
 
-export class MotionComponent extends Component<IPose> {}
+export default class MotionComponent extends Component<IPose> { }

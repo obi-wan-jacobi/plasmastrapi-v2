@@ -1,5 +1,5 @@
 import { IPoint } from './PoseComponent';
-import { Component } from 'src/engine/abstracts/Component';
+import Component from 'src/engine/abstracts/Component';
 
 export interface IShape { points: IPoint[]; }
-export class ShapeComponent extends Component<IShape> {}
+export default class ShapeComponent extends Component<IShape> { }

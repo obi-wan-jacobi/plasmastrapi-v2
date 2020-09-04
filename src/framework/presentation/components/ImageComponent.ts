@@ -1,10 +1,10 @@
 import { IStyle } from './StyleComponent';
-import { Component } from 'src/engine/abstracts/Component';
+import Component from 'src/engine/abstracts/Component';
 
 export interface IImage extends IStyle {
-    src: string;
-    width?: number;
-    height?: number;
-    rotate?: number;
+  src: string;
+  width?: number;
+  height?: number;
+  rotate?: number;
 }
-export class ImageComponent extends Component<IImage> {}
+export default class ImageComponent extends Component<IImage> { }
