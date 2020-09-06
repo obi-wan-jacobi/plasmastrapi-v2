@@ -1,6 +1,6 @@
+import PoseComponent from '../geometry/components/PoseComponent';
 import { entityContainsPoint } from '../helpers/entities';
 import Entity from 'src/engine/Entity';
-import PoseComponent from '../geometry/components/PoseComponent';
 
 export default abstract class InteractiveEntity extends Entity {
 

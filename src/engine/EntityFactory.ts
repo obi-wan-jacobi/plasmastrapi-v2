@@ -32,12 +32,12 @@ export default class EntityFactory extends Wrapper<IDictionary<IFactory<IEntity>
 
   public forEvery<T extends IEntity>(EntityCtor: EClass<T>): (fn: (entity: T) => void) => void {
     const collection = this.unwrap().read(EntityCtor.name);
-    return collection ? collection.forEach.bind(collection) : function (): void { return; };
+    return collection ? collection.forEach.bind(collection) : (): void => undefined;
   }
 
   public first<T extends IEntity>(EntityCtor: EClass<T>): (fn: (entity: T) => boolean) => T | undefined {
     const collection = this.unwrap().read(EntityCtor.name);
-    return collection ? collection.first.bind(collection) : function (): void { return; };
+    return collection ? collection.first.bind(collection) : (): void => undefined;
   }
 
   public once(): void {

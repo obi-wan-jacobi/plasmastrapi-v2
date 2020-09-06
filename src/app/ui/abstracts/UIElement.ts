@@ -1,8 +1,7 @@
+import ImageComponent from '../../../framework/presentation/components/ImageComponent';
 import InteractiveEntity from '../../../framework/interactive/InteractiveEntity';
 import ShapeComponent from '../../../framework/geometry/components/ShapeComponent';
 import StyleComponent from '../../../framework/presentation/components/StyleComponent';
-import ImageComponent from '../../../framework/presentation/components/ImageComponent';
-
 
 export default abstract class UIElement extends InteractiveEntity {
 
@@ -14,7 +13,7 @@ export default abstract class UIElement extends InteractiveEntity {
         { x: -width / 2, y: height / 2 },
         { x: -width / 2, y: -height / 2 },
         { x: width / 2, y: -height / 2 },
-      ]
+      ],
     });
     this.$add(StyleComponent)({ colour: 'WHITE' });
     if (src) {
