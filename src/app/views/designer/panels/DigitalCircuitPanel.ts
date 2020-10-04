@@ -1,7 +1,7 @@
 import Panel from '../../../ui/Panel';
 import InputTerminal from '../../../digital-logic/entities/InputTerminal';
-import { PoseComponent } from '../../../../framework/geometry/components/PoseComponent';
-import { ShapeComponent } from '../../../../framework/geometry/components/ShapeComponent';
+import PoseComponent from '../../../../framework/geometry/components/PoseComponent';
+import ShapeComponent from '../../../../framework/geometry/components/ShapeComponent';
 import OutputTerminal from '../../../digital-logic/entities/OutputTerminal';
 import PowerSupply from '../../../digital-logic/entities/PowerSupply';
 

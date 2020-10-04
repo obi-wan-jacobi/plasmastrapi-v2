@@ -1,14 +1,14 @@
 import DigitalElement from '../../../digital-logic/entities/abstracts/DigitalElement';
 import { Tool } from '../../DesignView';
-import { Ctor } from '../../../../data-structures/types';
+import { Constructor } from '../../../../foundation/types';
 import { StyleComponent } from '../../../../framework/presentation/components/StyleComponent';
 
 export default class CreatorTool<T extends DigitalElement> extends Tool {
 
   // tslint:disable-next-line:naming-convention
-  private __DigitalElement: Ctor<T, {}>;
+  private __DigitalElement: Constructor<T, {}>;
 
-  constructor({ x, y, DigitalElementCtor }: { x: number, y: number, DigitalElementCtor: Ctor<T, {}> }) {
+  constructor({ x, y, DigitalElementCtor }: { x: number, y: number, DigitalElementCtor: Constructor<T, {}> }) {
     super(arguments[0]);
     this.$add(StyleComponent)({ colour: 'YELLOW' });
     this.__DigitalElement = DigitalElementCtor;

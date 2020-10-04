@@ -1,7 +1,7 @@
 import Entity from '../../../../engine/Entity';
-import { PoseComponent } from '../../../../framework/geometry/components/PoseComponent';
-import { ShapeComponent, IShape } from '../../../../framework/geometry/components/ShapeComponent';
-import { StyleComponent } from '../../../../framework/presentation/components/StyleComponent';
+import PoseComponent from '../../../../framework/geometry/components/PoseComponent';
+import ShapeComponent, { IShape } from '../../../../framework/geometry/components/ShapeComponent';
+import StyleComponent from '../../../../framework/presentation/components/StyleComponent';
 
 export default class MachineTarget extends Entity {
 

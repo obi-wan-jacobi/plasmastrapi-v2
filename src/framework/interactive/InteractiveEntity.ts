@@ -1,6 +1,7 @@
 import PoseComponent from '../geometry/components/PoseComponent';
 import { entityContainsPoint } from '../helpers/entities';
 import Entity from 'src/engine/Entity';
+import { Index } from '../../foundation/types';
 
 export default abstract class InteractiveEntity extends Entity {
 
@@ -24,11 +25,11 @@ export default abstract class InteractiveEntity extends Entity {
     if (this.__isDisabled) {
       return;
     }
-    if (this.$engine.mouse.name === 'none') {
+    if (this.$master.mouse.name === 'none') {
       return;
     }
-    if (!entityContainsPoint(this, this.$engine.mouse)) {
-      if (this.$engine.mouse.name === 'mousemove') {
+    if (!entityContainsPoint(this, this.$master.mouse)) {
+      if (this.$master.mouse.name === 'mousemove') {
         this.$mousemove();
       }
       if (this.__isHovered) {
@@ -41,7 +42,7 @@ export default abstract class InteractiveEntity extends Entity {
       this.__isHovered = true;
       this.$mouseenter();
     }
-    (this as { [key: string]: any })[`$${this.$engine.mouse.name}`]();
+    (this as Index<any>)[`$${this.$master.mouse.name}`]();
   }
 
   public abstract $mouseenter(): void;

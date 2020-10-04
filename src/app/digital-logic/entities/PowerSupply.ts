@@ -1,5 +1,5 @@
 import OutputTerminal from './OutputTerminal';
-import { LabelComponent } from '../../../framework/presentation/components/LabelComponent';
+import LabelComponent from '../../../framework/presentation/components/LabelComponent';
 
 export default class PowerSupply extends OutputTerminal {
 

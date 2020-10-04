@@ -1,6 +1,6 @@
 import IComponent from '../interfaces/IComponent';
 import IEntity from '../interfaces/IEntity';
-import Unique from '../../data-structures/abstracts/Unique';
+import Unique from '../../foundation/abstracts/Unique';
 
 export default abstract class Component<T extends {}> extends Unique implements IComponent<T> {
 
@@ -8,7 +8,7 @@ export default abstract class Component<T extends {}> extends Unique implements 
 
   private __data: T;
 
-  constructor(entity: IEntity, data: T) {
+  constructor({ data, entity }: { data: T, entity: IEntity }) {
     super();
     this.$entity = entity;
     this.mutate(data);

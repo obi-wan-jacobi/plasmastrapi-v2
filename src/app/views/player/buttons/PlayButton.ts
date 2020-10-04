@@ -1,4 +1,8 @@
 import LatchButton from './LatchButton';
+import ToolButton from '../../designer/buttons/ToolButton';
+import DigitalElement from '../../../digital-logic/entities/abstracts/DigitalElement';
+import Terminal from '../../../digital-logic/entities/abstracts/Terminal';
+import PowerSupply from '../../../digital-logic/entities/PowerSupply';
 
 export default class PlayButton extends LatchButton {
 
@@ -8,21 +12,21 @@ export default class PlayButton extends LatchButton {
 
   public $click(): void {
     super.$click();
-    this.$engine.entities.forEvery(ToolButton)((button) => {
+    this.$master.entities.forEvery(ToolButton)((button) => {
       button.$disable();
     });
-    this.$engine.entities.forEvery(DigitalElement)((gate) => {
+    this.$master.entities.forEvery(DigitalElement)((gate) => {
       gate.$disable();
     });
-    this.$engine.entities.forEvery(Terminal)((terminal) => {
+    this.$master.entities.forEvery(Terminal)((terminal) => {
       terminal.$disable();
     });
-    this.$engine.entities.forEvery(PowerSupply)((power) => {
+    this.$master.entities.forEvery(PowerSupply)((power) => {
       power.high();
     });
-    this.$engine.add(ActuatorSystem);
-    this.$engine.add(SensorSystem);
-    this.$engine.add(DigitalSystem);
-    this.$engine.add(ContraptionSystem);
+    this.$master.add(ActuatorSystem);
+    this.$master.add(SensorSystem);
+    this.$master.add(DigitalSystem);
+    this.$master.add(ContraptionSystem);
   }
 }

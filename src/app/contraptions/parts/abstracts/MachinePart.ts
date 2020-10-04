@@ -1,8 +1,8 @@
 import Entity from '../../../../engine/Entity';
-import { IPose, PoseComponent } from '../../../../framework/geometry/components/PoseComponent';
-import { IShape, ShapeComponent } from '../../../../framework/geometry/components/ShapeComponent';
-import { StyleComponent } from '../../../../framework/presentation/components/StyleComponent';
+import PoseComponent, { IPose } from '../../../../framework/geometry/components/PoseComponent';
+import ShapeComponent, { IShape } from '../../../../framework/geometry/components/ShapeComponent';
 import IPoseIncrement from '../../interfaces/IPoseIncrement';
+import StyleComponent from '../../../../framework/presentation/components/StyleComponent';
 
 export default class MachinePart extends Entity {
 
@@ -19,14 +19,14 @@ export default class MachinePart extends Entity {
   }
 
   public reset(): void {
-    this.$mutate(PoseComponent)(this.__initialPose);
+    this.$mutate(PoseComponent)!(this.__initialPose);
   }
 
   public step(poseStep: IPoseIncrement): void {
-    const pose = this.$copy(PoseComponent);
+    const pose = this.$copy(PoseComponent)!;
     pose.x += poseStep.x || 0;
     pose.y += poseStep.y || 0;
     pose.a += poseStep.a || 0;
-    this.$mutate(PoseComponent)(pose);
+    this.$mutate(PoseComponent)!(pose);
   }
 }

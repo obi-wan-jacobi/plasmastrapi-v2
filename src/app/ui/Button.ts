@@ -1,6 +1,6 @@
 
-import { LabelComponent } from '../../framework/presentation/components/LabelComponent';
-import { StyleComponent } from '../../framework/presentation/components/StyleComponent';
+import LabelComponent from '../../framework/presentation/components/LabelComponent';
+import StyleComponent from '../../framework/presentation/components/StyleComponent';
 import UIElement from './abstracts/UIElement';
 
 export default abstract class Button extends UIElement {
@@ -18,11 +18,11 @@ export default abstract class Button extends UIElement {
 
   public $enable(): void {
     super.$enable();
-    this.$patch(StyleComponent)({ opacity: 1 });
+    this.$patch(StyleComponent)!({ opacity: 1 });
   }
 
   public $disable(): void {
     super.$disable();
-    this.$patch(StyleComponent)({ opacity: 0.2 });
+    this.$patch(StyleComponent)!({ opacity: 0.2 });
   }
 }

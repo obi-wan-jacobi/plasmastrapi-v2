@@ -8,7 +8,7 @@ export default class LatchButton extends Button {
   }
 
   public $click(): void {
-    this.$engine.entities.forEvery(LatchButton)((button) => {
+    this.$master.entities.forEvery(LatchButton)((button) => {
       button.$enable();
     });
     this.$disable();

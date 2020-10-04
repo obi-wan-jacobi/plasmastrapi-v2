@@ -1,13 +1,13 @@
 
-import { Ctor, Optional } from '../../data-structures/types';
+import { Constructor, Optional } from '../../foundation/types';
 import UIElement from './abstracts/UIElement';
 
 export default class Panel extends UIElement {
 
   private __children: UIElement[] = [];
 
-  public add<T extends UIElement, TArg extends {}>(UIElementCtor: Ctor<T, Optional<TArg>>, arg?: TArg): void {
-    const element = this.$engine.entities.create(UIElementCtor, arg);
+  public add<T extends UIElement, TArg extends {}>(UIElementCtor: Constructor<T, Optional<TArg>>, arg?: TArg): void {
+    const element = this.$master.entities.create(UIElementCtor, arg);
     this.__children.push(element);
   }
 

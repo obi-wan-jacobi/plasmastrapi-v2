@@ -8,22 +8,22 @@ export default class ResetButton extends LatchButton {
 
   public $click(): void {
     super.$click();
-    this.$engine.remove(ActuatorSystem);
-    this.$engine.remove(SensorSystem);
-    this.$engine.remove(DigitalSystem);
-    this.$engine.remove(ContraptionSystem);
-    this.$engine.entities.forEvery(ToolButton)((button) => {
+    this.$master.remove(ActuatorSystem);
+    this.$master.remove(SensorSystem);
+    this.$master.remove(DigitalSystem);
+    this.$master.remove(ContraptionSystem);
+    this.$master.entities.forEvery(ToolButton)((button) => {
       button.$enable();
     });
-    this.$engine.entities.forEvery(Terminal)((terminal) => {
+    this.$master.entities.forEvery(Terminal)((terminal) => {
       terminal.$enable();
       terminal.off();
     });
-    this.$engine.entities.forEvery(Logical)((gate) => {
+    this.$master.entities.forEvery(Logical)((gate) => {
       gate.$enable();
       gate.off();
     });
-    this.$engine.entities.forEvery(Contraption)((contraption) => {
+    this.$master.entities.forEvery(Contraption)((contraption) => {
       contraption.off();
       contraption.reset();
     });

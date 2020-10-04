@@ -1,4 +1,4 @@
-import IUnique from 'src/data-structures/interfaces/IUnique';
+import IUnique from 'src/foundation/interfaces/IUnique';
 
 export default interface IDigitalOperator extends IUnique {
   isHigh: boolean;

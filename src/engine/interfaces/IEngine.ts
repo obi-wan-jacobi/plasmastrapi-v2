@@ -1,15 +1,15 @@
 import IAdaptedKeyboardEvent from './IAdaptedKeyboardEvent';
 import IAdaptedMouseEvent from './IAdaptedMouseEvent';
-import IComponentFactory from './IComponentFactory';
-import IEntityFactory from './IEntityFactory';
+import IComponentMaster from './IComponentMaster';
+import IEntityFactory from './IEntityMaster';
 import ISystem from './ISystem';
 import IViewportAdaptor from './IViewportAdaptor';
-import { Ctor } from '../../data-structures/types';
+import { Constructor } from '../../foundation/types';
 
 export default interface IEngine {
 
   viewport: IViewportAdaptor<any>;
-  components: IComponentFactory;
+  components: IComponentMaster;
   entities: IEntityFactory;
 
   mouse: IAdaptedMouseEvent;
@@ -19,6 +19,6 @@ export default interface IEngine {
 
   once(): void;
   draw(): void;
-  add(SystemCtor: Ctor<ISystem, any>): void;
-  remove(SystemCtor: Ctor<ISystem, any>): void;
+  add(SystemCtor: Constructor<ISystem, any>): void;
+  remove(SystemCtor: Constructor<ISystem, any>): void;
 }

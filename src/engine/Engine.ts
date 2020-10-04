@@ -1,20 +1,18 @@
-import ComponentFactory from './ComponentFactory';
-import Dictionary from '../data-structures/concretes/Dictionary';
-import EntityFactory from './EntityFactory';
+import Dictionary from '../foundation/concretes/Dictionary';
+import EntityMaster from './EntityMaster';
 import IAdaptedKeyboardEvent from './interfaces/IAdaptedKeyboardEvent';
 import IAdaptedMouseEvent from './interfaces/IAdaptedMouseEvent';
-import IComponentFactory from './interfaces/IComponentFactory';
-import IDictionary from '../data-structures/interfaces/IDictionary';
+import IComponentMaster from './interfaces/IComponentMaster';
+import IDictionary from '../foundation/interfaces/IDictionary';
 import IEngine from './interfaces/IEngine';
-import IEntityFactory from './interfaces/IEntityFactory';
+import IEntityFactory from './interfaces/IEntityMaster';
 import ISystem from './interfaces/ISystem';
 import IViewportAdaptor from './interfaces/IViewportAdaptor';
-import { Ctor } from 'src/data-structures/types';
+import { Stor } from './types';
 
 export default class Engine implements IEngine {
 
   public viewport: IViewportAdaptor<any>;
-  public components: IComponentFactory;
   public entities: IEntityFactory;
 
   public mouse: IAdaptedMouseEvent;
@@ -27,10 +25,13 @@ export default class Engine implements IEngine {
 
   constructor(viewport: IViewportAdaptor<any>) {
     this.viewport = viewport;
-    this.components = new ComponentFactory();
-    this.entities = new EntityFactory(this);
-    this.__systems = new Dictionary<ISystem>();
+    this.entities = new EntityMaster();
+    this.__systems = new Dictionary();
     this.__t = new Date();
+  }
+
+  public get components(): IComponentMaster {
+    return this.entities.components;
   }
 
   public once(): void {
@@ -46,15 +47,15 @@ export default class Engine implements IEngine {
     this.viewport.once();
   }
 
-  public add(SystemCtor: Ctor<ISystem, any>): void {
+  public add<T extends ISystem>(SystemClass: Stor<T>): void {
     this.__systems.write({
-      key: SystemCtor.name,
-      value: new SystemCtor(this),
+      key: SystemClass.name,
+      value: new SystemClass(this),
     });
   }
 
-  public remove(SystemCtor: Ctor<ISystem, any>): void {
-    this.__systems.delete(SystemCtor.name);
+  public remove<T extends ISystem>(SystemClass: Stor<T>): void {
+    this.__systems.delete(SystemClass.name);
   }
 
 }

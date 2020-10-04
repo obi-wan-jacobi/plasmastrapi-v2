@@ -1,11 +1,11 @@
-import { Contraption } from '../abstracts/Contraption';
+import Contraption from '../abstracts/Contraption';
 import MachinePart from './abstracts/MachinePart';
-import { TouchActivator } from './TouchActivator';
-import { TouchSensor } from './TouchSensor';
+import TouchActivator from './TouchActivator';
+import TouchSensor from './TouchSensor';
 import HorizontalThreadedAxle from './HorizontalThreadedAxle';
 import Actuator from './Actuator';
-import { StyleComponent } from '../../../framework/presentation/components/StyleComponent';
-import { PoseComponent } from '../../../framework/geometry/components/PoseComponent';
+import StyleComponent from '../../../framework/presentation/components/StyleComponent';
+import PoseComponent from '../../../framework/geometry/components/PoseComponent';
 import IPoseIncrement from '../interfaces/IPoseIncrement';
 
 export default class Claw extends Contraption {
@@ -23,7 +23,7 @@ export default class Claw extends Contraption {
 
   public constructor({ x, y }: { x: number, y: number }) {
     super(arguments[0]);
-    this.__wrist = this.$engine.entities.create(MachinePart, {
+    this.__wrist = this.$master.entities.create(MachinePart, {
       x, y: y - 15, shape: {
         points: [
           { x: 10, y: 5 },
@@ -33,7 +33,7 @@ export default class Claw extends Contraption {
         ]
       },
     });
-    this.__palm = this.$engine.entities.create(TouchActivator, {
+    this.__palm = this.$master.entities.create(TouchActivator, {
       x, y: y + 10, shape: {
         points: [
           { x: 10, y: 10 },
@@ -43,7 +43,7 @@ export default class Claw extends Contraption {
         ]
       },
     });
-    this.__leftHub = this.$engine.entities.create(TouchSensor, {
+    this.__leftHub = this.$master.entities.create(TouchSensor, {
       x: x - 52, y: y + 10, shape: {
         points: [
           { x: 2, y: 10 },
@@ -54,7 +54,7 @@ export default class Claw extends Contraption {
       },
       label: 'open-sensor',
     });
-    this.__rightHub = this.$engine.entities.create(MachinePart, {
+    this.__rightHub = this.$master.entities.create(MachinePart, {
       x: x + 52, y: y + 10, shape: {
         points: [
           { x: 2, y: 10 },
@@ -64,13 +64,13 @@ export default class Claw extends Contraption {
         ]
       },
     });
-    this.__leftThread = this.$engine.entities.create(HorizontalThreadedAxle, {
+    this.__leftThread = this.$master.entities.create(HorizontalThreadedAxle, {
       x: x - 30, y: y + 10, width: 40, height: 20,
     });
-    this.__rightThread = this.$engine.entities.create(HorizontalThreadedAxle, {
+    this.__rightThread = this.$master.entities.create(HorizontalThreadedAxle, {
       x: x + 30, y: y + 10, width: 40, height: 20,
     });
-    this.__leftTooth = this.$engine.entities.create(TouchActivator, {
+    this.__leftTooth = this.$master.entities.create(TouchActivator, {
       x: x - 40, y: y + 10, shape: {
         points: [
           { x: 10, y: 60 },
@@ -82,8 +82,8 @@ export default class Claw extends Contraption {
         ]
       },
     });
-    this.__leftTooth.$patch(StyleComponent)({ zIndex: 1 });
-    this.__rightTooth = this.$engine.entities.create(TouchSensor, {
+    this.__leftTooth.$patch(StyleComponent)!({ zIndex: 1 });
+    this.__rightTooth = this.$master.entities.create(TouchSensor, {
       x: x + 40, y: y + 10, shape: {
         points: [
           { x: 0, y: 20 },
@@ -96,11 +96,11 @@ export default class Claw extends Contraption {
       },
       label: 'closed-sensor',
     });
-    this.__rightTooth.$patch(StyleComponent)({ zIndex: 1 });
-    this.__openMotor = this.$engine.entities.create(Actuator, {
+    this.__rightTooth.$patch(StyleComponent)!({ zIndex: 1 });
+    this.__openMotor = this.$master.entities.create(Actuator, {
       label: 'open',
     });
-    this.__closeMotor = this.$engine.entities.create(Actuator, {
+    this.__closeMotor = this.$master.entities.create(Actuator, {
       label: 'close',
     });
     this.inputs = [this.__openMotor, this.__closeMotor];
@@ -120,24 +120,24 @@ export default class Claw extends Contraption {
     if (this.__closeMotor.isHigh) {
       this.__leftThread.right();
       this.__rightThread.left();
-      const leftToothPose = this.__leftTooth.$copy(PoseComponent);
-      const rightToothPose = this.__rightTooth.$copy(PoseComponent);
-      this.__leftTooth.$patch(PoseComponent)({
+      const leftToothPose = this.__leftTooth.$copy(PoseComponent)!;
+      const rightToothPose = this.__rightTooth.$copy(PoseComponent)!;
+      this.__leftTooth.$patch(PoseComponent)!({
         x: leftToothPose.x + 1,
       });
-      this.__rightTooth.$patch(PoseComponent)({
+      this.__rightTooth.$patch(PoseComponent)!({
         x: rightToothPose.x - 1,
       });
     }
     if (this.__openMotor.isHigh) {
       this.__leftThread.left();
       this.__rightThread.right();
-      const leftToothPose = this.__leftTooth.$copy(PoseComponent);
-      const rightToothPose = this.__rightTooth.$copy(PoseComponent);
-      this.__leftTooth.$patch(PoseComponent)({
+      const leftToothPose = this.__leftTooth.$copy(PoseComponent)!;
+      const rightToothPose = this.__rightTooth.$copy(PoseComponent)!;
+      this.__leftTooth.$patch(PoseComponent)!({
         x: leftToothPose.x - 1,
       });
-      this.__rightTooth.$patch(PoseComponent)({
+      this.__rightTooth.$patch(PoseComponent)!({
         x: rightToothPose.x + 1,
       });
     }

@@ -1,9 +1,9 @@
 import MachinePart from './abstracts/MachinePart';
 import OutputTerminal from '../../digital-logic/entities/OutputTerminal';
 import { IShape } from '../../../framework/geometry/components/ShapeComponent';
-import { LabelComponent } from '../../../framework/presentation/components/LabelComponent';
-import { StyleComponent } from '../../../framework/presentation/components/StyleComponent';
-import { TouchActivator } from './TouchActivator';
+import LabelComponent from '../../../framework/presentation/components/LabelComponent';
+import StyleComponent from '../../../framework/presentation/components/StyleComponent';
+import TouchActivator from './TouchActivator';
 import { entitiesTouch } from '../../../framework/helpers/entities';
 
 export default class Sensor extends MachinePart {
@@ -12,7 +12,7 @@ export default class Sensor extends MachinePart {
 
   public constructor({ x, y, shape, label }: { x: number, y: number, shape: IShape, label: string }) {
     super(arguments[0]);
-    this.output = this.$engine.entities.create(OutputTerminal, { x: 0, y: 0 });
+    this.output = this.$master.entities.create(OutputTerminal, { x: 0, y: 0 });
     this.output.$add(LabelComponent)({
       text: label,
       fontSize: 20,
@@ -34,7 +34,7 @@ export default class Sensor extends MachinePart {
   }
 
   public once(): void {
-    const target = this.$engine.entities.first(TouchActivator)((activator) => {
+    const target = this.$master.entities.first(TouchActivator)((activator) => {
       return entitiesTouch(this, activator);
     });
     if (target) {

@@ -30,8 +30,8 @@ export default class TheClaw extends Contraption {
 
   public constructor({ x, y }: { x: number, y: number }) {
     super(arguments[0]);
-    this.__horizontalRail = this.$engine.entities.create(HorizontalThreadedAxle, { x, y, width: 300, height: 20 });
-    this.__carriage = this.$engine.entities.create(TouchActivator, {
+    this.__horizontalRail = this.$master.entities.create(HorizontalThreadedAxle, { x, y, width: 300, height: 20 });
+    this.__carriage = this.$master.entities.create(TouchActivator, {
       x: x - 130, y,
       shape: {
         points: [
@@ -43,10 +43,10 @@ export default class TheClaw extends Contraption {
       },
     });
     this.__carriage.$add(StyleComponent)({ colour: 'WHITE', fill: 'BLACK', zIndex: 1 });
-    this.__verticalRail = this.$engine.entities.create(VerticalThreadedAxle, {
+    this.__verticalRail = this.$master.entities.create(VerticalThreadedAxle, {
       x: x - 130, y, width: 20, height: 200,
     });
-    this.__leftSensor = this.$engine.entities.create(TouchSensor, {
+    this.__leftSensor = this.$master.entities.create(TouchSensor, {
       x: x - 170, y,
       shape: {
         points: [
@@ -61,7 +61,7 @@ export default class TheClaw extends Contraption {
     this.__leftSensor.$add(RivetComponent)({
       colour: 'WHITE', radius: 3,
     });
-    this.__rightSensor = this.$engine.entities.create(TouchSensor, {
+    this.__rightSensor = this.$master.entities.create(TouchSensor, {
       x: x + 170, y,
       shape: {
         points: [
@@ -76,7 +76,7 @@ export default class TheClaw extends Contraption {
     this.__rightSensor.$add(RivetComponent)({
       colour: 'WHITE', radius: 3,
     });
-    this.__topSensor = this.$engine.entities.create(TouchSensor, {
+    this.__topSensor = this.$master.entities.create(TouchSensor, {
       x: x - 130, y: y - 105,
       shape: {
         points: [
@@ -88,7 +88,7 @@ export default class TheClaw extends Contraption {
       },
       label: 'top-sensor',
     });
-    this.__bottomSensor = this.$engine.entities.create(TouchSensor, {
+    this.__bottomSensor = this.$master.entities.create(TouchSensor, {
       x: x - 130, y: y + 105,
       shape: {
         points: [
@@ -100,22 +100,22 @@ export default class TheClaw extends Contraption {
       },
       label: 'bottom-sensor',
     });
-    this.__leftMotor = this.$engine.entities.create(Actuator, {
+    this.__leftMotor = this.$master.entities.create(Actuator, {
       label: 'move-left',
     });
-    this.__rightMotor = this.$engine.entities.create(Actuator, {
+    this.__rightMotor = this.$master.entities.create(Actuator, {
       label: 'move-right',
     });
-    this.__topMotor = this.$engine.entities.create(Actuator, {
+    this.__topMotor = this.$master.entities.create(Actuator, {
       label: 'move-up',
     });
-    this.__bottomMotor = this.$engine.entities.create(Actuator, {
+    this.__bottomMotor = this.$master.entities.create(Actuator, {
       label: 'move-down',
     });
-    this.__claw = this.$engine.entities.create(Claw, {
+    this.__claw = this.$master.entities.create(Claw, {
       x: x - 130, y: y + 130,
     });
-    this.__prize = this.$engine.entities.create(MachineTarget, {
+    this.__prize = this.$master.entities.create(MachineTarget, {
       x: x + 130,
       y: y + 250,
       shape: {

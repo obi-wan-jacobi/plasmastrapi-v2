@@ -3,6 +3,7 @@ import { IPoint, IPose } from 'src/framework/geometry/components/PoseComponent';
 import { IImage } from 'src/framework/presentation/components/ImageComponent';
 import { ILabel } from 'src/framework/presentation/components/LabelComponent';
 import { IStyle } from 'src/framework/presentation/components/StyleComponent';
+import { Index } from '../foundation/types';
 
 function Atomic(target: HTML5CanvasViewportAdaptor, key: string, descriptor: PropertyDescriptor): void {
   const fn = descriptor.value;
@@ -21,7 +22,7 @@ export default class HTML5CanvasViewportAdaptor implements IViewportAdaptor<Canv
   public width: number;
   public height: number;
 
-  private __imageBuffer: { [key: string]: HTMLImageElement } = {};
+  private __imageBuffer: Index<HTMLImageElement> = {};
 
   private __zBuffer: Array<{ method: string, payload: any }> = [];
 

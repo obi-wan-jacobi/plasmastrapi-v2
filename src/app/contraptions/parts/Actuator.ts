@@ -1,6 +1,6 @@
 import InputTerminal from '../../digital-logic/entities/InputTerminal';
-import { StyleComponent } from '../../../framework/presentation/components/StyleComponent';
-import { LabelComponent } from '../../../framework/presentation/components/LabelComponent';
+import StyleComponent from '../../../framework/presentation/components/StyleComponent';
+import LabelComponent from '../../../framework/presentation/components/LabelComponent';
 
 export default class Actuator extends InputTerminal {
 

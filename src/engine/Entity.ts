@@ -1,66 +1,69 @@
-import IComponent, { CCtor } from './interfaces/IComponent';
-import IEngine from './interfaces/IEngine';
+import IComponent from './interfaces/IComponent';
 import IEntity from './interfaces/IEntity';
-import Unique from '../data-structures/abstracts/Unique';
+import Unique from '../foundation/abstracts/Unique';
+import { Ctor } from './types';
+import IEntityMaster from './interfaces/IEntityMaster';
+import Dictionary from '../foundation/concretes/Dictionary';
 
 export default class Entity extends Unique implements IEntity {
 
-  public $engine: IEngine;
+  public $master: IEntityMaster;
 
-  private __data: { [key: string]: IComponent<any> | undefined } = {};
+  private __components: Dictionary<IComponent<any>> = new Dictionary();
 
-  constructor({ engine }: { engine: IEngine }) {
+  constructor({ master }: { master: IEntityMaster }) {
     super();
-    this.$engine = engine;
+    this.$master = master;
   }
 
   public $destroy(): void {
-    return this.$engine.entities.destroy(this);
+    return this.$master.destroy(this);
   }
 
-  public $add<T>(ComponentCtor: CCtor<IComponent<T>, T>): (data: T) => void {
-    return (data: T) => {
-      if (!this.__data[ComponentCtor.name]) {
-        this.__data[ComponentCtor.name] = this.$engine.components.create(this, ComponentCtor, data);
+  public $add<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, { entity: IEntity, data: TArg }>): (data: TArg) => void {
+    return (data: TArg) => {
+      if (!this.__components.read(ComponentClass.name)) {
+        this.__components.write({
+          key: ComponentClass.name,
+          value: this.$master.componentMaster.create(this, ComponentClass, data)
+        });
       }
-      return this.$mutate(ComponentCtor)!(data);
     };
   }
 
-  public $remove<T>(ComponentCtor: CCtor<IComponent<T>, T>): void {
-    if (!this.__data[ComponentCtor.name]) {
+  public $remove<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): void {
+    if (!this.__components.read(ComponentClass.name)) {
       return;
     }
-    this.$engine.components.destroy(this.__data[ComponentCtor.name]!);
-    delete this.__data[ComponentCtor.name];
+    this.$master.componentMaster.destroy(this.__components.read(ComponentClass.name)!);
+    this.__components.delete(ComponentClass.name);
   }
 
-  public $copy<T>(ComponentCtor: CCtor<IComponent<T>, T>): T | undefined {
-    return (this.__data[ComponentCtor.name])
-      ? this.__data[ComponentCtor.name]!.copy()
+  public $copy<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): T | undefined {
+    return (this.__components.read(ComponentClass.name))
+      ? this.__components.read(ComponentClass.name)!.copy()
       : undefined;
   }
 
-  public $mutate<T>(ComponentCtor: CCtor<IComponent<T>, T>): ((data: T) => void) | undefined {
-    if (!this.__data[ComponentCtor.name]) {
+  public $mutate<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): ((data: TArg) => void) | undefined {
+    if (!this.__components.read(ComponentClass.name)) {
       return;
     }
-    return (data: T) => this.__data[ComponentCtor.name]!.mutate(data);
+    return (data: TArg) => this.__components.read(ComponentClass.name)!.mutate(data);
   }
 
-  public $patch<T>(ComponentCtor: CCtor<IComponent<T>, T>): ((data: {}) => void) | undefined {
-    if (!this.__data[ComponentCtor.name]) {
+  public $patch<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): ((data: {}) => void) | undefined {
+    const component = this.__components.read(ComponentClass.name);
+    if (!component) {
       return;
     }
     return (data: {}) => {
-      this.__data[ComponentCtor.name]!.mutate(Object.assign(this.__data[ComponentCtor.name]!.copy(), data));
+      component.mutate(Object.assign({}, component!.copy(), data));
     };
   }
 
   public $forEach(fn: (component: IComponent<any>) => void): void {
-    return Object.keys(this.__data).forEach((key) => {
-      fn(this.__data[key]!);
-    });
+    return this.__components.forEach(fn);
   }
 
 }

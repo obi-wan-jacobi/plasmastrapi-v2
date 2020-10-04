@@ -1,4 +1,4 @@
-import { DigitalOperator } from './abstracts/DigitalOperator';
+import DigitalOperator from './abstracts/DigitalOperator';
 
 export default class And extends DigitalOperator {
 

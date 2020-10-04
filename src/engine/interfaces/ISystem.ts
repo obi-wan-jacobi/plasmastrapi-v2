@@ -1,9 +1,9 @@
-import IUnique from '../../data-structures/interfaces/IUnique';
+import IUnique from '../../foundation/interfaces/IUnique';
 
 export default interface ISystem extends IUnique {
 
-    once(): void;
+  once(): void;
 
-    draw(): void;
+  draw(): void;
 
 }

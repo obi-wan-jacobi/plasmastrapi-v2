@@ -1,4 +1,4 @@
-import { AnimationComponent } from '../../../framework/presentation/components/AnimationComponent';
+import AnimationComponent from '../../../framework/presentation/components/AnimationComponent';
 import MachinePart from './abstracts/MachinePart';
 import IPoseIncrement from '../interfaces/IPoseIncrement';
 
@@ -9,7 +9,7 @@ export default class HorizontalThreadedAxle extends MachinePart {
   public constructor({ x, y, width, height }: { x: number, y: number, width: number, height: number }) {
     super(arguments[0]);
     for (let i = 0, L = width / 10; i < L; i++) {
-      const thread = this.$engine.entities.create(MachinePart, {
+      const thread = this.$master.entities.create(MachinePart, {
         x: x - width / 2 + i * 10 + 5,
         y,
       });
@@ -37,7 +37,7 @@ export default class HorizontalThreadedAxle extends MachinePart {
 
   public left(): void {
     this.__threads.forEach((thread) => {
-      thread.$patch(AnimationComponent)({
+      thread.$patch(AnimationComponent)!({
         isPaused: false,
         isReversed: false,
       });
@@ -46,7 +46,7 @@ export default class HorizontalThreadedAxle extends MachinePart {
 
   public right(): void {
     this.__threads.forEach((thread) => {
-      thread.$patch(AnimationComponent)({
+      thread.$patch(AnimationComponent)!({
         isPaused: false,
         isReversed: true,
       });
@@ -55,7 +55,7 @@ export default class HorizontalThreadedAxle extends MachinePart {
 
   public off(): void {
     this.__threads.forEach((thread) => {
-      thread.$patch(AnimationComponent)({
+      thread.$patch(AnimationComponent)!({
         isPaused: true,
       });
     });

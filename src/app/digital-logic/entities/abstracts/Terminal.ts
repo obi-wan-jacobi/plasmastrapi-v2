@@ -1,7 +1,7 @@
 import { STATE } from '../../enums/STATE';
 import UIElement from '../../../ui/abstracts/UIElement';
-import { ImageComponent } from '../../../../framework/presentation/components/ImageComponent';
-import { LabelComponent } from '../../../../framework/presentation/components/LabelComponent';
+import ImageComponent from '../../../../framework/presentation/components/ImageComponent';
+import LabelComponent from '../../../../framework/presentation/components/LabelComponent';
 
 const LABEL_COLOUR_MAP = {
   [STATE.HIGH]: 'GREEN',
@@ -35,7 +35,7 @@ export default class Terminal extends UIElement {
   private set __state(state: STATE) {
     this.__s = state;
     if (this.$copy(LabelComponent)) {
-      this.$patch(LabelComponent)({
+      this.$patch(LabelComponent)!({
         colour: LABEL_COLOUR_MAP[state],
       });
     }
@@ -55,11 +55,11 @@ export default class Terminal extends UIElement {
 
   public $mouseenter(): void {
     super.$mouseenter();
-    this.$mutate(ImageComponent)({ src: './Terminal_hovered.png' });
+    this.$mutate(ImageComponent)!({ src: './Terminal_hovered.png' });
   }
 
   public $mouseleave(): void {
     super.$mouseleave();
-    this.$mutate(ImageComponent)({ src: this.__src });
+    this.$mutate(ImageComponent)!({ src: this.__src });
   }
 }

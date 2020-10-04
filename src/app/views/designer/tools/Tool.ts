@@ -9,8 +9,8 @@ export default abstract class Tool extends UIElement {
 
   public $mousemove(): void {
     this.$patch(PoseComponent)({
-      x: this.$engine.mouse.x,
-      y: this.$engine.mouse.y,
+      x: this.$master.mouse.x,
+      y: this.$master.mouse.y,
     });
   }
 
