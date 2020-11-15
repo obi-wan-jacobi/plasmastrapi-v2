@@ -1,11 +1,11 @@
 
-export default interface IDictionary<T extends Object> {
+export default interface IDictionary<T extends {}> {
 
   length: number;
 
   read(key: string): T | undefined;
 
-  write({ key, value }: { key: string, value: T }): void;
+  write({ key, value }: { key: string; value: T }): void;
 
   delete(key: string): void;
 

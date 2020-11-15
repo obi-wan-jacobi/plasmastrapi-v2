@@ -1,12 +1,13 @@
-import HorizontalThreadedAxle from '../parts/HorizontalThreadedAxle';
 import Actuator from '../parts/Actuator';
-import Contraption from '../abstracts/Contraption';
-import VerticalThreadedAxle from '../parts/VerticalThreadedAxle';
-import TouchActivator from '../parts/TouchActivator';
-import TouchSensor from '../parts/TouchSensor';
 import Claw from '../parts/Claw';
+import Contraption from '../abstracts/Contraption';
+import HorizontalThreadedAxle from '../parts/HorizontalThreadedAxle';
 import MachineTarget from '../parts/abstracts/Prize';
 import StyleComponent from '../../../framework/presentation/components/StyleComponent';
+import TouchActivator from '../parts/TouchActivator';
+import TouchSensor from '../parts/TouchSensor';
+import VerticalThreadedAxle from '../parts/VerticalThreadedAxle';
+import { IPose } from 'framework/geometry/components/PoseComponent';
 
 export default class TheClaw extends Contraption {
 
@@ -28,103 +29,97 @@ export default class TheClaw extends Contraption {
 
   private __prize: MachineTarget;
 
-  public constructor({ x, y }: { x: number, y: number }) {
+  public constructor(pose: IPose) {
     super(arguments[0]);
-    this.__horizontalRail = this.$master.entities.create(HorizontalThreadedAxle, { x, y, width: 300, height: 20 });
-    this.__carriage = this.$master.entities.create(TouchActivator, {
-      x: x - 130, y,
-      shape: {
+    this.__horizontalRail = this._$master.create(HorizontalThreadedAxle, { pose, width: 300, height: 20 });
+    this.__carriage = this._$master.create(TouchActivator, {
+      pose  : { x: pose.x - 130, y: pose.y, a: 0 },
+      shape : {
         points: [
           { x: 20, y: 30 },
           { x: -20, y: 30 },
           { x: -20, y: -30 },
           { x: 20, y: -30 },
-        ]
+        ],
       },
     });
     this.__carriage.$add(StyleComponent)({ colour: 'WHITE', fill: 'BLACK', zIndex: 1 });
-    this.__verticalRail = this.$master.entities.create(VerticalThreadedAxle, {
-      x: x - 130, y, width: 20, height: 200,
+    this.__verticalRail = this._$master.create(VerticalThreadedAxle, {
+      x: pose.x - 130, y: pose.y, width: 20, height: 200,
     });
-    this.__leftSensor = this.$master.entities.create(TouchSensor, {
-      x: x - 170, y,
-      shape: {
+    this.__leftSensor = this._$master.create(TouchSensor, {
+      x     : pose.x - 170, y     : pose.y,
+      shape : {
         points: [
           { x: 20, y: 20 },
           { x: -20, y: 20 },
           { x: -20, y: -20 },
           { x: 20, y: -20 },
-        ]
+        ],
       },
       label: 'left-sensor',
     });
-    this.__leftSensor.$add(RivetComponent)({
-      colour: 'WHITE', radius: 3,
-    });
-    this.__rightSensor = this.$master.entities.create(TouchSensor, {
-      x: x + 170, y,
-      shape: {
+    this.__rightSensor = this._$master.create(TouchSensor, {
+      x     : pose.x + 170, y     : pose.y,
+      shape : {
         points: [
           { x: 20, y: 20 },
           { x: -20, y: 20 },
           { x: -20, y: -20 },
           { x: 20, y: -20 },
-        ]
+        ],
       },
       label: 'right-sensor',
     });
-    this.__rightSensor.$add(RivetComponent)({
-      colour: 'WHITE', radius: 3,
-    });
-    this.__topSensor = this.$master.entities.create(TouchSensor, {
-      x: x - 130, y: y - 105,
-      shape: {
+    this.__topSensor = this._$master.create(TouchSensor, {
+      x     : pose.x - 130, y     : pose.y - 105,
+      shape : {
         points: [
           { x: 20, y: 5 },
           { x: -20, y: 5 },
           { x: -20, y: -5 },
           { x: 20, y: -5 },
-        ]
+        ],
       },
       label: 'top-sensor',
     });
-    this.__bottomSensor = this.$master.entities.create(TouchSensor, {
-      x: x - 130, y: y + 105,
-      shape: {
+    this.__bottomSensor = this._$master.create(TouchSensor, {
+      x     : pose.x - 130, y     : pose.y + 105,
+      shape : {
         points: [
           { x: 20, y: 5 },
           { x: -20, y: 5 },
           { x: -20, y: -5 },
           { x: 20, y: -5 },
-        ]
+        ],
       },
       label: 'bottom-sensor',
     });
-    this.__leftMotor = this.$master.entities.create(Actuator, {
+    this.__leftMotor = this._$master.create(Actuator, {
       label: 'move-left',
     });
-    this.__rightMotor = this.$master.entities.create(Actuator, {
+    this.__rightMotor = this._$master.create(Actuator, {
       label: 'move-right',
     });
-    this.__topMotor = this.$master.entities.create(Actuator, {
+    this.__topMotor = this._$master.create(Actuator, {
       label: 'move-up',
     });
-    this.__bottomMotor = this.$master.entities.create(Actuator, {
+    this.__bottomMotor = this._$master.create(Actuator, {
       label: 'move-down',
     });
-    this.__claw = this.$master.entities.create(Claw, {
-      x: x - 130, y: y + 130,
+    this.__claw = this._$master.create(Claw, {
+      x: pose.x - 130, y: pose.y + 130,
     });
-    this.__prize = this.$master.entities.create(MachineTarget, {
-      x: x + 130,
-      y: y + 250,
-      shape: {
+    this.__prize = this._$master.create(MachineTarget, {
+      x     : pose.x + 130,
+      y     : pose.y + 250,
+      shape : {
         points: [
           { x: 10, y: 20 },
           { x: -10, y: 20 },
           { x: -10, y: -20 },
           { x: 10, y: -20 },
-        ]
+        ],
       },
     });
     this.inputs = [

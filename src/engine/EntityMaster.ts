@@ -1,22 +1,22 @@
-import Dictionary from '../foundation/concretes/Dictionary';
-import IDictionary from '../foundation/interfaces/IDictionary';
+import ComponentMaster from './ComponentMaster';
+import IComponentMaster from './interfaces/IComponentMaster';
 import IEntity from './interfaces/IEntity';
 import IEntityMaster from './interfaces/IEntityMaster';
-import IComponentMaster from './interfaces/IComponentMaster';
-import { Etor } from './types';
-import { Index } from '../foundation/types';
-import ComponentMaster from './ComponentMaster';
+import Dictionary from 'foundation/concretes/Dictionary';
+import IDictionary from 'foundation/interfaces/IDictionary';
+import { Index } from 'foundation/types';
+import { EntityClass, Etor } from './types';
 
 export default class EntityMaster implements IEntityMaster {
+
+  public componentMaster: IComponentMaster = new ComponentMaster();
 
   private __entityMap: IDictionary<IDictionary<IEntity>> = new Dictionary();
   private __cTargets: IEntity[] = [];
   private __dTargets: IEntity[] = [];
 
-  public componentMaster: IComponentMaster = new ComponentMaster();
-
-  public create<T extends IEntity, TArg>(EntityClass: Etor<T, TArg>, arg?: TArg): T {
-    const instance = new EntityClass(Object.assign({}, arg, { master: this }));
+  public create<T extends IEntity, TArg>(EntityConstructor: Etor<T, TArg>, data: TArg): T {
+    const instance = new EntityConstructor(Object.assign({}, data, { master: this }));
     this.__cTargets.push(instance);
     return instance;
   }
@@ -25,9 +25,19 @@ export default class EntityMaster implements IEntityMaster {
     this.__dTargets.push(entity);
   }
 
-  public forEvery<T extends IEntity>(EntityCtor: Etor<T, any>): (fn: (entity: T) => void) => void {
-    const collection = this.__entityMap.read(EntityCtor.name);
+  public forEvery<T extends IEntity>(EntityCls: EntityClass<T>): (fn: (entity: T) => void) => void {
+    const collection = this.__entityMap.read(EntityCls.name);
     return collection ? collection.forEach.bind(collection) : (): void => undefined;
+  }
+
+  public find<T extends IEntity>(EntityCls: EntityClass<T>): (fn: (entity: T) => boolean) => T | undefined {
+    return (fn: ((entity: T) => boolean)): T | undefined => {
+      const result = this.__entityMap.read(EntityCls.name)!.find(fn);
+      if (result) {
+        return result as T;
+      }
+      return undefined;
+    };
   }
 
   public once(): void {
@@ -44,8 +54,8 @@ export default class EntityMaster implements IEntityMaster {
         if (!collection) {
           collection = new Dictionary();
           this.__entityMap.write({
-            key: target.constructor.name,
-            value: collection,
+            key   : target.constructor.name,
+            value : collection,
           });
         }
         collection.write({ key: instance.id, value: instance });

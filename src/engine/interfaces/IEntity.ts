@@ -1,20 +1,20 @@
 import IComponent from './IComponent';
-import IUnique from '../../foundation/interfaces/IUnique';
+import IUnique from 'foundation/interfaces/IUnique';
 import { Ctor } from '../types';
 
 export default interface IEntity extends IUnique {
 
   $destroy(): void;
 
-  $add<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, { entity: IEntity, data: TArg }>): (data: TArg) => void;
+  $add<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): (data: TArg) => void;
 
   $remove<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): void;
 
-  $copy<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): T | undefined;
+  $copy<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): TArg;
 
-  $mutate<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): ((data: TArg) => void) | undefined;
+  $mutate<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): ((data: TArg) => void);
 
-  $patch<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): ((data: {}) => void) | undefined;
+  $patch<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): ((data: TArg) => void);
 
   $forEach(fn: (component: IComponent<any>) => void): void;
 

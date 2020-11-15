@@ -1,19 +1,19 @@
-import Dictionary from '../foundation/concretes/Dictionary';
 import EntityMaster from './EntityMaster';
 import IAdaptedKeyboardEvent from './interfaces/IAdaptedKeyboardEvent';
 import IAdaptedMouseEvent from './interfaces/IAdaptedMouseEvent';
 import IComponentMaster from './interfaces/IComponentMaster';
-import IDictionary from '../foundation/interfaces/IDictionary';
 import IEngine from './interfaces/IEngine';
-import IEntityFactory from './interfaces/IEntityMaster';
+import IEntityMaster from './interfaces/IEntityMaster';
 import ISystem from './interfaces/ISystem';
 import IViewportAdaptor from './interfaces/IViewportAdaptor';
+import Dictionary from 'foundation/concretes/Dictionary';
+import IDictionary from 'foundation/interfaces/IDictionary';
 import { Stor } from './types';
 
 export default class Engine implements IEngine {
 
   public viewport: IViewportAdaptor<any>;
-  public entities: IEntityFactory;
+  public entities: IEntityMaster;
 
   public mouse: IAdaptedMouseEvent;
   public keyboard: IAdaptedKeyboardEvent;
@@ -31,7 +31,7 @@ export default class Engine implements IEngine {
   }
 
   public get components(): IComponentMaster {
-    return this.entities.components;
+    return this.entities.componentMaster;
   }
 
   public once(): void {
@@ -49,8 +49,8 @@ export default class Engine implements IEngine {
 
   public add<T extends ISystem>(SystemClass: Stor<T>): void {
     this.__systems.write({
-      key: SystemClass.name,
-      value: new SystemClass(this),
+      key   : SystemClass.name,
+      value : new SystemClass(this),
     });
   }
 

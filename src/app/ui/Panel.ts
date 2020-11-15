@@ -1,29 +1,28 @@
+import UIEntity from './abstracts/UIEntity';
+import { Constructor, Optional } from 'foundation/types';
 
-import { Constructor, Optional } from '../../foundation/types';
-import UIElement from './abstracts/UIElement';
+export default class Panel extends UIEntity {
 
-export default class Panel extends UIElement {
+  private __children: UIEntity[] = [];
 
-  private __children: UIElement[] = [];
-
-  public add<T extends UIElement, TArg extends {}>(UIElementCtor: Constructor<T, Optional<TArg>>, arg?: TArg): void {
-    const element = this.$master.entities.create(UIElementCtor, arg);
+  public add<T extends UIEntity, TArg extends {}>(UIElementCtor: Constructor<T, Optional<TArg>>, arg?: TArg): void {
+    const element = this._$master.create(UIElementCtor, arg);
     this.__children.push(element);
   }
 
   public $enable(): void {
     super.$enable();
-    this.__children.forEach(child => child.$enable());
+    this.__children.forEach((child) => child.$enable());
   }
 
   public $disable(): void {
     super.$disable();
-    this.__children.forEach(child => child.$disable());
+    this.__children.forEach((child) => child.$disable());
   }
 
   public $destroy(): void {
     super.$destroy();
-    this.__children.forEach(child => child.$destroy());
+    this.__children.forEach((child) => child.$destroy());
   }
 
 }

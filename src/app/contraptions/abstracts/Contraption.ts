@@ -1,8 +1,8 @@
 import InputTerminal from '../../digital-logic/entities/InputTerminal';
 import OutputTerminal from '../../digital-logic/entities/OutputTerminal';
-import UIElement from '../../ui/abstracts/UIElement';
+import UIEntity from '../../ui/abstracts/UIEntity';
 
-export default abstract class Contraption extends UIElement {
+export default abstract class Contraption extends UIEntity {
 
   public inputs: InputTerminal[] = [];
   public outputs: OutputTerminal[] = [];

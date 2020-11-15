@@ -1,9 +1,9 @@
 import booleanContains from '@turf/boolean-contains';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
-import { IPoint, PoseComponent } from '../geometry/components/PoseComponent';
-import { ShapeComponent } from '../geometry/components/ShapeComponent';
+import PoseComponent, { IPoint } from '../geometry/components/PoseComponent';
+import ShapeComponent from '../geometry/components/ShapeComponent';
+import IEntity from 'engine/interfaces/IEntity';
 import { fromPointsToGeoJSON, fromShapeToGeoJSON, transformShape } from './geometry';
-import IEntity from 'src/engine/interfaces/IEntity';
 import turf from 'turf';
 const booleanOverlaps = require('@turf/boolean-overlap').default;
 const lineIntersect = require('@turf/line-intersect').default;

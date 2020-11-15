@@ -1,18 +1,18 @@
-import { AccelerationComponent } from '../components/AccelerationComponent';
-import { System } from '../../../engine/abstracts/System';
-import { VelocityComponent } from '../components/VelocityComponent';
+import AccelerationComponent from '../components/AccelerationComponent';
+import System from '../../../engine/abstracts/System';
+import VelocityComponent from '../components/VelocityComponent';
 
 export default class AccelerationSystem extends System {
 
     public once(): void {
         this.$engine.components.forEvery(AccelerationComponent)((acceleration) => {
-            const { x, y, w } = acceleration.copy();
-            const velocity = acceleration.$entity.$copy(VelocityComponent);
+            const a = acceleration.copy();
+            const v = acceleration.$entity.$copy(VelocityComponent);
             const dt = this.$engine.delta;
             acceleration.$entity.$mutate(VelocityComponent)({
-                x: velocity.x + x * dt,
-                y: velocity.y + y * dt,
-                w: velocity.w + w * dt,
+                x : v.x + a.x * dt,
+                y : v.y + a.y * dt,
+                w : v.w + a.w * dt,
             });
         });
     }

@@ -1,20 +1,45 @@
-import UIElement from '../../../ui/abstracts/UIElement';
-import { PoseComponent } from '../../../../framework/geometry/components/PoseComponent';
+import UIEntity from 'app/ui/abstracts/UIEntity';
+import IAdaptedMouseEvent from 'engine/interfaces/IAdaptedMouseEvent';
+import PoseComponent from 'framework/geometry/components/PoseComponent';
 
-export default abstract class Tool extends UIElement {
+export default abstract class Tool extends UIEntity {
 
-  public constructor({ x, y, src }: { x: number, y: number, src?: string }) {
-    super(arguments[0]);
+  public constructor({ x, y, src }: { x: number; y: number; src?: string }) {
+    super({
+      pose   : { x, y, a: 0 },
+      width  : 10,
+      height : 10,
+      style  : {},
+      label  : { text: '' },
+      image  : { src },
+    });
   }
 
-  public $mousemove(): void {
+  public $mousemove(e: IAdaptedMouseEvent): void {
     this.$patch(PoseComponent)({
-      x: this.$master.mouse.x,
-      y: this.$master.mouse.y,
+      x : e.x,
+      y : e.y,
     });
+  }
+
+  public $mouseenter(e: IAdaptedMouseEvent): void {
+    //
+  }
+
+  public $mouseleave(e: IAdaptedMouseEvent): void {
+    //
+  }
+
+  public $mousedown(e: IAdaptedMouseEvent): void {
+    //
+  }
+
+  public $mouseup(e: IAdaptedMouseEvent): void {
+    //
   }
 
   public readonly $click = (): void => {
     this.$destroy();
-  }
+  };
+
 }

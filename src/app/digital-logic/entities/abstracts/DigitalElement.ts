@@ -1,6 +1,5 @@
-import UIElement from '../../../ui/abstracts/UIElement';
+import UIEntity from '../../../ui/abstracts/UIEntity';
 
-
-export default abstract class DigitalElement extends UIElement {
+export default abstract class DigitalElement extends UIEntity {
 
 }

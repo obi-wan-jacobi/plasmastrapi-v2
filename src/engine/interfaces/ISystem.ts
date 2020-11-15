@@ -1,4 +1,4 @@
-import IUnique from '../../foundation/interfaces/IUnique';
+import IUnique from 'foundation/interfaces/IUnique';
 
 export default interface ISystem extends IUnique {
 

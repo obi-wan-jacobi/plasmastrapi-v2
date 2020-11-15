@@ -8,7 +8,7 @@
         "target": "esnext",
         "module": "esnext",
         "sourceMap": true,
-        "baseUrl": ".",
+        "baseUrl": "src",
         "noImplicitAny": true,
         "strictNullChecks": true,
         "moduleResolution": "node",
@@ -17,12 +17,18 @@
             "jquery",
             "node",
             "uuid",
-        ]
+        ],
+        "paths": {
+            "app/*": [ "app/*" ],
+            "engine/*": [ "engine/*" ],
+            "foundation/*": [ "foundation/*" ],
+            "framework/*": [ "framework/*" ],
+            "html5-canvas": [ "html5-canvas/*" ],
+        }
     },
     "include": [
         "src/**/*.ts",
     ],
     "exclude": [
-        "src/tests"
     ]
 }

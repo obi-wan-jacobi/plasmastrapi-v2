@@ -1,6 +1,6 @@
-import { AnimationComponent } from '../components/AnimationComponent';
-import { System } from '../../../engine/abstracts/System';
-import { PoseComponent } from 'src/framework/geometry/components/PoseComponent';
+import AnimationComponent from '../components/AnimationComponent';
+import System from '../../../engine/abstracts/System';
+import PoseComponent from 'framework/geometry/components/PoseComponent';
 
 export default class AnimatedImageSystem extends System {
 
@@ -23,10 +23,10 @@ export default class AnimatedImageSystem extends System {
       } else if (!data.isPaused) {
         data.cooldown++;
       }
-      animation.$entity.$mutate(AnimationComponent)(data);
+      animation.mutate(data);
       this.$engine.viewport.drawImage({
-        pose: animation.$entity.$copy(PoseComponent),
-        image: data.images[data.frame],
+        pose  : animation.$entity.$copy(PoseComponent) || { x: 0, y: 0, a: 0 },
+        image : data.images[data.frame],
       });
     });
   }

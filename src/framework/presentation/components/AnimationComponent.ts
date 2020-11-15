@@ -1,6 +1,5 @@
 import { IImage } from './ImageComponent';
-import Component from 'src/engine/abstracts/Component';
-import IComponent from 'src/engine/interfaces/IComponent';
+import Component from 'engine/abstracts/Component';
 
 export interface IAnimation {
   images: IImage[];

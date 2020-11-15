@@ -1,13 +1,13 @@
 import IViewportAdaptor from '../engine/interfaces/IViewportAdaptor';
-import { IPoint, IPose } from 'src/framework/geometry/components/PoseComponent';
-import { IImage } from 'src/framework/presentation/components/ImageComponent';
-import { ILabel } from 'src/framework/presentation/components/LabelComponent';
-import { IStyle } from 'src/framework/presentation/components/StyleComponent';
-import { Index } from '../foundation/types';
+import { Index } from 'foundation/types';
+import { IPoint, IPose } from 'framework/geometry/components/PoseComponent';
+import { IImage } from 'framework/presentation/components/ImageComponent';
+import { ILabel } from 'framework/presentation/components/LabelComponent';
+import { IStyle } from 'framework/presentation/components/StyleComponent';
 
-function Atomic(target: HTML5CanvasViewportAdaptor, key: string, descriptor: PropertyDescriptor): void {
+function atomic(target: HTML5CanvasViewportAdaptor, key: string, descriptor: PropertyDescriptor): void {
   const fn = descriptor.value;
-  descriptor.value = function (): void {
+  descriptor.value = function(): void {
     this.ctx.save();
     fn.call(this, ...arguments);
     this.ctx.restore();
@@ -24,7 +24,7 @@ export default class HTML5CanvasViewportAdaptor implements IViewportAdaptor<Canv
 
   private __imageBuffer: Index<HTMLImageElement> = {};
 
-  private __zBuffer: Array<{ method: string, payload: any }> = [];
+  private __zBuffer: Array<{ method: string; payload: any }> = [];
 
   constructor(canvas: HTMLCanvasElement) {
     this.ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -46,80 +46,82 @@ export default class HTML5CanvasViewportAdaptor implements IViewportAdaptor<Canv
 
   public once(): void {
     const zBuffer = this.__zBuffer.map((target) => {
-      if (!target.payload.styling) {
-        target.payload.styling = { zIndex: 0 };
+      if (!target.payload.style) {
+        target.payload.style = { zIndex: 0 };
         return target;
       }
-      if (!target.payload.styling.zIndex) {
-        target.payload.styling.zIndex = 0;
+      if (!target.payload.style.zIndex) {
+        target.payload.style.zIndex = 0;
         return target;
       }
       return target;
     });
-    const zOrdered = zBuffer.sort((a, b) => a.payload.styling.zIndex - b.payload.styling.zIndex);
+    const zOrdered = zBuffer.sort((a, b) => a.payload.style.zIndex - b.payload.style.zIndex);
     zOrdered.forEach((target) => {
       this[`__${target.method}`](target.payload);
     });
     this.__zBuffer = [];
   }
 
-  public drawImage({ pose, image }: { pose: IPose, image: IImage }): void {
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  public drawImage({ pose, image }: { pose: IPose; image: IImage }): void {
     this.__zBuffer.push({ method: 'drawImage', payload: arguments[0] });
   }
 
-  public drawShape({ path, styling }: { path: IPoint[], styling: IStyle }): void {
+  public drawShape({ path, style }: { path: IPoint[]; style: IStyle }): void {
     this.__zBuffer.push({ method: 'drawShape', payload: arguments[0] });
   }
 
-  public drawLine({ path, styling }: { path: IPoint[], styling: IStyle }): void {
+  public drawLine({ path, style }: { path: IPoint[]; style: IStyle }): void {
     this.__zBuffer.push({ method: 'drawLine', payload: arguments[0] });
   }
 
-  public drawLabel({ pose, label }: { pose: IPose, label: ILabel }): void {
+  public drawLabel({ pose, label }: { pose: IPose; label: ILabel }): void {
     this.__zBuffer.push({ method: 'drawLabel', payload: arguments[0] });
   }
 
-  public drawCircle({ position, radius, styling }: {
-    position: IPoint, radius: number, styling: IStyle,
+  public drawCircle({ position, radius, style }: {
+    position: IPoint; radius: number; style: IStyle;
   }): void {
     this.__zBuffer.push({ method: 'drawCircle', payload: arguments[0] });
   }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 
-  @Atomic
-  private __drawImage({ pose, styling }: { pose: IPose, styling: IImage }): void {
-    const image = this.load(styling.src);
+  @atomic
+  private __drawImage({ pose, style }: { pose: IPose; style: IImage }): void {
+    const image = this.load(style.src || './favicon.ico');
     this.ctx.translate(pose.x, pose.y);
     this.ctx.rotate(pose.a);
     this.ctx.drawImage(
       image,
-      -(styling.width || image.width as number) / 2,
-      -(styling.height || image.height as number) / 2,
-      styling.width || image.width as number,
-      styling.height || image.height as number,
+      -(style.width || image.width as number) / 2,
+      -(style.height || image.height as number) / 2,
+      style.width || image.width as number,
+      style.height || image.height as number,
     );
   }
 
-  @Atomic
-  private __drawShape({ path, styling }: { path: IPoint[], styling: IStyle }): void {
-    if (styling.opacity) {
-      this.ctx.globalAlpha = styling.opacity;
+  @atomic
+  private __drawShape({ path, style }: { path: IPoint[]; style: IStyle }): void {
+    if (style.opacity) {
+      this.ctx.globalAlpha = style.opacity;
     }
-    this.ctx.strokeStyle = styling.colour || 'white';
+    this.ctx.strokeStyle = style.colour || 'white';
     this.ctx.beginPath();
     path.forEach((p: IPoint) => {
       this.ctx.lineTo(p.x, p.y);
     });
-    if (styling.fill) {
-      this.ctx.fillStyle = styling.fill;
+    if (style.fill) {
+      this.ctx.fillStyle = style.fill;
       this.ctx.fill();
     }
     this.ctx.closePath();
     this.ctx.stroke();
   }
 
-  @Atomic
-  private __drawLine({ points, styling }: { points: IPoint[], styling: IStyle }): void {
-    this.ctx.strokeStyle = styling.colour || 'white';
+  @atomic
+  private __drawLine({ points, style }: { points: IPoint[]; style: IStyle }): void {
+    this.ctx.strokeStyle = style.colour || 'white';
     this.ctx.beginPath();
     points.forEach((p: IPoint) => {
       this.ctx.lineTo(p.x, p.y);
@@ -127,18 +129,20 @@ export default class HTML5CanvasViewportAdaptor implements IViewportAdaptor<Canv
     this.ctx.stroke();
   }
 
-  @Atomic
-  private __drawLabel({ pose, label }: { pose: IPose, label: ILabel }): void {
+  @atomic
+  private __drawLabel({ pose, label }: { pose: IPose; label: ILabel }): void {
+    label.text = label.text || '#{text:NULL}';
+    label.offset = label.offset || { x: 0, y: 0 };
     this.ctx.fillStyle = label.colour || 'white';
-    this.ctx.font = `${label.fontSize}px Arial`;
+    this.ctx.font = `${label.fontSize || 10}px Arial`;
     this.ctx.fillText(label.text, pose.x + label.offset.x, pose.y + label.offset.y);
   }
 
-  @Atomic
-  private __drawCircle({ position, radius, styling }: {
-    position: IPoint, radius: number, styling: IStyle,
+  @atomic
+  private __drawCircle({ position, radius, style }: {
+    position: IPoint; radius: number; style: IStyle;
   }): void {
-    this.ctx.strokeStyle = styling.colour || 'white';
+    this.ctx.strokeStyle = style.colour || 'white';
     this.ctx.beginPath();
     this.ctx.arc(position.x, position.y, radius, 0, 2 * Math.PI);
     this.ctx.stroke();

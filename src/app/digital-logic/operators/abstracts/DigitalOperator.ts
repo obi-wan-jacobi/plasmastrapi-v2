@@ -1,8 +1,8 @@
 import IDigitalOperator from '../interfaces/IDigitalOperator';
 import { STATE } from '../../enums/STATE';
-import Unique from 'src/foundation/abstracts/Unique';
-import Dictionary from 'src/foundation/concretes/Dictionary';
-import IDictionary from 'src/foundation/interfaces/IDictionary';
+import Unique from 'foundation/abstracts/Unique';
+import Dictionary from 'foundation/concretes/Dictionary';
+import IDictionary from 'foundation/interfaces/IDictionary';
 
 export default abstract class DigitalOperator extends Unique implements IDigitalOperator {
 

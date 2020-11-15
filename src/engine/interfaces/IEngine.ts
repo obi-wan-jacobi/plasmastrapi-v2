@@ -4,7 +4,7 @@ import IComponentMaster from './IComponentMaster';
 import IEntityFactory from './IEntityMaster';
 import ISystem from './ISystem';
 import IViewportAdaptor from './IViewportAdaptor';
-import { Constructor } from '../../foundation/types';
+import { Constructor } from 'foundation/types';
 
 export default interface IEngine {
 

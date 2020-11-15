@@ -1,7 +1,7 @@
 import App from './App';
-import $ from 'jquery';
 import EditorView from './views/EditorView';
 import TheClaw from './contraptions/the-claw/TheClaw';
+import $ from 'jquery';
 
 const canvas = $('#app-target').get(0) as HTMLCanvasElement & any;
 canvas.focus();
@@ -13,7 +13,7 @@ const app = new App({ canvas });
 app.start();
 
 const claw = app.engine.entities.create(TheClaw, { x: 1040, y: 340 });
-const designer = app.engine.entities.create(EditorView, { contraption: claw });
+app.engine.entities.create(EditorView, { contraption: claw });
 
 [
   './threaded-axle-1.png',

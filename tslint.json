@@ -17,7 +17,7 @@
             "module-source-path": "basename"
         }],
         "semicolon": [true, "always"],
-        "variable-name": [false, "always"],
+        "variable-name": [false],
         "naming-convention": [true,
             {"type": "member", "format": "camelCase"},
             {"type": "member", "modifiers": "protected", "prefix": "_", "format": "camelCase"},

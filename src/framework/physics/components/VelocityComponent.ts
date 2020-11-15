@@ -1,4 +1,4 @@
-import Component from 'src/engine/abstracts/Component';
+import Component from 'engine/abstracts/Component';
 
 export interface IVelocity {
   x: number; y: number; w: number;

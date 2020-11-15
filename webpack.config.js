@@ -2,6 +2,7 @@ var path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
     mode: 'development',
@@ -38,14 +39,15 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: [ '.tsx', '.ts', '.js' ]
+        extensions: [ '.tsx', '.ts', '.js' ],
+        plugins: [new TsconfigPathsPlugin()]
     },
     plugins: [
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: './src/app/index.html'
         }),
-        new CopyWebpackPlugin(['./static']),
+        new CopyWebpackPlugin({ patterns: ['./static'] }),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin()
     ]

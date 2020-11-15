@@ -5,7 +5,7 @@ import StyleComponent from '../../../../framework/presentation/components/StyleC
 
 export default class MachineTarget extends Entity {
 
-  public constructor({ x, y, a, shape }: { x: number, y: number, a?: number, shape: IShape }) {
+  public constructor({ x, y, a, shape }: { x: number; y: number; a?: number; shape: IShape }) {
     super(arguments[0]);
     this.$add(PoseComponent)({ x, y, a: a || 0 });
     this.$add(ShapeComponent)(shape);

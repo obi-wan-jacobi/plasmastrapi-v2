@@ -1,15 +1,15 @@
 import AnimationComponent from '../../../framework/presentation/components/AnimationComponent';
-import MachinePart from './abstracts/MachinePart';
 import IPoseIncrement from '../interfaces/IPoseIncrement';
+import MachinePart from './abstracts/MachinePart';
 
 export default class VerticalThreadedAxle extends MachinePart {
 
   private __threads: MachinePart[] = [];
 
-  public constructor({ x, y, width, height }: { x: number, y: number, width: number, height: number }) {
+  public constructor({ x, y, width, height }: { x: number; y: number; width: number; height: number }) {
     super(arguments[0]);
     for (let i = 0, L = height / 10; i < L; i++) {
-      const thread = this.$master.entities.create(MachinePart, {
+      const thread = this._$master.create(MachinePart, {
         x,
         y: y - height / 2 + i * 10 + 5,
       });
@@ -26,10 +26,10 @@ export default class VerticalThreadedAxle extends MachinePart {
           './threaded-axle-9.png',
           './threaded-axle-10.png',
         ].map((src) => ({ src, width: 10, height: width, rotate: -Math.PI / 2 })),
-        frame: 0,
-        speed: 1,
-        cooldown: 0,
-        isPaused: true,
+        frame    : 0,
+        speed    : 1,
+        cooldown : 0,
+        isPaused : true,
       });
       this.__threads.push(thread);
     }
@@ -37,25 +37,25 @@ export default class VerticalThreadedAxle extends MachinePart {
 
   public up(): void {
     this.__threads.forEach((thread) => {
-      thread.$patch(AnimationComponent)!({
-        isPaused: false,
-        isReversed: true,
+      thread.$patch(AnimationComponent)({
+        isPaused   : false,
+        isReversed : true,
       });
     });
   }
 
   public down(): void {
     this.__threads.forEach((thread) => {
-      thread.$patch(AnimationComponent)!({
-        isPaused: false,
-        isReversed: false,
+      thread.$patch(AnimationComponent)({
+        isPaused   : false,
+        isReversed : false,
       });
     });
   }
 
   public off(): void {
     this.__threads.forEach((thread) => {
-      thread.$patch(AnimationComponent)!({
+      thread.$patch(AnimationComponent)({
         isPaused: true,
       });
     });

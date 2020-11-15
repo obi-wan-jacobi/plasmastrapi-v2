@@ -2,7 +2,7 @@ import IAdaptedKeyboardEvent from '../engine/interfaces/IAdaptedKeyboardEvent';
 import IKeyboardAdaptor from '../engine/interfaces/IKeyboardAdaptor';
 import IKeyboardHandler from '../engine/interfaces/IKeyboardHandler';
 import KeyboardHandler from '../engine/KeyboardHandler';
-import { Index } from '../foundation/types';
+import { Index } from 'foundation/types';
 
 export default class HTML5CanvasKeyboardAdapter implements IKeyboardAdaptor {
 
@@ -37,8 +37,8 @@ export default class HTML5CanvasKeyboardAdapter implements IKeyboardAdaptor {
       .forEach((key) => {
         this.__canvas[`on${key}`] = (ke: KeyboardEvent): void => {
           this.__buffer.push({
-            name: key,
-            key: ke.key,
+            name : key,
+            key  : ke.key,
           });
         };
       });

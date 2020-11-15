@@ -1,12 +1,13 @@
+import Actuator from './Actuator';
 import Contraption from '../abstracts/Contraption';
+import HorizontalThreadedAxle from './HorizontalThreadedAxle';
+import IPoseIncrement from '../interfaces/IPoseIncrement';
 import MachinePart from './abstracts/MachinePart';
+import PoseComponent from '../../../framework/geometry/components/PoseComponent';
+import StyleComponent from '../../../framework/presentation/components/StyleComponent';
 import TouchActivator from './TouchActivator';
 import TouchSensor from './TouchSensor';
-import HorizontalThreadedAxle from './HorizontalThreadedAxle';
-import Actuator from './Actuator';
-import StyleComponent from '../../../framework/presentation/components/StyleComponent';
-import PoseComponent from '../../../framework/geometry/components/PoseComponent';
-import IPoseIncrement from '../interfaces/IPoseIncrement';
+import IEntityTemplate from 'app/IEntityTemplate';
 
 export default class Claw extends Contraption {
 
@@ -21,57 +22,60 @@ export default class Claw extends Contraption {
   private __openMotor: Actuator;
   private __closeMotor: Actuator;
 
-  public constructor({ x, y }: { x: number, y: number }) {
+  public constructor({ pose }: IEntityTemplate) {
     super(arguments[0]);
-    this.__wrist = this.$master.entities.create(MachinePart, {
-      x, y: y - 15, shape: {
+    this.__wrist = this._$master.create(MachinePart, {
+      pose  : { x: pose.x, y: pose.y - 15, a: 0 },
+      shape : {
         points: [
           { x: 10, y: 5 },
           { x: -10, y: 5 },
           { x: -20, y: -5 },
           { x: 20, y: -5 },
-        ]
+        ],
       },
     });
-    this.__palm = this.$master.entities.create(TouchActivator, {
-      x, y: y + 10, shape: {
+    this.__palm = this._$master.create(TouchActivator, {
+      pose  : { x: pose.x, y: pose.y + 10, a: 0 },
+      shape : {
         points: [
           { x: 10, y: 10 },
           { x: -10, y: 10 },
           { x: -10, y: -20 },
           { x: 10, y: -20 },
-        ]
+        ],
       },
     });
-    this.__leftHub = this.$master.entities.create(TouchSensor, {
-      x: x - 52, y: y + 10, shape: {
+    this.__leftHub = this._$master.create(TouchSensor, {
+      pose  : { x: pose.x - 52, y: pose.y + 10, a: 0 },
+      shape : {
         points: [
           { x: 2, y: 10 },
           { x: -2, y: 10 },
           { x: -2, y: -10 },
           { x: 2, y: -10 },
-        ]
+        ],
       },
       label: 'open-sensor',
     });
-    this.__rightHub = this.$master.entities.create(MachinePart, {
-      x: x + 52, y: y + 10, shape: {
+    this.__rightHub = this._$master.create(MachinePart, {
+      x     : x + 52, y     : y + 10, shape : {
         points: [
           { x: 2, y: 10 },
           { x: -2, y: 10 },
           { x: -2, y: -10 },
           { x: 2, y: -10 },
-        ]
+        ],
       },
     });
-    this.__leftThread = this.$master.entities.create(HorizontalThreadedAxle, {
+    this.__leftThread = this._$master.create(HorizontalThreadedAxle, {
       x: x - 30, y: y + 10, width: 40, height: 20,
     });
-    this.__rightThread = this.$master.entities.create(HorizontalThreadedAxle, {
+    this.__rightThread = this._$master.create(HorizontalThreadedAxle, {
       x: x + 30, y: y + 10, width: 40, height: 20,
     });
-    this.__leftTooth = this.$master.entities.create(TouchActivator, {
-      x: x - 40, y: y + 10, shape: {
+    this.__leftTooth = this._$master.create(TouchActivator, {
+      x     : x - 40, y     : y + 10, shape : {
         points: [
           { x: 10, y: 60 },
           { x: -0, y: 60 },
@@ -79,12 +83,12 @@ export default class Claw extends Contraption {
           { x: -10, y: 20 },
           { x: -10, y: -20 },
           { x: 10, y: -20 },
-        ]
+        ],
       },
     });
-    this.__leftTooth.$patch(StyleComponent)!({ zIndex: 1 });
-    this.__rightTooth = this.$master.entities.create(TouchSensor, {
-      x: x + 40, y: y + 10, shape: {
+    this.__leftTooth.$patch(StyleComponent)({ zIndex: 1 });
+    this.__rightTooth = this._$master.create(TouchSensor, {
+      x     : x + 40, y     : y + 10, shape : {
         points: [
           { x: 0, y: 20 },
           { x: 0, y: 60 },
@@ -92,15 +96,15 @@ export default class Claw extends Contraption {
           { x: -10, y: -20 },
           { x: 10, y: -20 },
           { x: 10, y: 20 },
-        ]
+        ],
       },
       label: 'closed-sensor',
     });
-    this.__rightTooth.$patch(StyleComponent)!({ zIndex: 1 });
-    this.__openMotor = this.$master.entities.create(Actuator, {
+    this.__rightTooth.$patch(StyleComponent)({ zIndex: 1 });
+    this.__openMotor = this._$master.create(Actuator, {
       label: 'open',
     });
-    this.__closeMotor = this.$master.entities.create(Actuator, {
+    this.__closeMotor = this._$master.create(Actuator, {
       label: 'close',
     });
     this.inputs = [this.__openMotor, this.__closeMotor];
@@ -120,24 +124,24 @@ export default class Claw extends Contraption {
     if (this.__closeMotor.isHigh) {
       this.__leftThread.right();
       this.__rightThread.left();
-      const leftToothPose = this.__leftTooth.$copy(PoseComponent)!;
-      const rightToothPose = this.__rightTooth.$copy(PoseComponent)!;
-      this.__leftTooth.$patch(PoseComponent)!({
+      const leftToothPose = this.__leftTooth.$copy(PoseComponent);
+      const rightToothPose = this.__rightTooth.$copy(PoseComponent);
+      this.__leftTooth.$patch(PoseComponent)({
         x: leftToothPose.x + 1,
       });
-      this.__rightTooth.$patch(PoseComponent)!({
+      this.__rightTooth.$patch(PoseComponent)({
         x: rightToothPose.x - 1,
       });
     }
     if (this.__openMotor.isHigh) {
       this.__leftThread.left();
       this.__rightThread.right();
-      const leftToothPose = this.__leftTooth.$copy(PoseComponent)!;
-      const rightToothPose = this.__rightTooth.$copy(PoseComponent)!;
-      this.__leftTooth.$patch(PoseComponent)!({
+      const leftToothPose = this.__leftTooth.$copy(PoseComponent);
+      const rightToothPose = this.__rightTooth.$copy(PoseComponent);
+      this.__leftTooth.$patch(PoseComponent)({
         x: leftToothPose.x - 1,
       });
-      this.__rightTooth.$patch(PoseComponent)!({
+      this.__rightTooth.$patch(PoseComponent)({
         x: rightToothPose.x + 1,
       });
     }

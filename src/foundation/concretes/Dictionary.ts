@@ -1,7 +1,7 @@
 import IDictionary from '../interfaces/IDictionary';
 import { Index } from '../types';
 
-export default class Dictionary<T extends object> implements IDictionary<T> {
+export default class Dictionary<T extends {}> implements IDictionary<T> {
 
   private __data: Index<T> = {};
 
@@ -13,7 +13,7 @@ export default class Dictionary<T extends object> implements IDictionary<T> {
     return this.__data[key];
   }
 
-  public write({ key, value }: { key: string, value: T }): void {
+  public write({ key, value }: { key: string; value: T }): void {
     this.__data[key] = value;
   }
 

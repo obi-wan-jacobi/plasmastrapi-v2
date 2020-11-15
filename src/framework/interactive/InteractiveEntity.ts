@@ -1,54 +1,40 @@
-import PoseComponent from '../geometry/components/PoseComponent';
-import { entityContainsPoint } from '../helpers/entities';
-import Entity from 'src/engine/Entity';
-import { Index } from '../../foundation/types';
+import InteractiveComponent from './InteractiveComponent';
+import Entity from 'engine/Entity';
+import IAdaptedMouseEvent from 'engine/interfaces/IAdaptedMouseEvent';
 
 export default abstract class InteractiveEntity extends Entity {
 
-  private __isDisabled: boolean = false;
-  private __isHovered: boolean = false;
-
-  public constructor({ x, y, a }: { x: number, y: number, a: number }) {
+  public constructor() {
     super(arguments[0]);
-    this.$add(PoseComponent)({ x, y, a });
+    this.$add(InteractiveComponent)({
+      isEnabled  : true,
+      isHovered  : false,
+      mouseenter : this.$mouseenter,
+      mouseleave : this.$mouseleave,
+      mousemove  : this.$mousemove,
+      mousedown  : this.$mousedown,
+      mouseup    : this.$mouseup,
+      click      : this.$click,
+    });
   }
 
   public $enable(): void {
-    this.__isDisabled = false;
+    this.$patch(InteractiveComponent)({ isEnabled: true });
   }
 
   public $disable(): void {
-    this.__isDisabled = true;
+    this.$patch(InteractiveComponent)({ isEnabled: false });
   }
 
-  public $once(): void {
-    if (this.__isDisabled) {
-      return;
-    }
-    if (this.$master.mouse.name === 'none') {
-      return;
-    }
-    if (!entityContainsPoint(this, this.$master.mouse)) {
-      if (this.$master.mouse.name === 'mousemove') {
-        this.$mousemove();
-      }
-      if (this.__isHovered) {
-        this.__isHovered = false;
-        this.$mouseleave();
-      }
-      return;
-    }
-    if (!this.__isHovered) {
-      this.__isHovered = true;
-      this.$mouseenter();
-    }
-    (this as Index<any>)[`$${this.$master.mouse.name}`]();
-  }
+  public abstract $mouseenter(e: IAdaptedMouseEvent): void;
 
-  public abstract $mouseenter(): void;
-  public abstract $mouseleave(): void;
-  public abstract $mousemove(): void;
-  public abstract $mousedown(): void;
-  public abstract $mouseup(): void;
-  public abstract $click(): void;
+  public abstract $mouseleave(e: IAdaptedMouseEvent): void;
+
+  public abstract $mousemove(e: IAdaptedMouseEvent): void;
+
+  public abstract $mousedown(e: IAdaptedMouseEvent): void;
+
+  public abstract $mouseup(e: IAdaptedMouseEvent): void;
+
+  public abstract $click(e: IAdaptedMouseEvent): void;
 }
