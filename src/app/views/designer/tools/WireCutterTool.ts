@@ -7,11 +7,11 @@ import StyleComponent from 'framework/presentation/components/StyleComponent';
 
 export default class WireCutterTool extends Tool {
 
-  public points: IPoint[] = [];
+  public path: IPoint[] = [];
 
   private __isCuttingActive = false;
 
-  constructor({ x, y }: { x: number; y: number }) {
+  constructor({}: { x: number; y: number }) {
     super(arguments[0]);
     this.$add(StyleComponent)({ colour: 'RED' });
   }
@@ -25,16 +25,16 @@ export default class WireCutterTool extends Tool {
     if (!this.__isCuttingActive) {
       return;
     }
-    this.points.push({
-      x : e.x,
-      y : e.y,
+    this.path.push({
+      x: e.x,
+      y: e.y,
     });
   }
 
   public $mouseup(e: IAdaptedMouseEvent): void {
     super.$mouseup(e);
     this._$master.forEvery(Wire)((wire) => {
-      if (entityTouchesLine(wire, this.points)) {
+      if (entityTouchesLine(wire, this.path)) {
         wire.$destroy();
       }
     });

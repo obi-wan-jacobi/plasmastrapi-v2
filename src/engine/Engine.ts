@@ -49,8 +49,8 @@ export default class Engine implements IEngine {
 
   public add<T extends ISystem>(SystemClass: Stor<T>): void {
     this.__systems.write({
-      key   : SystemClass.name,
-      value : new SystemClass(this),
+      key: SystemClass.name,
+      value: new SystemClass(this),
     });
   }
 

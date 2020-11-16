@@ -4,17 +4,17 @@ import IAdaptedMouseEvent from 'engine/interfaces/IAdaptedMouseEvent';
 
 export default abstract class InteractiveEntity extends Entity {
 
-  public constructor() {
+  public constructor({}: {}) {
     super(arguments[0]);
     this.$add(InteractiveComponent)({
-      isEnabled  : true,
-      isHovered  : false,
-      mouseenter : this.$mouseenter,
-      mouseleave : this.$mouseleave,
-      mousemove  : this.$mousemove,
-      mousedown  : this.$mousedown,
-      mouseup    : this.$mouseup,
-      click      : this.$click,
+      isEnabled: true,
+      isHovered: false,
+      mouseenter: this.$mouseenter,
+      mouseleave: this.$mouseleave,
+      mousemove: this.$mousemove,
+      mousedown: this.$mousedown,
+      mouseup: this.$mouseup,
+      click: this.$click,
     });
   }
 

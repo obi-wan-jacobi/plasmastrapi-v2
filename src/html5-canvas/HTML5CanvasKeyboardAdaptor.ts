@@ -37,8 +37,8 @@ export default class HTML5CanvasKeyboardAdapter implements IKeyboardAdaptor {
       .forEach((key) => {
         this.__canvas[`on${key}`] = (ke: KeyboardEvent): void => {
           this.__buffer.push({
-            name : key,
-            key  : ke.key,
+            name: key,
+            key: ke.key,
           });
         };
       });

@@ -10,8 +10,8 @@ export default class LabelSystem extends System {
                 return;
             }
             this.$engine.viewport.drawLabel({
-                pose  : label.$entity.$copy(PoseComponent),
-                label : label.copy(),
+                pose: label.$entity.$copy(PoseComponent),
+                label: label.copy(),
             });
         });
     }

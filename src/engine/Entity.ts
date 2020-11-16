@@ -29,8 +29,8 @@ export default class Entity extends Unique implements IEntity {
     return (data: TArg) => {
       if (!this.__components.read(ComponentClass.name)) {
         this.__components.write({
-          key   : ComponentClass.name,
-          value : this._$master.componentMaster.create(this, ComponentClass, data),
+          key: ComponentClass.name,
+          value: this._$master.componentMaster.create(this, ComponentClass, data),
         });
       }
     };

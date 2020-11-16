@@ -10,8 +10,8 @@ export default class ShapeSystem extends System {
         this.$engine.components.forEvery(ShapeComponent)((shape) => {
             const pose = shape.$entity.$copy(PoseComponent);
             this.$engine.viewport.drawShape({
-                path  : transformShape(shape.copy(), pose).points,
-                style : shape.$entity.$copy(StyleComponent),
+                path: transformShape(shape.copy(), pose).vertices,
+                style: shape.$entity.$copy(StyleComponent),
             });
         });
     }

@@ -26,10 +26,10 @@ export default class VerticalThreadedAxle extends MachinePart {
           './threaded-axle-9.png',
           './threaded-axle-10.png',
         ].map((src) => ({ src, width: 10, height: width, rotate: -Math.PI / 2 })),
-        frame    : 0,
-        speed    : 1,
-        cooldown : 0,
-        isPaused : true,
+        frame: 0,
+        speed: 1,
+        cooldown: 0,
+        isPaused: true,
       });
       this.__threads.push(thread);
     }
@@ -38,8 +38,8 @@ export default class VerticalThreadedAxle extends MachinePart {
   public up(): void {
     this.__threads.forEach((thread) => {
       thread.$patch(AnimationComponent)({
-        isPaused   : false,
-        isReversed : true,
+        isPaused: false,
+        isReversed: true,
       });
     });
   }
@@ -47,8 +47,8 @@ export default class VerticalThreadedAxle extends MachinePart {
   public down(): void {
     this.__threads.forEach((thread) => {
       thread.$patch(AnimationComponent)({
-        isPaused   : false,
-        isReversed : false,
+        isPaused: false,
+        isReversed: false,
       });
     });
   }

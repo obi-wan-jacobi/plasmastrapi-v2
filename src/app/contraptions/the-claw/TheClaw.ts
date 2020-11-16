@@ -33,9 +33,9 @@ export default class TheClaw extends Contraption {
     super(arguments[0]);
     this.__horizontalRail = this._$master.create(HorizontalThreadedAxle, { pose, width: 300, height: 20 });
     this.__carriage = this._$master.create(TouchActivator, {
-      pose  : { x: pose.x - 130, y: pose.y, a: 0 },
-      shape : {
-        points: [
+      pose: { x: pose.x - 130, y: pose.y, a: 0 },
+      shape: {
+        vertices: [
           { x: 20, y: 30 },
           { x: -20, y: 30 },
           { x: -20, y: -30 },
@@ -48,9 +48,9 @@ export default class TheClaw extends Contraption {
       x: pose.x - 130, y: pose.y, width: 20, height: 200,
     });
     this.__leftSensor = this._$master.create(TouchSensor, {
-      x     : pose.x - 170, y     : pose.y,
-      shape : {
-        points: [
+      x: pose.x - 170, y: pose.y,
+      shape: {
+        vertices: [
           { x: 20, y: 20 },
           { x: -20, y: 20 },
           { x: -20, y: -20 },
@@ -60,9 +60,9 @@ export default class TheClaw extends Contraption {
       label: 'left-sensor',
     });
     this.__rightSensor = this._$master.create(TouchSensor, {
-      x     : pose.x + 170, y     : pose.y,
-      shape : {
-        points: [
+      x: pose.x + 170, y: pose.y,
+      shape: {
+        vertices: [
           { x: 20, y: 20 },
           { x: -20, y: 20 },
           { x: -20, y: -20 },
@@ -72,9 +72,9 @@ export default class TheClaw extends Contraption {
       label: 'right-sensor',
     });
     this.__topSensor = this._$master.create(TouchSensor, {
-      x     : pose.x - 130, y     : pose.y - 105,
-      shape : {
-        points: [
+      x: pose.x - 130, y: pose.y - 105,
+      shape: {
+        vertices: [
           { x: 20, y: 5 },
           { x: -20, y: 5 },
           { x: -20, y: -5 },
@@ -84,9 +84,9 @@ export default class TheClaw extends Contraption {
       label: 'top-sensor',
     });
     this.__bottomSensor = this._$master.create(TouchSensor, {
-      x     : pose.x - 130, y     : pose.y + 105,
-      shape : {
-        points: [
+      x: pose.x - 130, y: pose.y + 105,
+      shape: {
+        vertices: [
           { x: 20, y: 5 },
           { x: -20, y: 5 },
           { x: -20, y: -5 },
@@ -111,10 +111,10 @@ export default class TheClaw extends Contraption {
       x: pose.x - 130, y: pose.y + 130,
     });
     this.__prize = this._$master.create(MachineTarget, {
-      x     : pose.x + 130,
-      y     : pose.y + 250,
-      shape : {
-        points: [
+      x: pose.x + 130,
+      y: pose.y + 250,
+      shape: {
+        vertices: [
           { x: 10, y: 20 },
           { x: -10, y: 20 },
           { x: -10, y: -20 },

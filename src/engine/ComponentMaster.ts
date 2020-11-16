@@ -14,14 +14,14 @@ export default class ComponentMaster implements IComponentMaster {
     if (!collection) {
       collection = new Dictionary();
       this.__componentMap.write({
-        key   : ComponentConstructor.name,
-        value : collection,
+        key: ComponentConstructor.name,
+        value: collection,
       });
     }
     const component = new ComponentConstructor({ data, entity });
     collection.write({
-      key   : component.id,
-      value : component,
+      key: component.id,
+      value: component,
     });
     return component;
   }

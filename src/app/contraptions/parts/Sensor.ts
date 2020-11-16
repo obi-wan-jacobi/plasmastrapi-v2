@@ -14,9 +14,9 @@ export default class Sensor extends MachinePart {
     super(arguments[0]);
     this.output = this._$master.create(OutputTerminal, { x: 0, y: 0 });
     this.output.$add(LabelComponent)({
-      text     : label!.text,
-      fontSize : 20,
-      offset   : { x: 15, y: 7 },
+      text: label!.text,
+      fontSize: 20,
+      offset: { x: 15, y: 7 },
     });
     this.output.$add(StyleComponent)({ colour: 'WHITE' });
   }

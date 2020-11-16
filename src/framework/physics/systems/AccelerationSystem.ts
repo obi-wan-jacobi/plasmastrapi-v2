@@ -10,9 +10,9 @@ export default class AccelerationSystem extends System {
             const v = acceleration.$entity.$copy(VelocityComponent);
             const dt = this.$engine.delta;
             acceleration.$entity.$mutate(VelocityComponent)({
-                x : v.x + a.x * dt,
-                y : v.y + a.y * dt,
-                w : v.w + a.w * dt,
+                x: v.x + a.x * dt,
+                y: v.y + a.y * dt,
+                w: v.w + a.w * dt,
             });
         });
     }

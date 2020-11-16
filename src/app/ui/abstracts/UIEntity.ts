@@ -10,13 +10,14 @@ import { Index } from 'foundation/types';
 import PoseComponent from 'framework/geometry/components/PoseComponent';
 import InteractiveEntity from 'framework/interactive/InteractiveEntity';
 import LabelComponent from 'framework/presentation/components/LabelComponent';
+import IUIEntity from '../interfaces/IUIEntity';
 
 const componentKeyMap: Index<Ctor<IComponent<any>, any>> = {
-  pose  : PoseComponent,
-  shape : ShapeComponent,
-  style : StyleComponent,
-  label : LabelComponent,
-  image : ImageComponent,
+  pose: PoseComponent,
+  shape: ShapeComponent,
+  style: StyleComponent,
+  label: LabelComponent,
+  image: ImageComponent,
 };
 
 const applyEntityTemplateToEntity = (template: IEntityTemplate, entity: IEntity): void => {
@@ -29,14 +30,25 @@ const applyEntityTemplateToEntity = (template: IEntityTemplate, entity: IEntity)
   });
 };
 
-export default abstract class UIEntity extends InteractiveEntity {
+export default abstract class UIEntity extends InteractiveEntity implements IUIEntity {
 
   public constructor(template: IEntityTemplate) {
     super(arguments[0]);
     template.style = { colour: 'WHITE', fill: 'BLACK' } || template.style;
+    if ((template.width && template.height) && !template.shape) {
+      template.shape = {
+        vertices: [
+          { x: template.width / 2, y: template.height / 2},
+          { x: -template.width / 2, y: template.height / 2},
+          { x: -template.width / 2, y: -template.height / 2},
+          { x: template.width / 2, y: -template.height / 2},
+        ],
+      };
+    }
     applyEntityTemplateToEntity(template, this);
   }
 
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   public $mousemove(e: IAdaptedMouseEvent): void {
     //
   }
@@ -60,5 +72,6 @@ export default abstract class UIEntity extends InteractiveEntity {
   public $click(e: IAdaptedMouseEvent): void {
     //
   }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 
 }

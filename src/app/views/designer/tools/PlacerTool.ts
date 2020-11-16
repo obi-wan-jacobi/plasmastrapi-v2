@@ -8,7 +8,7 @@ export default class PlacerTool extends Tool {
 
   private __element: DigitalElement;
 
-  constructor({ x, y, element }: { x: number; y: number; element: DigitalElement }) {
+  constructor({ element }: { x: number; y: number; element: DigitalElement }) {
     super(arguments[0]);
     this.$add(StyleComponent)({ colour: 'LIGHTBLUE' });
     this.__element = element;
@@ -17,8 +17,8 @@ export default class PlacerTool extends Tool {
   public $mousemove(e: IAdaptedMouseEvent): void {
     super.$mousemove(e);
     this.__element.$patch(PoseComponent)({
-      x : e.x,
-      y : e.y,
+      x: e.x,
+      y: e.y,
     });
   }
 }

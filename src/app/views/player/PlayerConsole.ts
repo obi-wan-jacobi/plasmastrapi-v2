@@ -8,12 +8,12 @@ export default class PlayerConsole<T extends Constructor<Contraption, TArg>, TAr
 
   public constructor({ ContraptionCtor, arg }: { ContraptionCtor: T; arg: TArg }) {
     super(arguments[0]);
-    this.add(ButtonPanel);
-    this.add(ContraptionPanel, {
-      x      : 1040,
-      y      : 340,
-      width  : 440,
-      height : 560,
+    this.appendChild(ButtonPanel);
+    this.appendChild(ContraptionPanel, {
+      x: 1040,
+      y: 340,
+      width: 440,
+      height: 560,
       ContraptionCtor,
       arg,
     });

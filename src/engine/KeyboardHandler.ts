@@ -6,11 +6,12 @@ export default class KeyboardHandler implements IKeyboardHandler {
   [key: string]: (keyboardEvent: IAdaptedKeyboardEvent) => void
 
   // constructor() {
-  //   this.keydowns = {};
-  //   this.keypresses = {};
-  //   this.keyups = {};
-  // }
+    //   this.keydowns = {};
+    //   this.keypresses = {};
+    //   this.keyups = {};
+    // }
 
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   public keydown(keyboardEvent: IAdaptedKeyboardEvent): void {
     // this.__handle(keyboardEvent, this.keydowns);
   }
@@ -22,6 +23,7 @@ export default class KeyboardHandler implements IKeyboardHandler {
   public keyup(keyboardEvent: IAdaptedKeyboardEvent): void {
     // this.__handle(keyboardEvent, this.keyups);
   }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 
   // private __handle(
   //   keyboardEvent: IAdaptedKeyboardEvent,

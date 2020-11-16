@@ -7,21 +7,21 @@ export default class DesignerConsole extends Panel {
 
   public constructor(contraption: Contraption) {
     super({
-      pose   : { x: 0, y: 0, a: 0 },
-      width  : 1,
-      height : 1,
-      style  : {},
-      label  : {},
-      image  : {},
+      pose: { x: 0, y: 0, a: 0 },
+      width: 1,
+      height: 1,
+      style: {},
+      label: {},
+      image: {},
     });
-    this.add(ToolButtonPanel);
-    this.add(DigitalCircuitPanel, {
-      x       : 400,
-      y       : 340,
-      width   : 800,
-      height  : 560,
-      inputs  : contraption.inputs,
-      outputs : contraption.outputs,
+    this.appendChild(ToolButtonPanel);
+    this.appendChild(DigitalCircuitPanel, {
+      x: 400,
+      y: 340,
+      width: 800,
+      height: 560,
+      inputs: contraption.inputs,
+      outputs: contraption.outputs,
     });
   }
 

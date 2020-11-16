@@ -41,19 +41,19 @@ export default class App {
     private __initInputsHandlers(): void {
         const propagateMouseInput = (mouseEvent: IAdaptedMouseEvent) => this.engine.mouse = mouseEvent;
         this.mouse.handler({
-            mouseenter : propagateMouseInput,
-            mousemove  : propagateMouseInput,
-            mouseleave : propagateMouseInput,
-            mousedown  : propagateMouseInput,
-            mouseup    : propagateMouseInput,
-            click      : propagateMouseInput,
-            none       : propagateMouseInput,
+            mouseenter: propagateMouseInput,
+            mousemove: propagateMouseInput,
+            mouseleave: propagateMouseInput,
+            mousedown: propagateMouseInput,
+            mouseup: propagateMouseInput,
+            click: propagateMouseInput,
+            none: propagateMouseInput,
         });
         const propagateKeyboardInput = (keyboardEvent: IAdaptedKeyboardEvent) => this.engine.keyboard = keyboardEvent;
         this.keyboard.handler({
-            keydown  : propagateKeyboardInput,
-            keypress : propagateKeyboardInput,
-            keyup    : propagateKeyboardInput,
+            keydown: propagateKeyboardInput,
+            keypress: propagateKeyboardInput,
+            keyup: propagateKeyboardInput,
         });
     }
 

@@ -9,18 +9,18 @@ export const rotatePointAboutOrigin = ({ point, orientation }: {
     const s = Math.sin(orientation);
     const c = Math.cos(orientation);
     return {
-        x : point.x * c - point.y * s,
-        y : point.x * s + point.y * c,
+        x: point.x * c - point.y * s,
+        y: point.x * s + point.y * c,
     };
 };
 
 export const transformShape = (shape: IShape, pose: IPose): IShape => {
     return {
-        points: shape.points.map((p) => {
+        vertices: shape.vertices.map((p) => {
             const point = rotatePointAboutOrigin({ point: p, orientation: pose.a });
             return {
-                x : point.x + pose.x,
-                y : point.y + pose.y,
+                x: point.x + pose.x,
+                y: point.y + pose.y,
             };
         }),
     };
@@ -32,7 +32,7 @@ export const fromPointsToGeoJSON = (points: IPoint[]): Feature<LineString, GeoJs
 
 export const fromShapeToGeoJSON = (shape: IShape): Feature<Polygon, GeoJsonProperties> => {
     return turf.polygon([
-        shape.points.map((vertex) => [vertex.x, vertex.y ]).concat([[shape.points[0].x, shape.points[0].y]]),
+        shape.vertices.map((vertex) => [vertex.x, vertex.y ]).concat([[shape.vertices[0].x, shape.vertices[0].y]]),
     ]);
 };
 
@@ -62,10 +62,10 @@ export const fromShapeToBoundary = (shape: IShape): IBoundary => {
     const geojson = fromShapeToGeoJSON(shape);
     const bbox = turf.bbox(geojson);
     return {
-        minX : bbox[0],
-        minY : bbox[1],
-        maxX : bbox[2],
-        maxY : bbox[3],
+        minX: bbox[0],
+        minY: bbox[1],
+        maxX: bbox[2],
+        maxY: bbox[3],
     };
 };
 

@@ -6,8 +6,8 @@ import StyleComponent from 'framework/presentation/components/StyleComponent';
 
 export default class DestructorTool extends Tool {
 
-  constructor({ x, y }: { x: number; y: number }) {
-    super(Object.assign({ width: 10, height: 10 }, arguments[0]));
+  constructor({}: { x: number; y: number }) {
+    super(arguments[0]);
     this.$add(StyleComponent)({ colour: 'ORANGE' });
   }
 

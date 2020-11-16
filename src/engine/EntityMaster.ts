@@ -54,8 +54,8 @@ export default class EntityMaster implements IEntityMaster {
         if (!collection) {
           collection = new Dictionary();
           this.__entityMap.write({
-            key   : target.constructor.name,
-            value : collection,
+            key: target.constructor.name,
+            value: collection,
           });
         }
         collection.write({ key: instance.id, value: instance });

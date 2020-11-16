@@ -4,9 +4,9 @@ import { STATE } from '../../enums/STATE';
 import UIEntity from '../../../ui/abstracts/UIEntity';
 
 const LABEL_COLOUR_MAP = {
-  [STATE.HIGH] : 'GREEN',
-  [STATE.LOW]  : 'RED',
-  [STATE.OFF]  : 'WHITE',
+  [STATE.HIGH]: 'GREEN',
+  [STATE.LOW]: 'RED',
+  [STATE.OFF]: 'WHITE',
 };
 
 export default class Terminal extends UIEntity {
@@ -16,12 +16,12 @@ export default class Terminal extends UIEntity {
 
   constructor({ x, y, src }: { x: number; y: number; src: string }) {
     super({
-      pose   : { x: 0, y: 0, a: 0 },
-      width  : 20,
-      height : 20,
-      style  : {},
-      label  : {},
-      image  : {},
+      pose: { x: 0, y: 0, a: 0 },
+      width: 20,
+      height: 20,
+      style: {},
+      label: {},
+      image: {},
     });
     this.__src = src;
     this.$add(ImageComponent)({ src });

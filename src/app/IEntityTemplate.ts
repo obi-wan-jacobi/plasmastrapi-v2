@@ -6,6 +6,8 @@ import { IStyle } from 'framework/presentation/components/StyleComponent';
 
 export default interface IEntityTemplate {
   pose: IPose;
+  width?: number;
+  height?: number;
   shape?: IShape;
   style?: IStyle;
   label?: ILabel;

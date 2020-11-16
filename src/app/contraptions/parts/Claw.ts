@@ -25,9 +25,9 @@ export default class Claw extends Contraption {
   public constructor({ pose }: IEntityTemplate) {
     super(arguments[0]);
     this.__wrist = this._$master.create(MachinePart, {
-      pose  : { x: pose.x, y: pose.y - 15, a: 0 },
-      shape : {
-        points: [
+      pose: { x: pose.x, y: pose.y - 15, a: 0 },
+      shape: {
+        vertices: [
           { x: 10, y: 5 },
           { x: -10, y: 5 },
           { x: -20, y: -5 },
@@ -36,9 +36,9 @@ export default class Claw extends Contraption {
       },
     });
     this.__palm = this._$master.create(TouchActivator, {
-      pose  : { x: pose.x, y: pose.y + 10, a: 0 },
-      shape : {
-        points: [
+      pose: { x: pose.x, y: pose.y + 10, a: 0 },
+      shape: {
+        vertices: [
           { x: 10, y: 10 },
           { x: -10, y: 10 },
           { x: -10, y: -20 },
@@ -47,9 +47,9 @@ export default class Claw extends Contraption {
       },
     });
     this.__leftHub = this._$master.create(TouchSensor, {
-      pose  : { x: pose.x - 52, y: pose.y + 10, a: 0 },
-      shape : {
-        points: [
+      pose: { x: pose.x - 52, y: pose.y + 10, a: 0 },
+      shape: {
+        vertices: [
           { x: 2, y: 10 },
           { x: -2, y: 10 },
           { x: -2, y: -10 },
@@ -59,8 +59,8 @@ export default class Claw extends Contraption {
       label: 'open-sensor',
     });
     this.__rightHub = this._$master.create(MachinePart, {
-      x     : x + 52, y     : y + 10, shape : {
-        points: [
+      x: x + 52, y: y + 10, shape: {
+        vertices: [
           { x: 2, y: 10 },
           { x: -2, y: 10 },
           { x: -2, y: -10 },
@@ -75,8 +75,8 @@ export default class Claw extends Contraption {
       x: x + 30, y: y + 10, width: 40, height: 20,
     });
     this.__leftTooth = this._$master.create(TouchActivator, {
-      x     : x - 40, y     : y + 10, shape : {
-        points: [
+      x: x - 40, y: y + 10, shape: {
+        vertices: [
           { x: 10, y: 60 },
           { x: -0, y: 60 },
           { x: -0, y: 20 },
@@ -88,8 +88,8 @@ export default class Claw extends Contraption {
     });
     this.__leftTooth.$patch(StyleComponent)({ zIndex: 1 });
     this.__rightTooth = this._$master.create(TouchSensor, {
-      x     : x + 40, y     : y + 10, shape : {
-        points: [
+      x: x + 40, y: y + 10, shape: {
+        vertices: [
           { x: 0, y: 20 },
           { x: 0, y: 60 },
           { x: -10, y: 60 },

@@ -10,8 +10,8 @@ export default class ImageSystem extends System {
                 return;
             }
             this.$engine.viewport.drawImage({
-                pose  : image.$entity.$copy(PoseComponent) || { x: 0, y: 0, a: 0 },
-                image : image.copy(),
+                pose: image.$entity.$copy(PoseComponent) || { x: 0, y: 0, a: 0 },
+                image: image.copy(),
             });
         });
     }

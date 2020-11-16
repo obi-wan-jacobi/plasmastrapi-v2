@@ -1,8 +1,9 @@
+import IEntityTemplate from 'app/IEntityTemplate';
 import Button from '../../../ui/Button';
 
-export default class LatchButton extends Button {
+export default abstract class LatchButton extends Button {
 
-  public constructor({ x, y, label }: { x: number; y: number; label: string }) {
+  public constructor({}: IEntityTemplate) {
     super(arguments[0]);
     this.$disable();
   }

@@ -25,8 +25,8 @@ export default class AnimatedImageSystem extends System {
       }
       animation.mutate(data);
       this.$engine.viewport.drawImage({
-        pose  : animation.$entity.$copy(PoseComponent) || { x: 0, y: 0, a: 0 },
-        image : data.images[data.frame],
+        pose: animation.$entity.$copy(PoseComponent) || { x: 0, y: 0, a: 0 },
+        image: data.images[data.frame],
       });
     });
   }

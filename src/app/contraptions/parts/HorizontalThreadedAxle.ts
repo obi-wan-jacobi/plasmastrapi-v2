@@ -12,9 +12,9 @@ export default class HorizontalThreadedAxle extends MachinePart {
     for (let i = 0, L = width / 10; i < L; i++) {
       const thread = this._$master.create(MachinePart, {
         pose: {
-          x : pose.x - width / 2 + i * 10 + 5,
-          y : pose.y,
-          a : pose.a,
+          x: pose.x - width / 2 + i * 10 + 5,
+          y: pose.y,
+          a: pose.a,
         },
       });
       thread.$add(AnimationComponent)({
@@ -30,10 +30,10 @@ export default class HorizontalThreadedAxle extends MachinePart {
           './threaded-axle-9.png',
           './threaded-axle-10.png',
         ].map((src) => ({ src, width: 10, height })),
-        frame    : 0,
-        speed    : 1,
-        cooldown : 0,
-        isPaused : true,
+        frame: 0,
+        speed: 1,
+        cooldown: 0,
+        isPaused: true,
       });
       this.__threads.push(thread);
     }
@@ -42,8 +42,8 @@ export default class HorizontalThreadedAxle extends MachinePart {
   public left(): void {
     this.__threads.forEach((thread) => {
       thread.$patch(AnimationComponent)({
-        isPaused   : false,
-        isReversed : false,
+        isPaused: false,
+        isReversed: false,
       });
     });
   }
@@ -51,8 +51,8 @@ export default class HorizontalThreadedAxle extends MachinePart {
   public right(): void {
     this.__threads.forEach((thread) => {
       thread.$patch(AnimationComponent)({
-        isPaused   : false,
-        isReversed : true,
+        isPaused: false,
+        isReversed: true,
       });
     });
   }
