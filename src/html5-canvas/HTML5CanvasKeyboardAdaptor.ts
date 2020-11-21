@@ -2,15 +2,15 @@ import IAdaptedKeyboardEvent from '../engine/interfaces/IAdaptedKeyboardEvent';
 import IKeyboardAdaptor from '../engine/interfaces/IKeyboardAdaptor';
 import IKeyboardHandler from '../engine/interfaces/IKeyboardHandler';
 import KeyboardHandler from '../engine/KeyboardHandler';
-import { Index } from 'foundation/types';
+import { Dict } from 'foundation/types';
 
 export default class HTML5CanvasKeyboardAdapter implements IKeyboardAdaptor {
 
-  private __canvas: HTMLCanvasElement & Index<(ke: KeyboardEvent) => void>;
+  private __canvas: HTMLCanvasElement & Dict<(ke: KeyboardEvent) => void>;
   private __buffer: IAdaptedKeyboardEvent[];
   private __handler: IKeyboardHandler;
 
-  constructor(canvas: HTMLCanvasElement & Index<(ke: KeyboardEvent) => void>) {
+  constructor(canvas: HTMLCanvasElement & Dict<(ke: KeyboardEvent) => void>) {
     this.__canvas = canvas;
     this.__buffer = [];
     this.__handler = new KeyboardHandler();

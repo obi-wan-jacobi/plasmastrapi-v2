@@ -4,15 +4,14 @@ import Panel from '../../../ui/Panel';
 import PoseComponent from '../../../../framework/geometry/components/PoseComponent';
 import PowerSupply from '../../../digital-logic/entities/PowerSupply';
 import ShapeComponent from '../../../../framework/geometry/components/ShapeComponent';
+import IEntityTemplate from 'app/IEntityTemplate';
 
 export default class DigitalCircuitPanel extends Panel {
 
   private __inputs: InputTerminal[] = [];
   private __outputs: OutputTerminal[] = [];
 
-  public constructor({ x, y, width, height, inputs, outputs }: {
-    x: number; y: number; width: number; height: number; inputs: InputTerminal[]; outputs: OutputTerminal[];
-  }) {
+  public constructor({ inputs, outputs }: IEntityTemplate & { inputs: InputTerminal[]; outputs: OutputTerminal[] }) {
     super(arguments[0]);
     this.__inputs = inputs;
     this.__outputs = outputs;

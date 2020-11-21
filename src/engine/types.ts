@@ -3,7 +3,7 @@ import IEntity from './interfaces/IEntity';
 import ISystem from './interfaces/ISystem';
 import { Constructor } from 'foundation/types';
 
-type ABC<T> = { prototype: T };
+type ABC<T> = { name: string; prototype: T };
 
 export type Etor<T extends IEntity, TArg> = Constructor<T, TArg>;
 export type EntityClass<T extends IEntity> = ABC<T>;

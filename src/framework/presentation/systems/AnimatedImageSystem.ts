@@ -1,11 +1,11 @@
-import AnimationComponent from '../components/AnimationComponent';
+import AnimatedImageComponent from '../components/AnimationComponent';
 import System from '../../../engine/abstracts/System';
 import PoseComponent from 'framework/geometry/components/PoseComponent';
 
 export default class AnimatedImageSystem extends System {
 
   public draw(): void {
-    this.$engine.components.forEvery(AnimationComponent)((animation) => {
+    this.$engine.components.forEvery(AnimatedImageComponent)((animation) => {
       const data = animation.copy();
       if (data.cooldown === data.speed) {
         data.cooldown = 0;

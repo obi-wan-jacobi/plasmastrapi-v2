@@ -41,15 +41,15 @@ export const fromGeoJSONCoordinatesToShapes = (geoJSON: Feature<Polygon|MultiPol
         return [];
     }
     if (geoJSON.geometry.type === 'Polygon') {
-        return geoJSON.geometry.coordinates.map((points: number[][]) => {
-            return { points: points.map((vertex: number[]) => ({ x: vertex[0], y: vertex[1] })) };
+        return geoJSON.geometry.coordinates.map((vertices: number[][]) => {
+            return { vertices: vertices.map((vertex: number[]) => ({ x: vertex[0], y: vertex[1] })) };
         });
     }
     if (geoJSON.geometry.type === 'MultiPolygon') {
         const shapes: IShape[] = [];
         geoJSON.geometry.coordinates.forEach((polygon) => {
-            shapes.push(polygon.map((points: number[][]) => {
-                return { points: points.map((vertex: number[]) => ({ x: vertex[0], y: vertex[1] })) };
+            shapes.push(polygon.map((vertices: number[][]) => {
+                return { vertices: vertices.map((vertex: number[]) => ({ x: vertex[0], y: vertex[1] })) };
             })[0]);
         });
         return shapes;

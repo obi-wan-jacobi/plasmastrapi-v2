@@ -12,24 +12,23 @@ export default class Wire extends Entity {
   public output: OutputTerminal;
 
   constructor({ input, output }: { input: InputTerminal; output: OutputTerminal }) {
-    super(arguments[0]);
+    super();
     this.input = input;
     this.output = output;
-    this.$add(StyleComponent)({ colour: 'WHITE' });
     this.updatePose();
     this.updateShape();
   }
 
   public high(): void {
-    this.$mutate(StyleComponent)({ colour: 'GREEN' });
+    this.$patch(StyleComponent)({ colour: 'GREEN' });
   }
 
   public low(): void {
-    this.$mutate(StyleComponent)({ colour: 'RED' });
+    this.$patch(StyleComponent)({ colour: 'RED' });
   }
 
   public off(): void {
-    this.$mutate(StyleComponent)({ colour: 'WHITE' });
+    this.$patch(StyleComponent)({ colour: 'WHITE' });
   }
 
   public updatePose(): void {

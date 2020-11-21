@@ -1,7 +1,7 @@
 import IAdaptedKeyboardEvent from './IAdaptedKeyboardEvent';
 import IAdaptedMouseEvent from './IAdaptedMouseEvent';
 import IComponentMaster from './IComponentMaster';
-import IEntityFactory from './IEntityMaster';
+import IEntityMaster from './IEntityMaster';
 import ISystem from './ISystem';
 import IViewportAdaptor from './IViewportAdaptor';
 import { Constructor } from 'foundation/types';
@@ -10,7 +10,7 @@ export default interface IEngine {
 
   viewport: IViewportAdaptor<any>;
   components: IComponentMaster;
-  entities: IEntityFactory;
+  entities: IEntityMaster;
 
   mouse: IAdaptedMouseEvent;
   keyboard: IAdaptedKeyboardEvent;

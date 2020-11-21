@@ -3,11 +3,9 @@ import Claw from '../parts/Claw';
 import Contraption from '../abstracts/Contraption';
 import HorizontalThreadedAxle from '../parts/HorizontalThreadedAxle';
 import MachineTarget from '../parts/abstracts/Prize';
-import StyleComponent from '../../../framework/presentation/components/StyleComponent';
 import TouchActivator from '../parts/TouchActivator';
 import TouchSensor from '../parts/TouchSensor';
 import VerticalThreadedAxle from '../parts/VerticalThreadedAxle';
-import { IPose } from 'framework/geometry/components/PoseComponent';
 
 export default class TheClaw extends Contraption {
 
@@ -29,11 +27,11 @@ export default class TheClaw extends Contraption {
 
   private __prize: MachineTarget;
 
-  public constructor(pose: IPose) {
+  public constructor({ x, y }: { x: number; y: number }) {
     super(arguments[0]);
-    this.__horizontalRail = this._$master.create(HorizontalThreadedAxle, { pose, width: 300, height: 20 });
+    this.__horizontalRail = this._$master.create(HorizontalThreadedAxle, { x, y, width: 300, height: 20 });
     this.__carriage = this._$master.create(TouchActivator, {
-      pose: { x: pose.x - 130, y: pose.y, a: 0 },
+      x: x - 130, y,
       shape: {
         vertices: [
           { x: 20, y: 30 },
@@ -42,13 +40,13 @@ export default class TheClaw extends Contraption {
           { x: 20, y: -30 },
         ],
       },
+      style: { colour: 'WHITE', opacity: 1, fill: 'rgba(0,0,0,0)', zIndex: 1 },
     });
-    this.__carriage.$add(StyleComponent)({ colour: 'WHITE', fill: 'BLACK', zIndex: 1 });
     this.__verticalRail = this._$master.create(VerticalThreadedAxle, {
-      x: pose.x - 130, y: pose.y, width: 20, height: 200,
+      x: x - 130, y, width: 20, height: 200,
     });
     this.__leftSensor = this._$master.create(TouchSensor, {
-      x: pose.x - 170, y: pose.y,
+      x: x - 170, y,
       shape: {
         vertices: [
           { x: 20, y: 20 },
@@ -57,10 +55,10 @@ export default class TheClaw extends Contraption {
           { x: 20, y: -20 },
         ],
       },
-      label: 'left-sensor',
+      labelText: 'left-sensor',
     });
     this.__rightSensor = this._$master.create(TouchSensor, {
-      x: pose.x + 170, y: pose.y,
+      x: x + 170, y,
       shape: {
         vertices: [
           { x: 20, y: 20 },
@@ -69,10 +67,10 @@ export default class TheClaw extends Contraption {
           { x: 20, y: -20 },
         ],
       },
-      label: 'right-sensor',
+      labelText: 'right-sensor',
     });
     this.__topSensor = this._$master.create(TouchSensor, {
-      x: pose.x - 130, y: pose.y - 105,
+      x: x - 130, y: y - 105,
       shape: {
         vertices: [
           { x: 20, y: 5 },
@@ -81,10 +79,10 @@ export default class TheClaw extends Contraption {
           { x: 20, y: -5 },
         ],
       },
-      label: 'top-sensor',
+      labelText: 'top-sensor',
     });
     this.__bottomSensor = this._$master.create(TouchSensor, {
-      x: pose.x - 130, y: pose.y + 105,
+      x: x - 130, y: y + 105,
       shape: {
         vertices: [
           { x: 20, y: 5 },
@@ -93,26 +91,26 @@ export default class TheClaw extends Contraption {
           { x: 20, y: -5 },
         ],
       },
-      label: 'bottom-sensor',
+      labelText: 'bottom-sensor',
     });
     this.__leftMotor = this._$master.create(Actuator, {
-      label: 'move-left',
+      labelText: 'move-left',
     });
     this.__rightMotor = this._$master.create(Actuator, {
-      label: 'move-right',
+      labelText: 'move-right',
     });
     this.__topMotor = this._$master.create(Actuator, {
-      label: 'move-up',
+      labelText: 'move-up',
     });
     this.__bottomMotor = this._$master.create(Actuator, {
-      label: 'move-down',
+      labelText: 'move-down',
     });
     this.__claw = this._$master.create(Claw, {
-      x: pose.x - 130, y: pose.y + 130,
+      x: x - 130, y: y + 130,
     });
     this.__prize = this._$master.create(MachineTarget, {
-      x: pose.x + 130,
-      y: pose.y + 250,
+      x: x + 130,
+      y: y + 250,
       shape: {
         vertices: [
           { x: 10, y: 20 },

@@ -6,12 +6,10 @@ export default abstract class Tool extends UIEntity {
 
   public constructor({ x, y, src }: { x: number; y: number; src?: string }) {
     super({
-      pose: { x, y, a: 0 },
+      x, y,
       width: 10,
       height: 10,
-      style: {},
-      label: { text: '' },
-      image: { src },
+      image: src ? { src, opacity: 1, zIndex: 0 } : undefined,
     });
   }
 

@@ -13,7 +13,7 @@ export default class WireCutterTool extends Tool {
 
   constructor({}: { x: number; y: number }) {
     super(arguments[0]);
-    this.$add(StyleComponent)({ colour: 'RED' });
+    this.$patch(StyleComponent)({ colour: 'RED' });
   }
 
   public $mousedown(): void {

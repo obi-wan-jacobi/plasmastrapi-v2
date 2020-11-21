@@ -1,7 +1,7 @@
 import { IImage } from './ImageComponent';
 import Component from 'engine/abstracts/Component';
 
-export interface IAnimation {
+export interface IAnimatedImage {
   images: IImage[];
   frame: number;
   speed: number;
@@ -9,4 +9,4 @@ export interface IAnimation {
   isPaused?: boolean;
   isReversed?: boolean;
 }
-export default class AnimationComponent extends Component<IAnimation> { }
+export default class AnimatedImageComponent extends Component<IAnimatedImage> { }

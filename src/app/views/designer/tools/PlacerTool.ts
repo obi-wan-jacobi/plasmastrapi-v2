@@ -10,7 +10,7 @@ export default class PlacerTool extends Tool {
 
   constructor({ element }: { x: number; y: number; element: DigitalElement }) {
     super(arguments[0]);
-    this.$add(StyleComponent)({ colour: 'LIGHTBLUE' });
+    this.$patch(StyleComponent)({ colour: 'LIGHTBLUE' });
     this.__element = element;
   }
 

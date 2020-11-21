@@ -1,7 +1,7 @@
 import IPoseIncrement from '../../interfaces/IPoseIncrement';
 import PoseComponent, { IPose } from '../../../../framework/geometry/components/PoseComponent';
-import IEntityTemplate from 'app/IEntityTemplate';
 import UIEntity from 'app/ui/abstracts/UIEntity';
+import IEntityTemplate from 'app/IEntityTemplate';
 
 export default class MachinePart extends UIEntity {
 
@@ -9,7 +9,7 @@ export default class MachinePart extends UIEntity {
 
   public constructor(template: IEntityTemplate) {
     super(template);
-    this.__initialPose = Object.assign({}, template.pose);
+    this.__initialPose = this.$copy(PoseComponent);
   }
 
   public reset(): void {

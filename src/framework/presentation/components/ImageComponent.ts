@@ -1,8 +1,9 @@
-import { IStyle } from './StyleComponent';
 import Component from 'engine/abstracts/Component';
 
-export interface IImage extends IStyle {
-  src?: string;
+export interface IImage {
+  src: string;
+  opacity: number;
+  zIndex: number;
   width?: number;
   height?: number;
   rotate?: number;

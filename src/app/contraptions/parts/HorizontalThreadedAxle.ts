@@ -1,23 +1,19 @@
 import IPoseIncrement from '../interfaces/IPoseIncrement';
 import MachinePart from './abstracts/MachinePart';
-import { IPose } from 'framework/geometry/components/PoseComponent';
-import AnimationComponent from 'framework/presentation/components/AnimationComponent';
+import AnimatedImageComponent from 'framework/presentation/components/AnimationComponent';
 
 export default class HorizontalThreadedAxle extends MachinePart {
 
   private __threads: MachinePart[] = [];
 
-  public constructor({ pose, width, height }: { pose: IPose; width: number; height: number }) {
-    super(arguments[0]);
+  public constructor({ x, y, width, height }: { x: number; y: number; width: number; height: number }) {
+    super({ x, y });
     for (let i = 0, L = width / 10; i < L; i++) {
       const thread = this._$master.create(MachinePart, {
-        pose: {
-          x: pose.x - width / 2 + i * 10 + 5,
-          y: pose.y,
-          a: pose.a,
-        },
+          x: x - width / 2 + i * 10 + 5,
+          y: y,
       });
-      thread.$add(AnimationComponent)({
+      thread.$add(AnimatedImageComponent)({
         images: [
           './threaded-axle-1.png',
           './threaded-axle-2.png',
@@ -29,7 +25,7 @@ export default class HorizontalThreadedAxle extends MachinePart {
           './threaded-axle-8.png',
           './threaded-axle-9.png',
           './threaded-axle-10.png',
-        ].map((src) => ({ src, width: 10, height })),
+        ].map((src) => ({ src, width: 10, height, opacity: 1, zIndex: 0 })),
         frame: 0,
         speed: 1,
         cooldown: 0,
@@ -41,7 +37,7 @@ export default class HorizontalThreadedAxle extends MachinePart {
 
   public left(): void {
     this.__threads.forEach((thread) => {
-      thread.$patch(AnimationComponent)({
+      thread.$patch(AnimatedImageComponent)({
         isPaused: false,
         isReversed: false,
       });
@@ -50,7 +46,7 @@ export default class HorizontalThreadedAxle extends MachinePart {
 
   public right(): void {
     this.__threads.forEach((thread) => {
-      thread.$patch(AnimationComponent)({
+      thread.$patch(AnimatedImageComponent)({
         isPaused: false,
         isReversed: true,
       });
@@ -59,7 +55,7 @@ export default class HorizontalThreadedAxle extends MachinePart {
 
   public off(): void {
     this.__threads.forEach((thread) => {
-      thread.$patch(AnimationComponent)({
+      thread.$patch(AnimatedImageComponent)({
         isPaused: true,
       });
     });

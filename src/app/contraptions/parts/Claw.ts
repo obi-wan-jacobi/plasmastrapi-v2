@@ -7,7 +7,6 @@ import PoseComponent from '../../../framework/geometry/components/PoseComponent'
 import StyleComponent from '../../../framework/presentation/components/StyleComponent';
 import TouchActivator from './TouchActivator';
 import TouchSensor from './TouchSensor';
-import IEntityTemplate from 'app/IEntityTemplate';
 
 export default class Claw extends Contraption {
 
@@ -22,10 +21,10 @@ export default class Claw extends Contraption {
   private __openMotor: Actuator;
   private __closeMotor: Actuator;
 
-  public constructor({ pose }: IEntityTemplate) {
+  public constructor({ x, y }: { x: number; y: number }) {
     super(arguments[0]);
     this.__wrist = this._$master.create(MachinePart, {
-      pose: { x: pose.x, y: pose.y - 15, a: 0 },
+      x, y: y - 15,
       shape: {
         vertices: [
           { x: 10, y: 5 },
@@ -36,7 +35,7 @@ export default class Claw extends Contraption {
       },
     });
     this.__palm = this._$master.create(TouchActivator, {
-      pose: { x: pose.x, y: pose.y + 10, a: 0 },
+      x, y: y + 10,
       shape: {
         vertices: [
           { x: 10, y: 10 },
@@ -47,7 +46,7 @@ export default class Claw extends Contraption {
       },
     });
     this.__leftHub = this._$master.create(TouchSensor, {
-      pose: { x: pose.x - 52, y: pose.y + 10, a: 0 },
+      x: x - 52, y: y + 10,
       shape: {
         vertices: [
           { x: 2, y: 10 },
@@ -56,7 +55,7 @@ export default class Claw extends Contraption {
           { x: 2, y: -10 },
         ],
       },
-      label: 'open-sensor',
+      labelText: 'open-sensor',
     });
     this.__rightHub = this._$master.create(MachinePart, {
       x: x + 52, y: y + 10, shape: {
@@ -98,14 +97,14 @@ export default class Claw extends Contraption {
           { x: 10, y: 20 },
         ],
       },
-      label: 'closed-sensor',
+      labelText: 'closed-sensor',
     });
     this.__rightTooth.$patch(StyleComponent)({ zIndex: 1 });
     this.__openMotor = this._$master.create(Actuator, {
-      label: 'open',
+      labelText: 'open',
     });
     this.__closeMotor = this._$master.create(Actuator, {
-      label: 'close',
+      labelText: 'close',
     });
     this.inputs = [this.__openMotor, this.__closeMotor];
     this.outputs = [this.__leftHub.output, this.__rightTooth.output];

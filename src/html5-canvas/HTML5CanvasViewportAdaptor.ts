@@ -1,5 +1,5 @@
 import IViewportAdaptor from '../engine/interfaces/IViewportAdaptor';
-import { Index } from 'foundation/types';
+import { Dict } from 'foundation/types';
 import { IPoint, IPose } from 'framework/geometry/components/PoseComponent';
 import { IImage } from 'framework/presentation/components/ImageComponent';
 import { ILabel } from 'framework/presentation/components/LabelComponent';
@@ -22,7 +22,7 @@ export default class HTML5CanvasViewportAdaptor implements IViewportAdaptor<Canv
   public width: number;
   public height: number;
 
-  private __imageBuffer: Index<HTMLImageElement> = {};
+  private __imageBuffer: Dict<HTMLImageElement> = {};
 
   private __zBuffer: Array<{ method: string; payload: any }> = [];
 
@@ -88,40 +88,36 @@ export default class HTML5CanvasViewportAdaptor implements IViewportAdaptor<Canv
   /* eslint-enable @typescript-eslint/no-unused-vars */
 
   @atomic
-  private __drawImage({ pose, style }: { pose: IPose; style: IImage }): void {
-    const image = this.load(style.src || './favicon.ico');
+  private __drawImage({ pose, image }: { pose: IPose; image: IImage }): void {
+    const asset = this.load(image.src || './favicon.ico');
     this.ctx.translate(pose.x, pose.y);
-    this.ctx.rotate(pose.a);
+    this.ctx.rotate(image.rotate || 0);
     this.ctx.drawImage(
-      image,
-      -(style.width || image.width as number) / 2,
-      -(style.height || image.height as number) / 2,
-      style.width || image.width as number,
-      style.height || image.height as number,
+      asset,
+      -(image.width || asset.width as number) / 2,
+      -(image.height || asset.height as number) / 2,
+      image.width || asset.width as number,
+      image.height || asset.height as number,
     );
   }
 
   @atomic
   private __drawShape({ path, style }: { path: IPoint[]; style: IStyle }): void {
-    if (style.opacity) {
-      this.ctx.globalAlpha = style.opacity;
-    }
-    this.ctx.strokeStyle = style.colour || 'white';
+    this.ctx.globalAlpha = style.opacity;
+    this.ctx.strokeStyle = style.colour;
     this.ctx.beginPath();
     path.forEach((p: IPoint) => {
       this.ctx.lineTo(p.x, p.y);
     });
-    if (style.fill) {
-      this.ctx.fillStyle = style.fill;
-      this.ctx.fill();
-    }
+    this.ctx.fillStyle = style.fill;
+    this.ctx.fill();
     this.ctx.closePath();
     this.ctx.stroke();
   }
 
   @atomic
   private __drawLine({ points, style }: { points: IPoint[]; style: IStyle }): void {
-    this.ctx.strokeStyle = style.colour || 'white';
+    this.ctx.strokeStyle = style.colour;
     this.ctx.beginPath();
     points.forEach((p: IPoint) => {
       this.ctx.lineTo(p.x, p.y);
@@ -131,10 +127,8 @@ export default class HTML5CanvasViewportAdaptor implements IViewportAdaptor<Canv
 
   @atomic
   private __drawLabel({ pose, label }: { pose: IPose; label: ILabel }): void {
-    label.text = label.text || '#{text:NULL}';
-    label.offset = label.offset || { x: 0, y: 0 };
-    this.ctx.fillStyle = label.colour || 'white';
-    this.ctx.font = `${label.fontSize || 10}px Arial`;
+    this.ctx.fillStyle = label.colour;
+    this.ctx.font = `${label.fontSize}px Arial`;
     this.ctx.fillText(label.text, pose.x + label.offset.x, pose.y + label.offset.y);
   }
 
@@ -142,7 +136,7 @@ export default class HTML5CanvasViewportAdaptor implements IViewportAdaptor<Canv
   private __drawCircle({ position, radius, style }: {
     position: IPoint; radius: number; style: IStyle;
   }): void {
-    this.ctx.strokeStyle = style.colour || 'white';
+    this.ctx.strokeStyle = style.colour;
     this.ctx.beginPath();
     this.ctx.arc(position.x, position.y, radius, 0, 2 * Math.PI);
     this.ctx.stroke();

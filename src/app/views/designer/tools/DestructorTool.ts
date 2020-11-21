@@ -8,7 +8,7 @@ export default class DestructorTool extends Tool {
 
   constructor({}: { x: number; y: number }) {
     super(arguments[0]);
-    this.$add(StyleComponent)({ colour: 'ORANGE' });
+    this.$patch(StyleComponent)({ colour: 'ORANGE' });
   }
 
   public $mouseup(e: IAdaptedMouseEvent): void {

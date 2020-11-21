@@ -7,7 +7,7 @@ export default class EditorView extends Panel {
 
   public constructor({ contraption }: { contraption: Contraption }) {
     super(arguments[0]);
-    this.appendChild(DesignerConsole, contraption);
-    this.appendChild(PlayerConsole);
+    this.appendChild(DesignerConsole, { contraption });
+    this.appendChild(PlayerConsole, { contraption });
   }
 }

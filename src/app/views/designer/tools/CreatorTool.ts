@@ -11,7 +11,7 @@ export default class CreatorTool<T extends DigitalElement> extends Tool {
 
   constructor({ DigitalElementCtor }: { x: number; y: number; DigitalElementCtor: Constructor<T, {}> }) {
     super(arguments[0]);
-    this.$add(StyleComponent)({ colour: 'YELLOW' });
+    this.$patch(StyleComponent)({ colour: 'YELLOW' });
     this.__DigitalElement = DigitalElementCtor;
   }
 

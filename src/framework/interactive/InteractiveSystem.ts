@@ -2,7 +2,7 @@ import InteractiveComponent from './InteractiveComponent';
 import System from 'engine/abstracts/System';
 import IAdaptedMouseEvent from 'engine/interfaces/IAdaptedMouseEvent';
 import { entityContainsPoint } from '../helpers/entities';
-import { Index } from 'foundation/types';
+import { Dict } from 'foundation/types';
 
 export default class InteractiveSystem extends System {
 
@@ -10,7 +10,7 @@ export default class InteractiveSystem extends System {
     this.$engine.components.forEvery(InteractiveComponent)((interactive) => {
       const { isEnabled, isHovered, mouseenter, mouseleave } = interactive.copy();
       const { mousemove, mousedown, mouseup, click } = interactive.copy();
-      const callbacks: Index<(e: IAdaptedMouseEvent) => void> = { mousemove, mousedown, mouseup, click };
+      const callbacks: Dict<(e: IAdaptedMouseEvent) => void> = { mousemove, mousedown, mouseup, click };
       if (!isEnabled) {
         return;
       }

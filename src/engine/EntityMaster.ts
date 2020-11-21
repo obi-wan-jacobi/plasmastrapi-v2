@@ -4,8 +4,9 @@ import IEntity from './interfaces/IEntity';
 import IEntityMaster from './interfaces/IEntityMaster';
 import Dictionary from 'foundation/concretes/Dictionary';
 import IDictionary from 'foundation/interfaces/IDictionary';
-import { Index } from 'foundation/types';
+import { Dict } from 'foundation/types';
 import { EntityClass, Etor } from './types';
+import { IOC } from './Entity';
 
 export default class EntityMaster implements IEntityMaster {
 
@@ -15,8 +16,12 @@ export default class EntityMaster implements IEntityMaster {
   private __cTargets: IEntity[] = [];
   private __dTargets: IEntity[] = [];
 
+  public constructor() {
+    IOC.master = this;
+  }
+
   public create<T extends IEntity, TArg>(EntityConstructor: Etor<T, TArg>, data: TArg): T {
-    const instance = new EntityConstructor(Object.assign({}, data, { master: this }));
+    const instance = new EntityConstructor(data);
     this.__cTargets.push(instance);
     return instance;
   }
@@ -73,7 +78,7 @@ export default class EntityMaster implements IEntityMaster {
       let target: IEntity = entity;
       while (target) {
         this.__entityMap.read(target.constructor.name)!.delete(entity.id);
-        target = (target as Index<any>).__proto__;
+        target = (target as Dict<any>).__proto__;
       }
     }
   }

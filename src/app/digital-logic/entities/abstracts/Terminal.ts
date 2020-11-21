@@ -14,17 +14,27 @@ export default class Terminal extends UIEntity {
   private __s: STATE = STATE.OFF;
   private __src: string;
 
-  constructor({ x, y, src }: { x: number; y: number; src: string }) {
-    super({
-      pose: { x: 0, y: 0, a: 0 },
+  constructor({ x, y, src, labelText }: { x: number; y: number; src: string; labelText?: string }) {
+    super(Object.assign({
+      pose: { x, y, a: 0 },
       width: 20,
       height: 20,
-      style: {},
-      label: {},
-      image: {},
-    });
+      label: labelText ? {
+        text: labelText,
+        fontSize: 20,
+        offset: { x: 15, y: 7 },
+        colour: 'WHITE',
+        fill: 'rgba(0,0,0,0)',
+        opacity: 1,
+        zIndex: 0,
+      } : undefined,
+      image: {
+        src,
+        opacity: 1,
+        zIndex: 0,
+      },
+    }, arguments[0]));
     this.__src = src;
-    this.$add(ImageComponent)({ src });
   }
 
   public get isHigh(): boolean {
@@ -45,11 +55,9 @@ export default class Terminal extends UIEntity {
 
   private set __state(state: STATE) {
     this.__s = state;
-    if (this.$copy(LabelComponent)) {
-      this.$patch(LabelComponent)({
-        colour: LABEL_COLOUR_MAP[state],
-      });
-    }
+    this.$patch(LabelComponent)({
+      colour: LABEL_COLOUR_MAP[state],
+    });
   }
 
   public high(): void {
@@ -65,11 +73,11 @@ export default class Terminal extends UIEntity {
   }
 
   public $mouseenter(): void {
-    this.$mutate(ImageComponent)({ src: './Terminal_hovered.png' });
+    this.$patch(ImageComponent)({ src: './Terminal_hovered.png' });
   }
 
   public $mouseleave(): void {
-    this.$mutate(ImageComponent)({ src: this.__src });
+    this.$patch(ImageComponent)({ src: this.__src });
   }
 
   public $mousemove(): void {

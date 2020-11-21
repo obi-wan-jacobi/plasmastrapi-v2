@@ -7,7 +7,7 @@ import ToolButton from '../../designer/buttons/ToolButton';
 export default class PlayButton extends LatchButton {
 
   public constructor() {
-    super(Object.assign({ label: 'play' }, arguments[0]));
+    super(Object.assign({ text: 'play' }, arguments[0]));
   }
 
   public $click(): void {

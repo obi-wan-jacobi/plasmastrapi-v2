@@ -1,5 +1,4 @@
 import Panel from '../../../ui/Panel';
-import ToolButton from '../buttons/ToolButton';
 
 export default class ToolButtonPanel extends Panel {
 

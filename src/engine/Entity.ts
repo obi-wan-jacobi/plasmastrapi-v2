@@ -6,14 +6,23 @@ import Dictionary from 'foundation/concretes/Dictionary';
 import IDictionary from 'foundation/interfaces/IDictionary';
 import { Ctor } from './types';
 
+export const IOC: { master?: IEntityMaster } = {
+  master: undefined,
+};
+
 export default class Entity extends Unique implements IEntity {
 
   private __master: IEntityMaster;
 
   private __components: IDictionary<IComponent<any>> = new Dictionary();
 
-  public constructor({ master, id }: { master: IEntityMaster; id?: string }) {
-    super(id);
+  public constructor() {
+    super();
+    this.__master__(IOC.master!);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  private __master__(master: IEntityMaster): void {
     this.__master = master;
   }
 

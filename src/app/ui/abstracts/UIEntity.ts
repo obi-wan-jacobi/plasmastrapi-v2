@@ -6,13 +6,13 @@ import IAdaptedMouseEvent from 'engine/interfaces/IAdaptedMouseEvent';
 import IComponent from 'engine/interfaces/IComponent';
 import IEntity from 'engine/interfaces/IEntity';
 import { Ctor } from 'engine/types';
-import { Index } from 'foundation/types';
+import { Dict as Dict } from 'foundation/types';
 import PoseComponent from 'framework/geometry/components/PoseComponent';
 import InteractiveEntity from 'framework/interactive/InteractiveEntity';
 import LabelComponent from 'framework/presentation/components/LabelComponent';
 import IUIEntity from '../interfaces/IUIEntity';
 
-const componentKeyMap: Index<Ctor<IComponent<any>, any>> = {
+const componentKeyMap: Dict<Ctor<IComponent<any>, any>> = {
   pose: PoseComponent,
   shape: ShapeComponent,
   style: StyleComponent,
@@ -22,7 +22,7 @@ const componentKeyMap: Index<Ctor<IComponent<any>, any>> = {
 
 const applyEntityTemplateToEntity = (template: IEntityTemplate, entity: IEntity): void => {
   Object.keys(componentKeyMap).forEach((key) => {
-    const data = (template as Index<any>)[key];
+    const data = (template as Dict<any>)[key];
     if (!data) {
       return;
     }
@@ -33,9 +33,9 @@ const applyEntityTemplateToEntity = (template: IEntityTemplate, entity: IEntity)
 export default abstract class UIEntity extends InteractiveEntity implements IUIEntity {
 
   public constructor(template: IEntityTemplate) {
-    super(arguments[0]);
-    template.style = { colour: 'WHITE', fill: 'BLACK' } || template.style;
-    if ((template.width && template.height) && !template.shape) {
+    super();
+    (template as Dict<any>).pose = { x: template.x, y: template.y, a: 0 };
+    if ((template.width && template.height)) {
       template.shape = {
         vertices: [
           { x: template.width / 2, y: template.height / 2},
@@ -44,6 +44,9 @@ export default abstract class UIEntity extends InteractiveEntity implements IUIE
           { x: template.width / 2, y: -template.height / 2},
         ],
       };
+    }
+    if (template.shape) {
+      template.style = { colour: 'WHITE', opacity: 1, fill: 'rgba(0,0,0,0)', zIndex: 0 };
     }
     applyEntityTemplateToEntity(template, this);
   }

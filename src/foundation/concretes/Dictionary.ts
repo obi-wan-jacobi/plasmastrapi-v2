@@ -1,9 +1,9 @@
 import IDictionary from '../interfaces/IDictionary';
-import { Index } from '../types';
+import { Dict } from '../types';
 
 export default class Dictionary<T extends {}> implements IDictionary<T> {
 
-  private __data: Index<T> = {};
+  private __data: Dict<T> = {};
 
   public get length(): number {
     return Object.keys(this.__data).length;
