@@ -1,47 +1,26 @@
-import IAdaptedKeyboardEvent from '../engine/interfaces/IAdaptedKeyboardEvent';
-import IKeyboardAdaptor from '../engine/interfaces/IKeyboardAdaptor';
-import IKeyboardHandler from '../engine/interfaces/IKeyboardHandler';
-import KeyboardHandler from '../engine/KeyboardHandler';
+import IKeyboardEvent from '../engine/interfaces/IKeyboardEvent';
+import HTML5EventAdaptor from 'html5-canvas/abstracts/HTML5CanvasEventAdaptor';
 import { Dict } from 'foundation/types';
 
-export default class HTML5CanvasKeyboardAdapter implements IKeyboardAdaptor {
+export default class HTML5CanvasKeyboardAdapter extends HTML5EventAdaptor<HTMLCanvasElement, KeyboardEvent, IKeyboardEvent> {
 
-  private __canvas: HTMLCanvasElement & Dict<(ke: KeyboardEvent) => void>;
-  private __buffer: IAdaptedKeyboardEvent[];
-  private __handler: IKeyboardHandler;
-
-  constructor(canvas: HTMLCanvasElement & Dict<(ke: KeyboardEvent) => void>) {
-    this.__canvas = canvas;
-    this.__buffer = [];
-    this.__handler = new KeyboardHandler();
-    this.__bindKeyboardEvents();
-  }
-
-  public once(): void {
-    const input = this.__buffer.shift();
-    if (input) {
-      this.__handler[input.name](input);
-    }
-  }
-
-  public handler(handler: IKeyboardHandler): void {
-    this.__handler = handler;
-  }
-
-  private __bindKeyboardEvents(): void {
-    [
-      'keydown',
-      'keypress',
-      'keyup',
-    ]
-      .forEach((key) => {
-        this.__canvas[`on${key}`] = (ke: KeyboardEvent): void => {
-          this.__buffer.push({
-            name: key,
-            key: ke.key,
-          });
-        };
-      });
+  constructor({ canvas }: { canvas: HTMLCanvasElement }) {
+    super({
+      element: canvas as HTMLCanvasElement & Dict<any>,
+      eventNames: KEYBOARD_EVENTS,
+      eventMapper: adaptCanvasKeyboardEvent,
+    });
   }
 
 }
+
+const KEYBOARD_EVENTS = [
+  'keydown',
+  'keypress',
+  'keyup',
+];
+
+const adaptCanvasKeyboardEvent = ({ event }: { event: KeyboardEvent }): IKeyboardEvent => ({
+  name: event.type,
+  key: event.key,
+});

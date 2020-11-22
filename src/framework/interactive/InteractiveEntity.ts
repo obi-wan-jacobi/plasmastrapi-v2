@@ -1,12 +1,13 @@
 import InteractiveComponent from './InteractiveComponent';
 import Entity from 'engine/Entity';
-import IAdaptedMouseEvent from 'engine/interfaces/IAdaptedMouseEvent';
+import IMouseEvent from 'engine/interfaces/IMouseEvent';
 
 export default abstract class InteractiveEntity extends Entity {
 
   public constructor() {
     super();
     this.$add(InteractiveComponent)({
+      transform: undefined,
       isEnabled: true,
       isHovered: false,
       mouseenter: this.$mouseenter,
@@ -19,22 +20,22 @@ export default abstract class InteractiveEntity extends Entity {
   }
 
   public $enable(): void {
-    this.$patch(InteractiveComponent)({ isEnabled: true });
+    this.$patch(InteractiveComponent)({ transform: 'enable' });
   }
 
   public $disable(): void {
-    this.$patch(InteractiveComponent)({ isEnabled: false });
+    this.$patch(InteractiveComponent)({ transform: 'disable' });
   }
 
-  public abstract $mouseenter(e: IAdaptedMouseEvent): void;
+  public abstract $mouseenter(e: IMouseEvent): void;
 
-  public abstract $mouseleave(e: IAdaptedMouseEvent): void;
+  public abstract $mouseleave(e?: IMouseEvent): void;
 
-  public abstract $mousemove(e: IAdaptedMouseEvent): void;
+  public abstract $mousemove(e: IMouseEvent): void;
 
-  public abstract $mousedown(e: IAdaptedMouseEvent): void;
+  public abstract $mousedown(e: IMouseEvent): void;
 
-  public abstract $mouseup(e: IAdaptedMouseEvent): void;
+  public abstract $mouseup(e: IMouseEvent): void;
 
-  public abstract $click(e: IAdaptedMouseEvent): void;
+  public abstract $click(e: IMouseEvent): void;
 }

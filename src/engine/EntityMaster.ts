@@ -45,7 +45,7 @@ export default class EntityMaster implements IEntityMaster {
     };
   }
 
-  public once(): void {
+  public circulate(): void {
     this.__createTargets();
     this.__destroyTargets();
   }

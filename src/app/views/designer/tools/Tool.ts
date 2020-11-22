@@ -1,5 +1,5 @@
 import UIEntity from 'app/ui/abstracts/UIEntity';
-import IAdaptedMouseEvent from 'engine/interfaces/IAdaptedMouseEvent';
+import IMouseEvent from 'engine/interfaces/IMouseEvent';
 import PoseComponent from 'framework/geometry/components/PoseComponent';
 
 export default abstract class Tool extends UIEntity {
@@ -13,7 +13,7 @@ export default abstract class Tool extends UIEntity {
     });
   }
 
-  public $mousemove(e: IAdaptedMouseEvent): void {
+  public $mousemove(e: IMouseEvent): void {
     this.$patch(PoseComponent)({
       x: e.x,
       y: e.y,
@@ -21,19 +21,19 @@ export default abstract class Tool extends UIEntity {
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
-  public $mouseenter(e: IAdaptedMouseEvent): void {
+  public $mouseenter(e: IMouseEvent): void {
     //
   }
 
-  public $mouseleave(e: IAdaptedMouseEvent): void {
+  public $mouseleave(e: IMouseEvent): void {
     //
   }
 
-  public $mousedown(e: IAdaptedMouseEvent): void {
+  public $mousedown(e: IMouseEvent): void {
     //
   }
 
-  public $mouseup(e: IAdaptedMouseEvent): void {
+  public $mouseup(e: IMouseEvent): void {
     //
   }
   /* eslint-enable @typescript-eslint/no-unused-vars */

@@ -14,5 +14,5 @@ export default interface IEntityMaster {
 
   find<T extends IEntity>(EntityClass: EntityClass<T>): (fn: (entity: T) => boolean) => T | undefined;
 
-  once(): void;
+  circulate(): void;
 }

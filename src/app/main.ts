@@ -26,7 +26,7 @@ const app = new App({ canvas });
 ].forEach((src) => app.load(src));
 
 // app.create(HorizontalThreadedAxle, { x: 1040, y: 340, width: 300, height: 20 });
-const claw = app.create(TheClaw, { x: 1040, y: 340 });
+const claw = app.entities.create(TheClaw, { x: 1040, y: 340 });
 // app.create(EditorView, { contraption: claw });
 app.start();
 

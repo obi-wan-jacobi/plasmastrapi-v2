@@ -16,17 +16,15 @@ function atomic(target: HTML5CanvasViewportAdaptor, key: string, descriptor: Pro
 
 export default class HTML5CanvasViewportAdaptor implements IViewportAdaptor<CanvasImageSource> {
 
-  [key: string]: any;
-
   public ctx: CanvasRenderingContext2D;
   public width: number;
   public height: number;
 
   private __imageBuffer: Dict<HTMLImageElement> = {};
 
-  private __zBuffer: Array<{ method: string; payload: any }> = [];
+  private __zBuffer: Array<{ method: ({}: any) => void; payload: any }> = [];
 
-  constructor(canvas: HTMLCanvasElement) {
+  public constructor({ canvas }: { canvas: HTMLCanvasElement }) {
     this.ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
     this.width = canvas.clientWidth;
     this.height = canvas.clientHeight;
@@ -40,52 +38,32 @@ export default class HTML5CanvasViewportAdaptor implements IViewportAdaptor<Canv
     return this.__imageBuffer[src];
   }
 
-  public refresh(): void {
+  public render(): void {
     this.ctx.clearRect(0, 0, this.width, this.height);
-  }
-
-  public once(): void {
-    const zBuffer = this.__zBuffer.map((target) => {
-      if (!target.payload.style) {
-        target.payload.style = { zIndex: 0 };
-        return target;
-      }
-      if (!target.payload.style.zIndex) {
-        target.payload.style.zIndex = 0;
-        return target;
-      }
-      return target;
-    });
-    const zOrdered = zBuffer.sort((a, b) => a.payload.style.zIndex - b.payload.style.zIndex);
-    zOrdered.forEach((target) => {
-      this[`__${target.method}`](target.payload);
-    });
+    const zOrdered = this.__zBuffer.sort((a, b) => a.payload.style.zIndex - b.payload.style.zIndex);
+    zOrdered.forEach((target) => target.method.call(this, [target.payload]));
     this.__zBuffer = [];
   }
 
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  public drawImage({ pose, image }: { pose: IPose; image: IImage }): void {
-    this.__zBuffer.push({ method: 'drawImage', payload: arguments[0] });
+  public drawImage({}: { pose: IPose; image: IImage }): void {
+    this.__zBuffer.push({ method: this.__drawImage, payload: arguments[0] });
   }
 
-  public drawShape({ path, style }: { path: IPoint[]; style: IStyle }): void {
-    this.__zBuffer.push({ method: 'drawShape', payload: arguments[0] });
+  public drawShape({}: { path: IPoint[]; style: IStyle }): void {
+    this.__zBuffer.push({ method: this.__drawShape, payload: arguments[0] });
   }
 
-  public drawLine({ path, style }: { path: IPoint[]; style: IStyle }): void {
-    this.__zBuffer.push({ method: 'drawLine', payload: arguments[0] });
+  public drawLine({}: { path: IPoint[]; style: IStyle }): void {
+    this.__zBuffer.push({ method: this.__drawLine, payload: arguments[0] });
   }
 
-  public drawLabel({ pose, label }: { pose: IPose; label: ILabel }): void {
-    this.__zBuffer.push({ method: 'drawLabel', payload: arguments[0] });
+  public drawLabel({}: { pose: IPose; label: ILabel }): void {
+    this.__zBuffer.push({ method: this.__drawLabel, payload: arguments[0] });
   }
 
-  public drawCircle({ position, radius, style }: {
-    position: IPoint; radius: number; style: IStyle;
-  }): void {
-    this.__zBuffer.push({ method: 'drawCircle', payload: arguments[0] });
+  public drawCircle({}: { position: IPoint; radius: number; style: IStyle }): void {
+    this.__zBuffer.push({ method: this.__drawCircle, payload: arguments[0] });
   }
-  /* eslint-enable @typescript-eslint/no-unused-vars */
 
   @atomic
   private __drawImage({ pose, image }: { pose: IPose; image: IImage }): void {

@@ -1,13 +1,15 @@
 import Component from 'engine/abstracts/Component';
-import IAdaptedMouseEvent from 'engine/interfaces/IAdaptedMouseEvent';
+import IMouseEvent from 'engine/interfaces/IMouseEvent';
+import { Optional, Void } from 'foundation/types';
 
-type AdaptedMouseEventCallback = (e: IAdaptedMouseEvent) => void;
+type AdaptedMouseEventCallback = Void<IMouseEvent>;
 
 export interface IInteractive {
   isEnabled: boolean;
   isHovered: boolean;
+  transform: 'enable' | 'disable' | undefined;
   mouseenter: AdaptedMouseEventCallback;
-  mouseleave: AdaptedMouseEventCallback;
+  mouseleave: Void<Optional<IMouseEvent>>;
   mousemove: AdaptedMouseEventCallback;
   mousedown: AdaptedMouseEventCallback;
   mouseup: AdaptedMouseEventCallback;

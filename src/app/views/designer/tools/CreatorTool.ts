@@ -1,6 +1,6 @@
 import DigitalElement from '../../../digital-logic/entities/abstracts/DigitalElement';
 import Tool from './Tool';
-import IAdaptedMouseEvent from 'engine/interfaces/IAdaptedMouseEvent';
+import IMouseEvent from 'engine/interfaces/IMouseEvent';
 import { Constructor } from 'foundation/types';
 import StyleComponent from 'framework/presentation/components/StyleComponent';
 
@@ -15,7 +15,7 @@ export default class CreatorTool<T extends DigitalElement> extends Tool {
     this.__DigitalElement = DigitalElementCtor;
   }
 
-  public $mouseup(e: IAdaptedMouseEvent): void {
+  public $mouseup(e: IMouseEvent): void {
     this._$master.create(this.__DigitalElement, {
       x: e.x,
       y: e.y,

@@ -1,35 +1,56 @@
 import InteractiveComponent from './InteractiveComponent';
 import System from 'engine/abstracts/System';
-import IAdaptedMouseEvent from 'engine/interfaces/IAdaptedMouseEvent';
+import IMouseEvent from 'engine/interfaces/IMouseEvent';
 import { entityContainsPoint } from '../helpers/entities';
-import { Dict } from 'foundation/types';
+import { Dict, Void } from 'foundation/types';
 
 export default class InteractiveSystem extends System {
 
   public once(): void {
+    const event = this.$engine.events.mouse;
+    if (!event) {
+      return;
+    }
     this.$engine.components.forEvery(InteractiveComponent)((interactive) => {
-      const { isEnabled, isHovered, mouseenter, mouseleave } = interactive.copy();
-      const { mousemove, mousedown, mouseup, click } = interactive.copy();
-      const callbacks: Dict<(e: IAdaptedMouseEvent) => void> = { mousemove, mousedown, mouseup, click };
-      if (!isEnabled) {
-        return;
-      }
-      if (this.$engine.mouse.name === 'none') {
-        return;
-      }
-      if (!entityContainsPoint(interactive.$entity, this.$engine.mouse)) {
+      const {
+        transform,
+        isEnabled, isHovered,
+        mouseenter, mouseleave,
+        mousemove, mousedown,
+        mouseup, click,
+      } = interactive.copy();
+      // disabled
+      if (transform === 'disable') {
         if (isHovered) {
-          interactive.patch({ isHovered: false });
-          mouseleave(this.$engine.mouse);
+          mouseleave(undefined);
+        }
+        interactive.patch({ isEnabled: false, isHovered: false });
+        return;
+      }
+      // enabled
+      if (transform === 'enable') {
+        interactive.patch({ isEnabled: true });
+      }
+      else if (!isEnabled) {
+        return;
+      }
+      // hovered
+      if (entityContainsPoint(interactive.$entity, event)) {
+        if (!isHovered) {
+          interactive.patch({ isHovered: true });
+          mouseenter(event);
           return;
         }
+        const callbacks: Dict<Void<IMouseEvent>> = { mousemove, mousedown, mouseup, click };
+        callbacks[`${event.name}`](event);
         return;
       }
-      if (!isHovered) {
-        interactive.patch({ isHovered: true });
-        mouseenter(this.$engine.mouse);
+      // no longer hovered
+      if (isHovered) {
+        interactive.patch({ isHovered: false });
+        mouseleave(event);
+        return;
       }
-      callbacks[`${this.$engine.mouse.name}`](this.$engine.mouse);
     });
   }
 }

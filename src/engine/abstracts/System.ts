@@ -4,7 +4,7 @@ import Unique from 'foundation/abstracts/Unique';
 
 export default abstract class System extends Unique implements ISystem {
 
-  constructor(public $engine: IEngine) {
+  constructor(public $engine: IEngine<any>) {
     super();
   }
 

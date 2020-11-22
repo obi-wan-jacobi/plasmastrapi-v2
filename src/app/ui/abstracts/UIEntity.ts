@@ -2,7 +2,7 @@ import ImageComponent from '../../../framework/presentation/components/ImageComp
 import ShapeComponent from '../../../framework/geometry/components/ShapeComponent';
 import StyleComponent from '../../../framework/presentation/components/StyleComponent';
 import IEntityTemplate from 'app/IEntityTemplate';
-import IAdaptedMouseEvent from 'engine/interfaces/IAdaptedMouseEvent';
+import IMouseEvent from 'engine/interfaces/IMouseEvent';
 import IComponent from 'engine/interfaces/IComponent';
 import IEntity from 'engine/interfaces/IEntity';
 import { Ctor } from 'engine/types';
@@ -52,27 +52,27 @@ export default abstract class UIEntity extends InteractiveEntity implements IUIE
   }
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
-  public $mousemove(e: IAdaptedMouseEvent): void {
+  public $mousemove(e: IMouseEvent): void {
     //
   }
 
-  public $mouseenter(e: IAdaptedMouseEvent): void {
+  public $mouseenter(e: IMouseEvent): void {
     //
   }
 
-  public $mouseleave(e: IAdaptedMouseEvent): void {
+  public $mouseleave(e: IMouseEvent): void {
     //
   }
 
-  public $mousedown(e: IAdaptedMouseEvent): void {
+  public $mousedown(e: IMouseEvent): void {
     //
   }
 
-  public $mouseup(e: IAdaptedMouseEvent): void {
+  public $mouseup(e: IMouseEvent): void {
     //
   }
 
-  public $click(e: IAdaptedMouseEvent): void {
+  public $click(e: IMouseEvent): void {
     //
   }
   /* eslint-enable @typescript-eslint/no-unused-vars */

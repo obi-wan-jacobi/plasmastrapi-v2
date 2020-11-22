@@ -1,6 +1,6 @@
 import EntityMaster from './EntityMaster';
-import IAdaptedKeyboardEvent from './interfaces/IAdaptedKeyboardEvent';
-import IAdaptedMouseEvent from './interfaces/IAdaptedMouseEvent';
+import IKeyboardEvent from './interfaces/IKeyboardEvent';
+import IMouseEvent from './interfaces/IMouseEvent';
 import IComponentMaster from './interfaces/IComponentMaster';
 import IEngine from './interfaces/IEngine';
 import IEntityMaster from './interfaces/IEntityMaster';
@@ -9,23 +9,25 @@ import IViewportAdaptor from './interfaces/IViewportAdaptor';
 import Dictionary from 'foundation/concretes/Dictionary';
 import IDictionary from 'foundation/interfaces/IDictionary';
 import { Stor } from './types';
+import IEventMaster from './interfaces/IEventMaster';
 
-export default class Engine implements IEngine {
+export default class Engine<TImageSource> implements IEngine<TImageSource> {
 
-  public viewport: IViewportAdaptor<any>;
   public entities: IEntityMaster;
-
-  public mouse: IAdaptedMouseEvent;
-  public keyboard: IAdaptedKeyboardEvent;
-
+  public events: { mouse?: IMouseEvent; keyboard?: IKeyboardEvent } = {};
   public delta: number;
 
-  private __t: Date;
+  public viewport: IViewportAdaptor<TImageSource>;
+  private __mouse: IEventMaster<IMouseEvent>;
+  private __keyboard: IEventMaster<IKeyboardEvent>;
   private __systems: IDictionary<ISystem>;
+  private __t: Date;
 
-  constructor(viewport: IViewportAdaptor<any>) {
-    this.viewport = viewport;
+  constructor({ viewport, mouse, keyboard }: { viewport: IViewportAdaptor<TImageSource>; mouse: IEventMaster<IMouseEvent>; keyboard: IEventMaster<IKeyboardEvent> }) {
     this.entities = new EntityMaster();
+    this.viewport = viewport;
+    this.__mouse = mouse;
+    this.__keyboard = keyboard;
     this.__systems = new Dictionary();
     this.__t = new Date();
   }
@@ -34,17 +36,8 @@ export default class Engine implements IEngine {
     return this.entities.componentMaster;
   }
 
-  public once(): void {
-    const now = new Date();
-    this.delta = now.getTime() - this.__t.getTime();
-    this.__t = now;
-    this.__systems.forEach((system: ISystem) => system.once());
-    this.entities.once();
-  }
-
-  public draw(): void {
-    this.__systems.forEach((system: ISystem) => system.draw());
-    this.viewport.once();
+  public load(src: string): TImageSource {
+    return this.viewport.load(src);
   }
 
   public add<T extends ISystem>(SystemClass: Stor<T>): void {
@@ -58,4 +51,27 @@ export default class Engine implements IEngine {
     this.__systems.delete(SystemClass.name);
   }
 
+  public once(): void {
+    this.events.mouse = this.__mouse.next();
+    this.events.keyboard = this.__keyboard.next();
+    this.__ticktock();
+    this.__systems.forEach((system: ISystem) => system.once());
+    this.entities.circulate();
+    this.__draw();
+  }
+
+  public start(): void {
+    setInterval(this.once.bind(this), 1000 / 240);
+  }
+
+  private __ticktock(): void {
+    const now = new Date();
+    this.delta = now.getTime() - this.__t.getTime();
+    this.__t = now;
+  }
+
+  private __draw(): void {
+    this.__systems.forEach((system: ISystem) => system.draw());
+    this.viewport.render();
+  }
 }

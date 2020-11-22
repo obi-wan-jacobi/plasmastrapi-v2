@@ -7,9 +7,7 @@ export default interface IViewportAdaptor<TImageSource> {
 
     load(src: string): TImageSource;
 
-    refresh(): void;
-
-    once(): void;
+    render(): void;
 
     drawImage({ pose, image }: { pose: IPose; image: IImage }): void;
 

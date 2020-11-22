@@ -1,13 +1,13 @@
-import IAdaptedMouseEvent from 'engine/interfaces/IAdaptedMouseEvent';
+import IMouseEvent from 'engine/interfaces/IMouseEvent';
 import IEntity from 'engine/interfaces/IEntity';
 
 export default interface IUIEntity extends IEntity {
     $enable(): void;
     $disable(): void;
-    $mouseenter(e: IAdaptedMouseEvent): void;
-    $mouseleave(e: IAdaptedMouseEvent): void;
-    $mousemove(e: IAdaptedMouseEvent): void;
-    $mousedown(e: IAdaptedMouseEvent): void;
-    $mouseup(e: IAdaptedMouseEvent): void;
-    $click(e: IAdaptedMouseEvent): void;
+    $mouseenter(e: IMouseEvent): void;
+    $mouseleave(e: IMouseEvent): void;
+    $mousemove(e: IMouseEvent): void;
+    $mousedown(e: IMouseEvent): void;
+    $mouseup(e: IMouseEvent): void;
+    $click(e: IMouseEvent): void;
 }
