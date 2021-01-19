@@ -1,13 +1,14 @@
+import IEntityTemplate from 'app/ui/interfaces/IEntityTemplate';
 import LatchButton from './LatchButton';
 
 export default class ResetButton extends LatchButton {
 
-  public constructor() {
+  public constructor({}: IEntityTemplate) {
     super(Object.assign({ label: 'reset' }, arguments[0]));
   }
 
   public $click(): void {
-    super.$click();
+    // super.$click();
     // this._$master.remove(ActuatorSystem);
     // this._$master.remove(SensorSystem);
     // this._$master.remove(DigitalSystem);

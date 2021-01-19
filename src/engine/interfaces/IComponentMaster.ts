@@ -1,13 +1,12 @@
 import IComponent from './IComponent';
-import IEntity from './IEntity';
-import { ComponentClass, Ctor } from '../types';
+import { ComponentClass } from '../types';
 
 export default interface IComponentMaster {
 
-  create<T extends IComponent<TArg>, TArg>(entity: IEntity, ComponentConstructor: Ctor<T, TArg>, data: TArg): T;
+  upkeep(): void;
 
-  destroy(instance: IComponent<any>): void;
+  find<T extends IComponent<TArg>, TArg>(ComponentCls: ComponentClass<T, TArg>): (fn: (component: T) => boolean) => T | undefined;
 
-  forEvery<T extends IComponent<TArg>, TArg>(ComponentCls: ComponentClass<T, TArg>):
-  (fn: (component: T) => void) => void;
+  forEvery<T extends IComponent<TArg>, TArg>(ComponentCls: ComponentClass<T, TArg>): (fn: (component: T) => void) => void;
+
 }

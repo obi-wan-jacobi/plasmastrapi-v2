@@ -23,7 +23,7 @@
             "engine/*": [ "engine/*" ],
             "foundation/*": [ "foundation/*" ],
             "framework/*": [ "framework/*" ],
-            "html5-canvas": [ "html5-canvas/*" ],
+            "html5-canvas/*": [ "html5-canvas/*" ],
         }
     },
     "include": [

@@ -1,26 +1,24 @@
-import IViewportAdaptor from '../engine/interfaces/IViewportAdaptor';
-import { Dict } from 'foundation/types';
+import IViewport from '../engine/interfaces/IViewport';
 import { IPoint, IPose } from 'framework/geometry/components/PoseComponent';
-import { IImage } from 'framework/presentation/components/ImageComponent';
-import { ILabel } from 'framework/presentation/components/LabelComponent';
-import { IStyle } from 'framework/presentation/components/StyleComponent';
+import { IStrictImage, IStrictStyle } from 'framework/presentation/components/StyleComponent';
+import HTML5ImageBuffer from './memory/HTML5ImageBuffer';
 
-function atomic(target: HTML5CanvasViewportAdaptor, key: string, descriptor: PropertyDescriptor): void {
+function Atomic({}, {}, descriptor: PropertyDescriptor): void {
   const fn = descriptor.value;
   descriptor.value = function(): void {
     this.ctx.save();
-    fn.call(this, ...arguments);
+    fn.apply(this, arguments);
     this.ctx.restore();
   };
 }
 
-export default class HTML5CanvasViewportAdaptor implements IViewportAdaptor<CanvasImageSource> {
+export default class HTML5CanvasViewportAdaptor implements IViewport<CanvasImageSource> {
 
   public ctx: CanvasRenderingContext2D;
   public width: number;
   public height: number;
 
-  private __imageBuffer: Dict<HTMLImageElement> = {};
+  private __imageBuffer = new HTML5ImageBuffer();
 
   private __zBuffer: Array<{ method: ({}: any) => void; payload: any }> = [];
 
@@ -31,42 +29,38 @@ export default class HTML5CanvasViewportAdaptor implements IViewportAdaptor<Canv
   }
 
   public load(src: string): CanvasImageSource {
-    if (!this.__imageBuffer[src]) {
-      this.__imageBuffer[src] = new Image();
-      this.__imageBuffer[src].src = src;
-    }
-    return this.__imageBuffer[src];
+    return this.__imageBuffer.load(src);
   }
 
   public render(): void {
     this.ctx.clearRect(0, 0, this.width, this.height);
     const zOrdered = this.__zBuffer.sort((a, b) => a.payload.style.zIndex - b.payload.style.zIndex);
-    zOrdered.forEach((target) => target.method.call(this, [target.payload]));
+    zOrdered.forEach((target) => target.method.apply(this, [target.payload]));
     this.__zBuffer = [];
   }
 
-  public drawImage({}: { pose: IPose; image: IImage }): void {
+  public drawImage({}: { pose: IPose; image: IStrictImage; style: IStrictStyle }): void {
     this.__zBuffer.push({ method: this.__drawImage, payload: arguments[0] });
   }
 
-  public drawShape({}: { path: IPoint[]; style: IStyle }): void {
+  public drawShape({}: { path: IPoint[]; style: IStrictStyle }): void {
     this.__zBuffer.push({ method: this.__drawShape, payload: arguments[0] });
   }
 
-  public drawLine({}: { path: IPoint[]; style: IStyle }): void {
+  public drawLine({}: { path: IPoint[]; style: IStrictStyle }): void {
     this.__zBuffer.push({ method: this.__drawLine, payload: arguments[0] });
   }
 
-  public drawLabel({}: { pose: IPose; label: ILabel }): void {
+  public drawLabel({}: { pose: IPose; style: IStrictStyle }): void {
     this.__zBuffer.push({ method: this.__drawLabel, payload: arguments[0] });
   }
 
-  public drawCircle({}: { position: IPoint; radius: number; style: IStyle }): void {
+  public drawCircle({}: { position: IPoint; radius: number; style: IStrictStyle }): void {
     this.__zBuffer.push({ method: this.__drawCircle, payload: arguments[0] });
   }
 
-  @atomic
-  private __drawImage({ pose, image }: { pose: IPose; image: IImage }): void {
+  @Atomic
+  private __drawImage({ pose, image }: { pose: IPose; image: IStrictImage }): void {
     const asset = this.load(image.src || './favicon.ico');
     this.ctx.translate(pose.x, pose.y);
     this.ctx.rotate(image.rotate || 0);
@@ -79,8 +73,8 @@ export default class HTML5CanvasViewportAdaptor implements IViewportAdaptor<Canv
     );
   }
 
-  @atomic
-  private __drawShape({ path, style }: { path: IPoint[]; style: IStyle }): void {
+  @Atomic
+  private __drawShape({ path, style }: { path: IPoint[]; style: IStrictStyle }): void {
     this.ctx.globalAlpha = style.opacity;
     this.ctx.strokeStyle = style.colour;
     this.ctx.beginPath();
@@ -93,8 +87,8 @@ export default class HTML5CanvasViewportAdaptor implements IViewportAdaptor<Canv
     this.ctx.stroke();
   }
 
-  @atomic
-  private __drawLine({ points, style }: { points: IPoint[]; style: IStyle }): void {
+  @Atomic
+  private __drawLine({ points, style }: { points: IPoint[]; style: IStrictStyle }): void {
     this.ctx.strokeStyle = style.colour;
     this.ctx.beginPath();
     points.forEach((p: IPoint) => {
@@ -103,16 +97,17 @@ export default class HTML5CanvasViewportAdaptor implements IViewportAdaptor<Canv
     this.ctx.stroke();
   }
 
-  @atomic
-  private __drawLabel({ pose, label }: { pose: IPose; label: ILabel }): void {
-    this.ctx.fillStyle = label.colour;
+  @Atomic
+  private __drawLabel({ pose, style }: { pose: IPose; style: IStrictStyle }): void {
+    const label = style.label || { text: '', offset: { x: 0, y: 0 }, fontSize: 10 };
+    this.ctx.fillStyle = style.colour;
     this.ctx.font = `${label.fontSize}px Arial`;
     this.ctx.fillText(label.text, pose.x + label.offset.x, pose.y + label.offset.y);
   }
 
-  @atomic
+  @Atomic
   private __drawCircle({ position, radius, style }: {
-    position: IPoint; radius: number; style: IStyle;
+    position: IPoint; radius: number; style: IStrictStyle;
   }): void {
     this.ctx.strokeStyle = style.colour;
     this.ctx.beginPath();

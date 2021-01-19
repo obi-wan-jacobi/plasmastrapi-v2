@@ -1,11 +1,6 @@
-import Panel from '../../../ui/Panel';
+import Panel from '../../../ui/UIPanel';
 
 export default class ToolButtonPanel extends Panel {
-
-  public constructor() {
-    super(arguments[0]);
-    this.__initButtons();
-  }
 
   private __initButtons(): void {
     // this.add(ToolButton, { x: 30, y: 30 });

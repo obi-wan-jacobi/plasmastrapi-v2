@@ -5,7 +5,7 @@ import TheClaw from './contraptions/the-claw/TheClaw';
 import $ from 'jquery';
 import HorizontalThreadedAxle from './contraptions/parts/HorizontalThreadedAxle';
 
-const canvas = $('#app-target').get(0) as HTMLCanvasElement & any;
+const canvas = $('#app-target').get(0) as HTMLCanvasElement;
 canvas.focus();
 canvas.width = 1280;
 canvas.height = 680;
@@ -25,8 +25,8 @@ const app = new App({ canvas });
   './threaded-axle-10.png',
 ].forEach((src) => app.load(src));
 
-// app.create(HorizontalThreadedAxle, { x: 1040, y: 340, width: 300, height: 20 });
-const claw = app.entities.create(TheClaw, { x: 1040, y: 340 });
+new HorizontalThreadedAxle({ x: 1040, y: 340, width: 300, height: 20 });
+// const claw = new TheClaw({ x: 1040, y: 340 });
 // app.create(EditorView, { contraption: claw });
 app.start();
 

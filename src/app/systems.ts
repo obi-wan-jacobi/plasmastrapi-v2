@@ -20,7 +20,7 @@
 //   return { shape, styling };
 // };
 
-// export default class RivetSystem extends System {
+// export default class RivetSystem extends System<any> {
 
 //   public draw(): void {
 //     // $add(RivetComponent)({

@@ -1,17 +1,17 @@
 import InputTerminal from '../../../digital-logic/entities/InputTerminal';
 import OutputTerminal from '../../../digital-logic/entities/OutputTerminal';
-import Panel from '../../../ui/Panel';
+import Panel from '../../../ui/UIPanel';
 import PoseComponent from '../../../../framework/geometry/components/PoseComponent';
 import PowerSupply from '../../../digital-logic/entities/PowerSupply';
 import ShapeComponent from '../../../../framework/geometry/components/ShapeComponent';
-import IEntityTemplate from 'app/IEntityTemplate';
+import IEntityTemplateOverlay from 'app/ui/interfaces/IEntityTemplateOverlay';
 
 export default class DigitalCircuitPanel extends Panel {
 
   private __inputs: InputTerminal[] = [];
   private __outputs: OutputTerminal[] = [];
 
-  public constructor({ inputs, outputs }: IEntityTemplate & { inputs: InputTerminal[]; outputs: OutputTerminal[] }) {
+  public constructor({ inputs, outputs }: IEntityTemplateOverlay & { inputs: InputTerminal[]; outputs: OutputTerminal[] }) {
     super(arguments[0]);
     this.__inputs = inputs;
     this.__outputs = outputs;
@@ -28,10 +28,11 @@ export default class DigitalCircuitPanel extends Panel {
     const pose = this.$copy(PoseComponent);
     const { width, height } = this.$copy(ShapeComponent)
       .vertices.map((p) => ({ width: 2 * p.x, height: 2 * p.y }))[0];
-    this.appendChild(PowerSupply, {
+    this.$appendChild(new PowerSupply({ pose: {
       x: pose.x - width / 2 + 20,
       y: pose.y + height / 2 - 30,
-    });
+      a: 0,
+    }}));
   }
 
   private __initInputs(): void {

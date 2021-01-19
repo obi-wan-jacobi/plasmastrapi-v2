@@ -14,7 +14,7 @@ export default interface IEntity extends IUnique {
 
   $mutate<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): ((data: TArg) => void);
 
-  $patch<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): ((data: TArg) => void);
+  $patch<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): ((data: TArg | {}) => void);
 
   $forEach(fn: (component: IComponent<any>) => void): void;
 

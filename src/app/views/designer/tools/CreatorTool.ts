@@ -1,8 +1,8 @@
 import DigitalElement from '../../../digital-logic/entities/abstracts/DigitalElement';
 import Tool from './Tool';
-import IMouseEvent from 'engine/interfaces/IMouseEvent';
 import { Constructor } from 'foundation/types';
 import StyleComponent from 'framework/presentation/components/StyleComponent';
+import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 
 export default class CreatorTool<T extends DigitalElement> extends Tool {
 
@@ -16,7 +16,7 @@ export default class CreatorTool<T extends DigitalElement> extends Tool {
   }
 
   public $mouseup(e: IMouseEvent): void {
-    this._$master.create(this.__DigitalElement, {
+    new this.__DigitalElement({
       x: e.x,
       y: e.y,
     });

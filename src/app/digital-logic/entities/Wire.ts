@@ -1,4 +1,4 @@
-import Entity from '../../../engine/Entity';
+import Entity from '../../../engine/abstracts/Entity';
 import InputTerminal from './InputTerminal';
 import OutputTerminal from './OutputTerminal';
 import StyleComponent from '../../../framework/presentation/components/StyleComponent';

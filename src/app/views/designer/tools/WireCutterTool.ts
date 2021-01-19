@@ -1,8 +1,5 @@
 import { IPoint } from '../../../../framework/geometry/components/PoseComponent';
 import Tool from './Tool';
-import Wire from 'app/digital-logic/entities/Wire';
-import IMouseEvent from 'engine/interfaces/IMouseEvent';
-import { entityTouchesLine } from 'framework/helpers/entities';
 import StyleComponent from 'framework/presentation/components/StyleComponent';
 
 export default class WireCutterTool extends Tool {
@@ -20,23 +17,23 @@ export default class WireCutterTool extends Tool {
     this.__isCuttingActive = true;
   }
 
-  public $mousemove(e: IMouseEvent): void {
-    super.$mousemove(e);
-    if (!this.__isCuttingActive) {
-      return;
-    }
-    this.path.push({
-      x: e.x,
-      y: e.y,
-    });
-  }
+  // public $mousemove(e: IMouseEvent): void {
+  //   super.$mousemove(e);
+  //   if (!this.__isCuttingActive) {
+  //     return;
+  //   }
+  //   this.path.push({
+  //     x: e.x,
+  //     y: e.y,
+  //   });
+  // }
 
-  public $mouseup(e: IMouseEvent): void {
-    super.$mouseup(e);
-    this._$master.forEvery(Wire)((wire) => {
-      if (entityTouchesLine(wire, this.path)) {
-        wire.$destroy();
-      }
-    });
-  }
+  // public $mouseup(e: IMouseEvent): void {
+  //   super.$mouseup(e);
+  //   this._$master.forEvery(Wire)((wire) => {
+  //     if (entityTouchesLine(wire, this.path)) {
+  //       wire.$destroy();
+  //     }
+  //   });
+  // }
 }

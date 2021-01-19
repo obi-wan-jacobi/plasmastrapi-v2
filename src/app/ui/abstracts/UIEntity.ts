@@ -1,80 +1,45 @@
-import ImageComponent from '../../../framework/presentation/components/ImageComponent';
 import ShapeComponent from '../../../framework/geometry/components/ShapeComponent';
-import StyleComponent from '../../../framework/presentation/components/StyleComponent';
-import IEntityTemplate from 'app/IEntityTemplate';
-import IMouseEvent from 'engine/interfaces/IMouseEvent';
-import IComponent from 'engine/interfaces/IComponent';
 import IEntity from 'engine/interfaces/IEntity';
-import { Ctor } from 'engine/types';
-import { Dict as Dict } from 'foundation/types';
 import PoseComponent from 'framework/geometry/components/PoseComponent';
-import InteractiveEntity from 'framework/interactive/InteractiveEntity';
-import LabelComponent from 'framework/presentation/components/LabelComponent';
-import IUIEntity from '../interfaces/IUIEntity';
+import HTML5CanvasEntity from 'html5-canvas/HTML5CanvasEntity';
+import IEntityTemplate from '../interfaces/IEntityTemplate';
+import IEntityTemplateOverlay from '../interfaces/IEntityTemplateOverlay';
+import newEntityTemplate from '../templates/default';
+import lodash from 'lodash';
+import HTML5StyleComponent from 'html5-canvas/components/HTML5StyleComponent';
+import MouseComponent from 'html5-canvas/components/MouseComponent';
+import StyleComponent from 'framework/presentation/components/StyleComponent';
 
-const componentKeyMap: Dict<Ctor<IComponent<any>, any>> = {
-  pose: PoseComponent,
-  shape: ShapeComponent,
-  style: StyleComponent,
-  label: LabelComponent,
-  image: ImageComponent,
+const buildComponents = (template: IEntityTemplate, entity: IEntity): void => {
+    entity.$add(PoseComponent)(template.pose);
+    entity.$add(ShapeComponent)(template.shape);
+    entity.$add(MouseComponent)({ isHovered: false });
+    entity.$add(StyleComponent)(template.style.default);
+    entity.$add(HTML5StyleComponent)(template.style);
 };
 
-const applyEntityTemplateToEntity = (template: IEntityTemplate, entity: IEntity): void => {
-  Object.keys(componentKeyMap).forEach((key) => {
-    const data = (template as Dict<any>)[key];
-    if (!data) {
-      return;
-    }
-    entity.$add(componentKeyMap[key])(data);
-  });
+const buildTemplate = (overlay: IEntityTemplateOverlay): IEntityTemplate => {
+  const baseTemplate = newEntityTemplate();
+  const template = lodash.merge(baseTemplate, overlay);
+  if (!template.shape.vertices) {
+    template.shape = {
+      vertices: [
+        { x: template.shape.width / 2, y: template.shape.height / 2},
+        { x: -template.shape.width / 2, y: template.shape.height / 2},
+        { x: -template.shape.width / 2, y: -template.shape.height / 2},
+        { x: template.shape.width / 2, y: -template.shape.height / 2},
+      ],
+    };
+  }
+  return template;
 };
 
-export default abstract class UIEntity extends InteractiveEntity implements IUIEntity {
+export default class UIEntity extends HTML5CanvasEntity {
 
-  public constructor(template: IEntityTemplate) {
+  public constructor(overlay: IEntityTemplateOverlay) {
     super();
-    (template as Dict<any>).pose = { x: template.x, y: template.y, a: 0 };
-    if ((template.width && template.height)) {
-      template.shape = {
-        vertices: [
-          { x: template.width / 2, y: template.height / 2},
-          { x: -template.width / 2, y: template.height / 2},
-          { x: -template.width / 2, y: -template.height / 2},
-          { x: template.width / 2, y: -template.height / 2},
-        ],
-      };
-    }
-    if (template.shape) {
-      template.style = { colour: 'WHITE', opacity: 1, fill: 'rgba(0,0,0,0)', zIndex: 0 };
-    }
-    applyEntityTemplateToEntity(template, this);
+    const template = buildTemplate(overlay);
+    buildComponents(template, this);
   }
-
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  public $mousemove(e: IMouseEvent): void {
-    //
-  }
-
-  public $mouseenter(e: IMouseEvent): void {
-    //
-  }
-
-  public $mouseleave(e: IMouseEvent): void {
-    //
-  }
-
-  public $mousedown(e: IMouseEvent): void {
-    //
-  }
-
-  public $mouseup(e: IMouseEvent): void {
-    //
-  }
-
-  public $click(e: IMouseEvent): void {
-    //
-  }
-  /* eslint-enable @typescript-eslint/no-unused-vars */
 
 }

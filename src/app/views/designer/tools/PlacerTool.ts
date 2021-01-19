@@ -1,7 +1,5 @@
 import DigitalElement from '../../../digital-logic/entities/abstracts/DigitalElement';
 import Tool from './Tool';
-import IMouseEvent from 'engine/interfaces/IMouseEvent';
-import PoseComponent from 'framework/geometry/components/PoseComponent';
 import StyleComponent from 'framework/presentation/components/StyleComponent';
 
 export default class PlacerTool extends Tool {
@@ -14,11 +12,11 @@ export default class PlacerTool extends Tool {
     this.__element = element;
   }
 
-  public $mousemove(e: IMouseEvent): void {
-    super.$mousemove(e);
-    this.__element.$patch(PoseComponent)({
-      x: e.x,
-      y: e.y,
-    });
-  }
+  // public $mousemove(e: IMouseEvent): void {
+  //   super.$mousemove(e);
+  //   this.__element.$patch(PoseComponent)({
+  //     x: e.x,
+  //     y: e.y,
+  //   });
+  // }
 }

@@ -1,13 +1,13 @@
+import UIEntity from 'app/ui/abstracts/UIEntity';
 import Contraption from '../contraptions/abstracts/Contraption';
 import DesignerConsole from './designer/DesignerConsole';
-import Panel from '../ui/Panel';
 import PlayerConsole from './player/PlayerConsole';
 
-export default class EditorView extends Panel {
+export default class EditorView extends UIEntity {
 
   public constructor({ contraption }: { contraption: Contraption }) {
     super(arguments[0]);
-    this.appendChild(DesignerConsole, { contraption });
-    this.appendChild(PlayerConsole, { contraption });
+    this.$appendChild(new DesignerConsole({ contraption }));
+    this.$appendChild(new PlayerConsole());
   }
 }

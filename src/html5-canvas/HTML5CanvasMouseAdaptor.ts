@@ -1,6 +1,6 @@
 import { Dict } from 'foundation/types';
-import HTML5EventAdaptor from 'html5-canvas/abstracts/HTML5CanvasEventAdaptor';
-import IMouseEvent from '../engine/interfaces/IMouseEvent';
+import HTML5EventAdaptor from 'html5-canvas/abstracts/HTML5EventAdaptor';
+import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 
 export default class HTML5CanvasMouseAdaptor extends HTML5EventAdaptor<HTMLCanvasElement, MouseEvent, IMouseEvent> {
 

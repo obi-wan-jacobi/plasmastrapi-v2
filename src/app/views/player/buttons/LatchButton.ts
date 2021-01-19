@@ -1,17 +1,15 @@
-import IEntityTemplate from 'app/IEntityTemplate';
-import Button from '../../../ui/Button';
+import IEntityTemplate from 'app/ui/interfaces/IEntityTemplate';
+import UIButton from '../../../ui/UIButton';
 
-export default abstract class LatchButton extends Button {
+export default abstract class LatchButton extends UIButton {
 
   public constructor({}: IEntityTemplate) {
     super(arguments[0]);
-    this.$disable();
   }
 
-  public $click(): void {
-    this._$master.forEvery(LatchButton)((button) => {
-      button.$enable();
-    });
-    this.$disable();
-  }
+  // public $click(): void {
+  //   this._$master.forEvery(LatchButton)((button) => {
+  //     button.$enable();
+  //   });
+  // }
 }

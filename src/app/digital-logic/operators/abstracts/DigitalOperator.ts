@@ -1,5 +1,5 @@
 import IDigitalOperator from '../interfaces/IDigitalOperator';
-import { STATE } from '../../enums/STATE';
+import { DIGITAL_STATE } from '../../enums/DIGITAL_STATE';
 import Unique from 'foundation/abstracts/Unique';
 import Dictionary from 'foundation/concretes/Dictionary';
 import IDictionary from 'foundation/interfaces/IDictionary';
@@ -8,30 +8,30 @@ export default abstract class DigitalOperator extends Unique implements IDigital
 
   protected _inputs: IDictionary<IDigitalOperator> = new Dictionary();
   private __outputs: IDictionary<IDigitalOperator> = new Dictionary();
-  private __state: STATE = STATE.OFF;
+  private __state: DIGITAL_STATE = DIGITAL_STATE.OFF;
 
   public get isHigh(): boolean {
-    return this.__state === STATE.HIGH;
+    return this.__state === DIGITAL_STATE.HIGH;
   }
 
   public get isLow(): boolean {
-    return this.__state === STATE.LOW;
+    return this.__state === DIGITAL_STATE.LOW;
   }
 
   public get isOff(): boolean {
-    return this.__state === STATE.OFF;
+    return this.__state === DIGITAL_STATE.OFF;
   }
 
   public high(): void {
-    this.__state = STATE.HIGH;
+    this.__state = DIGITAL_STATE.HIGH;
   }
 
   public low(): void {
-    this.__state = STATE.LOW;
+    this.__state = DIGITAL_STATE.LOW;
   }
 
   public off(): void {
-    this.__state = STATE.OFF;
+    this.__state = DIGITAL_STATE.OFF;
   }
 
   public to(target: IDigitalOperator): void {

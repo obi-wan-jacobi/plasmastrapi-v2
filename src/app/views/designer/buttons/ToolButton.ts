@@ -1,8 +1,8 @@
-import Button from '../../../ui/Button';
+import UIButton from '../../../ui/UIButton';
 import Tool from '../tools/Tool';
 import { Constructor } from 'foundation/types';
 
-export default class ToolButton extends Button {
+export default class ToolButton extends UIButton {
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   private __Tool: Constructor<Tool, {}>;
@@ -13,6 +13,6 @@ export default class ToolButton extends Button {
   }
 
   public $click(): void {
-    this._$master.create(this.__Tool);
+    // this.$appendChild(this.__Tool);
   }
 }
