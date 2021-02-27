@@ -12,28 +12,28 @@ export default class MouseSystem<TPipes extends { mouse: IPipe<IMouseEvent> } & 
   public once({ components, pipes }: { components: IComponentMaster; pipes: TPipes }): void {
     components.forEvery(MouseComponent)((mouse) => {
       const event = pipes.mouse.event;
-      const { isHovered } = mouse.copy();
       if (!event) {
-        return mouse.patch({ event });
+        return mouse.mutate({ event, isHovered: false });
       }
+      const { isHovered } = mouse.copy();
       // hovered
       if (entityContainsPoint(mouse.$entity, event)) {
         if (!isHovered) {
-          return mouse.patch({
-            event: Object.assign(event, { name: 'mouseenter'}),
-            isHovered: true,
-          });
+          event.name = 'mouseenter';
         }
-        return mouse.patch({ event });
+        return mouse.mutate({
+          event,
+          isHovered: true,
+        });
       }
       // no longer hovered
       if (isHovered) {
-        return mouse.patch({
+        return mouse.mutate({
           event: Object.assign(event, { name: 'mouseleave'}),
           isHovered: false,
         });
       }
-      return mouse.patch({ event: undefined });
+      return mouse.mutate({ event: undefined, isHovered: false });
     });
   }
 }

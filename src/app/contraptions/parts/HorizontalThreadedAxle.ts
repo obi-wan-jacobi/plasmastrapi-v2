@@ -26,6 +26,8 @@ export default class HorizontalThreadedAxle extends UIEntity {
         },
         style: {
           default: {
+            colour: 'rgba(0,0,0,0)',
+            zIndex: 0,
             animation: {
               images,
               frame: 0,

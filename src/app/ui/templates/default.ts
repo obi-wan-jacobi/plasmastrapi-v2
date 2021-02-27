@@ -3,10 +3,10 @@ import { IStrictStyle } from 'framework/presentation/components/StyleComponent';
 import IEntityTemplate from '../interfaces/IEntityTemplate';
 
 const style: IStrictStyle = {
-  colour: 'rgba(0,0,0,0)',
+  colour: 'WHITE ',
   opacity: 1,
   fill: 'rgba(0,0,0,0)',
-  zIndex: 0,
+  zIndex: 1,
 };
 
 const template: IEntityTemplate = {

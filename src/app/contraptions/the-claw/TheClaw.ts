@@ -1,10 +1,9 @@
 import Claw from '../parts/Claw';
-import Contraption from '../abstracts/Contraption';
 import HorizontalThreadedAxle from '../parts/HorizontalThreadedAxle';
 import VerticalThreadedAxle from '../parts/VerticalThreadedAxle';
 import UIEntity from 'app/ui/abstracts/UIEntity';
 
-export default class TheClaw extends Contraption {
+export default class TheClaw extends UIEntity {
 
   private __horizontalRail: HorizontalThreadedAxle;
   private __verticalRail: VerticalThreadedAxle;

@@ -1,18 +1,12 @@
-import Contraption from '../../contraptions/abstracts/Contraption';
-import DigitalCircuitPanel from './panels/DigitalCircuitPanel';
-import Panel from '../../ui/UIPanel';
+import UIEntity from 'app/ui/abstracts/UIEntity';
 
-export default class DesignerConsole extends Panel {
+export default class DesignerConsole extends UIEntity {
 
-  public constructor({ contraption }: { contraption: Contraption }) {
-    super(arguments[0]);
-    // this.$appendChild(new ToolButtonPanel());
-    this.$appendChild(new DigitalCircuitPanel({
+  public constructor() {
+    super({
       pose: { x: 400, y: 340, a: 0 },
       shape: { width: 800, height: 560 },
-      inputs: contraption.inputs,
-      outputs: contraption.outputs,
-    }));
+    });
   }
 
 }

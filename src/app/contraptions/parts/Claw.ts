@@ -1,9 +1,8 @@
-import Contraption from '../abstracts/Contraption';
 import HorizontalThreadedAxle from './HorizontalThreadedAxle';
 import StyleComponent from '../../../framework/presentation/components/StyleComponent';
 import UIEntity from 'app/ui/abstracts/UIEntity';
 
-export default class Claw extends Contraption {
+export default class Claw extends UIEntity {
 
   private __wrist: UIEntity;
   private __palm: UIEntity;

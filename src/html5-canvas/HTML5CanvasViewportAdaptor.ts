@@ -1,7 +1,7 @@
 import IViewport from '../engine/interfaces/IViewport';
 import { IPoint, IPose } from 'framework/geometry/components/PoseComponent';
 import { IStrictImage, IStrictStyle } from 'framework/presentation/components/StyleComponent';
-import HTML5ImageBuffer from './memory/HTML5ImageBuffer';
+import HTML5ImageCache from './memory/HTML5ImageCache';
 
 function Atomic({}, {}, descriptor: PropertyDescriptor): void {
   const fn = descriptor.value;
@@ -18,7 +18,7 @@ export default class HTML5CanvasViewportAdaptor implements IViewport<CanvasImage
   public width: number;
   public height: number;
 
-  private __imageBuffer = new HTML5ImageBuffer();
+  private __imageBuffer = new HTML5ImageCache();
 
   private __zBuffer: Array<{ method: ({}: any) => void; payload: any }> = [];
 

@@ -42,13 +42,15 @@ module.exports = {
         extensions: [ '.tsx', '.ts', '.js' ],
         plugins: [new TsconfigPathsPlugin()]
     },
+    optimization: {
+        moduleIds: 'named'
+    },
     plugins: [
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: './src/app/index.html'
         }),
         new CopyWebpackPlugin({ patterns: ['./static'] }),
-        new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin()
     ]
 };
