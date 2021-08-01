@@ -11,16 +11,17 @@ export default abstract class UIButton extends UIEntity {
         height: 40,
       },
       style: {
-        default: {
-          label: {
-            fontSize: 10,
-            text,
-            offset: { x: -10, y: 4 },
-          },
-          image: {
-            src,
-          },
-        },
+        colour: 'rgba(0,0,0,0)',
+        fill: '',
+        opacity: 1,
+      },
+      label: {
+        fontSize: 10,
+        text,
+        offset: { x: -10, y: 4 },
+      },
+      image: {
+        src,
       },
     });
   }

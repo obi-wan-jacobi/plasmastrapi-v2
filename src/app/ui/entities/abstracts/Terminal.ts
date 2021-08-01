@@ -10,20 +10,16 @@ export default class Terminal extends UIEntity {
         height: 20,
       },
       style: {
-        default: {
-          label: {
-            text: labelText,
-            fontSize: 20,
-            offset: { x: 15, y: 7 },
-          },
-          image: { src },
-        },
-        hovered: {
-          image: {
-            src: './Terminal_hovered.png',
-          },
-        },
+        colour: 'rgba(0,0,0,0)',
+        fill: '',
+        opacity: 1,
       },
+      label: {
+        text: labelText,
+        fontSize: 20,
+        offset: { x: 15, y: 7 },
+      },
+      image: { src },
     });
   }
 }

@@ -1,5 +1,7 @@
 import { IPoint, IPose } from 'framework/geometry/components/PoseComponent';
-import { IStrictImage, IStrictStyle } from 'framework/presentation/components/StyleComponent';
+import { IImage } from 'framework/presentation/components/ImageComponent';
+import { ILabel } from 'framework/presentation/components/LabelComponent';
+import { IStyle } from 'framework/presentation/components/StyleComponent';
 
 export default interface IViewport<TImageSource> {
 
@@ -7,13 +9,13 @@ export default interface IViewport<TImageSource> {
 
     render(): void;
 
-    drawImage({ pose, image, style }: { pose: IPose; image: IStrictImage; style: IStrictStyle }): void;
+    drawImage({ pose, image }: { pose: IPose; image: IImage }): void;
 
-    drawLabel({ pose, style }: { pose: IPose; style: IStrictStyle }): void;
+    drawLabel({ pose, style, label }: { pose: IPose; style: IStyle; label: ILabel }): void;
 
-    drawShape({ path, style }: { path: IPoint[]; style: IStrictStyle }): void;
+    drawShape({ path, style }: { path: IPoint[]; style: IStyle }): void;
 
-    drawLine({ path, style }: { path: IPoint[]; style: IStrictStyle }): void;
+    drawLine({ path, style }: { path: IPoint[]; style: IStyle }): void;
 
-    drawCircle({ position, radius, style }: { position: IPoint; radius: number; style: IStrictStyle }): void;
+    drawCircle({ position, radius, style }: { position: IPoint; radius: number; style: IStyle }): void;
 }

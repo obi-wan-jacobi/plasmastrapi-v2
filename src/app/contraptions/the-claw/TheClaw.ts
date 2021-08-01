@@ -36,7 +36,7 @@ export default class TheClaw extends UIEntity {
           { x: 20, y: -30 },
         ],
       },
-      style: { default: { colour: 'WHITE', opacity: 1, fill: 'rgba(0,0,0,0)', zIndex: 1 } },
+      style: { colour: 'WHITE', opacity: 1, fill: 'rgba(0,0,0,0)' },
     }));
     this.__verticalRail = this.$appendChild(new VerticalThreadedAxle({
       x: x - 130, y, width: 20, height: 200,

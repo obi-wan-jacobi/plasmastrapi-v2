@@ -1,5 +1,5 @@
 import IDigitalOperator from '../interfaces/IDigitalOperator';
-import { DIGITAL_STATE } from '../../enums/DIGITAL_STATE';
+import { DIGITAL_STATE } from '../enums/DIGITAL_STATE';
 import Unique from 'foundation/abstracts/Unique';
 import Dictionary from 'foundation/concretes/Dictionary';
 import IDictionary from 'foundation/interfaces/IDictionary';

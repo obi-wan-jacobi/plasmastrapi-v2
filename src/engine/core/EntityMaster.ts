@@ -2,7 +2,7 @@ import IEntity from '../interfaces/IEntity';
 import IEntityMaster from '../interfaces/IEntityMaster';
 import Dictionary from 'foundation/concretes/Dictionary';
 import IDictionary from 'foundation/interfaces/IDictionary';
-import { Dict } from 'foundation/types';
+import { Dict, Void, Volatile } from 'foundation/types';
 import { EntityClass } from '../types';
 import { IOC } from '../abstracts/Entity';
 
@@ -22,13 +22,13 @@ class EntityMaster implements IEntityMaster {
     };
   }
 
-  public forEvery<T extends IEntity>(EntityCls: EntityClass<T>): (fn: (entity: T) => void) => void {
+  public forEvery<T extends IEntity>(EntityCls: EntityClass<T>): Void<Void<T>> {
     const collection = this.__entityMap.read(EntityCls.name);
     return collection ? collection.forEach.bind(collection) : (): void => undefined;
   }
 
-  public find<T extends IEntity>(EntityCls: EntityClass<T>): (fn: (entity: T) => boolean) => T | undefined {
-    return (fn: ((entity: T) => boolean)): T | undefined => {
+  public find<T extends IEntity>(EntityCls: EntityClass<T>): (fn: (entity: T) => boolean) => Volatile<T> {
+    return (fn: ((entity: T) => boolean)): Volatile<T> => {
       const result = this.__entityMap.read(EntityCls.name)!.find(fn);
       if (result) {
         return result as T;

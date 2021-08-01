@@ -4,7 +4,7 @@ import Unique from 'foundation/abstracts/Unique';
 import Dictionary from 'foundation/concretes/Dictionary';
 import IDictionary from 'foundation/interfaces/IDictionary';
 import { Ctor } from '../types';
-import { Void } from 'foundation/types';
+import { Void, Volatile } from 'foundation/types';
 
 export const IOC = {
   entities: {
@@ -54,11 +54,12 @@ export default abstract class Entity extends Unique implements IEntity {
     IOC.components.purge(component);
   };
 
-  public readonly $copy = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): TArg => {
-    return this.__components.read(ComponentClass.name)!.copy();
+  public readonly $copy = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Volatile<TArg> => {
+    const component = this.__components.read(ComponentClass.name);
+    return component ? component.copy() : undefined;
   };
 
-  public readonly $mutate = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): ((data: TArg) => void) => {
+  public readonly $mutate = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Void<TArg | {}> => {
     return (data: TArg): void => {
       const component = this.__components.read(ComponentClass.name);
       if (!component) {
@@ -68,7 +69,7 @@ export default abstract class Entity extends Unique implements IEntity {
     };
   };
 
-  public readonly $patch = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): ((data: TArg | {}) => void) => {
+  public readonly $patch = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Void<TArg | {}> => {
     return (data: TArg): void => {
       const component = this.__components.read(ComponentClass.name);
       if (!component) {
@@ -78,7 +79,7 @@ export default abstract class Entity extends Unique implements IEntity {
     };
   };
 
-  public readonly $forEach = (fn: (component: IComponent<any>) => void): void => {
+  public readonly $forEach = (fn: Void<IComponent<any>>): void => {
     return this.__components.forEach(fn);
   };
 

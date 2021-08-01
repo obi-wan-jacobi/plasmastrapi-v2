@@ -1,5 +1,7 @@
 
-export type Constructor<TClass, TArg> = new ({}: TArg) => TClass;
 export type Dict<T> = { [key: string]: T };
-export type Optional<T> = T | undefined;
-export type Void<T> = ({}: T) => void;
+export type Volatile<T> = T | undefined;
+
+export type Fn<T1, T2> = ({}: T1) => T2;
+export type Void<T> = Fn<T, void>;
+export type Constructor<TClass, TArg> = new ({}: TArg) => TClass;

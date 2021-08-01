@@ -1,6 +1,6 @@
 import Entity from 'engine/abstracts/Entity';
 import IHTML5CanvasEntity from 'html5-canvas/interfaces/IHTML5CanvasEntity';
-import { Dict } from 'foundation/types';
+import { Dict, Volatile } from 'foundation/types';
 import Dictionary from 'foundation/concretes/Dictionary';
 import IDictionary from 'foundation/interfaces/IDictionary';
 
@@ -13,14 +13,14 @@ export function hereditary({}: {}, {}: {}, descriptor: PropertyDescriptor): void
 
 export default abstract class HTML5CanvasEntity extends Entity implements IHTML5CanvasEntity {
 
-  private __parent: IHTML5CanvasEntity | undefined;
+  private __parent: Volatile<IHTML5CanvasEntity>;
   private __children: IDictionary<IHTML5CanvasEntity> = new Dictionary();
 
-  public get $parent(): IHTML5CanvasEntity | undefined {
+  public get $parent(): Volatile<IHTML5CanvasEntity> {
     return this.__parent;
   }
 
-  public set $parent(parent: IHTML5CanvasEntity | undefined) {
+  public set $parent(parent: Volatile<IHTML5CanvasEntity>) {
     if (this.__parent) {
       this.__parent.$removeChild(this);
     }

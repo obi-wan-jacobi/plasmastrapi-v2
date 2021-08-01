@@ -53,7 +53,7 @@ class Executor {
 
   @propagate
   public reset(): void {
-    const { initialPose } = this.__$.$copy(MachineComponent);
+    const { initialPose } = this.__$.$copy(MachineComponent)!;
     this.__$.$mutate(PoseComponent)(initialPose);
     this.__$.$remove(TranslationComponent);
     this.__$.$patch(StyleComponent)({

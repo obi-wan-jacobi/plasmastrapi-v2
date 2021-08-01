@@ -31,20 +31,19 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IEvent>>> im
     this.__systems = new Dictionary();
   }
 
-
   public load(src: string): TImageSource {
     return this.__viewport.load(src);
   }
 
-  public add<T extends ISystem<TPipes>>(SystemClass: Stor<T>): void {
+  public add<T extends ISystem<TPipes>>(SystemCtor: Stor<T>): void {
     this.__systems.write({
-      key: SystemClass.name,
-      value: new SystemClass(this),
+      key: SystemCtor.name,
+      value: new SystemCtor(this),
     });
   }
 
-  public remove<T extends ISystem<TPipes>>(SystemClass: Stor<T>): void {
-    this.__systems.delete(SystemClass.name);
+  public remove<T extends ISystem<TPipes>>(SystemCtor: Stor<T>): void {
+    this.__systems.delete(SystemCtor.name);
   }
 
   public start(): void {
@@ -70,14 +69,13 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IEvent>>> im
   }
 
   private __doSystems(): void {
-    this.__systems.forEach((system: ISystem<TPipes>) => {
-      return system.once({
+    this.__systems.forEach((system: ISystem<TPipes>) => system.once({
         entities: this.entities,
         components: this.components,
         pipes: this.__pipes,
         delta: this.__delta,
-      });
-    });
+      })
+    );
   }
 
   private __doUpkeep(): void {
@@ -86,12 +84,11 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IEvent>>> im
   }
 
   private __doRender(): void {
-    this.__systems.forEach((system: ISystem<TPipes>) => {
-      return system.draw({
+    this.__systems.forEach((system: ISystem<TPipes>) => system.draw({
         viewport: this.__viewport,
         components: this.components,
-      });
-    });
+      })
+    );
     this.__viewport.render();
   }
 }

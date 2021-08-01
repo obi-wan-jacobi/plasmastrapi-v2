@@ -1,5 +1,5 @@
 import UIEntity from 'app/ui/abstracts/UIEntity';
-import { IImage } from 'framework/presentation/components/StyleComponent';
+import { IImage } from 'framework/presentation/components/ImageComponent';
 
 export default class VerticalThreadedAxle extends UIEntity {
 
@@ -25,17 +25,16 @@ export default class VerticalThreadedAxle extends UIEntity {
           a: 0,
         },
         style: {
-          default: {
-            colour: 'rgba(0,0,0,0)',
-            zIndex: 0,
-            animation: {
-              images,
-              frame: 0,
-              duration: 50,
-              isPaused: true,
-              isReversed: false,
-            },
-          },
+          colour: 'rgba(0,0,0,0)',
+          fill: '',
+          opacity: 1,
+        },
+        animation: {
+          images,
+          frame: 0,
+          duration: 50,
+          isPaused: true,
+          isReversed: false,
         },
       }));
     }

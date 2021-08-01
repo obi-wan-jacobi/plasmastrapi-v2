@@ -8,7 +8,7 @@ export default class VelocitySystem extends System<any> {
   public once({ components, delta }: { components: IComponentMaster; delta: number }): void {
     components.forEvery(VelocityComponent)((velocity) => {
       const v = velocity.copy();
-      const pose = velocity.$entity.$copy(PoseComponent);
+      const pose = velocity.$entity.$copy(PoseComponent)!;
       const dt = delta;
       velocity.$entity.$mutate(PoseComponent)({
         x: pose.x + v.x * dt,

@@ -1,12 +1,13 @@
+import { ComponentClass } from 'engine/types';
+import { Void, Volatile } from 'foundation/types';
 import IComponent from './IComponent';
-import { ComponentClass } from '../types';
 
 export default interface IComponentMaster {
 
   upkeep(): void;
 
-  find<T extends IComponent<TArg>, TArg>(ComponentCls: ComponentClass<T, TArg>): (fn: (component: T) => boolean) => T | undefined;
+  find<T extends IComponent<TArg>, TArg>(ComponentCls: ComponentClass<T, TArg>): (fn: (component: T) => boolean) => Volatile<T>;
 
-  forEvery<T extends IComponent<TArg>, TArg>(ComponentCls: ComponentClass<T, TArg>): (fn: (component: T) => void) => void;
+  forEvery<T extends IComponent<TArg>, TArg>(ComponentCls: ComponentClass<T, TArg>): Void<Void<T>>;
 
 }

@@ -1,28 +1,29 @@
 import clone from 'foundation/helpers/clone';
-import { IStrictStyle } from 'framework/presentation/components/StyleComponent';
-import IEntityTemplate from '../interfaces/IEntityTemplate';
+import { IStyle } from 'framework/presentation/components/StyleComponent';
+import IContainer from '../interfaces/IContainer';
 
-const style: IStrictStyle = {
-  colour: 'WHITE ',
+const style: IStyle = {
+  colour: 'WHITE',
   opacity: 1,
   fill: 'rgba(0,0,0,0)',
-  zIndex: 1,
 };
 
-const template: IEntityTemplate = {
+const template: IContainer = {
   pose: { x: 0, y: 0, a: 0 },
-  shape: { vertices: [
-    { x: 10, y: 10 },
-    { x: -10, y: 10 },
-    { x: -10, y: -10 },
-    { x: 10, y: -10 },
-  ]},
-  style: {
-    default: style,
-    hovered: style,
+  shape: {
+    vertices: [
+      { x: 10, y: 10 },
+      { x: -10, y: 10 },
+      { x: -10, y: -10 },
+      { x: 10, y: -10 },
+    ],
+  },
+  style,
+  mouse: {
+    isHovered: false,
   },
 };
 
-export default function newEntityTemplate(): IEntityTemplate {
+export default function newContainerTemplate(): IContainer {
   return clone(template);
 }

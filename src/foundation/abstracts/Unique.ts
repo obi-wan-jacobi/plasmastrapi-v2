@@ -4,7 +4,6 @@ const uuidv1 = require('uuid/v1');
 
 export default abstract class Unique implements IUnique {
 
-
     public static generateUuid(): string {
         return uuidv1();
     }
@@ -16,12 +15,7 @@ export default abstract class Unique implements IUnique {
     }
 
     public constructor(id?: string) {
-        this.__id__(id || Unique.generateUuid());
-    }
-
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    private __id__(id: string): void {
-        this.__id = id;
+        this.__id = id || Unique.generateUuid();
     }
 
 }

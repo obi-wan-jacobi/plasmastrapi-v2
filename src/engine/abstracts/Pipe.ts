@@ -1,13 +1,14 @@
 import IEvent from 'engine/interfaces/IEvent';
 import IPipe from 'engine/interfaces/IPipe';
 import clone from 'foundation/helpers/clone';
+import { Volatile } from 'foundation/types';
 
 export default abstract class Pipe<TEvent extends IEvent> implements IPipe<TEvent> {
 
     private __event?: TEvent;
     private __buffer: TEvent[] = [];
 
-    public get event(): TEvent | undefined {
+    public get event(): Volatile<TEvent> {
         return this.__event
             ? clone(this.__event)
             : undefined;

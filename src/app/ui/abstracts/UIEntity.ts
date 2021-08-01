@@ -1,45 +1,55 @@
 import ShapeComponent from '../../../framework/geometry/components/ShapeComponent';
-import IEntity from 'engine/interfaces/IEntity';
 import PoseComponent from 'framework/geometry/components/PoseComponent';
 import HTML5CanvasEntity from 'html5-canvas/HTML5CanvasEntity';
-import IEntityTemplate from '../interfaces/IEntityTemplate';
-import IEntityTemplateOverlay from '../interfaces/IEntityTemplateOverlay';
-import newEntityTemplate from '../templates/default';
-import lodash from 'lodash';
-import HTML5StyleComponent from 'html5-canvas/components/HTML5StyleComponent';
+import IContainer from '../interfaces/IContainer';
+import IContainerTemplate from '../interfaces/IContainerTemplate';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
 import StyleComponent from 'framework/presentation/components/StyleComponent';
+import ImageComponent from 'framework/presentation/components/ImageComponent';
+import AnimationComponent from 'framework/presentation/components/AnimationComponent';
 
-const buildComponents = (template: IEntityTemplate, entity: IEntity): void => {
-    entity.$add(PoseComponent)(template.pose);
-    entity.$add(ShapeComponent)(template.shape);
-    entity.$add(MouseComponent)({ isHovered: false });
-    entity.$add(StyleComponent)(template.style.default);
-    entity.$add(HTML5StyleComponent)(template.style);
+const fromContainerToComponentTuples = (container: IContainer): any[] => {
+  return [
+    [PoseComponent, container.pose],
+    [ShapeComponent, container.shape],
+    [MouseComponent, container.mouse],
+    [StyleComponent, container.style],
+    [ImageComponent, container.image],
+    [AnimationComponent, container.animation],
+  ];
 };
 
-const buildTemplate = (overlay: IEntityTemplateOverlay): IEntityTemplate => {
-  const baseTemplate = newEntityTemplate();
-  const template = lodash.merge(baseTemplate, overlay);
-  if (!template.shape.vertices) {
-    template.shape = {
+const fromTemplateToContainer = (template: IContainerTemplate): IContainer => {
+  // const baseTemplate = newContainerTemplate();
+  // const container = lodash.merge(baseTemplate, template);
+  const container = template;
+  if (container.shape && !container.shape.vertices) {
+    container.shape = {
       vertices: [
-        { x: template.shape.width / 2, y: template.shape.height / 2},
-        { x: -template.shape.width / 2, y: template.shape.height / 2},
-        { x: -template.shape.width / 2, y: -template.shape.height / 2},
-        { x: template.shape.width / 2, y: -template.shape.height / 2},
-      ],
+        { x: 1, y: 1 },
+        { x: -1, y: 1 },
+        { x: -1, y: -1 },
+        { x: 1, y: -1 },
+      ]
+        .map((v) => ({ x: v.x / 2, y: v.y / 2 }))
+        .map((v) => ({ x: v.x * container!.shape!.width, y: v.y * container!.shape!.height })),
     };
   }
-  return template;
+  return container as IContainer;
 };
 
 export default class UIEntity extends HTML5CanvasEntity {
 
-  public constructor(overlay: IEntityTemplateOverlay) {
+  public constructor(template?: IContainerTemplate) {
     super();
-    const template = buildTemplate(overlay);
-    buildComponents(template, this);
+    const container = fromTemplateToContainer(template || {});
+    const componentTuples = fromContainerToComponentTuples(container);
+    componentTuples.forEach((tuple: any[]) => {
+      if (tuple[1] === undefined) {
+        return;
+      }
+      this.$add(tuple[0])(tuple[1]);
+    });
   }
 
 }

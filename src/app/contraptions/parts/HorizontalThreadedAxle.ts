@@ -1,5 +1,5 @@
 import UIEntity from 'app/ui/abstracts/UIEntity';
-import { IImage } from 'framework/presentation/components/StyleComponent';
+import { IImage } from 'framework/presentation/components/ImageComponent';
 
 export default class HorizontalThreadedAxle extends UIEntity {
 
@@ -24,18 +24,12 @@ export default class HorizontalThreadedAxle extends UIEntity {
           y: y,
           a: 0,
         },
-        style: {
-          default: {
-            colour: 'rgba(0,0,0,0)',
-            zIndex: 0,
-            animation: {
-              images,
-              frame: 0,
-              duration: 50,
-              isPaused: true,
-              isReversed: false,
-            },
-          },
+        animation: {
+          images,
+          frame: 0,
+          duration: 50,
+          isPaused: true,
+          isReversed: false,
         },
       }));
     }

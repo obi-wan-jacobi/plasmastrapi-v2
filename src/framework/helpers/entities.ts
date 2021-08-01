@@ -9,13 +9,13 @@ const booleanOverlaps = require('@turf/boolean-overlap').default;
 const lineIntersect = require('@turf/line-intersect').default;
 
 export const entityContainsPoint = (entity: IEntity, point: IPoint): boolean => {
-    const shape = transformShape(entity.$copy(ShapeComponent), entity.$copy(PoseComponent));
+    const shape = transformShape(entity.$copy(ShapeComponent)!, entity.$copy(PoseComponent)!);
     return booleanPointInPolygon(turf.point([point.x, point.y]), fromShapeToGeoJSON(shape));
 };
 
 export const entitiesTouch = (entity1: IEntity, entity2: IEntity): boolean => {
-    const shape1 = transformShape(entity1.$copy(ShapeComponent), entity1.$copy(PoseComponent));
-    const shape2 = transformShape(entity2.$copy(ShapeComponent), entity2.$copy(PoseComponent));
+    const shape1 = transformShape(entity1.$copy(ShapeComponent)!, entity1.$copy(PoseComponent)!);
+    const shape2 = transformShape(entity2.$copy(ShapeComponent)!, entity2.$copy(PoseComponent)!);
     const geoJSON1 = fromShapeToGeoJSON(shape1);
     const geoJSON2 = fromShapeToGeoJSON(shape2);
     return booleanContains(geoJSON1, geoJSON2) ||
@@ -25,15 +25,15 @@ export const entitiesTouch = (entity1: IEntity, entity2: IEntity): boolean => {
 };
 
 export const entityContainsEntity = (entity1: IEntity, entity2: IEntity): boolean => {
-    const shape1 = transformShape(entity1.$copy(ShapeComponent), entity1.$copy(PoseComponent));
-    const shape2 = transformShape(entity2.$copy(ShapeComponent), entity2.$copy(PoseComponent));
+    const shape1 = transformShape(entity1.$copy(ShapeComponent)!, entity1.$copy(PoseComponent)!);
+    const shape2 = transformShape(entity2.$copy(ShapeComponent)!, entity2.$copy(PoseComponent)!);
     const geoJSON1 = fromShapeToGeoJSON(shape1);
     const geoJSON2 = fromShapeToGeoJSON(shape2);
     return booleanContains(geoJSON1, geoJSON2) || booleanContains(geoJSON2, geoJSON1);
 };
 
 export const entityTouchesLine = (entity: IEntity, points: IPoint[]): boolean => {
-    const shape = transformShape(entity.$copy(ShapeComponent), entity.$copy(PoseComponent));
+    const shape = transformShape(entity.$copy(ShapeComponent)!, entity.$copy(PoseComponent)!);
     const polygon = fromShapeToGeoJSON(shape);
     const line = fromPointsToGeoJSON(points);
     return lineIntersect(polygon, line).features.length > 0;

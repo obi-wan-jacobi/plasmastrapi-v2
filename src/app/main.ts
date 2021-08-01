@@ -2,10 +2,9 @@
 import App from './App';
 import EditorView from './views/EditorView';
 import TheClaw from './contraptions/the-claw/TheClaw';
-import $ from 'jquery';
 import HorizontalThreadedAxle from './contraptions/parts/HorizontalThreadedAxle';
 
-const canvas = $('#app-target').get(0) as HTMLCanvasElement;
+const canvas = document.getElementById('app-target') as HTMLCanvasElement;
 canvas.focus();
 canvas.width = 1280;
 canvas.height = 680;
