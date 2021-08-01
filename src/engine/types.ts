@@ -1,7 +1,7 @@
 import IComponent from './interfaces/IComponent';
 import IEntity from './interfaces/IEntity';
 import ISystem from './interfaces/ISystem';
-import { Constructor } from 'foundation/types';
+import { Constructor } from 'core/types';
 
 type ABC<T> = { name: string; prototype: T };
 

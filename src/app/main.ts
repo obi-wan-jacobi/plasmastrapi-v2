@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import App from './App';
 import EditorView from './views/EditorView';
-import TheClaw from './contraptions/the-claw/TheClaw';
-import HorizontalThreadedAxle from './contraptions/parts/HorizontalThreadedAxle';
+import TheClaw from '../contraptions/the-claw/TheClaw';
+import HorizontalThreadedAxle from '../contraptions/parts/HorizontalThreadedAxle';
 
 const canvas = document.getElementById('app-target') as HTMLCanvasElement;
 canvas.focus();

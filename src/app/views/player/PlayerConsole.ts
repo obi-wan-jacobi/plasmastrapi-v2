@@ -1,4 +1,4 @@
-import UIEntity from 'app/ui/abstracts/UIEntity';
+import UIEntity from 'ui/abstracts/UIEntity';
 
 export default class PlayerConsole extends UIEntity {
 

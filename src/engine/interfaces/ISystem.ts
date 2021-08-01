@@ -1,5 +1,5 @@
-import IUnique from 'foundation/interfaces/IUnique';
-import { Dict } from 'foundation/types';
+import IUnique from 'core/interfaces/IUnique';
+import { Dict } from 'core/types';
 import IComponentMaster from './IComponentMaster';
 import IEntityMaster from './IEntityMaster';
 import IEvent from './IEvent';

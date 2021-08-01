@@ -1,6 +1,6 @@
 import System from 'engine/abstracts/System';
-import { entityContainsPoint } from '../../framework/helpers/entities';
-import { Dict } from 'foundation/types';
+import { entityContainsPoint } from '../../bootstrap/helpers/entities';
+import { Dict } from 'core/types';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import IPipe from 'engine/interfaces/IPipe';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';

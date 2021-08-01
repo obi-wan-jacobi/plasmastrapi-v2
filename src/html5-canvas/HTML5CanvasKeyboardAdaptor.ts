@@ -1,6 +1,6 @@
 import IKeyboardEvent from './interfaces/IKeyboardEvent';
 import HTML5EventAdaptor from 'html5-canvas/abstracts/HTML5EventAdaptor';
-import { Dict } from 'foundation/types';
+import { Dict } from 'core/types';
 
 export default class HTML5CanvasKeyboardAdapter extends HTML5EventAdaptor<HTMLCanvasElement, KeyboardEvent, IKeyboardEvent> {
 

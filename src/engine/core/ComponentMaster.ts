@@ -2,9 +2,9 @@ import { IOC } from 'engine/abstracts/Entity';
 import IComponent from 'engine/interfaces/IComponent';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';
 import { ComponentClass } from 'engine/types';
-import Dictionary from 'foundation/concretes/Dictionary';
-import IDictionary from 'foundation/interfaces/IDictionary';
-import { Void, Volatile } from 'foundation/types';
+import Dictionary from 'core/concretes/Dictionary';
+import IDictionary from 'core/interfaces/IDictionary';
+import { Void, Volatile } from 'core/types';
 
 class ComponentMaster implements IComponentMaster {
 

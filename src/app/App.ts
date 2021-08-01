@@ -3,15 +3,12 @@ import Engine from '../engine/Engine';
 import HTML5CanvasKeyboardAdapter from '../html5-canvas/HTML5CanvasKeyboardAdaptor';
 import HTML5CanvasMouseAdaptor from '../html5-canvas/HTML5CanvasMouseAdaptor';
 import HTML5CanvasViewportAdaptor from '../html5-canvas/HTML5CanvasViewportAdaptor';
-import ShapeSystem from 'framework/presentation/systems/ShapeSystem';
-import IPipe from 'engine/interfaces/IPipe';
-import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
-import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
-import LabelSystem from 'framework/presentation/systems/LabelSystem';
-import ImageSystem from 'framework/presentation/systems/ImageSystem';
-import AnimationSystem from 'framework/presentation/systems/AnimationSystem';
+import ShapeSystem from 'bootstrap/presentation/systems/ShapeSystem';
+import LabelSystem from 'bootstrap/presentation/systems/LabelSystem';
+import ImageSystem from 'bootstrap/presentation/systems/ImageSystem';
+import AnimationSystem from 'bootstrap/presentation/systems/AnimationSystem';
 
-export default class App extends Engine<CanvasImageSource, { mouse: IPipe<IMouseEvent>; keyboard: IPipe<IKeyboardEvent> }> {
+export default class App extends Engine<CanvasImageSource> {
 
     public constructor({ canvas }: { canvas: HTMLCanvasElement }) {
         super({

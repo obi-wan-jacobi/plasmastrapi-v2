@@ -1,8 +1,8 @@
 import IEntity from '../interfaces/IEntity';
 import IEntityMaster from '../interfaces/IEntityMaster';
-import Dictionary from 'foundation/concretes/Dictionary';
-import IDictionary from 'foundation/interfaces/IDictionary';
-import { Dict, Void, Volatile } from 'foundation/types';
+import Dictionary from 'core/concretes/Dictionary';
+import IDictionary from 'core/interfaces/IDictionary';
+import { Dict, Void, Volatile } from 'core/types';
 import { EntityClass } from '../types';
 import { IOC } from '../abstracts/Entity';
 

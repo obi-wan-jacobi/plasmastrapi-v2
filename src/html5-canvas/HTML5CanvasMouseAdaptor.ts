@@ -1,4 +1,4 @@
-import { Dict } from 'foundation/types';
+import { Dict } from 'core/types';
 import HTML5EventAdaptor from 'html5-canvas/abstracts/HTML5EventAdaptor';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 

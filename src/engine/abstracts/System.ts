@@ -1,8 +1,8 @@
 import ISystem from '../interfaces/ISystem';
-import Unique from 'foundation/abstracts/Unique';
+import Unique from 'core/abstracts/Unique';
 import IPipe from 'engine/interfaces/IPipe';
 import IEvent from 'engine/interfaces/IEvent';
-import { Dict } from 'foundation/types';
+import { Dict } from 'core/types';
 import IViewport from 'engine/interfaces/IViewport';
 import IEntityMaster from 'engine/interfaces/IEntityMaster';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';

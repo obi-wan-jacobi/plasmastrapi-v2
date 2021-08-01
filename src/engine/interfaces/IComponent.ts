@@ -1,5 +1,5 @@
 import IEntity from './IEntity';
-import IUnique from 'foundation/interfaces/IUnique';
+import IUnique from 'core/interfaces/IUnique';
 
 export default interface IComponent<T extends {}> extends IUnique {
   $entity: IEntity;

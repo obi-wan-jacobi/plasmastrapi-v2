@@ -3,27 +3,27 @@ import IEngine from './interfaces/IEngine';
 import IEntityMaster from './interfaces/IEntityMaster';
 import ISystem from './interfaces/ISystem';
 import IViewport from './interfaces/IViewport';
-import Dictionary from 'foundation/concretes/Dictionary';
-import IDictionary from 'foundation/interfaces/IDictionary';
+import Dictionary from 'core/concretes/Dictionary';
+import IDictionary from 'core/interfaces/IDictionary';
 import { Stor } from './types';
 import IPipe from './interfaces/IPipe';
 import IEvent from './interfaces/IEvent';
-import { Dict } from 'foundation/types';
+import { Dict } from 'core/types';
 import { ENTITIES } from './core/EntityMaster';
 import { COMPONENTS } from './core/ComponentMaster';
 
-export default class Engine<TImageSource, TPipes extends Dict<IPipe<IEvent>>> implements IEngine<TImageSource, TPipes> {
+export default class Engine<TImageSource> implements IEngine<TImageSource> {
 
   public entities: IEntityMaster;
   public components: IComponentMaster;
 
   private __viewport: IViewport<TImageSource>;
-  private __pipes: TPipes;
-  private __systems: IDictionary<ISystem<TPipes>>;
+  private __pipes: Dict<IPipe<IEvent>>;
+  private __systems: IDictionary<ISystem<Dict<IPipe<IEvent>>>>;
   private __t: Date;
   private __delta: number;
 
-  constructor({ viewport, pipes }: { viewport: IViewport<TImageSource>; pipes: TPipes }) {
+  constructor({ viewport, pipes }: { viewport: IViewport<TImageSource>; pipes: Dict<IPipe<IEvent>> }) {
     this.entities = ENTITIES;
     this.components = COMPONENTS;
     this.__viewport = viewport;
@@ -35,19 +35,19 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IEvent>>> im
     return this.__viewport.load(src);
   }
 
-  public add<T extends ISystem<TPipes>>(SystemCtor: Stor<T>): void {
+  public add<T extends ISystem<Dict<IPipe<IEvent>>>>(SystemCtor: Stor<T>): void {
     this.__systems.write({
       key: SystemCtor.name,
       value: new SystemCtor(this),
     });
   }
 
-  public remove<T extends ISystem<TPipes>>(SystemCtor: Stor<T>): void {
+  public remove<T extends ISystem<Dict<IPipe<IEvent>>>>(SystemCtor: Stor<T>): void {
     this.__systems.delete(SystemCtor.name);
   }
 
   public start(): void {
-    setInterval(this.once.bind(this), 1000 / 240);
+    setInterval(this.once.bind(this), 1000 / 30);
   }
 
   public once(): void {
@@ -59,7 +59,7 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IEvent>>> im
   }
 
   private __doPipes(): void {
-    Object.keys(this.__pipes).forEach((name) => this.__pipes[name].next());
+    Object.keys(this.__pipes).forEach((key) => this.__pipes[key].next());
   }
 
   private __doDelta(): void {
@@ -69,7 +69,7 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IEvent>>> im
   }
 
   private __doSystems(): void {
-    this.__systems.forEach((system: ISystem<TPipes>) => system.once({
+    this.__systems.forEach((system: ISystem<Dict<IPipe<IEvent>>>) => system.once({
         entities: this.entities,
         components: this.components,
         pipes: this.__pipes,
@@ -84,7 +84,7 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IEvent>>> im
   }
 
   private __doRender(): void {
-    this.__systems.forEach((system: ISystem<TPipes>) => system.draw({
+    this.__systems.forEach((system: ISystem<Dict<IPipe<IEvent>>>) => system.draw({
         viewport: this.__viewport,
         components: this.components,
       })

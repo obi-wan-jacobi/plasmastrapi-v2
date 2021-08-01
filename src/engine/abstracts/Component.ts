@@ -1,7 +1,7 @@
 import IComponent from '../interfaces/IComponent';
 import IEntity from '../interfaces/IEntity';
-import Unique from 'foundation/abstracts/Unique';
-import clone from 'foundation/helpers/clone';
+import Unique from 'core/abstracts/Unique';
+import clone from 'core/helpers/clone';
 import lodash from 'lodash';
 
 export default abstract class Component<T extends {}> extends Unique implements IComponent<T> {

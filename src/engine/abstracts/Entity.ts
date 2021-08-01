@@ -1,10 +1,10 @@
 import IComponent from '../interfaces/IComponent';
 import IEntity from '../interfaces/IEntity';
-import Unique from 'foundation/abstracts/Unique';
-import Dictionary from 'foundation/concretes/Dictionary';
-import IDictionary from 'foundation/interfaces/IDictionary';
+import Unique from 'core/abstracts/Unique';
+import Dictionary from 'core/concretes/Dictionary';
+import IDictionary from 'core/interfaces/IDictionary';
 import { Ctor } from '../types';
-import { Void, Volatile } from 'foundation/types';
+import { Void, Volatile } from 'core/types';
 
 export const IOC = {
   entities: {

@@ -1,4 +1,4 @@
-import UIEntity from 'app/ui/abstracts/UIEntity';
+import UIEntity from 'ui/abstracts/UIEntity';
 import DesignerConsole from './designer/DesignerConsole';
 import PlayerConsole from './player/PlayerConsole';
 

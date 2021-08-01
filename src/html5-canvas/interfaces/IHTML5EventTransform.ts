@@ -1,5 +1,5 @@
 import IEvent from 'engine/interfaces/IEvent';
-import { Dict, Void } from 'foundation/types';
+import { Dict, Void } from 'core/types';
 
 export default interface IHTML5EventTransform<
     TElement extends HTMLElement,
