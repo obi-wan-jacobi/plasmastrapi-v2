@@ -10,8 +10,9 @@ export default abstract class Tool extends UIEntity {
         colour: 'rgba(0,0,0,0)',
         fill: '',
         opacity: 1,
+        zIndex: 0,
       },
-      image: src ? { src } : undefined,
+      image: src ? { src, zIndex: 0 } : undefined,
     });
   }
 

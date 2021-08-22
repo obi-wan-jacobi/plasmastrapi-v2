@@ -36,7 +36,7 @@ export default class TheClaw extends UIEntity {
           { x: 20, y: -30 },
         ],
       },
-      style: { colour: 'WHITE', opacity: 1, fill: 'rgba(0,0,0,0)' },
+      style: { colour: 'WHITE', opacity: 1, fill: 'BLACK', zIndex: 1 },
     }));
     this.__verticalRail = this.$appendChild(new VerticalThreadedAxle({
       x: x - 130, y, width: 20, height: 200,
@@ -51,6 +51,7 @@ export default class TheClaw extends UIEntity {
           { x: 20, y: -20 },
         ],
       },
+      style: { colour: 'WHITE', opacity: 1, fill: 'rgba(0,0,0,0)', zIndex: 0 },
       // labelText: 'left-sensor',
     }));
     this.__rightSensor = this.$appendChild(new UIEntity({
@@ -63,6 +64,7 @@ export default class TheClaw extends UIEntity {
           { x: 20, y: -20 },
         ],
       },
+      style: { colour: 'WHITE', opacity: 1, fill: 'rgba(0,0,0,0)', zIndex: 0 },
       // labelText: 'right-sensor',
     }));
     this.__topSensor = this.$appendChild(new UIEntity({
@@ -75,6 +77,7 @@ export default class TheClaw extends UIEntity {
           { x: 20, y: -5 },
         ],
       },
+      style: { colour: 'WHITE', opacity: 1, fill: 'rgba(0,0,0,0)', zIndex: 0 },
       // labelText: 'top-sensor',
     }));
     this.__bottomSensor = this.$appendChild(new UIEntity({
@@ -87,6 +90,7 @@ export default class TheClaw extends UIEntity {
           { x: 20, y: -5 },
         ],
       },
+      style: { colour: 'WHITE', opacity: 1, fill: 'rgba(0,0,0,0)', zIndex: 0 },
       // labelText: 'bottom-sensor',
     }));
     this.__leftMotor = this.$appendChild(new UIEntity({

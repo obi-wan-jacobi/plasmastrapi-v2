@@ -16,7 +16,7 @@ export default class HorizontalThreadedAxle extends UIEntity {
       './threaded-axle-8.png',
       './threaded-axle-9.png',
       './threaded-axle-10.png',
-    ].map((src) => ({ src, width: 10, height }));
+    ].map((src) => ({ src, width: 10, height, zIndex: 0 }));
     for (let i = 0, L = width / 10; i < L; i++) {
       this.$appendChild(new UIEntity({
         pose: {

@@ -23,7 +23,7 @@ export default class HTML5CanvasViewportAdaptor implements IViewport<CanvasImage
 
   private __imageBuffer = new HTML5ImageCache();
 
-  private __zBuffer: Array<{ method: Void<any>; payload: any }> = [];
+  private __zBuffer: Array<{ method: Void<any>; payload: {};  zIndex: number }> = [];
 
   public constructor({ canvas }: { canvas: HTMLCanvasElement }) {
     this.ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -37,29 +37,49 @@ export default class HTML5CanvasViewportAdaptor implements IViewport<CanvasImage
 
   public render(): void {
     this.ctx.clearRect(0, 0, this.width, this.height);
-    const zOrdered = this.__zBuffer.sort((a, b) => a.payload.zIndex - b.payload.zIndex);
+    const zOrdered = this.__zBuffer.sort((a, b) => a.zIndex - b.zIndex);
     zOrdered.forEach((target) => target.method.apply(this, [target.payload]));
     this.__zBuffer = [];
   }
 
-  public drawImage({}: { pose: IPose; image: IImage }): void {
-    this.__zBuffer.push({ method: this.__drawImage, payload: arguments[0] });
+  public drawImage(payload: { pose: IPose; image: IImage }): void {
+    this.__zBuffer.push({
+      method: this.__drawImage,
+      payload, zIndex:
+      payload.image.zIndex,
+    });
   }
 
-  public drawShape({}: { path: IPoint[]; style: IStyle }): void {
-    this.__zBuffer.push({ method: this.__drawShape, payload: arguments[0] });
+  public drawShape(payload: { path: IPoint[]; style: IStyle }): void {
+    this.__zBuffer.push({
+      method: this.__drawShape,
+      payload, zIndex:
+      payload.style.zIndex,
+    });
   }
 
-  public drawLine({}: { path: IPoint[]; style: IStyle }): void {
-    this.__zBuffer.push({ method: this.__drawLine, payload: arguments[0] });
+  public drawLine(payload: { path: IPoint[]; style: IStyle }): void {
+    this.__zBuffer.push({
+      method: this.__drawLine,
+      payload, zIndex:
+      payload.style.zIndex,
+    });
   }
 
-  public drawLabel({}: { pose: IPose; style: IStyle; label: ILabel }): void {
-    this.__zBuffer.push({ method: this.__drawLabel, payload: arguments[0] });
+  public drawLabel(payload: { pose: IPose; style: IStyle; label: ILabel }): void {
+    this.__zBuffer.push({
+      method: this.__drawLabel,
+      payload, zIndex:
+      payload.style.zIndex,
+    });
   }
 
-  public drawCircle({}: { position: IPoint; radius: number; style: IStyle }): void {
-    this.__zBuffer.push({ method: this.__drawCircle, payload: arguments[0] });
+  public drawCircle(payload: { position: IPoint; radius: number; style: IStyle }): void {
+    this.__zBuffer.push({
+      method: this.__drawCircle,
+      payload, zIndex:
+      payload.style.zIndex,
+    });
   }
 
   @Atomic

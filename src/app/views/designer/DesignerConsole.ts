@@ -10,6 +10,7 @@ export default class DesignerConsole extends UIEntity {
         colour: 'WHITE',
         opacity: 1,
         fill: 'rgba(0,0,0,0)',
+        zIndex: 0,
       },
     });
   }

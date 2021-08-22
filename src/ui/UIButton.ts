@@ -14,6 +14,7 @@ export default abstract class UIButton extends UIEntity {
         colour: 'rgba(0,0,0,0)',
         fill: '',
         opacity: 1,
+        zIndex: 0,
       },
       label: {
         fontSize: 10,
@@ -22,6 +23,7 @@ export default abstract class UIButton extends UIEntity {
       },
       image: {
         src,
+        zIndex: 0,
       },
     });
   }

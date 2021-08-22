@@ -1,5 +1,4 @@
 import HorizontalThreadedAxle from './HorizontalThreadedAxle';
-import StyleComponent from '../../bootstrap/presentation/components/StyleComponent';
 import UIEntity from 'ui/abstracts/UIEntity';
 
 export default class Claw extends UIEntity {
@@ -27,6 +26,7 @@ export default class Claw extends UIEntity {
           { x: 20, y: -5 },
         ],
       },
+      style: { colour: 'WHITE', opacity: 1, fill: 'rgba(0,0,0,0)', zIndex: 0 },
     }));
     //touchactivator
     this.__palm = this.$appendChild(new UIEntity({
@@ -39,6 +39,7 @@ export default class Claw extends UIEntity {
           { x: 10, y: -20 },
         ],
       },
+      style: { colour: 'WHITE', opacity: 1, fill: 'rgba(0,0,0,0)', zIndex: 0 },
     }));
     // touchsensor
     this.__leftHub = this.$appendChild(new UIEntity({
@@ -51,6 +52,7 @@ export default class Claw extends UIEntity {
           { x: 2, y: -10 },
         ],
       },
+      style: { colour: 'WHITE', opacity: 1, fill: 'rgba(0,0,0,0)', zIndex: 0 },
       // labelText: 'open-sensor',
     }));
     this.__rightHub = this.$appendChild(new UIEntity({
@@ -63,6 +65,7 @@ export default class Claw extends UIEntity {
           { x: 2, y: -10 },
         ],
       },
+      style: { colour: 'WHITE', opacity: 1, fill: 'rgba(0,0,0,0)', zIndex: 0 },
     }));
     this.__leftThread = this.$appendChild(new HorizontalThreadedAxle({
       x: x - 30, y: y + 10, width: 40, height: 20,
@@ -83,8 +86,8 @@ export default class Claw extends UIEntity {
           { x: 10, y: -20 },
         ],
       },
+      style: { colour: 'WHITE', opacity: 1, fill: 'BLACK', zIndex: 1 },
     }));
-    this.__leftTooth.$patch(StyleComponent)({ zIndex: 1 });
     // touchsensor
     this.__rightTooth = this.$appendChild(new UIEntity({
       pose: { x: x + 40, y: y + 10, a: 0 },
@@ -98,9 +101,9 @@ export default class Claw extends UIEntity {
           { x: 10, y: 20 },
         ],
       },
+      style: { colour: 'WHITE', opacity: 1, fill: 'BLACK', zIndex: 1 },
       // labelText: 'closed-sensor',
     }));
-    this.__rightTooth.$patch(StyleComponent)({ zIndex: 1 });
     this.__openMotor = this.$appendChild(new UIEntity({
       // labelText: 'open',
     }));

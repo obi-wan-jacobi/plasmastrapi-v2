@@ -1,0 +1,120 @@
+{
+  "$children": {
+    "wrist": {
+      "pose": { "x": 0, "y": -15, "a": 0 },
+      "shape": {
+        "vertices": [
+          { "x": 10, "y": 5 },
+          { "x": -10, "y": 5 },
+          { "x": -20, "y": -5 },
+          { "x": 20, "y": -5 }
+        ]
+      },
+      "style": { 
+        "colour": "WHITE", 
+        "opacity": 1, 
+        "fill": "rgba(0,0,0,0)", 
+        "zIndex": 0 
+      }
+    },
+    "palm": {
+      "pose": { "x": 0, "y": 10, "a": 0 },
+      "shape": {
+        "vertices": [
+          { "x": 10, "y": 10 },
+          { "x": -10, "y": 10 },
+          { "x": -10, "y": -20 },
+          { "x": 10, "y": -20 }
+        ]
+      },
+      "style": { 
+        "colour": "WHITE", 
+        "opacity": 1, 
+        "fill": "rgba(0,0,0,0)", 
+        "zIndex": 0
+      }
+    },
+    "leftHub": {
+      "pose": { "x": -52, "y": 10, "a": 0 },
+      "shape": {
+        "vertices": [
+          { "x": 2, "y": 10 },
+          { "x": -2, "y": 10 },
+          { "x": -2, "y": -10 },
+          { "x": 2, "y": -10 }
+        ]
+      },
+      "style": { 
+        "colour": "WHITE", 
+        "opacity": 1, 
+        "fill": "rgba(0,0,0,0)", 
+        "zIndex": 0
+      }
+    },
+    "rightHub": {
+      "pose": { "x": 52, "y": 10, "a": 0 },
+      "shape": {
+        "vertices": [
+          { "x": 2, "y": 10 },
+          { "x": -2, "y": 10 },
+          { "x": -2, "y": -10 },
+          { "x": 2, "y": -10 }
+        ]
+      },
+      "style": { 
+        "colour": "WHITE", 
+        "opacity": 1, 
+        "fill": "rgba(0,0,0,0)", 
+        "zIndex": 0
+      }
+    },
+    "leftThread": {
+      "pose": { "x": -30, "y": 10, "a": 0 },
+      "width": 40,
+      "height": 20
+    },
+    "rightThread": {
+      "pose": { "x": 30, "y": 10, "a": 0 },
+      "width": 40,
+      "height": 20
+    },
+    "leftTooth": {
+      "pose": { "x": -40, "y": 10, "a": 0 },
+      "shape": {
+        "vertices": [
+          { "x": 10, "y": 60 },
+          { "x": -0, "y": 60 },
+          { "x": -0, "y": 20 },
+          { "x": -10, "y": 20 },
+          { "x": -10, "y": -20 },
+          { "x": 10, "y": -20 }
+        ]
+      },
+      "style": { 
+        "colour": "WHITE", 
+        "opacity": 1, 
+        "fill": "BLACK", 
+        "zIndex": 1 
+      }
+    },
+    "rightTooth": {
+      "pose": { "x": 40, "y": 10, "a": 0 },
+      "shape": {
+        "vertices": [
+          { "x": 0, "y": 20 },
+          { "x": 0, "y": 60 },
+          { "x": -10, "y": 60 },
+          { "x": -10, "y": -20 },
+          { "x": 10, "y": -20 },
+          { "x": 10, "y": 20 }
+        ]
+      },
+      "style": { 
+        "colour": "WHITE", 
+        "opacity": 1, 
+        "fill": "BLACK", 
+        "zIndex": 1 
+      }
+    }
+  }
+}
