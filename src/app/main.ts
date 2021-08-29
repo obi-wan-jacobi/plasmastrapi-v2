@@ -25,8 +25,8 @@ const app = new App({ canvas });
 ].forEach((src) => app.load(src));
 
 // new HorizontalThreadedAxle({ x: 1040, y: 340, width: 300, height: 20 });
-const claw = new TheClaw({ x: 1040, y: 340 });
-// new EditorView();
+// const claw = new TheClaw({ x: 1040, y: 340 });
+new EditorView();
 app.start();
 
 

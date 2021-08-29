@@ -7,13 +7,16 @@ import MouseComponent from 'html5-canvas/components/MouseComponent';
 import StyleComponent from 'bootstrap/presentation/components/StyleComponent';
 import ImageComponent from 'bootstrap/presentation/components/ImageComponent';
 import AnimationComponent from 'bootstrap/presentation/components/AnimationComponent';
+import LabelComponent from 'bootstrap/presentation/components/LabelComponent';
+import { ComponentTuple } from 'engine/types';
 
-const fromContainerToComponentTuples = (container: IContainer): any[] => {
+const fromContainerToComponentTuples = (container: IContainer): Array<ComponentTuple<any>> => {
   return [
     [PoseComponent, container.pose],
     [ShapeComponent, container.shape],
     [MouseComponent, container.mouse],
     [StyleComponent, container.style],
+    [LabelComponent, container.label],
     [ImageComponent, container.image],
     [AnimationComponent, container.animation],
   ];

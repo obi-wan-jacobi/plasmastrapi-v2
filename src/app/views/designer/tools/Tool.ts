@@ -7,8 +7,8 @@ export default abstract class Tool extends UIEntity {
       pose: { x, y, a: 0 },
       shape: { width: 10, height: 10 },
       style: {
-        colour: 'rgba(0,0,0,0)',
-        fill: '',
+        colour: 'WHITE',
+        fill: 'rgba(0,0,0,0)',
         opacity: 1,
       },
       image: src ? { src } : undefined,

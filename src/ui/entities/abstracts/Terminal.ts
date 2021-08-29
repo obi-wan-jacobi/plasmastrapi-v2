@@ -10,8 +10,8 @@ export default class Terminal extends UIEntity {
         height: 20,
       },
       style: {
-        colour: 'rgba(0,0,0,0)',
-        fill: '',
+        colour: 'WHITE',
+        fill: 'rgba(0,0,0,0)',
         opacity: 1,
       },
       label: {
