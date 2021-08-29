@@ -1,4 +1,5 @@
 
+import { Dict, Void } from 'core/types';
 import Pipe from 'engine/abstracts/Pipe';
 import IEvent from 'engine/interfaces/IEvent';
 import IHTML5EventTransform from 'html5-canvas/interfaces/IHTML5EventTransform';
@@ -14,12 +15,20 @@ export default class HTML5EventAdaptor<
         this.__bindEvents({ element, eventNames, eventMapper });
     }
 
+    public push(event: TAdaptedEvent): void {
+        super.push(event);
+        if (this._buffer.length > 2) {
+            this._buffer.shift();
+        }
+    }
+
     private __bindEvents({ element, eventNames, eventMapper }: IHTML5EventTransform<TElement, TSourceEvent, TAdaptedEvent>): void {
         eventNames.forEach((name) => {
-            element[`on${name}`] = (event: TSourceEvent): void => {
+            // why do we have to cast element when it's already constrained???
+            (element as Dict<Void<TSourceEvent>>)[`on${name}`] = (event: TSourceEvent): void => {
                 const adaptedEvent = eventMapper({
                     event,
-                    element: element as unknown as TElement,
+                    element,
                 });
                 this.push(adaptedEvent);
             };

@@ -24,9 +24,12 @@ export default class UIButton extends UIEntity {
       image: !src ? undefined : {
         src,
       },
-      events: {
-        'mouseenter': [[StyleComponent, { colour: 'YELLOW' }]],
-        'mouseleave': [[StyleComponent, { colour: 'WHITE' }]],
+      mouse: {
+        events: {
+          'mouseenter': [[StyleComponent, { colour: 'YELLOW' }]],
+          'mouseleave': [[StyleComponent, { colour: 'WHITE' }]],
+        },
+        isHovered: false,
       },
     });
   }

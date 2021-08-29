@@ -1,7 +1,7 @@
 import UIEntity from 'ui/abstracts/UIEntity';
 import UIButton from 'ui/UIButton';
 
-export default class DesignerConsole extends UIEntity {
+export default class DesignerView extends UIEntity {
 
   public constructor() {
     super({

@@ -14,5 +14,5 @@ export default interface IContainerTemplate {
   label?: ILabel;
   image?: IImage;
   animation?: IAnimation;
-  events?: Dict<Array<ComponentTuple<any>>>;
+  mouse?: { events: Dict<Array<ComponentTuple<any>>>; isHovered: boolean };
 }

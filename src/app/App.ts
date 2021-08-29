@@ -7,8 +7,17 @@ import ShapeSystem from 'bootstrap/presentation/systems/ShapeSystem';
 import LabelSystem from 'bootstrap/presentation/systems/LabelSystem';
 import ImageSystem from 'bootstrap/presentation/systems/ImageSystem';
 import AnimationSystem from 'bootstrap/presentation/systems/AnimationSystem';
+import MouseSystem from 'html5-canvas/systems/MouseSystem';
+import IPipe from 'engine/interfaces/IPipe';
+import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
+import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
 
-export default class App extends Engine<CanvasImageSource> {
+type MyPipes = {
+    mouse: IPipe<IMouseEvent>;
+    keyboard: IPipe<IKeyboardEvent>;
+};
+
+export default class App extends Engine<CanvasImageSource, MyPipes> {
 
     public constructor({ canvas }: { canvas: HTMLCanvasElement }) {
         super({
@@ -23,11 +32,11 @@ export default class App extends Engine<CanvasImageSource> {
 
     private __initSystems(): void {
         [
-            // MouseSystem,
+            MouseSystem,
             ShapeSystem,
             LabelSystem,
             ImageSystem,
             AnimationSystem,
-        ].forEach((SystemClass) => this.add(SystemClass));
+        ].forEach((SystemCtor) => this.add(SystemCtor));
     }
 }

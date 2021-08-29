@@ -6,7 +6,7 @@ import { Volatile } from 'core/types';
 export default abstract class Pipe<TEvent extends IEvent> implements IPipe<TEvent> {
 
     private __event?: TEvent;
-    private __buffer: TEvent[] = [];
+    protected _buffer: TEvent[] = [];
 
     public get event(): Volatile<TEvent> {
         return this.__event
@@ -15,11 +15,11 @@ export default abstract class Pipe<TEvent extends IEvent> implements IPipe<TEven
     }
 
     public next(): void {
-        this.__event = this.__buffer.shift();
+        this.__event = this._buffer.shift();
     }
 
     public push(event: TEvent): void {
-        this.__buffer.push(event);
+        this._buffer.push(event);
     }
 
 }
