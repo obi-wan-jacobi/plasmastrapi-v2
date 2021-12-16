@@ -1,9 +1,10 @@
 
+import StyleComponent from 'bootstrap/presentation/components/StyleComponent';
 import UIEntity from './abstracts/UIEntity';
 
-export default abstract class UIButton extends UIEntity {
+export default class UIButton extends UIEntity {
 
-  public constructor({ x, y, text, src }: { x: number; y: number; text: string; src: string }) {
+  public constructor({ x, y, text, src }: { x: number; y: number; text?: string; src?: string }) {
     super({
       pose: { x, y, a: 0 },
       shape: {
@@ -11,19 +12,26 @@ export default abstract class UIButton extends UIEntity {
         height: 40,
       },
       style: {
-        colour: 'rgba(0,0,0,0)',
-        fill: '',
+        colour: 'WHITE',
+        fill: 'rgba(0,0,0,0)',
         opacity: 1,
         zIndex: 0,
       },
-      label: {
+      label: !text ? undefined : {
         fontSize: 10,
         text,
         offset: { x: -10, y: 4 },
       },
-      image: {
+      image: !src ? undefined : {
         src,
         zIndex: 0,
+      },
+      mouse: {
+        events: {
+          'mouseenter': [[StyleComponent, { colour: 'YELLOW' }]],
+          'mouseleave': [[StyleComponent, { colour: 'WHITE' }]],
+        },
+        isHovered: false,
       },
     });
   }

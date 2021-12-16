@@ -1,6 +1,7 @@
 import UIEntity from 'ui/abstracts/UIEntity';
+import UIButton from 'ui/UIButton';
 
-export default class DesignerConsole extends UIEntity {
+export default class DesignerView extends UIEntity {
 
   public constructor() {
     super({
@@ -13,6 +14,9 @@ export default class DesignerConsole extends UIEntity {
         zIndex: 0,
       },
     });
+    this.$appendChild(new UIButton({
+      x: 25, y: 25, text: 'hello', src: '',
+    }));
   }
 
 }

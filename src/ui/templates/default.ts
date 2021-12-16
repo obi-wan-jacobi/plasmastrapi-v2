@@ -21,6 +21,7 @@ const template: IContainer = {
   },
   style,
   mouse: {
+    events: {},
     isHovered: false,
   },
 };

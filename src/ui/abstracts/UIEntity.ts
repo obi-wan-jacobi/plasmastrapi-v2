@@ -7,35 +7,71 @@ import MouseComponent from 'html5-canvas/components/MouseComponent';
 import StyleComponent from 'bootstrap/presentation/components/StyleComponent';
 import ImageComponent from 'bootstrap/presentation/components/ImageComponent';
 import AnimationComponent from 'bootstrap/presentation/components/AnimationComponent';
+import LabelComponent from 'bootstrap/presentation/components/LabelComponent';
+import { ComponentTuple, Ctor } from 'engine/types';
+import { Dict, Tuple } from 'core/types';
+import IComponent from 'engine/interfaces/IComponent';
 
-const fromContainerToComponentTuples = (container: IContainer): any[] => {
-  return [
-    [PoseComponent, container.pose],
-    [ShapeComponent, container.shape],
-    [MouseComponent, container.mouse],
-    [StyleComponent, container.style],
-    [ImageComponent, container.image],
-    [AnimationComponent, container.animation],
-  ];
+const COMPONENT_TEMPLATING_MAP = [
+  [PoseComponent, 'pose'],
+  [ShapeComponent, 'shape'],
+  [MouseComponent, 'mouse'],
+  [StyleComponent, 'style'],
+  [LabelComponent, 'label'],
+  [ImageComponent, 'image'],
+  [AnimationComponent, 'animation'],
+];
+
+export const COMPONENT_MAP: Dict<Ctor<IComponent<any>, any>> = (function() {
+  const map: Dict<any> = {};
+  COMPONENT_TEMPLATING_MAP.forEach((tuple: Tuple<Ctor<IComponent<any>, any>, any>) => {
+    map[tuple[0].name] = tuple[0];
+  });
+  return map;
+})();
+
+const fromContainerToComponentTuples = (container: IContainer): Array<ComponentTuple<any>> => {
+  return COMPONENT_TEMPLATING_MAP.map((tuple: Tuple<Ctor<IComponent<any>, any>, any>) => {
+    return [ tuple[0], (container as Dict<any>)[tuple[1]] ];
+  });
 };
 
 const fromTemplateToContainer = (template: IContainerTemplate): IContainer => {
   // const baseTemplate = newContainerTemplate();
   // const container = lodash.merge(baseTemplate, template);
-  const container = template;
-  if (container.shape && !container.shape.vertices) {
-    container.shape = {
-      vertices: [
-        { x: 1, y: 1 },
-        { x: -1, y: 1 },
-        { x: -1, y: -1 },
-        { x: 1, y: -1 },
-      ]
-        .map((v) => ({ x: v.x / 2, y: v.y / 2 }))
-        .map((v) => ({ x: v.x * container!.shape!.width, y: v.y * container!.shape!.height })),
-    };
+  shapeTemplateHelper(template);
+  mouseTemplateHelper(template);
+  return template as IContainer;
+};
+
+const shapeTemplateHelper = (template: IContainerTemplate): void => {
+  if (!template.shape) {
+    return;
   }
-  return container as IContainer;
+  if (template.shape.vertices) {
+    return;
+  }
+  template.shape = {
+    vertices: [
+      { x: 1, y: 1 },
+      { x: -1, y: 1 },
+      { x: -1, y: -1 },
+      { x: 1, y: -1 },
+    ]
+      .map((v) => ({ x: v.x / 2, y: v.y / 2 }))
+      .map((v) => ({ x: v.x * template!.shape!.width, y: v.y * template!.shape!.height })),
+  };
+};
+
+const mouseTemplateHelper = (template: IContainerTemplate): void => {
+  if (!template.mouse) {
+    return;
+  }
+  Object.keys(template.mouse.events).forEach((event: string) => {
+    (template.mouse!.events as Dict<any>)[event] = template.mouse?.events[event].map((tuple: ComponentTuple<any>) => {
+      return [tuple[0].name, tuple[1]];
+    });
+  });
 };
 
 export default class UIEntity extends HTML5CanvasEntity {
@@ -47,6 +83,9 @@ export default class UIEntity extends HTML5CanvasEntity {
     componentTuples.forEach((tuple: any[]) => {
       if (tuple[1] === undefined) {
         return;
+      }
+      if (tuple[0] === MouseComponent) {
+        console.log(tuple[1]);
       }
       this.$add(tuple[0])(tuple[1]);
     });

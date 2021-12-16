@@ -5,6 +5,7 @@ import { IAnimation } from 'bootstrap/presentation/components/AnimationComponent
 import { IImage } from 'bootstrap/presentation/components/ImageComponent';
 import { ILabel } from 'bootstrap/presentation/components/LabelComponent';
 import { IStyle } from 'bootstrap/presentation/components/StyleComponent';
+import { ComponentTuple } from 'engine/types';
 
 export default interface IContainerTemplate {
   pose?: IPose;
@@ -13,4 +14,5 @@ export default interface IContainerTemplate {
   label?: ILabel;
   image?: IImage;
   animation?: IAnimation;
+  mouse?: { events: Dict<Array<ComponentTuple<any>>>; isHovered: boolean };
 }
