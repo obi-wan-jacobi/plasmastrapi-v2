@@ -11,6 +11,7 @@ export default class DesignerView extends UIEntity {
         colour: 'WHITE',
         opacity: 1,
         fill: 'rgba(0,0,0,0)',
+        zIndex: 0,
       },
     });
     this.$appendChild(new UIButton({

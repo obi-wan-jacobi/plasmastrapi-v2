@@ -13,13 +13,14 @@ export default class Terminal extends UIEntity {
         colour: 'WHITE',
         fill: 'rgba(0,0,0,0)',
         opacity: 1,
+        zIndex: 0,
       },
       label: {
         text: labelText,
         fontSize: 20,
         offset: { x: 15, y: 7 },
       },
-      image: { src },
+      image: { src, zIndex: 0 },
     });
   }
 }

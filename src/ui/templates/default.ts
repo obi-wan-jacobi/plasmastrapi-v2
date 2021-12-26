@@ -6,6 +6,7 @@ const style: IStyle = {
   colour: 'WHITE',
   opacity: 1,
   fill: 'rgba(0,0,0,0)',
+  zIndex: 0,
 };
 
 const template: IContainer = {

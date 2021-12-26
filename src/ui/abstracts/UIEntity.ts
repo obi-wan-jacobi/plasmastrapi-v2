@@ -84,9 +84,6 @@ export default class UIEntity extends HTML5CanvasEntity {
       if (tuple[1] === undefined) {
         return;
       }
-      if (tuple[0] === MouseComponent) {
-        console.log(tuple[1]);
-      }
       this.$add(tuple[0])(tuple[1]);
     });
   }

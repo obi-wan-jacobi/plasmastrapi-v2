@@ -5,6 +5,7 @@ export interface IImage {
   width?: number;
   height?: number;
   rotate?: number;
+  zIndex: number;
 }
 
 export default class ImageComponent extends Component<IImage> { }

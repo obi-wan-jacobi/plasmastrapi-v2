@@ -1,8 +1,9 @@
 import Component from 'engine/abstracts/Component';
+import { IImage } from './ImageComponent';
 
 export interface IAnimation {
   frame: number;
-  images: { src: string}[];
+  images: IImage[];
   isPaused: boolean;
   isReversed: boolean;
   duration: number;

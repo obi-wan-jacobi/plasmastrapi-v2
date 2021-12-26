@@ -15,6 +15,7 @@ export default class UIButton extends UIEntity {
         colour: 'WHITE',
         fill: 'rgba(0,0,0,0)',
         opacity: 1,
+        zIndex: 0,
       },
       label: !text ? undefined : {
         fontSize: 10,
@@ -23,6 +24,7 @@ export default class UIButton extends UIEntity {
       },
       image: !src ? undefined : {
         src,
+        zIndex: 0,
       },
       mouse: {
         events: {
