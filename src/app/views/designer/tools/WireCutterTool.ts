@@ -1,6 +1,6 @@
-import { IPoint } from '../../../../bootstrap/geometry/components/PoseComponent';
+import { IPoint } from '../../../../foundation/geometry/components/PoseComponent';
 import Tool from './Tool';
-import StyleComponent from 'bootstrap/presentation/components/StyleComponent';
+import StyleComponent from 'foundation/presentation/components/StyleComponent';
 
 export default class WireCutterTool extends Tool {
 

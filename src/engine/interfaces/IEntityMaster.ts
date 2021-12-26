@@ -1,6 +1,6 @@
 import IEntity from './IEntity';
 import { EntityClass } from '../types';
-import { Fn, Void, Volatile } from 'core/types';
+import { Fn, Void, Volatile } from 'base/types';
 
 export default interface IEntityMaster {
 

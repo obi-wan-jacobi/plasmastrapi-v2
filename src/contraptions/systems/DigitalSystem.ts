@@ -1,8 +1,8 @@
 import { DIGITAL_STATE } from 'digital-logic/enums/DIGITAL_STATE';
 import System from 'engine/abstracts/System';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';
-import { Dict } from 'core/types';
-import StyleComponent from 'bootstrap/presentation/components/StyleComponent';
+import { Dict } from 'base/types';
+import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import DigitalComponent from '../components/DigitalComponent';
 
 const DIGITAL_STATE_COLOUR_MAP: Dict<string> = {

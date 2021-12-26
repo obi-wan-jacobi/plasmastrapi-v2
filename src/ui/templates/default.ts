@@ -1,5 +1,5 @@
-import clone from 'core/helpers/clone';
-import { IStyle } from 'bootstrap/presentation/components/StyleComponent';
+import clone from 'base/helpers/clone';
+import { IStyle } from 'foundation/presentation/components/StyleComponent';
 import IContainer from '../interfaces/IContainer';
 
 const style: IStyle = {

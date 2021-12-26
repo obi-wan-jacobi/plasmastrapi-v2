@@ -14,7 +14,7 @@ export default class DesignerView extends UIEntity {
       },
     });
     this.$appendChild(new UIButton({
-      x: 25, y: 25, text: 'hello', src: '',
+      x: 25, y: 25, src: './AndGate.png',
     }));
   }
 

@@ -1,7 +1,7 @@
 import IComponentMaster from './IComponentMaster';
 import IEntityMaster from './IEntityMaster';
 import { Stor } from 'engine/types';
-import { Dict } from 'core/types';
+import { Dict } from 'base/types';
 import IPipe from './IPipe';
 import IEvent from './IEvent';
 

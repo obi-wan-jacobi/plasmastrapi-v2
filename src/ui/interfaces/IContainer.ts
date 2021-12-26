@@ -1,10 +1,10 @@
-import { IPose } from 'bootstrap/geometry/components/PoseComponent';
-import { IShape } from 'bootstrap/geometry/components/ShapeComponent';
-import { IAnimation } from 'bootstrap/presentation/components/AnimationComponent';
-import { IImage } from 'bootstrap/presentation/components/ImageComponent';
-import { ILabel } from 'bootstrap/presentation/components/LabelComponent';
-import { IStyle } from 'bootstrap/presentation/components/StyleComponent';
-import { Dict, Tuple } from 'core/types';
+import { IPose } from 'foundation/geometry/components/PoseComponent';
+import { IShape } from 'foundation/geometry/components/ShapeComponent';
+import { IAnimation } from 'foundation/presentation/components/AnimationComponent';
+import { IImage } from 'foundation/presentation/components/ImageComponent';
+import { ILabel } from 'foundation/presentation/components/LabelComponent';
+import { IStyle } from 'foundation/presentation/components/StyleComponent';
+import { Dict, Tuple } from 'base/types';
 
 export default interface IContainer {
   pose?: IPose;

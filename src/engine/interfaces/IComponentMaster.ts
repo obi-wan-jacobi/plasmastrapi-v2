@@ -1,5 +1,5 @@
 import { ComponentClass } from 'engine/types';
-import { Void, Volatile } from 'core/types';
+import { Void, Volatile } from 'base/types';
 import IComponent from './IComponent';
 
 export default interface IComponentMaster {

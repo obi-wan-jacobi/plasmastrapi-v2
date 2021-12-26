@@ -1,5 +1,5 @@
-import { IPoint, IPose } from 'bootstrap/geometry/components/PoseComponent';
-import { IShape } from 'bootstrap/geometry/components/ShapeComponent';
+import { IPoint, IPose } from 'foundation/geometry/components/PoseComponent';
+import { IShape } from 'foundation/geometry/components/ShapeComponent';
 import { Feature, GeoJsonProperties, MultiPolygon, Polygon, LineString } from 'geojson';
 import turf from 'turf';
 

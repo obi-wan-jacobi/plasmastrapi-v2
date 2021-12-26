@@ -1,4 +1,4 @@
-import { Dict, Tuple } from 'core/types';
+import { Dict, Tuple } from 'base/types';
 import Component from 'engine/abstracts/Component';
 
 export default class MouseComponent extends Component<{

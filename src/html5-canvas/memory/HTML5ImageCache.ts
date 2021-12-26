@@ -1,4 +1,4 @@
-import { Dict } from 'core/types';
+import { Dict } from 'base/types';
 
 export default class HTML5ImageCache {
 

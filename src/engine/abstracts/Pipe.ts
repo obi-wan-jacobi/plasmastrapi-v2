@@ -1,7 +1,7 @@
 import IEvent from 'engine/interfaces/IEvent';
 import IPipe from 'engine/interfaces/IPipe';
-import clone from 'core/helpers/clone';
-import { Volatile } from 'core/types';
+import clone from 'base/helpers/clone';
+import { Volatile } from 'base/types';
 
 export default abstract class Pipe<TEvent extends IEvent> implements IPipe<TEvent> {
 

@@ -1,6 +1,6 @@
 import System from 'engine/abstracts/System';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';
-import { entitiesTouch } from 'bootstrap/helpers/entities';
+import { entitiesTouch } from 'foundation/helpers/entities';
 import TouchActivatorComponent from '../components/TouchActivatorComponent';
 import TouchSensorComponent from '../components/TouchSensorComponent';
 

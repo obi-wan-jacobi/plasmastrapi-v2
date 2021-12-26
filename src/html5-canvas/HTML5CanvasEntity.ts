@@ -1,8 +1,8 @@
 import Entity from 'engine/abstracts/Entity';
 import IHTML5CanvasEntity from 'html5-canvas/interfaces/IHTML5CanvasEntity';
-import { Dict, Volatile } from 'core/types';
-import Dictionary from 'core/concretes/Dictionary';
-import IDictionary from 'core/interfaces/IDictionary';
+import { Dict, Volatile } from 'base/types';
+import Dictionary from 'base/concretes/Dictionary';
+import IDictionary from 'base/interfaces/IDictionary';
 
 export function hereditary({}: {}, {}: {}, descriptor: PropertyDescriptor): void {
   const fn = descriptor.value;

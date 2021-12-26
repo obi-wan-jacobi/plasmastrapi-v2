@@ -1,15 +1,15 @@
-import ShapeComponent from '../../bootstrap/geometry/components/ShapeComponent';
-import PoseComponent from 'bootstrap/geometry/components/PoseComponent';
+import ShapeComponent from '../../foundation/geometry/components/ShapeComponent';
+import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import HTML5CanvasEntity from 'html5-canvas/HTML5CanvasEntity';
 import IContainer from '../interfaces/IContainer';
 import IContainerTemplate from '../interfaces/IContainerTemplate';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
-import StyleComponent from 'bootstrap/presentation/components/StyleComponent';
-import ImageComponent from 'bootstrap/presentation/components/ImageComponent';
-import AnimationComponent from 'bootstrap/presentation/components/AnimationComponent';
-import LabelComponent from 'bootstrap/presentation/components/LabelComponent';
+import StyleComponent from 'foundation/presentation/components/StyleComponent';
+import ImageComponent from 'foundation/presentation/components/ImageComponent';
+import AnimationComponent from 'foundation/presentation/components/AnimationComponent';
+import LabelComponent from 'foundation/presentation/components/LabelComponent';
 import { ComponentTuple, Ctor } from 'engine/types';
-import { Dict, Tuple } from 'core/types';
+import { Dict, Tuple } from 'base/types';
 import IComponent from 'engine/interfaces/IComponent';
 
 const COMPONENT_TEMPLATING_MAP = [

@@ -1,7 +1,7 @@
 import IComponent from './IComponent';
-import IUnique from 'core/interfaces/IUnique';
+import IUnique from 'base/interfaces/IUnique';
 import { Ctor } from '../types';
-import { Void, Volatile } from 'core/types';
+import { Void, Volatile } from 'base/types';
 
 export default interface IEntity extends IUnique {
 

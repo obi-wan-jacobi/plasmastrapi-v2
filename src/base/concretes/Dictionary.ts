@@ -1,4 +1,4 @@
-import { isNullOrUndefined } from 'core/helpers/isNullOrUndefined';
+import { isNullOrUndefined } from 'base/helpers/isNullOrUndefined';
 import IDictionary from '../interfaces/IDictionary';
 import { Dict, Void, Volatile } from '../types';
 

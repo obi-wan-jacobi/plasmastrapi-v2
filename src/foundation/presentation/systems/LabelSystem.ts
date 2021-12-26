@@ -1,7 +1,7 @@
 import System from 'engine/abstracts/System';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';
 import IViewport from 'engine/interfaces/IViewport';
-import PoseComponent from 'bootstrap/geometry/components/PoseComponent';
+import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import LabelComponent from '../components/LabelComponent';
 import StyleComponent from '../components/StyleComponent';
 

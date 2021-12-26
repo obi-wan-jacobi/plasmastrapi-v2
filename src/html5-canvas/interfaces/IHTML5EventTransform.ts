@@ -1,4 +1,4 @@
-import { Dict, Void } from 'core/types';
+import { Dict, Void } from 'base/types';
 import IEvent from 'engine/interfaces/IEvent';
 
 export default interface IHTML5EventTransform<

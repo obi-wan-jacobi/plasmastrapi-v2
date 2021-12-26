@@ -1,4 +1,4 @@
-import { Volatile } from 'core/types';
+import { Volatile } from 'base/types';
 
 export default interface IDictionary<T extends {}> {
 

@@ -2,9 +2,9 @@ import { DIGITAL_STATE } from 'digital-logic/enums/DIGITAL_STATE';
 import System from 'engine/abstracts/System';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';
 import IEntity from 'engine/interfaces/IEntity';
-import PoseComponent from 'bootstrap/geometry/components/PoseComponent';
-import TranslationComponent from 'bootstrap/geometry/components/TranslationComponent';
-import StyleComponent from 'bootstrap/presentation/components/StyleComponent';
+import PoseComponent from 'foundation/geometry/components/PoseComponent';
+import TranslationComponent from 'foundation/geometry/components/TranslationComponent';
+import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import ActuatorComponent from '../components/ActuatorComponent';
 import MachineComponent from '../components/MachineComponents';
 

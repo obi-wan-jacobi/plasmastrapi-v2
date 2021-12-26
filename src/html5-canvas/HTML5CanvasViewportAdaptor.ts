@@ -1,10 +1,10 @@
 import IViewport from '../engine/interfaces/IViewport';
-import { IPoint, IPose } from 'bootstrap/geometry/components/PoseComponent';
+import { IPoint, IPose } from 'foundation/geometry/components/PoseComponent';
 import HTML5ImageCache from './memory/HTML5ImageCache';
-import { IImage } from 'bootstrap/presentation/components/ImageComponent';
-import { IStyle } from 'bootstrap/presentation/components/StyleComponent';
-import { ILabel } from 'bootstrap/presentation/components/LabelComponent';
-import { Void } from 'core/types';
+import { IImage } from 'foundation/presentation/components/ImageComponent';
+import { IStyle } from 'foundation/presentation/components/StyleComponent';
+import { ILabel } from 'foundation/presentation/components/LabelComponent';
+import { Void } from 'base/types';
 
 function Atomic({}, {}, descriptor: PropertyDescriptor): void {
   const fn = descriptor.value;

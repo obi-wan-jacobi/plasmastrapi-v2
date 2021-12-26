@@ -1,5 +1,5 @@
 
-import { Dict, Void } from 'core/types';
+import { Dict, Void } from 'base/types';
 import Pipe from 'engine/abstracts/Pipe';
 import IEvent from 'engine/interfaces/IEvent';
 import IHTML5EventTransform from 'html5-canvas/interfaces/IHTML5EventTransform';

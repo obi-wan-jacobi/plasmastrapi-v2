@@ -1,5 +1,5 @@
 
-import StyleComponent from 'bootstrap/presentation/components/StyleComponent';
+import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import UIEntity from './abstracts/UIEntity';
 
 export default class UIButton extends UIEntity {

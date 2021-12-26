@@ -3,14 +3,14 @@ import IEngine from './interfaces/IEngine';
 import IEntityMaster from './interfaces/IEntityMaster';
 import ISystem from './interfaces/ISystem';
 import IViewport from './interfaces/IViewport';
-import Dictionary from 'core/concretes/Dictionary';
-import IDictionary from 'core/interfaces/IDictionary';
+import Dictionary from 'base/concretes/Dictionary';
+import IDictionary from 'base/interfaces/IDictionary';
 import { Stor } from './types';
 import { ENTITIES } from './core/EntityMaster';
 import { COMPONENTS } from './core/ComponentMaster';
 import IPipe from './interfaces/IPipe';
 import IEvent from './interfaces/IEvent';
-import { Dict } from 'core/types';
+import { Dict } from 'base/types';
 
 export default class Engine<TImageSource, TPipes extends Dict<IPipe<IEvent>>> implements IEngine<TImageSource, TPipes> {
 

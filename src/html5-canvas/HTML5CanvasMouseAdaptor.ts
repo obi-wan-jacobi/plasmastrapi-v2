@@ -1,5 +1,5 @@
-import fromObjectToPropertyValues from 'core/helpers/fromObjectToPropertyValues';
-import { Dict, Void } from 'core/types';
+import fromObjectToPropertyValues from 'base/helpers/fromObjectToPropertyValues';
+import { Dict, Void } from 'base/types';
 import HTML5EventAdaptor from 'html5-canvas/abstracts/HTML5EventAdaptor';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import { MOUSE_EVENT } from './enums/MOUSE_EVENT';

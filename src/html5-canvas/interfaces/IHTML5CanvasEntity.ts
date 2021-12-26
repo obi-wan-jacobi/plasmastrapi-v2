@@ -1,6 +1,6 @@
 import IEntity from 'engine/interfaces/IEntity';
-import IDictionary from 'core/interfaces/IDictionary';
-import { Volatile } from 'core/types';
+import IDictionary from 'base/interfaces/IDictionary';
+import { Volatile } from 'base/types';
 
 export default interface IHTML5CanvasEntity extends IEntity {
     readonly $parent: Volatile<IHTML5CanvasEntity>;

@@ -1,5 +1,5 @@
 import HorizontalThreadedAxle from './HorizontalThreadedAxle';
-import StyleComponent from '../../bootstrap/presentation/components/StyleComponent';
+import StyleComponent from '../../foundation/presentation/components/StyleComponent';
 import UIEntity from 'ui/abstracts/UIEntity';
 
 export default class Claw extends UIEntity {

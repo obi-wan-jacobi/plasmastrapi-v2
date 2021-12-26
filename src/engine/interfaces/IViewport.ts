@@ -1,7 +1,7 @@
-import { IPoint, IPose } from 'bootstrap/geometry/components/PoseComponent';
-import { IImage } from 'bootstrap/presentation/components/ImageComponent';
-import { ILabel } from 'bootstrap/presentation/components/LabelComponent';
-import { IStyle } from 'bootstrap/presentation/components/StyleComponent';
+import { IPoint, IPose } from 'foundation/geometry/components/PoseComponent';
+import { IImage } from 'foundation/presentation/components/ImageComponent';
+import { ILabel } from 'foundation/presentation/components/LabelComponent';
+import { IStyle } from 'foundation/presentation/components/StyleComponent';
 
 export default interface IViewport<TImageSource> {
 

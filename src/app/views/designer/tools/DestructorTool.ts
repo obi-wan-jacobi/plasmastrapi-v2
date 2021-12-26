@@ -1,5 +1,5 @@
 import Tool from './Tool';
-import StyleComponent from 'bootstrap/presentation/components/StyleComponent';
+import StyleComponent from 'foundation/presentation/components/StyleComponent';
 
 export default class DestructorTool extends Tool {
 

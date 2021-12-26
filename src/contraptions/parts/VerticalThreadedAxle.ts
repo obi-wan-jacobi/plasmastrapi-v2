@@ -1,5 +1,5 @@
 import UIEntity from 'ui/abstracts/UIEntity';
-import { IImage } from 'bootstrap/presentation/components/ImageComponent';
+import { IImage } from 'foundation/presentation/components/ImageComponent';
 
 export default class VerticalThreadedAxle extends UIEntity {
 

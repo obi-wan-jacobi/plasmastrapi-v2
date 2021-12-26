@@ -1,6 +1,6 @@
 import VelocityComponent from '../components/VelocityComponent';
 import System from 'engine/abstracts/System';
-import PoseComponent from 'bootstrap/geometry/components/PoseComponent';
+import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';
 
 export default class VelocitySystem extends System<any> {
