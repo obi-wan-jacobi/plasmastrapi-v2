@@ -19,16 +19,20 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IEvent>>> im
 
   private __viewport: IViewport<TImageSource>;
   private __pipes: TPipes;
-  private __systems: IDictionary<ISystem<TPipes>>;
+  private __systems: IDictionary<ISystem<TPipes>> = new Dictionary();
   private __t: Date;
   private __delta: number;
 
-  constructor({ viewport, pipes }: { viewport: IViewport<TImageSource>; pipes: TPipes }) {
+  constructor({ viewport, pipes, systems }: { viewport: IViewport<TImageSource>; pipes: TPipes; systems: Stor<TPipes>[] }) {
     this.entities = ENTITIES;
     this.components = COMPONENTS;
     this.__viewport = viewport;
     this.__pipes = pipes;
-    this.__systems = new Dictionary();
+    this.__initSystems(systems);
+  }
+
+  private __initSystems(systems: Stor<TPipes>[]): void {
+    systems.forEach((SystemCtor) => this.add(SystemCtor));
   }
 
   public load(src: string): TImageSource {

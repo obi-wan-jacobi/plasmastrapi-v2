@@ -3,14 +3,10 @@ import Engine from '../engine/Engine';
 import HTML5CanvasKeyboardAdapter from '../html5-canvas/HTML5CanvasKeyboardAdaptor';
 import HTML5CanvasMouseAdaptor from '../html5-canvas/HTML5CanvasMouseAdaptor';
 import HTML5CanvasViewportAdaptor from '../html5-canvas/HTML5CanvasViewportAdaptor';
-import ShapeSystem from 'foundation/presentation/systems/ShapeSystem';
-import LabelSystem from 'foundation/presentation/systems/LabelSystem';
-import ImageSystem from 'foundation/presentation/systems/ImageSystem';
-import AnimationSystem from 'foundation/presentation/systems/AnimationSystem';
-import MouseSystem from 'html5-canvas/systems/MouseSystem';
 import IPipe from 'engine/interfaces/IPipe';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
+import { Stor } from 'engine/types';
 
 type MyPipes = {
     mouse: IPipe<IMouseEvent>;
@@ -19,24 +15,14 @@ type MyPipes = {
 
 export default class App extends Engine<CanvasImageSource, MyPipes> {
 
-    public constructor({ canvas }: { canvas: HTMLCanvasElement }) {
+    public constructor({ canvas, systems }: { canvas: HTMLCanvasElement; systems: Stor<MyPipes>[] }) {
         super({
             viewport: new HTML5CanvasViewportAdaptor({ canvas }),
             pipes: {
                 mouse: new HTML5CanvasMouseAdaptor({ canvas }),
                 keyboard: new HTML5CanvasKeyboardAdapter({ canvas }),
             },
+            systems,
         });
-        this.__initSystems();
-    }
-
-    private __initSystems(): void {
-        [
-            MouseSystem,
-            ShapeSystem,
-            LabelSystem,
-            ImageSystem,
-            AnimationSystem,
-        ].forEach((SystemCtor) => this.add(SystemCtor));
     }
 }

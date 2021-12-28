@@ -3,13 +3,26 @@ import App from './App';
 import EditorView from './views/EditorView';
 import TheClaw from '../contraptions/the-claw/TheClaw';
 import HorizontalThreadedAxle from '../contraptions/parts/HorizontalThreadedAxle';
+import MouseSystem from 'html5-canvas/systems/MouseSystem';
+import ShapeSystem from 'foundation/presentation/systems/ShapeSystem';
+import LabelSystem from 'foundation/presentation/systems/LabelSystem';
+import ImageSystem from 'foundation/presentation/systems/ImageSystem';
+import AnimationSystem from 'foundation/presentation/systems/AnimationSystem';
 
 const canvas = document.getElementById('app-target') as HTMLCanvasElement;
-canvas.focus();
 canvas.width = 1280;
 canvas.height = 680;
+canvas.focus();
 
-const app = new App({ canvas });
+const app = new App({ canvas,
+  systems: [
+    MouseSystem,
+    ShapeSystem,
+    LabelSystem,
+    ImageSystem,
+    AnimationSystem,
+  ],
+});
 
 [
   './threaded-axle-1.png',
