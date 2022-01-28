@@ -6,20 +6,23 @@ import IComponentMaster from 'engine/interfaces/IComponentMaster';
 import MouseComponent from '../components/MouseComponent';
 import { COMPONENT_MAP } from 'ui/abstracts/UIEntity';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
+import { Dict } from 'base/types';
+import IPipeEvent from 'engine/interfaces/IPipeEvent';
 
-export default class MouseSystem<TPipes extends { mouse: IPipe<IMouseEvent>}> extends System<TPipes> {
+export default class MouseSystem<TPipes extends { mouse: IPipe<IMouseEvent> }> extends System<TPipes> {
 
   public once({ components, pipes }: { components: IComponentMaster; pipes: TPipes }): void {
     const event = pipes.mouse.event;
     components.forEvery(MouseComponent)((mouse) => {
-      patchIsHovered({ mouse, event });
+      patchIsHovered({ mouse, event, pipes });
     });
   }
 }
 
-const patchIsHovered = ({ mouse, event }: {
+const patchIsHovered = ({ mouse, event, pipes }: {
   mouse: MouseComponent;
   event?: IMouseEvent;
+  pipes: Dict<IPipe<IPipeEvent>>;
 }): void => {
   if (!event) {
     return;
@@ -28,13 +31,13 @@ const patchIsHovered = ({ mouse, event }: {
   // hovered
   if (entityContainsPoint(mouse.$entity, event)) {
     if (isHovered) {
-      doMouseEvent({ mouse, event: event.name as MOUSE_EVENT });
+      doMouseEvent({ mouse, event: event.name as MOUSE_EVENT, pipes });
       return;
     }
     mouse.patch({
       isHovered: true,
     });
-    doMouseEvent({ mouse, event: MOUSE_EVENT.MOUSE_ENTER });
+    doMouseEvent({ mouse, event: MOUSE_EVENT.MOUSE_ENTER, pipes });
     return;
   }
   // no longer hovered
@@ -42,13 +45,24 @@ const patchIsHovered = ({ mouse, event }: {
     mouse.patch({
       isHovered: false,
     });
-    doMouseEvent({ mouse, event: MOUSE_EVENT.MOUSE_LEAVE });
+    doMouseEvent({ mouse, event: MOUSE_EVENT.MOUSE_LEAVE, pipes });
     return;
   }
 };
 
-const doMouseEvent = ({ mouse, event }: { mouse: MouseComponent; event: MOUSE_EVENT }): void => {
-  return mouse.copy().events[event]?.forEach((tuple) => {
-    mouse.$entity.$patch(COMPONENT_MAP[tuple[0]])(tuple[1]);
+const doMouseEvent = ({ mouse, event, pipes }: { mouse: MouseComponent; event: MOUSE_EVENT; pipes: Dict<IPipe<IPipeEvent>> }): void => {
+  const data = mouse.copy();
+  data.events[event]?.forEach((tuple) => {
+      mouse.$entity.$patch(COMPONENT_MAP[tuple[0]])(tuple[1]);
+  });
+  if (!data.pipes[event]) {
+    return;
+  }
+  data.pipes[event].forEach((tuple) => {
+    try {
+      pipes[tuple[0]].push(Object.assign(tuple[1], { target: mouse.$entity }));
+    } catch(ex) {
+      console.error(`Pipe is missing: ${tuple[0]}`);
+    }
   });
 };

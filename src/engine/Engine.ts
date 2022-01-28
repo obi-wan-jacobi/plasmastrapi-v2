@@ -6,13 +6,13 @@ import IViewport from './interfaces/IViewport';
 import Dictionary from 'base/concretes/Dictionary';
 import IDictionary from 'base/interfaces/IDictionary';
 import { Stor } from './types';
-import { ENTITIES } from './core/EntityMaster';
-import { COMPONENTS } from './core/ComponentMaster';
+import { ENTITIES } from './concretes/EntityMaster';
+import { COMPONENTS } from './concretes/ComponentMaster';
 import IPipe from './interfaces/IPipe';
-import IEvent from './interfaces/IEvent';
+import IPipeEvent from './interfaces/IPipeEvent';
 import { Dict } from 'base/types';
 
-export default class Engine<TImageSource, TPipes extends Dict<IPipe<IEvent>>> implements IEngine<TImageSource, TPipes> {
+export default class Engine<TImageSource, TPipes extends Dict<IPipe<IPipeEvent>>> implements IEngine<TImageSource, TPipes> {
 
   public entities: IEntityMaster;
   public components: IComponentMaster;

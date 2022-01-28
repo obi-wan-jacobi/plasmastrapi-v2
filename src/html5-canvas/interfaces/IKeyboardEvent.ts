@@ -1,5 +1,8 @@
-import IEvent from '../../engine/interfaces/IEvent';
+import IPipeEvent from '../../engine/interfaces/IPipeEvent';
 
-export default interface IKeyboardEvent extends IEvent {
-    key: string;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export default interface IKeyboardEvent extends IPipeEvent {
+  key: string;
+  isAltKeyDown: boolean;
+  isShiftKeyDown: boolean;
 }

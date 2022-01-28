@@ -8,6 +8,8 @@ import ShapeSystem from 'foundation/presentation/systems/ShapeSystem';
 import LabelSystem from 'foundation/presentation/systems/LabelSystem';
 import ImageSystem from 'foundation/presentation/systems/ImageSystem';
 import AnimationSystem from 'foundation/presentation/systems/AnimationSystem';
+import Pipe from 'engine/concretes/Pipe';
+import DesignerSystem from './views/designer/systems/DesignerSystem';
 
 const canvas = document.getElementById('app-target') as HTMLCanvasElement;
 canvas.width = 1280;
@@ -21,7 +23,11 @@ const app = new App({ canvas,
     LabelSystem,
     ImageSystem,
     AnimationSystem,
+    DesignerSystem,
   ],
+  pipes: {
+    designer: new Pipe(),
+  },
 });
 
 [

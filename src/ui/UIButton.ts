@@ -1,4 +1,5 @@
 
+import { DESIGNER_EVENT } from 'app/views/designer/pipes/DESIGNER_EVENT';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import UIEntity from './abstracts/UIEntity';
 
@@ -30,6 +31,9 @@ export default class UIButton extends UIEntity {
         events: {
           'mouseenter': [[StyleComponent, { colour: 'YELLOW' }]],
           'mouseleave': [[StyleComponent, { colour: 'WHITE' }]],
+        },
+        pipes: {
+          'mouseenter': [['designer', { name: DESIGNER_EVENT.PREVIEW }]],
         },
         isHovered: false,
       },

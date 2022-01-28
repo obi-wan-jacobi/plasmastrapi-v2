@@ -1,6 +1,6 @@
-import IEvent from 'engine/interfaces/IEvent';
+import IPipeEvent from 'engine/interfaces/IPipeEvent';
 
-export default interface IMouseEvent extends IEvent {
+export default interface IMouseEvent extends IPipeEvent {
     x: number;
     y: number;
     isCtrlDown: boolean;

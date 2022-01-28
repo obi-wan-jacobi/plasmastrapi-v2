@@ -3,9 +3,9 @@ import IEntityMaster from './IEntityMaster';
 import { Stor } from 'engine/types';
 import { Dict } from 'base/types';
 import IPipe from './IPipe';
-import IEvent from './IEvent';
+import IPipeEvent from './IPipeEvent';
 
-export default interface IEngine<TImageSource, TPipes extends Dict<IPipe<IEvent>>> {
+export default interface IEngine<TImageSource, TPipes extends Dict<IPipe<IPipeEvent>>> {
 
   entities: IEntityMaster;
   components: IComponentMaster;
