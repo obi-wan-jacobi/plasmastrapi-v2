@@ -33,6 +33,9 @@ class ToolController {
         src: './AndGate.png',
       });
     },
+    [DESIGNER_EVENT.CREATE]: ({}): void => {
+      this.__target = undefined;
+    },
   };
 
   private __fromMouseEventToFnMap: Dict<Fn<any, void>> = {
@@ -79,13 +82,9 @@ class Gate extends UIEntity {
         zIndex: 0,
       },
       mouse: {
-        // events: {
-        //   'mouseenter': [[StyleComponent, { colour: 'YELLOW' }]],
-        //   'mouseleave': [[StyleComponent, { colour: 'WHITE' }]],
-        // },
-        // pipes: {
-        //   'mouseenter': [['designer', { name: DESIGNER_EVENT.CREATE }]],
-        // },
+        pipes: {
+          [MOUSE_EVENT.MOUSE_UP]: [['designer', { name: DESIGNER_EVENT.CREATE }]],
+        },
         isHovered: false,
       },
     });

@@ -52,17 +52,18 @@ const patchIsHovered = ({ mouse, event, pipes }: {
 
 const doMouseEvent = ({ mouse, event, pipes }: { mouse: MouseComponent; event: MOUSE_EVENT; pipes: Dict<IPipe<IPipeEvent>> }): void => {
   const data = mouse.copy();
-  data.events[event]?.forEach((tuple) => {
+  if (data.events && data.events[event]) {
+    data.events[event].forEach((tuple) => {
       mouse.$entity.$patch(COMPONENT_MAP[tuple[0]])(tuple[1]);
-  });
-  if (!data.pipes[event]) {
-    return;
+    });
   }
-  data.pipes[event].forEach((tuple) => {
-    try {
-      pipes[tuple[0]].push(Object.assign(tuple[1], { target: mouse.$entity }));
-    } catch(ex) {
-      console.error(`Pipe is missing: ${tuple[0]}`);
-    }
-  });
+  if (data.pipes && data.pipes[event]) {
+    data.pipes[event].forEach((tuple) => {
+      try {
+        pipes[tuple[0]].push(Object.assign(tuple[1], { target: mouse.$entity }));
+      } catch(ex) {
+        console.error(`Pipe is missing: ${tuple[0]}`);
+      }
+    });
+  }
 };

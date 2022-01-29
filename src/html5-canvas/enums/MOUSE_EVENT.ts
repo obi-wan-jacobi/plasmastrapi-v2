@@ -6,4 +6,5 @@ export enum MOUSE_EVENT{
   MOUSE_DOWN = 'mousedown',
   MOUSE_UP = 'mouseup',
   CLICK = 'click',
+  NONE = '',
 }
