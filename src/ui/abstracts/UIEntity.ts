@@ -67,8 +67,8 @@ const mouseTemplateHelper = (template: IContainerTemplate): void => {
   if (!template.mouse) {
     return;
   }
-  Object.keys(template.mouse.events).forEach((event: string) => {
-    (template.mouse!.events as Dict<any>)[event] = template.mouse?.events[event].map((tuple: ComponentTuple<any>) => {
+  Object.keys(template.mouse.events || {}).forEach((event: string) => {
+    (template.mouse!.events as Dict<any>)[event] = template.mouse!.events![event].map((tuple: ComponentTuple<any>) => {
       return [tuple[0].name, tuple[1]];
     });
   });

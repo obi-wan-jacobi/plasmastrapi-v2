@@ -16,8 +16,8 @@ export default interface IContainerTemplate {
   image?: IImage;
   animation?: IAnimation;
   mouse?: {
-    events: Dict<Array<ComponentTuple<any>>>;
-    pipes: Dict<Array<Tuple<string, IPipeEvent>>>;
+    events?: Dict<Array<ComponentTuple<any>>>;
+    pipes?: Dict<Array<Tuple<string, IPipeEvent>>>;
     isHovered: boolean;
   };
 }

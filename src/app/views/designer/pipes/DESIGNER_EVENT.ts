@@ -3,6 +3,5 @@ export enum DESIGNER_EVENT {
   PREVIEW = 'PREVIEW',
   CREATE = 'CREATE',
   SELECT = 'SELECT',
-  MOVE = 'MOVE',
   DELETE = 'DELETE',
 }
