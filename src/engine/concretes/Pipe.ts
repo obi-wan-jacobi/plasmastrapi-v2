@@ -13,7 +13,9 @@ export default class Pipe<TEvent extends IPipeEvent> implements IPipe<TEvent> {
             return undefined;
         }
         const target = this.__event.target;
-        delete this.__event.target;
+        if (target) {
+            delete this.__event.target;
+        }
         const data = clone(this.__event);
         return Object.assign(data, { target });
     }

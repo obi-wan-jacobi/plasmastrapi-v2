@@ -34,7 +34,7 @@ export default class UIButton extends UIEntity {
           [MOUSE_EVENT.MOUSE_LEAVE]: [[StyleComponent, { colour: 'WHITE' }]],
         },
         pipes: {
-          [MOUSE_EVENT.MOUSE_UP]: [['designer', { name: DESIGNER_EVENT.PREVIEW }]],
+          [MOUSE_EVENT.MOUSE_DOWN]: [['designer', { name: DESIGNER_EVENT.PREVIEW }]],
         },
         isHovered: false,
       },

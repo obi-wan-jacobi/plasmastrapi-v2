@@ -54,6 +54,9 @@ const doMouseEvent = ({ mouse, event, pipes }: { mouse: MouseComponent; event: M
   const data = mouse.copy();
   if (data.events && data.events[event]) {
     data.events[event].forEach((tuple) => {
+      if ((mouse.$entity as unknown as any).name === 'Gate') {
+        console.log('oh hai');
+      }
       mouse.$entity.$patch(COMPONENT_MAP[tuple[0]])(tuple[1]);
     });
   }
