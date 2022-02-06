@@ -1,9 +1,0 @@
-
-export enum DESIGNER_EVENT {
-  RESET = 'RESET',
-  PREVIEW = 'PREVIEW',
-  CREATE = 'CREATE',
-  SELECT = 'SELECT',
-  DESELECT = 'DESELECT',
-  DELETE = 'DELETE',
-}

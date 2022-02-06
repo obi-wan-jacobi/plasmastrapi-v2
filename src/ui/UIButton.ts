@@ -1,5 +1,5 @@
 
-import { DESIGNER_EVENT } from 'app/views/designer/pipes/DESIGNER_EVENT';
+import { DESIGNER_EVENT } from 'app/views/designer/enums/DESIGNER_EVENT';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import UIEntity from './abstracts/UIEntity';
