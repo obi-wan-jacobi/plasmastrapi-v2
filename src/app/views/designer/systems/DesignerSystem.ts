@@ -4,7 +4,8 @@ import IPipe from 'engine/interfaces/IPipe';
 import IPipeEvent from 'engine/interfaces/IPipeEvent';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import { DESIGNER_EVENT } from '../enums/DESIGNER_EVENT';
-import DefaultTool from '../tools/DefaultTool';
+import IDesignerTool from '../interfaces/IDesignerTool';
+import CreatorTool from '../tools/CreatorTool';
 
 export default class DesignerSystem<TPipes extends { mouse: IPipe<IMouseEvent>; designer: IPipe<IPipeEvent> }> extends System<TPipes> {
 
@@ -20,27 +21,55 @@ export default class DesignerSystem<TPipes extends { mouse: IPipe<IMouseEvent>; 
 
 class ToolController {
 
-  private __isPaletteHovered = false;
-  private __tool?: DefaultTool;
+  private __prevDefinedMouseEvent?: IMouseEvent;
+  private __isDesignPaletteHovered = false;
+  private __tool?: IDesignerTool<any>;
 
-  private __fromDesignerEventToFnMap: Dict<Fn<{ designerEvent: IPipeEvent }, void>> = {
+  private __equip<T>(tool: IDesignerTool<T>) {
+    if (this.__tool) {
+      this.__tool.dispose();
+    }
+    this.__tool = tool;
+    if (this.__tool) {
+      this.__tool.equip();
+    }
+  }
+
+  private __fromDesignerEventToFnMap: Dict<Fn<{ mouseEvent?: IMouseEvent; designerEvent: IPipeEvent }, void>> = {
     [DESIGNER_EVENT.ENABLE]: (): void => {
-      this.__isPaletteHovered = true;
-      this.__tool = new DefaultTool();
-      console.log('enable');
+      this.__isDesignPaletteHovered = true;
     },
     [DESIGNER_EVENT.DISABLE]: (): void => {
-      this.__isPaletteHovered = false;
-      this.__tool = undefined;
-      console.log('disable');
+      this.__isDesignPaletteHovered = false;
+    },
+    [DESIGNER_EVENT.PREVIEW]: ({ mouseEvent, designerEvent }: { mouseEvent: IMouseEvent; designerEvent: IPipeEvent }): void => {
+      this.__equip(new CreatorTool({
+        initiator: designerEvent.target,
+        mouseEvent,
+        isDesignPaletteHovered: this.__isDesignPaletteHovered,
+      }));
     },
   };
 
   public handleEvents({ mouseEvent, designerEvent }: { mouseEvent?: IMouseEvent; designerEvent?: IPipeEvent }) {
-    if (designerEvent && this.__fromDesignerEventToFnMap[designerEvent.name]) {
-      this.__fromDesignerEventToFnMap[designerEvent.name]({ designerEvent });
+    if (this.__tool && this.__tool.isDisposed) {
+      this.__tool = undefined;
     }
-    console.log(mouseEvent);
+    if (designerEvent && this.__fromDesignerEventToFnMap[designerEvent.name]) {
+      this.__fromDesignerEventToFnMap[designerEvent.name]({
+        mouseEvent: mouseEvent || this.__prevDefinedMouseEvent,
+        designerEvent,
+      });
+    }
+    if (designerEvent && this.__tool && this.__tool[designerEvent.name]) {
+      this.__tool[designerEvent.name]({ designerEvent });
+    }
+    if (mouseEvent && this.__tool && this.__tool[mouseEvent.name]) {
+      this.__tool[mouseEvent.name]({ mouseEvent });
+    }
+    if (mouseEvent) {
+      this.__prevDefinedMouseEvent = mouseEvent;
+    }
   }
 
 }

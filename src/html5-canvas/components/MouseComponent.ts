@@ -2,7 +2,7 @@ import { Dict, Tuple } from 'base/types';
 import Component from 'engine/abstracts/Component';
 import IPipeEvent from 'engine/interfaces/IPipeEvent';
 
-export default interface IMouse {
+export interface IMouse {
   events: Dict<Array<Tuple<string, {}>>>;
   pipes: Dict<Array<Tuple<string, IPipeEvent>>>;
   isHovered: boolean;
