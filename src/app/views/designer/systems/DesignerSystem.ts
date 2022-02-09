@@ -42,7 +42,7 @@ class ToolController {
     [DESIGNER_EVENT.DISABLE]: (): void => {
       this.__isDesignPaletteHovered = false;
     },
-    [DESIGNER_EVENT.PREVIEW]: ({ mouseEvent, designerEvent }: { mouseEvent: IMouseEvent; designerEvent: IPipeEvent }): void => {
+    [DESIGNER_EVENT.CREATE_MODE]: ({ mouseEvent, designerEvent }: { mouseEvent: IMouseEvent; designerEvent: IPipeEvent }): void => {
       this.__equip(new CreatorTool({
         initiator: designerEvent.target,
         mouseEvent,
@@ -60,9 +60,6 @@ class ToolController {
         mouseEvent: mouseEvent || this.__prevDefinedMouseEvent,
         designerEvent,
       });
-    }
-    if (designerEvent && this.__tool && this.__tool[designerEvent.name]) {
-      this.__tool[designerEvent.name]({ designerEvent });
     }
     if (mouseEvent && this.__tool && this.__tool[mouseEvent.name]) {
       this.__tool[mouseEvent.name]({ mouseEvent });

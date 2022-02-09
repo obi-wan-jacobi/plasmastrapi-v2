@@ -1,7 +1,3 @@
-
-import { DESIGNER_EVENT } from 'app/views/designer/enums/DESIGNER_EVENT';
-import StyleComponent from 'foundation/presentation/components/StyleComponent';
-import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import UIEntity from './abstracts/UIEntity';
 
 export default class UIButton extends UIEntity {
@@ -27,16 +23,6 @@ export default class UIButton extends UIEntity {
       image: !src ? undefined : {
         src,
         zIndex: 0,
-      },
-      mouse: {
-        events: {
-          [MOUSE_EVENT.MOUSE_ENTER]: [[StyleComponent, { colour: 'YELLOW' }]],
-          [MOUSE_EVENT.MOUSE_LEAVE]: [[StyleComponent, { colour: 'WHITE' }]],
-        },
-        pipes: {
-          [MOUSE_EVENT.MOUSE_DOWN]: [['designer', { name: DESIGNER_EVENT.PREVIEW }]],
-        },
-        isHovered: false,
       },
     });
   }

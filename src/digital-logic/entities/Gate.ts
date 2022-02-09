@@ -28,7 +28,7 @@ export default class Gate extends UIEntity {
       },
       mouse: {
         pipes: {
-          [MOUSE_EVENT.MOUSE_UP]: [['designer', { name: DESIGNER_EVENT.CREATE }]],
+          [MOUSE_EVENT.MOUSE_UP]: [['designer', { name: DESIGNER_EVENT.CREATE_MODE }]],
         },
         isHovered: false,
       },
