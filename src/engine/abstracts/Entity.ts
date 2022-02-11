@@ -59,7 +59,7 @@ export default abstract class Entity extends Unique implements IEntity {
     return component ? component.copy() : undefined;
   };
 
-  public readonly $mutate = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Void<TArg | {}> => {
+  public readonly $mutate = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Void<TArg> => {
     return (data: TArg): void => {
       const component = this.__components.read(ComponentClass.name);
       if (!component) {
