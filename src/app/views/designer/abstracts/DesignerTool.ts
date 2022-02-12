@@ -39,14 +39,8 @@ export default abstract class DesignerTool<T> implements IDesignerTool<T> {
 
   public dispose(): void {
     this.__unhighlightInitiator();
+    this.__resetEntityMouseEvents();
     this._target = undefined;
-    ENTITIES.forEvery(Gate)((gate: Gate) => {
-      gate.$mutate(MouseComponent)({
-        events: {},
-        pipes: {},
-        isHovered: false,
-      });
-    });
     this.__isDisposed = true;
   }
 
@@ -85,6 +79,16 @@ export default abstract class DesignerTool<T> implements IDesignerTool<T> {
 
   private __unhighlightInitiator(): void {
     this._initiator.$mutate(MouseComponent)(this._prevInitiatorState!);
+  }
+
+  private __resetEntityMouseEvents(): void {
+    ENTITIES.forEvery(Gate)((gate: Gate) => {
+      gate.$mutate(MouseComponent)({
+        events: {},
+        pipes: {},
+        isHovered: false,
+      });
+    });
   }
 
 }

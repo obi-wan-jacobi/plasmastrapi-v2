@@ -26,17 +26,6 @@ export default class DestructorTool extends DesignerTool<IEntity> {
     });
   }
 
-  public dispose(): void {
-    super.dispose();
-    ENTITIES.forEvery(Gate)((gate: Gate) => {
-      gate.$mutate(MouseComponent)({
-        events: {},
-        pipes: {},
-        isHovered: false,
-      });
-    });
-  }
-
   public [DESIGNER_EVENT.DELETE]({ designerEvent }: { designerEvent: IPipeEvent }): void {
     designerEvent.target?.$destroy();
     this.dispose();
