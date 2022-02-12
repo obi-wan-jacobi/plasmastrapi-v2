@@ -6,10 +6,14 @@ import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import IDesignerTool from '../interfaces/IDesignerTool';
 import MouseComponent, { IMouse } from 'html5-canvas/components/MouseComponent';
 import { DESIGNER_EVENT } from '../enums/DESIGNER_EVENT';
+import { ENTITIES } from 'engine/concretes/EntityMaster';
+import Gate from 'digital-logic/entities/Gate';
 
 export default abstract class DesignerTool<T> implements IDesignerTool<T> {
 
-  public isDisposed = false;
+  public get isDisposed(): boolean {
+    return this.__isDisposed;
+  }
 
   protected _initiator: IEntity;
   protected _prevInitiatorState: IMouse;
@@ -17,7 +21,9 @@ export default abstract class DesignerTool<T> implements IDesignerTool<T> {
   protected _prevDefinedMouseEvent?: IMouseEvent;
   protected _isDesignPaletteHovered: boolean;
 
-  public constructor({}: { initiator: IEntity; target?: T; mouseEvent?: IMouseEvent; isDesignPaletteHovered: boolean }) {
+  private __isDisposed = false;
+
+  public constructor({}: { initiator?: IEntity; target?: T; mouseEvent?: IMouseEvent; isDesignPaletteHovered: boolean }) {
     const { initiator, target, mouseEvent, isDesignPaletteHovered } = arguments[0];
     this._initiator = initiator;
     this._prevInitiatorState = (initiator as IEntity).$copy(MouseComponent)!;
@@ -34,6 +40,14 @@ export default abstract class DesignerTool<T> implements IDesignerTool<T> {
   public dispose(): void {
     this.__unhighlightInitiator();
     this._target = undefined;
+    ENTITIES.forEvery(Gate)((gate: Gate) => {
+      gate.$mutate(MouseComponent)({
+        events: {},
+        pipes: {},
+        isHovered: false,
+      });
+    });
+    this.__isDisposed = true;
   }
 
   public [DESIGNER_EVENT.ENABLE](): void {

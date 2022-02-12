@@ -1,5 +1,3 @@
-import { DESIGNER_EVENT } from 'app/views/designer/enums/DESIGNER_EVENT';
-import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import UIEntity from 'ui/abstracts/UIEntity';
 
 export default class Gate extends UIEntity {
@@ -27,9 +25,6 @@ export default class Gate extends UIEntity {
         zIndex: 0,
       },
       mouse: {
-        pipes: {
-          [MOUSE_EVENT.MOUSE_UP]: [['designer', { name: DESIGNER_EVENT.SELECT }]],
-        },
         isHovered: false,
       },
     });

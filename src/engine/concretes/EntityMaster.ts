@@ -18,7 +18,10 @@ class EntityMaster implements IEntityMaster {
         this.__registerTargets.push(instance);
         return instance;
       },
-      purge: (instance: IEntity) => this.__purgeTargets.push(instance),
+      purge: (instance: IEntity) => {
+        console.log('hello');
+        this.__purgeTargets.push(instance);
+      },
     };
   }
 

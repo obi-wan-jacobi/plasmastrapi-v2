@@ -1,15 +1,15 @@
 import Entity from 'engine/abstracts/Entity';
 import IHTML5CanvasEntity from 'html5-canvas/interfaces/IHTML5CanvasEntity';
-import { Dict, Volatile } from 'base/types';
+import { Volatile } from 'base/types';
 import Dictionary from 'base/concretes/Dictionary';
 import IDictionary from 'base/interfaces/IDictionary';
 
-export function hereditary({}: {}, {}: {}, descriptor: PropertyDescriptor): void {
-  const fn = descriptor.value;
-  descriptor.value = function(): void {
-    this.__children.forEach((child: IHTML5CanvasEntity) => (child as Dict<any>)[fn.name](...arguments));
-  };
-}
+// export function hereditary({}: {}, {}: {}, descriptor: PropertyDescriptor): void {
+//   const fn = descriptor.value;
+//   descriptor.value = function(): void {
+//     this.__children.forEach((child: IHTML5CanvasEntity) => (child as Dict<any>)[fn.name](...arguments));
+//   };
+// }
 
 export default abstract class HTML5CanvasEntity extends Entity implements IHTML5CanvasEntity {
 
@@ -47,9 +47,10 @@ export default abstract class HTML5CanvasEntity extends Entity implements IHTML5
     return child;
   }
 
-  @hereditary
+  // @hereditary
   public $destroy(): void {
     super.$destroy();
     this.$parent = undefined;
+    this.__children.forEach((child: IHTML5CanvasEntity) => child.$destroy());
   }
 }

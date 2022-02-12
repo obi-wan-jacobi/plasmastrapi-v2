@@ -20,8 +20,7 @@ export default class DesignerView extends UIEntity {
         pipes: {
           [MOUSE_EVENT.MOUSE_ENTER]: [['designer', { name: DESIGNER_EVENT.ENABLE }]],
           [MOUSE_EVENT.MOUSE_LEAVE]: [['designer', { name: DESIGNER_EVENT.DISABLE }]],
-          [MOUSE_EVENT.MOUSE_DOWN]: [['designer', { name: DESIGNER_EVENT.PALETTE_SELECT_START }]],
-          [MOUSE_EVENT.MOUSE_UP]: [['designer', { name: DESIGNER_EVENT.PALETTE_SELECT_END }]],
+          [MOUSE_EVENT.MOUSE_DOWN]: [['designer', { name: DESIGNER_EVENT.SELECTION_MODE }]],
         },
         isHovered: false,
       },
