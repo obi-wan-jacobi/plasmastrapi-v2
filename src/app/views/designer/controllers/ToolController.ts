@@ -4,6 +4,7 @@ import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import { DESIGNER_EVENT } from '../enums/DESIGNER_EVENT';
 import IDesignerTool from '../interfaces/IDesignerTool';
 import CreatorTool from '../tools/CreatorTool';
+import DefaultTool from '../tools/DefaultTool';
 import DestructorTool from '../tools/DestructorTool';
 
 export default class ToolController {
@@ -47,7 +48,7 @@ export default class ToolController {
 
   public handleEvents({ mouseEvent, designerEvent }: { mouseEvent?: IMouseEvent; designerEvent?: IPipeEvent }): void {
     if (this.__tool && this.__tool.isDisposed) {
-      this.__tool = undefined;
+      this.__tool = new DefaultTool({ isDesignPaletteHovered: this.__isDesignPaletteHovered });
     }
     if (designerEvent && this.__fromDesignerEventToFnMap[designerEvent.name]) {
       this.__fromDesignerEventToFnMap[designerEvent.name]({

@@ -26,7 +26,9 @@ export default abstract class DesignerTool<T> implements IDesignerTool<T> {
   public constructor({}: { initiator?: IEntity; target?: T; mouseEvent?: IMouseEvent; isDesignPaletteHovered: boolean }) {
     const { initiator, target, mouseEvent, isDesignPaletteHovered } = arguments[0];
     this._initiator = initiator;
-    this._prevInitiatorState = (initiator as IEntity).$copy(MouseComponent)!;
+    if (this._initiator) {
+      this._prevInitiatorState = (initiator as IEntity).$copy(MouseComponent)!;
+    }
     this._target = target;
     this._prevDefinedMouseEvent = mouseEvent;
     this._isDesignPaletteHovered = isDesignPaletteHovered;
@@ -65,19 +67,23 @@ export default abstract class DesignerTool<T> implements IDesignerTool<T> {
   }
 
   private __highlightInitiator(): void {
-    if (this._initiator) {
-      this._initiator.$mutate(MouseComponent)({
-        events: {
-          [MOUSE_EVENT.MOUSE_ENTER]: [[StyleComponent.name, { colour: 'YELLOW' }]],
-          [MOUSE_EVENT.MOUSE_LEAVE]: [[StyleComponent.name, { colour: 'YELLOW' }]],
-        },
-        pipes: {},
-        isHovered: false,
-      });
+    if (!this._initiator) {
+      return;
     }
+    this._initiator.$patch(StyleComponent)({
+      colour: 'YELLOW',
+    });
+    this._initiator.$mutate(MouseComponent)({
+      events: {},
+      pipes: {},
+      isHovered: false,
+    });
   }
 
   private __unhighlightInitiator(): void {
+    if (!this._initiator) {
+      return;
+    }
     this._initiator.$mutate(MouseComponent)(this._prevInitiatorState!);
   }
 

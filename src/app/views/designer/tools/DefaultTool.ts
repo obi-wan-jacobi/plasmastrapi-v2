@@ -5,13 +5,32 @@ import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import Gate from 'digital-logic/entities/Gate';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
+import EditorView from 'app/views/EditorView';
 
-export default class CreatorTool extends DesignerTool<IEntity> {
+export default class DefaultTool extends DesignerTool<IEntity> {
 
   public equip(): void {
     super.equip();
+    this.__setMouseEventsOnGates();
+    this.__setMouseEventsOnDesignerPalette();
+  }
+
+  private __setMouseEventsOnGates(): void {
     ENTITIES.forEvery(Gate)((gate: Gate) => {
       gate.$mutate(MouseComponent)({
+        events: {
+          [MOUSE_EVENT.MOUSE_ENTER]: [[StyleComponent.name, { colour: 'YELLOW' }]],
+          [MOUSE_EVENT.MOUSE_LEAVE]: [[StyleComponent.name, { colour: '' }]],
+        },
+        pipes: {},
+        isHovered: false,
+      });
+    });
+  }
+
+  private __setMouseEventsOnDesignerPalette(): void {
+    ENTITIES.forEvery(EditorView)((editor) => {
+      editor.$mutate(MouseComponent)({
         events: {
           [MOUSE_EVENT.MOUSE_ENTER]: [[StyleComponent.name, { colour: 'YELLOW' }]],
           [MOUSE_EVENT.MOUSE_LEAVE]: [[StyleComponent.name, { colour: '' }]],

@@ -1,7 +1,5 @@
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import UIEntity from 'ui/abstracts/UIEntity';
-import CreateGateButton from 'ui/CreateGateButton';
-import DeleteGateButton from 'ui/DeleteGateButton';
 import { DESIGNER_EVENT } from './enums/DESIGNER_EVENT';
 
 export default class DesignerView extends UIEntity {
@@ -25,12 +23,6 @@ export default class DesignerView extends UIEntity {
         isHovered: false,
       },
     });
-    this.$appendChild(new CreateGateButton({
-      x: 25, y: 25, src: './AndGate.png',
-    }));
-    this.$appendChild(new DeleteGateButton({
-      x: 75, y: 25, src: './TRASHCAN.png',
-    }));
   }
 
 }
