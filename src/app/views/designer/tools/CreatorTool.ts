@@ -6,13 +6,20 @@ import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 
 export default class CreatorTool extends DesignerTool<IEntity> {
 
+  public constructor({}: { initiator: IEntity; mouseEvent: IMouseEvent; isDesignPaletteHovered: boolean }) {
+    super(arguments[0]);
+  }
+
   public equip(): void {
     super.equip();
     this.__preview();
   }
 
   public [MOUSE_EVENT.MOUSE_UP]({}: { mouseEvent: IMouseEvent }): void {
-      this.dispose();
+    if (!this._isDesignerPaletteHovered) {
+      return;
+    }
+    this.dispose();
     }
 
     private __preview(): void {

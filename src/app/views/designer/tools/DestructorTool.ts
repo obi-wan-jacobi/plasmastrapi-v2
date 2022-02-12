@@ -7,8 +7,13 @@ import MouseComponent from 'html5-canvas/components/MouseComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import { DESIGNER_EVENT } from '../enums/DESIGNER_EVENT';
 import IPipeEvent from 'engine/interfaces/IPipeEvent';
+import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 
 export default class DestructorTool extends DesignerTool<IEntity> {
+
+  public constructor({}: { initiator: IEntity; mouseEvent: IMouseEvent; isDesignPaletteHovered: boolean }) {
+    super(arguments[0]);
+  }
 
   public equip(): void {
     super.equip();

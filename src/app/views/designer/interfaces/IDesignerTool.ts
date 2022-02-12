@@ -5,4 +5,5 @@ export default interface IDesignerTool<TTarget extends {}> extends IDisposable, 
   target?: TTarget;
   equip(): void;
   isDisposed: boolean;
+  isDesignerPaletteHovered: boolean;
 }

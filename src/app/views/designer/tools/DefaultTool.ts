@@ -5,7 +5,8 @@ import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import Gate from 'digital-logic/entities/Gate';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
-import EditorView from 'app/views/EditorView';
+import DesignerView from '../DesignerView';
+import { DESIGNER_EVENT } from '../enums/DESIGNER_EVENT';
 
 export default class DefaultTool extends DesignerTool<IEntity> {
 
@@ -29,13 +30,12 @@ export default class DefaultTool extends DesignerTool<IEntity> {
   }
 
   private __setMouseEventsOnDesignerPalette(): void {
-    ENTITIES.forEvery(EditorView)((editor) => {
+    ENTITIES.forEvery(DesignerView)((editor) => {
       editor.$mutate(MouseComponent)({
-        events: {
-          [MOUSE_EVENT.MOUSE_ENTER]: [[StyleComponent.name, { colour: 'YELLOW' }]],
-          [MOUSE_EVENT.MOUSE_LEAVE]: [[StyleComponent.name, { colour: '' }]],
+        events: {},
+        pipes: {
+          [MOUSE_EVENT.MOUSE_DOWN]: [['designer', { name: DESIGNER_EVENT.SELECTION_MODE }]],
         },
-        pipes: {},
         isHovered: false,
       });
     });

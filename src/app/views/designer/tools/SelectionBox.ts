@@ -1,4 +1,4 @@
-import { IPoint } from 'foundation/geometry/components/PoseComponent';
+import PoseComponent, { IPoint } from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import UIEntity from 'ui/abstracts/UIEntity';
 
@@ -6,7 +6,7 @@ export default class SelectionBox extends UIEntity {
 
   private __start: IPoint;
 
-  public constructor({ x, y} : { x: number; y: number }) {
+  public constructor({ x, y } : { x: number; y: number }) {
     super({
       pose: { x, y, a: 0 },
       shape: {
@@ -24,11 +24,17 @@ export default class SelectionBox extends UIEntity {
   }
 
   public stretchTo({ x, y }: IPoint): void {
+    const dx = (x - this.__start.x) / 2;
+    const dy = (y - this.__start.y) / 2;
+    this.$patch(PoseComponent)({
+      x: this.__start.x + dx,
+      y: this.__start.y + dy,
+    });
     const vertices = [
-      { x: this.__start.x, y: this.__start.y },
-      { x: this.__start.x, y: this.__start.y + y },
-      { x: this.__start.x + x, y: this.__start.y + y },
-      { x: this.__start.x + x, y: this.__start.y },
+      { x: -dx, y: -dy },
+      { x: -dx, y: dy },
+      { x: dx, y: dy },
+      { x: dx, y: -dy },
     ];
     this.$patch(ShapeComponent)({ vertices });
   }

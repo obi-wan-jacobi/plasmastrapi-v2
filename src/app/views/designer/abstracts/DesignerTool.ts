@@ -1,6 +1,6 @@
 import IEntity from 'engine/interfaces/IEntity';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
-import StyleComponent from 'foundation/presentation/components/StyleComponent';
+import StyleComponent, { IStyle } from 'foundation/presentation/components/StyleComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import IDesignerTool from '../interfaces/IDesignerTool';
@@ -15,11 +15,16 @@ export default abstract class DesignerTool<T> implements IDesignerTool<T> {
     return this.__isDisposed;
   }
 
+  public set isDesignerPaletteHovered(value: boolean) {
+    this._isDesignerPaletteHovered = value;
+  }
+
   protected _initiator: IEntity;
-  protected _prevInitiatorState: IMouse;
+  protected _prevInitiatorStyle: IStyle;
+  protected _prevInitiatorMouse: IMouse;
   protected _target?: T;
   protected _prevDefinedMouseEvent?: IMouseEvent;
-  protected _isDesignPaletteHovered: boolean;
+  protected _isDesignerPaletteHovered: boolean;
 
   private __isDisposed = false;
 
@@ -27,11 +32,12 @@ export default abstract class DesignerTool<T> implements IDesignerTool<T> {
     const { initiator, target, mouseEvent, isDesignPaletteHovered } = arguments[0];
     this._initiator = initiator;
     if (this._initiator) {
-      this._prevInitiatorState = (initiator as IEntity).$copy(MouseComponent)!;
+      this._prevInitiatorStyle = (initiator as IEntity).$copy(StyleComponent)!;
+      this._prevInitiatorMouse = (initiator as IEntity).$copy(MouseComponent)!;
     }
     this._target = target;
     this._prevDefinedMouseEvent = mouseEvent;
-    this._isDesignPaletteHovered = isDesignPaletteHovered;
+    this._isDesignerPaletteHovered = isDesignPaletteHovered;
   }
 
   public equip(): void {
@@ -40,18 +46,18 @@ export default abstract class DesignerTool<T> implements IDesignerTool<T> {
   }
 
   public dispose(): void {
-    this.__unhighlightInitiator();
+    this.__resetInitiator();
     this.__resetEntityMouseEvents();
     this._target = undefined;
     this.__isDisposed = true;
   }
 
   public [DESIGNER_EVENT.ENABLE](): void {
-    this._isDesignPaletteHovered = true;
+    this._isDesignerPaletteHovered = true;
   }
 
   public [DESIGNER_EVENT.DISABLE](): void {
-    this._isDesignPaletteHovered = false;
+    this._isDesignerPaletteHovered = false;
   }
 
   public [MOUSE_EVENT.MOUSE_MOVE]({ mouseEvent }: { mouseEvent: IMouseEvent}): void {
@@ -80,11 +86,12 @@ export default abstract class DesignerTool<T> implements IDesignerTool<T> {
     });
   }
 
-  private __unhighlightInitiator(): void {
+  private __resetInitiator(): void {
     if (!this._initiator) {
       return;
     }
-    this._initiator.$mutate(MouseComponent)(this._prevInitiatorState!);
+    this._initiator.$mutate(StyleComponent)(this._prevInitiatorStyle);
+    this._initiator.$mutate(MouseComponent)(this._prevInitiatorMouse);
   }
 
   private __resetEntityMouseEvents(): void {
