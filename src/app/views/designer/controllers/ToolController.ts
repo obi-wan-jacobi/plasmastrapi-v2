@@ -52,7 +52,8 @@ export default class ToolController {
       }));
     },
     [DESIGNER_EVENT.SELECTION_MODE]: ({ mouseEvent, designerEvent }: { mouseEvent: IMouseEvent; designerEvent: IPipeEvent }): void => {
-      if (this.__tool) {
+      console.log(typeof this.__tool);
+      if (this.__tool && !(this.__tool instanceof DefaultTool)) {
         return;
       }
       this.__equip(new SelectionTool({

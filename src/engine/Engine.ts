@@ -51,7 +51,7 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IPipeEvent>>
   }
 
   public start(): void {
-    setInterval(this.once.bind(this), 1000 / 30);
+    setInterval(this.once.bind(this), 1000 / 100);
   }
 
   public once(): void {

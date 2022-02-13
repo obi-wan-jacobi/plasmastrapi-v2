@@ -16,6 +16,9 @@ export default class HTML5Pipe<
     }
 
     public push(event: TAdaptedEvent): void {
+        if (event.name === 'click') {
+            console.log('CLICK');
+        }
         super.push(event);
         if (this._buffer.length > 2) {
             this._buffer.shift();
