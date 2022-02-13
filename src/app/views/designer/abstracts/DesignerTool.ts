@@ -25,6 +25,7 @@ export default abstract class DesignerTool<T> implements IDesignerTool<T> {
   protected _target?: T;
   protected _prevDefinedMouseEvent?: IMouseEvent;
   protected _isDesignerPaletteHovered: boolean;
+  protected _output: any;
 
   private __isDisposed = false;
 
@@ -43,6 +44,10 @@ export default abstract class DesignerTool<T> implements IDesignerTool<T> {
   public equip(): void {
     console.log(`Equip ${this.constructor.name}`);
     this.__highlightInitiator();
+  }
+
+  public output(): void {
+    return this._output;
   }
 
   public dispose(): void {
@@ -100,6 +105,14 @@ export default abstract class DesignerTool<T> implements IDesignerTool<T> {
         events: {},
         pipes: {},
         isHovered: false,
+      });
+    });
+  }
+
+  private __resetEntityStyle(): void {
+    ENTITIES.forEvery(Gate)((gate) => {
+      gate.$patch(StyleComponent)({
+        colour: '',
       });
     });
   }

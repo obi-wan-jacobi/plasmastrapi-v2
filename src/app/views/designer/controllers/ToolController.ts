@@ -1,12 +1,13 @@
 import { Dict, Fn } from 'base/types';
 import IPipeEvent from 'engine/interfaces/IPipeEvent';
+import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import { DESIGNER_EVENT } from '../enums/DESIGNER_EVENT';
 import IDesignerTool from '../interfaces/IDesignerTool';
 import CreatorTool from '../tools/CreatorTool';
 import DefaultTool from '../tools/DefaultTool';
 import DestructorTool from '../tools/DestructorTool';
-import SelectionTool from '../tools/SelectionTool';
+import SelectorTool from '../tools/SelectorTool';
 
 export default class ToolController {
 
@@ -52,11 +53,10 @@ export default class ToolController {
       }));
     },
     [DESIGNER_EVENT.SELECTION_MODE]: ({ mouseEvent, designerEvent }: { mouseEvent: IMouseEvent; designerEvent: IPipeEvent }): void => {
-      console.log(typeof this.__tool);
       if (this.__tool && !(this.__tool instanceof DefaultTool)) {
         return;
       }
-      this.__equip(new SelectionTool({
+      this.__equip(new SelectorTool({
         initiator: designerEvent.target,
         mouseEvent,
         isDesignPaletteHovered: this.__isDesignPaletteHovered,
@@ -64,7 +64,10 @@ export default class ToolController {
     },
   };
 
-  public handleEvents({ mouseEvent, designerEvent }: { mouseEvent?: IMouseEvent; designerEvent?: IPipeEvent }): void {
+  public handleEvents({ mouseEvent, keyboardEvent, designerEvent }: { mouseEvent?: IMouseEvent; keyboardEvent?: IKeyboardEvent; designerEvent?: IPipeEvent }): void {
+    if (keyboardEvent) {
+      console.log(keyboardEvent.name + keyboardEvent.key);
+    }
     if (!this.__tool || (this.__tool && this.__tool.isDisposed)) {
       this.__equip(new DefaultTool({ isDesignPaletteHovered: this.__isDesignPaletteHovered }));
     }
@@ -82,6 +85,9 @@ export default class ToolController {
     }
     if (mouseEvent) {
       this.__prevDefinedMouseEvent = mouseEvent;
+    }
+    if (keyboardEvent && this.__tool && this.__tool[keyboardEvent.name]) {
+      this.__tool[keyboardEvent.name]({ keyboardEvent });
     }
   }
 
