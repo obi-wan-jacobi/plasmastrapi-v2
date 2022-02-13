@@ -6,8 +6,6 @@ import { DESIGNER_EVENT } from '../enums/DESIGNER_EVENT';
 import IDesignerTool from '../interfaces/IDesignerTool';
 import CreatorTool from '../tools/CreatorTool';
 import DefaultTool from '../tools/DefaultTool';
-import DestructorTool from '../tools/DestructorTool';
-import SelectorTool from '../tools/SelectorTool';
 
 export default class ToolController {
 
@@ -20,9 +18,7 @@ export default class ToolController {
       this.__tool.dispose();
     }
     this.__tool = tool;
-    if (this.__tool) {
-      this.__tool.equip();
-    }
+    this.__tool.equip();
   }
 
   private __fromDesignerEventToFnMap: Dict<Fn<{ mouseEvent?: IMouseEvent; designerEvent: IPipeEvent }, void>> = {
@@ -41,23 +37,6 @@ export default class ToolController {
     [DESIGNER_EVENT.CREATE_MODE]: ({ mouseEvent, designerEvent }: { mouseEvent: IMouseEvent; designerEvent: IPipeEvent }): void => {
       this.__equip(new CreatorTool({
         initiator: designerEvent.target!,
-        mouseEvent,
-        isDesignPaletteHovered: this.__isDesignPaletteHovered,
-      }));
-    },
-    [DESIGNER_EVENT.DELETE_MODE]: ({ mouseEvent, designerEvent }: { mouseEvent: IMouseEvent; designerEvent: IPipeEvent }): void => {
-      this.__equip(new DestructorTool({
-        initiator: designerEvent.target!,
-        mouseEvent,
-        isDesignPaletteHovered: this.__isDesignPaletteHovered,
-      }));
-    },
-    [DESIGNER_EVENT.SELECTION_MODE]: ({ mouseEvent, designerEvent }: { mouseEvent: IMouseEvent; designerEvent: IPipeEvent }): void => {
-      if (this.__tool && !(this.__tool instanceof DefaultTool)) {
-        return;
-      }
-      this.__equip(new SelectorTool({
-        initiator: designerEvent.target,
         mouseEvent,
         isDesignPaletteHovered: this.__isDesignPaletteHovered,
       }));
@@ -81,7 +60,7 @@ export default class ToolController {
       this.__tool[designerEvent.name]({ designerEvent });
     }
     if (mouseEvent && this.__tool && this.__tool[mouseEvent.name]) {
-      this.__tool[mouseEvent.name]({ mouseEvent });
+      this.__tool[mouseEvent.name]({ mouseEvent, keyboardEvent });
     }
     if (mouseEvent) {
       this.__prevDefinedMouseEvent = mouseEvent;
