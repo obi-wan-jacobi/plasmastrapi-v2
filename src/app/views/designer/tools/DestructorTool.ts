@@ -1,38 +1,42 @@
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import DesignerTool from '../abstracts/DesignerTool';
-import IEntity from 'engine/interfaces/IEntity';
-import { ENTITIES } from 'engine/concretes/EntityMaster';
 import Gate from 'digital-logic/entities/Gate';
-import MouseComponent from 'html5-canvas/components/MouseComponent';
-import StyleComponent from 'foundation/presentation/components/StyleComponent';
-import { DESIGNER_EVENT } from '../enums/DESIGNER_EVENT';
-import IPipeEvent from 'engine/interfaces/IPipeEvent';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
+import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
+import SelectionBox from './SelectionBox';
+import { KEYBOARD_EVENT } from 'html5-canvas/enums/KEYBOARD_EVENT';
+import StyleComponent from 'foundation/presentation/components/StyleComponent';
 
-export default class DestructorTool extends DesignerTool<IEntity> {
+export default class DestructorTool extends DesignerTool {
 
-  public constructor({}: { initiator: IEntity; mouseEvent: IMouseEvent; isDesignPaletteHovered: boolean }) {
-    super(arguments[0]);
+  private __selectionBox: SelectionBox<Gate>;
+
+  public dispose(): void {
+    super.dispose();
+    this.__selectionBox?.$destroy();
   }
 
-  public equip(): void {
-    super.equip();
-    ENTITIES.forEvery(Gate)((gate: Gate) => {
-      gate.$mutate(MouseComponent)({
-        events: {
-          [MOUSE_EVENT.MOUSE_ENTER]: [[StyleComponent.name, { colour: 'RED' }]],
-          [MOUSE_EVENT.MOUSE_LEAVE]: [[StyleComponent.name, { colour: '' }]],
-        },
-        pipes: {
-          [MOUSE_EVENT.CLICK]: [['designer', { name: DESIGNER_EVENT.DELETE }]],
-        },
-        isHovered: false,
-      });
-    });
+  public [KEYBOARD_EVENT.KEY_UP]({ keyboardEvent }: { keyboardEvent?: IKeyboardEvent }): void {
+    if (keyboardEvent?.key === 'Shift') {
+      this.dispose();
+    }
   }
 
-  public [DESIGNER_EVENT.DELETE]({ designerEvent }: { designerEvent: IPipeEvent }): void {
-    designerEvent.target?.$destroy();
+  public [MOUSE_EVENT.MOUSE_MOVE]({ mouseEvent }: { mouseEvent?: IMouseEvent }): void {
+    this.__selectionBox?.stretchTo(mouseEvent!);
+  }
+
+  public [MOUSE_EVENT.MOUSE_DOWN]({ mouseEvent }: { mouseEvent?: IMouseEvent }): void {
+    this.__selectionBox = new SelectionBox({ x: mouseEvent!.x, y: mouseEvent!.y, SelectionType: Gate });
+    this.__selectionBox.$patch(StyleComponent)({ colour: 'RED' });
+  }
+
+  public [MOUSE_EVENT.MOUSE_UP]({ keyboardEvent }: { keyboardEvent?: IKeyboardEvent }): void {
+    this.__selectionBox.selections.forEach((selection: Gate) => selection.$destroy());
+    if (keyboardEvent?.key === 'Shift') {
+      this.__selectionBox.$destroy();
+      return;
+    }
     this.dispose();
   }
 }

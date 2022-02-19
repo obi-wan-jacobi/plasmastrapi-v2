@@ -1,15 +1,18 @@
 import Entity from 'engine/abstracts/Entity';
 import IHTML5CanvasEntity from 'html5-canvas/interfaces/IHTML5CanvasEntity';
-import { Volatile } from 'base/types';
+import { Dict, Volatile } from 'base/types';
 import Dictionary from 'base/concretes/Dictionary';
 import IDictionary from 'base/interfaces/IDictionary';
+import PoseComponent from 'foundation/geometry/components/PoseComponent';
+import OffsetComponent from './components/OffsetComponent';
 
-// export function hereditary({}: {}, {}: {}, descriptor: PropertyDescriptor): void {
-//   const fn = descriptor.value;
-//   descriptor.value = function(): void {
-//     this.__children.forEach((child: IHTML5CanvasEntity) => (child as Dict<any>)[fn.name](...arguments));
-//   };
-// }
+export function hereditary({}: {}, {}: {}, descriptor: PropertyDescriptor): void {
+  const fn = descriptor.value;
+  descriptor.value = function(): void {
+    this.__children.forEach((child: IHTML5CanvasEntity) => (child as Dict<any>)[fn.name](...arguments));
+    fn.apply(this, arguments);
+  };
+}
 
 export default abstract class HTML5CanvasEntity extends Entity implements IHTML5CanvasEntity {
 
@@ -47,10 +50,20 @@ export default abstract class HTML5CanvasEntity extends Entity implements IHTML5
     return child;
   }
 
-  // @hereditary
+  @hereditary
   public $destroy(): void {
     super.$destroy();
     this.$parent = undefined;
     this.__children.forEach((child: IHTML5CanvasEntity) => child.$destroy());
+  }
+
+  @hereditary
+  public $moveTo({ x, y }: { x: number; y: number }): void {
+    const offset = this.$copy(OffsetComponent);
+    if (offset) {
+      x += offset.xOffset;
+      y += offset.yOffset;
+    }
+    this.$patch(PoseComponent)({ x, y });
   }
 }

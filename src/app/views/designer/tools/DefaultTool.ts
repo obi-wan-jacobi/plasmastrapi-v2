@@ -1,25 +1,32 @@
-import IEntity from 'engine/interfaces/IEntity';
 import DesignerTool from '../abstracts/DesignerTool';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
-import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
-import Gate from 'digital-logic/entities/Gate';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
+import DesignerView from '../DesignerView';
+import { DESIGNER_EVENT } from '../enums/DESIGNER_EVENT';
+import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
+import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
 
-export default class DefaultTool extends DesignerTool<IEntity> {
+export default class DefaultTool extends DesignerTool {
 
-  public equip(): void {
-    super.equip();
-    this.__setMouseEventsOnGates();
+  public equip({ mouseEvent, keyboardEvent }: { mouseEvent?: IMouseEvent; keyboardEvent?: IKeyboardEvent }): void {
+    super.equip({ mouseEvent, keyboardEvent });
+    ENTITIES.forEvery(DesignerView)((designer) => {
+      designer.$mutate(MouseComponent)({
+        events: {},
+        pipes: {
+          [MOUSE_EVENT.MOUSE_DOWN]: [['designer', { name: DESIGNER_EVENT.SELECTION_MODE }]],
+        },
+        isHovered: false,
+      });
+    });
   }
 
-  private __setMouseEventsOnGates(): void {
-    ENTITIES.forEvery(Gate)((gate: Gate) => {
-      gate.$mutate(MouseComponent)({
-        events: {
-          [MOUSE_EVENT.MOUSE_ENTER]: [[StyleComponent.name, { colour: 'YELLOW' }]],
-          [MOUSE_EVENT.MOUSE_LEAVE]: [[StyleComponent.name, { colour: '' }]],
-        },
+  public dispose(): void {
+    super.dispose();
+    ENTITIES.forEvery(DesignerView)((designer) => {
+      designer.$mutate(MouseComponent)({
+        events: {},
         pipes: {},
         isHovered: false,
       });

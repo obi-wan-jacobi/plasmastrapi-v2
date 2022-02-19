@@ -57,8 +57,8 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IPipeEvent>>
   public once(): void {
     this.__doDelta();
     this.__doPipes();
-    this.__doSystems();
     this.__doUpkeep();
+    this.__doSystems();
     this.__doRender();
   }
 

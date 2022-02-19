@@ -1,4 +1,4 @@
-import { Dict, Fn } from 'base/types';
+import { Constructor, Dict } from 'base/types';
 import IPipeEvent from 'engine/interfaces/IPipeEvent';
 import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
@@ -6,67 +6,67 @@ import { DESIGNER_EVENT } from '../enums/DESIGNER_EVENT';
 import IDesignerTool from '../interfaces/IDesignerTool';
 import CreatorTool from '../tools/CreatorTool';
 import DefaultTool from '../tools/DefaultTool';
+import DestructorTool from '../tools/DestructorTool';
+import MoverTool from '../tools/MoverTool';
+import SelectorTool from '../tools/SelectorTool';
 
 export default class ToolController {
 
-  private __prevDefinedMouseEvent?: IMouseEvent;
-  private __isDesignPaletteHovered = false;
-  private __tool?: IDesignerTool<any>;
-
-  private __equip<T>(tool: IDesignerTool<T>) {
-    if (this.__tool) {
-      this.__tool.dispose();
-    }
-    this.__tool = tool;
-    this.__tool.equip();
-  }
-
-  private __fromDesignerEventToFnMap: Dict<Fn<{ mouseEvent?: IMouseEvent; designerEvent: IPipeEvent }, void>> = {
-    [DESIGNER_EVENT.ENABLE]: (): void => {
-      this.__isDesignPaletteHovered = true;
-      if (this.__tool) {
-        this.__tool.isDesignerPaletteHovered = true;
-      }
-    },
-    [DESIGNER_EVENT.DISABLE]: (): void => {
-      this.__isDesignPaletteHovered = false;
-      if (this.__tool) {
-        this.__tool.isDesignerPaletteHovered = false;
-      }
-    },
-    [DESIGNER_EVENT.CREATE_MODE]: ({ mouseEvent, designerEvent }: { mouseEvent: IMouseEvent; designerEvent: IPipeEvent }): void => {
-      this.__equip(new CreatorTool({
-        initiator: designerEvent.target!,
-        mouseEvent,
-        isDesignPaletteHovered: this.__isDesignPaletteHovered,
-      }));
-    },
+  private __lastDefinedMouseEvent?: IMouseEvent;
+  private __lastDefinedKeyboardEvent?: IKeyboardEvent;
+  private __tool: IDesignerTool;
+  private __fromDesignerEventToDesignerTool: Dict<Constructor<IDesignerTool, any>> = {
+    [DESIGNER_EVENT.CREATE_MODE]: CreatorTool,
+    [DESIGNER_EVENT.DELETE_MODE]: DestructorTool,
+    [DESIGNER_EVENT.SELECTION_MODE]: SelectorTool,
+    [DESIGNER_EVENT.MOVER_MODE]: MoverTool,
   };
 
   public handleEvents({ mouseEvent, keyboardEvent, designerEvent }: { mouseEvent?: IMouseEvent; keyboardEvent?: IKeyboardEvent; designerEvent?: IPipeEvent }): void {
     if (keyboardEvent) {
-      console.log(keyboardEvent.name + keyboardEvent.key);
+      this.__lastDefinedKeyboardEvent = keyboardEvent;
+      // console.log(keyboardEvent);
     }
-    if (!this.__tool || (this.__tool && this.__tool.isDisposed)) {
-      this.__equip(new DefaultTool({ isDesignPaletteHovered: this.__isDesignPaletteHovered }));
+    if (mouseEvent) {
+      this.__lastDefinedMouseEvent = mouseEvent;
+      // console.log(mouseEvent.name);
     }
-    if (designerEvent && this.__fromDesignerEventToFnMap[designerEvent.name]) {
-      this.__fromDesignerEventToFnMap[designerEvent.name]({
-        mouseEvent: mouseEvent || this.__prevDefinedMouseEvent,
+    if (designerEvent && this.__fromDesignerEventToDesignerTool[designerEvent.name]) {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      const ToolConstructor = this.__fromDesignerEventToDesignerTool[designerEvent.name];
+      this.__tool.dispose();
+      this.__tool = new ToolConstructor({});
+      this.__tool.equip({
+        mouseEvent: mouseEvent || this.__lastDefinedMouseEvent,
+        keyboardEvent: keyboardEvent || this.__lastDefinedKeyboardEvent,
+      });
+      console.log(designerEvent.name);
+    }
+    if (designerEvent && this.__tool[designerEvent.name]) {
+      this.__tool[designerEvent.name]({
+        mouseEvent: mouseEvent || this.__lastDefinedMouseEvent,
+        keyboardEvent: keyboardEvent || this.__lastDefinedKeyboardEvent,
         designerEvent,
       });
     }
-    if (designerEvent && this.__tool && this.__tool[designerEvent.name]) {
-      this.__tool[designerEvent.name]({ designerEvent });
+    if (mouseEvent && this.__tool[mouseEvent.name]) {
+      this.__tool[mouseEvent.name]({
+        mouseEvent: mouseEvent || this.__lastDefinedMouseEvent,
+        keyboardEvent: keyboardEvent || this.__lastDefinedKeyboardEvent,
+      });
     }
-    if (mouseEvent && this.__tool && this.__tool[mouseEvent.name]) {
-      this.__tool[mouseEvent.name]({ mouseEvent, keyboardEvent });
+    if (keyboardEvent && this.__tool[keyboardEvent.name]) {
+      this.__tool[keyboardEvent.name]({
+        mouseEvent: mouseEvent || this.__lastDefinedMouseEvent,
+        keyboardEvent: keyboardEvent || this.__lastDefinedKeyboardEvent,
+      });
     }
-    if (mouseEvent) {
-      this.__prevDefinedMouseEvent = mouseEvent;
-    }
-    if (keyboardEvent && this.__tool && this.__tool[keyboardEvent.name]) {
-      this.__tool[keyboardEvent.name]({ keyboardEvent });
+    if (!this.__tool || this.__tool.isDisposed) {
+      this.__tool = new DefaultTool();
+      this.__tool.equip({
+        mouseEvent: mouseEvent || this.__lastDefinedMouseEvent,
+        keyboardEvent: keyboardEvent || this.__lastDefinedKeyboardEvent,
+      });
     }
   }
 

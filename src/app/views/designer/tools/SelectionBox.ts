@@ -8,7 +8,7 @@ import UIEntity from 'ui/abstracts/UIEntity';
 
 export default class SelectionBox<T extends IEntity> extends UIEntity {
 
-  public selections: Set<T>;
+  public selections: Set<T> = new Set();
 
   private __start: IPoint;
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -50,7 +50,6 @@ export default class SelectionBox<T extends IEntity> extends UIEntity {
   }
 
   private __getSelections(): void {
-    this.selections = new Set();
     ENTITIES.forEvery(this.__SelectionType)((selection) => {
       if (entitiesTouch(this, selection)) {
         this.selections.add(selection);

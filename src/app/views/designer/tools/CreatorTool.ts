@@ -1,34 +1,46 @@
-import IEntity from 'engine/interfaces/IEntity';
 import DesignerTool from '../abstracts/DesignerTool';
-import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import Gate from 'digital-logic/entities/Gate';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
+import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
+import { KEYBOARD_EVENT } from 'html5-canvas/enums/KEYBOARD_EVENT';
 
-export default class CreatorTool extends DesignerTool<IEntity> {
+export default class CreatorTool extends DesignerTool {
 
-  public constructor({}: { initiator: IEntity; mouseEvent: IMouseEvent; isDesignPaletteHovered: boolean }) {
-    super(arguments[0]);
+  private __target?: Gate;
+
+  public equip({ mouseEvent, keyboardEvent }: { mouseEvent?: IMouseEvent; keyboardEvent?: IKeyboardEvent }): void {
+    super.equip({ mouseEvent, keyboardEvent });
+    this.__preview({ mouseEvent });
   }
 
-  public equip(): void {
-    super.equip();
-    this.__preview();
+  public [MOUSE_EVENT.MOUSE_MOVE]({ mouseEvent }: { mouseEvent?: IMouseEvent }): void {
+    this.__target?.$moveTo({ x: mouseEvent!.x, y: mouseEvent!.y });
   }
 
-  public [MOUSE_EVENT.MOUSE_UP]({ keyboardEvent }: { mouseEvent: IMouseEvent; keyboardEvent?: IKeyboardEvent }): void {
-    if (!this._isDesignerPaletteHovered) {
-      return;
-    }
+  public [MOUSE_EVENT.CLICK]({ mouseEvent, keyboardEvent }: { mouseEvent: IMouseEvent; keyboardEvent?: IKeyboardEvent }): void {
     if (keyboardEvent?.isShiftKeyDown) {
+      this.__preview({ mouseEvent });
       return;
     }
+    this.__target = undefined;
     this.dispose();
   }
 
-  private __preview(): void {
-    const { x, y } = this._prevDefinedMouseEvent || { x: 0, y: 0 };
-    this._target = new Gate({ x, y, src: './AndGate.png' });
+  public [KEYBOARD_EVENT.KEY_UP]({ keyboardEvent }: { keyboardEvent?: IKeyboardEvent }): void {
+    if (keyboardEvent?.key === 'Shift') {
+      this.dispose();
+    }
+  }
+
+  public dispose(): void {
+    super.dispose();
+    this.__target?.$destroy();
+  }
+
+  private __preview({ mouseEvent }: { mouseEvent?: IMouseEvent; keyboardEvent?: IKeyboardEvent }): void {
+    const { x, y } = mouseEvent || { x: 0, y: 0 };
+    this.__target = new Gate({ x, y, src: './AndGate.png' });
   }
 
 }

@@ -1,4 +1,6 @@
 import UIEntity from 'ui/abstracts/UIEntity';
+import InputTerminal from './InputTerminal';
+import OutputTerminal from './OutputTerminal';
 
 export default class Gate extends UIEntity {
 
@@ -28,6 +30,8 @@ export default class Gate extends UIEntity {
         isHovered: false,
       },
     });
+    this.$appendChild(new InputTerminal({ x, y, xOffset: 0, yOffset: 20 }));
+    this.$appendChild(new OutputTerminal({ x, y, xOffset: 0, yOffset: -20 }));
   }
 
 }

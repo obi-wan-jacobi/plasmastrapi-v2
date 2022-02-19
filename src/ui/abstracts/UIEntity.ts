@@ -11,6 +11,7 @@ import LabelComponent from 'foundation/presentation/components/LabelComponent';
 import { ComponentTuple, Ctor } from 'engine/types';
 import { Dict, Tuple } from 'base/types';
 import IComponent from 'engine/interfaces/IComponent';
+import OffsetComponent from 'html5-canvas/components/OffsetComponent';
 
 const COMPONENT_TEMPLATING_MAP = [
   [PoseComponent, 'pose'],
@@ -20,6 +21,7 @@ const COMPONENT_TEMPLATING_MAP = [
   [LabelComponent, 'label'],
   [ImageComponent, 'image'],
   [AnimationComponent, 'animation'],
+  [OffsetComponent, 'offset'],
 ];
 
 export const COMPONENT_MAP: Dict<Ctor<IComponent<any>, any>> = (function() {
