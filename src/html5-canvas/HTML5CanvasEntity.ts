@@ -54,7 +54,6 @@ export default abstract class HTML5CanvasEntity extends Entity implements IHTML5
   public $destroy(): void {
     super.$destroy();
     this.$parent = undefined;
-    this.__children.forEach((child: IHTML5CanvasEntity) => child.$destroy());
   }
 
   @hereditary
