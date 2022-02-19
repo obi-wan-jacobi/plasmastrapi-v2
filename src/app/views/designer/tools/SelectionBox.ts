@@ -30,6 +30,7 @@ export default class SelectionBox<T extends IEntity> extends UIEntity {
     });
     this.__start = { x, y };
     this.__SelectionType = SelectionType;
+    this.__getSelections();
   }
 
   public stretchTo({ x, y }: IPoint): void {

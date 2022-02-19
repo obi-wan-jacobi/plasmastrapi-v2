@@ -10,13 +10,20 @@ import SelectionBox from './SelectionBox';
 
 export default class SelectorTool extends DesignerTool {
 
-  private __selectionBox: SelectionBox<Gate>;
+  private __target?: Gate;
+  private __selectionBox?: SelectionBox<Gate>;
   private __moverBox?: MoverBox<Gate>;
 
   public equip({ mouseEvent, keyboardEvent }: { mouseEvent?: IMouseEvent; keyboardEvent?: IKeyboardEvent }): void {
     super.equip({ mouseEvent, keyboardEvent });
     ENTITIES.forEvery(SelectionBox)((selectionBox) => selectionBox.$destroy());
     this.__selectionBox = new SelectionBox({ x: mouseEvent!.x, y: mouseEvent!.y, SelectionType: Gate });
+    this.__target = this.__selectionBox.selections.size ? this.__selectionBox.selections.values().next().value : undefined;
+    if (this.__target) {
+      this.__selectionBox.$destroy();
+      this.__selectionBox = undefined;
+      return;
+    }
   }
 
   public dispose(): void {
@@ -25,14 +32,19 @@ export default class SelectorTool extends DesignerTool {
   }
 
   public [MOUSE_EVENT.MOUSE_MOVE]({ mouseEvent }: { mouseEvent?: IMouseEvent }): void {
-    if (!this.__moverBox) {
-      this.__selectionBox.stretchTo(mouseEvent!);
+    if (!this.__moverBox && !this.__target) {
+      this.__selectionBox?.stretchTo(mouseEvent!);
       return;
+    }
+    if (this.__target) {
+      this.__target.$moveTo(mouseEvent!);
     }
   }
 
   public [MOUSE_EVENT.MOUSE_UP](): void {
-    if (this.__selectionBox.selections.size > 0) {
+    if (this.__target) {
+      // goto dispose
+    } else if (this.__selectionBox && this.__selectionBox.selections.size > 0) {
       this.__moverBox = new MoverBox({ selectionBox: this.__selectionBox });
       return;
     }
