@@ -32,20 +32,18 @@ export default class SelectorTool extends DesignerTool {
   }
 
   public [MOUSE_EVENT.MOUSE_MOVE]({ mouseEvent }: { mouseEvent?: IMouseEvent }): void {
-    if (!this.__moverBox && !this.__target) {
-      this.__selectionBox?.stretchTo(mouseEvent!);
-      return;
-    }
-    if (this.__target) {
-      this.__target.$moveTo(mouseEvent!);
-    }
+    // janky, ain't it?
+    this.__selectionBox?.stretchTo(mouseEvent!);
+    this.__target?.$moveTo(mouseEvent!);
   }
 
   public [MOUSE_EVENT.MOUSE_UP](): void {
     if (this.__target) {
       // goto dispose
     } else if (this.__selectionBox && this.__selectionBox.selections.size > 0) {
+      this.__selectionBox.$destroy();
       this.__moverBox = new MoverBox({ selectionBox: this.__selectionBox });
+      this.__selectionBox = undefined;
       return;
     }
     this.dispose();
@@ -56,6 +54,7 @@ export default class SelectorTool extends DesignerTool {
     if (!mouse?.isHovered) {
       this.__moverBox?.$destroy();
       this.dispose();
+      return;
     }
   }
 
