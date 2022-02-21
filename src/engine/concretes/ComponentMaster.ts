@@ -54,14 +54,14 @@ class ComponentMaster implements IComponentMaster {
           value: collection,
         });
       }
-      collection.write({ key: target.id, value: target });
+      collection.write({ key: target.$id, value: target });
     }
   }
 
   private __doPurgation(): void {
     while (this.__purgeTargets.length) {
       const target = this.__purgeTargets.shift()!;
-      this.__componentMap.read(target.constructor.name)!.delete(target.id);
+      this.__componentMap.read(target.constructor.name)!.delete(target.$id);
     }
   }
 

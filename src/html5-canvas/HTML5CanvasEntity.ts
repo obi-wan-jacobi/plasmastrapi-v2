@@ -35,7 +35,7 @@ export default abstract class HTML5CanvasEntity extends Entity implements IHTML5
   }
 
   public $appendChild<T extends IHTML5CanvasEntity>(child: T): T {
-    this.__children.write({ key: child.id, value: child });
+    this.__children.write({ key: child.$id, value: child });
     if (child.$parent) {
       throw new Error(
         `${child.constructor.name} already has a parent: ${child.$parent.constructor.name}`
@@ -46,7 +46,7 @@ export default abstract class HTML5CanvasEntity extends Entity implements IHTML5
   }
 
   public $removeChild<T extends IHTML5CanvasEntity>(child: T): T {
-    this.__children.delete(child.id);
+    this.__children.delete(child.$id);
     return child;
   }
 

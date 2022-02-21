@@ -9,8 +9,9 @@ import SelectionBox from './SelectionBox';
 
 export default class MoverBox<T extends IHTML5CanvasEntity> extends UIEntity {
 
+  public items: Set<T>;
+
   private __start: IPoint;
-  private __items: Set<T>;
 
   public constructor({ selectionBox }: { selectionBox: SelectionBox<T> }) {
     const pose = selectionBox.$copy(PoseComponent);
@@ -28,11 +29,11 @@ export default class MoverBox<T extends IHTML5CanvasEntity> extends UIEntity {
         isHovered: false,
       },
     });
-    this.__items = selectionBox.selections;
+    this.items = selectionBox.selections;
   }
 
   public moveBy({ dx, dy }: { dx: number; dy: number }): void {
-    const targets = [this, ...this.__items];
+    const targets = [this, ...this.items];
     targets.forEach((target) => {
       const pose = target.$copy(PoseComponent)!;
       target.$moveTo({

@@ -1,3 +1,4 @@
+import Wire from 'digital-logic/entities/Wire';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import { IPoint } from 'foundation/geometry/components/PoseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
@@ -5,6 +6,7 @@ import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import DesignerTool from '../abstracts/DesignerTool';
 import MoverBox from './MoverBox';
+import { WIRES } from './WireTool';
 
 export default class MoverTool extends DesignerTool {
 
@@ -26,7 +28,14 @@ export default class MoverTool extends DesignerTool {
       dx: mouseEvent!.x - this.__start.x,
       dy: mouseEvent!.y - this.__start.y,
     };
-    ENTITIES.forEvery(MoverBox)((moverBox) => moverBox.moveBy({ dx, dy }));
+    ENTITIES.forEvery(MoverBox)((moverBox) => {
+      moverBox.moveBy({ dx, dy });
+      moverBox.items.forEach((gate) => {
+        WIRES.for(gate).do((wire) => {
+          wire.updatePose();
+        });
+      });
+    });
     const { x, y } = mouseEvent!;
     this.__start = { x, y };
   }

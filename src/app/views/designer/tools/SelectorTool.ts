@@ -7,6 +7,7 @@ import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import DesignerTool from '../abstracts/DesignerTool';
 import MoverBox from './MoverBox';
 import SelectionBox from './SelectionBox';
+import { WIRES } from './WireTool';
 
 export default class SelectorTool extends DesignerTool {
 
@@ -32,9 +33,16 @@ export default class SelectorTool extends DesignerTool {
   }
 
   public [MOUSE_EVENT.MOUSE_MOVE]({ mouseEvent }: { mouseEvent?: IMouseEvent }): void {
-    // janky, ain't it?
-    this.__selectionBox?.stretchTo(mouseEvent!);
-    this.__target?.$moveTo(mouseEvent!);
+    if (this.__selectionBox) {
+      this.__selectionBox.stretchTo(mouseEvent!);
+      return;
+    }
+    if (this.__target) {
+      this.__target?.$moveTo(mouseEvent!);
+      WIRES.for(this.__target).do((wire) => {
+        wire.updatePose();
+      });
+    }
   }
 
   public [MOUSE_EVENT.MOUSE_UP](): void {

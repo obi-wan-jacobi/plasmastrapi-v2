@@ -9,6 +9,7 @@ import DefaultTool from '../tools/DefaultTool';
 import DestructorTool from '../tools/DestructorTool';
 import MoverTool from '../tools/MoverTool';
 import SelectorTool from '../tools/SelectorTool';
+import WireTool from '../tools/WireTool';
 
 export default class ToolController {
 
@@ -20,6 +21,7 @@ export default class ToolController {
     [DESIGNER_EVENT.DELETE_MODE]: DestructorTool,
     [DESIGNER_EVENT.SELECTION_MODE]: SelectorTool,
     [DESIGNER_EVENT.MOVER_MODE]: MoverTool,
+    [DESIGNER_EVENT.WIRING_MODE]: WireTool,
   };
 
   public handleEvents({ mouseEvent, keyboardEvent, designerEvent }: { mouseEvent?: IMouseEvent; keyboardEvent?: IKeyboardEvent; designerEvent?: IPipeEvent }): void {
@@ -32,13 +34,12 @@ export default class ToolController {
       // console.log(mouseEvent.name);
     }
     if (designerEvent && this.__fromDesignerEventToDesignerTool[designerEvent.name]) {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      const ToolConstructor = this.__fromDesignerEventToDesignerTool[designerEvent.name];
       this.__tool.dispose();
-      this.__tool = new ToolConstructor({});
-      this.__tool.equip({
-        mouseEvent: mouseEvent || this.__lastDefinedMouseEvent,
-        keyboardEvent: keyboardEvent || this.__lastDefinedKeyboardEvent,
+      this.__equipTool({
+        ToolConstructor: this.__fromDesignerEventToDesignerTool[designerEvent.name],
+        mouseEvent,
+        keyboardEvent,
+        designerEvent,
       });
       console.log(designerEvent.name);
     }
@@ -62,12 +63,17 @@ export default class ToolController {
       });
     }
     if (!this.__tool || this.__tool.isDisposed) {
-      this.__tool = new DefaultTool();
-      this.__tool.equip({
-        mouseEvent: mouseEvent || this.__lastDefinedMouseEvent,
-        keyboardEvent: keyboardEvent || this.__lastDefinedKeyboardEvent,
-      });
+      this.__equipTool({ ToolConstructor: DefaultTool, mouseEvent, keyboardEvent, designerEvent });
     }
+  }
+
+  private __equipTool<T extends IDesignerTool>({ ToolConstructor, mouseEvent, keyboardEvent, designerEvent }: { ToolConstructor: Constructor<T, void>; mouseEvent?: IMouseEvent; keyboardEvent?: IKeyboardEvent; designerEvent?: IPipeEvent }) {
+    this.__tool = new ToolConstructor();
+    this.__tool.equip({
+      mouseEvent: mouseEvent || this.__lastDefinedMouseEvent,
+      keyboardEvent: keyboardEvent || this.__lastDefinedKeyboardEvent,
+      designerEvent,
+    });
   }
 
 }

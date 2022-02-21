@@ -4,9 +4,7 @@ import { Dict, Void, Volatile } from '../types';
 
 export default class Dictionary<T extends {}> implements IDictionary<T> {
 
-  public constructor(private __data: Dict<T> = {}) {
-
-  }
+  public constructor(private __data: Dict<T> = {}) {}
 
   public get length(): number {
     return Object.keys(this.__data).length;

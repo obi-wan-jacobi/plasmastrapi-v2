@@ -57,7 +57,7 @@ class EntityMaster implements IEntityMaster {
             value: collection,
           });
         }
-        collection.write({ key: instance.id, value: instance });
+        collection.write({ key: instance.$id, value: instance });
         target = target.__proto__;
       }
     }
@@ -67,7 +67,7 @@ class EntityMaster implements IEntityMaster {
     while (this.__purgeTargets.length) {
       let target = this.__purgeTargets.shift()!;
       while (target) {
-        this.__entityMap.read(target.constructor.name)!.delete(target.id);
+        this.__entityMap.read(target.constructor.name)!.delete(target.$id);
         target = (target as Dict<any>).__proto__;
       }
     }

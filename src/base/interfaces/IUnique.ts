@@ -1,4 +1,4 @@
 
 export default interface IUnique {
-    id: string;
+    $id: string;
 }

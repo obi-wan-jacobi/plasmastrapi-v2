@@ -10,7 +10,7 @@ export default abstract class Unique implements IUnique {
 
     private __id: string;
 
-    public get id(): string {
+    public get $id(): string {
         return this.__id;
     }
 

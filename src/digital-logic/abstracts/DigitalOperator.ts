@@ -35,24 +35,24 @@ export default abstract class DigitalOperator extends Unique implements IDigital
   }
 
   public to(target: IDigitalOperator): void {
-    if (this.__outputs.read(target.id)) {
+    if (this.__outputs.read(target.$id)) {
       return;
     }
-    this.__outputs.write({ key: target.id, value: target });
+    this.__outputs.write({ key: target.$id, value: target });
     target.from(this);
   }
 
   public from(target: IDigitalOperator): void {
-    this._inputs.write({ key: target.id, value: target });
+    this._inputs.write({ key: target.$id, value: target });
     target.to(this);
   }
 
   public detach(target: IDigitalOperator): void {
-    if (!this._inputs.read(target.id) && !this.__outputs.read(target.id)) {
+    if (!this._inputs.read(target.$id) && !this.__outputs.read(target.$id)) {
       return;
     }
-    this._inputs.delete(target.id);
-    this.__outputs.delete(target.id);
+    this._inputs.delete(target.$id);
+    this.__outputs.delete(target.$id);
     target.detach(this);
   }
 
