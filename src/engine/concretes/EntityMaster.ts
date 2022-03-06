@@ -31,6 +31,9 @@ class EntityMaster implements IEntityMaster {
 
   public find<T extends IEntity>(EntityCls: EntityClass<T>): (fn: (entity: T) => boolean) => Volatile<T> {
     return (fn: ((entity: T) => boolean)): Volatile<T> => {
+      if (!this.__entityMap.read(EntityCls.name)) {
+        return undefined;
+      }
       const result = this.__entityMap.read(EntityCls.name)!.find(fn);
       if (result) {
         return result as T;

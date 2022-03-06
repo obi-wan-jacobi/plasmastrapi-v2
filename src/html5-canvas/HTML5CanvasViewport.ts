@@ -111,10 +111,10 @@ export default class HTML5CanvasViewport implements IViewport<CanvasImageSource>
   }
 
   @Atomic
-  private __drawLine({ points, style }: { points: IPoint[]; style: IStyle }): void {
+  private __drawLine({ path, style }: { path: IPoint[]; style: IStyle }): void {
     this.ctx.strokeStyle = style.colour;
     this.ctx.beginPath();
-    points.forEach((p: IPoint) => {
+    path.forEach((p: IPoint) => {
       this.ctx.lineTo(p.x, p.y);
     });
     this.ctx.stroke();

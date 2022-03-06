@@ -9,8 +9,8 @@ export default class InputTerminal extends UIEntity {
       pose: { x, y, a: 0 },
       offset: { xOffset, yOffset },
       shape: {
-        width: 10,
-        height: 10,
+        width: 20,
+        height: 20,
       },
       style: {
         colour: 'WHITE',

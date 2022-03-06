@@ -1,15 +1,17 @@
-import IEntity from 'engine/interfaces/IEntity';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import { getEuclideanDistanceBetweenPoints } from 'foundation/helpers/geometry';
 import UIEntity from 'ui/abstracts/UIEntity';
+import Gate from './Gate';
+import InputTerminal from './InputTerminal';
+import OutputTerminal from './OutputTerminal';
 
 export default class Wire extends UIEntity {
 
-  private __head: IEntity;
-  private __tail: IEntity;
+  public input: InputTerminal;
+  public output: OutputTerminal;
 
-  public constructor({ head, tail }: { head: IEntity; tail: IEntity }) {
+  public constructor({ input, output }: { input: InputTerminal; output: OutputTerminal }) {
     super({
       pose: { x: 0, y: 0, a: 0 },
       shape: {
@@ -23,14 +25,17 @@ export default class Wire extends UIEntity {
         zIndex: 0,
       },
     });
-    this.__head = head;
-    this.__tail = tail;
+    this.input = input;
+    this.output = output;
+    if (this.input.$parent) {
+      (this.input.$parent as Gate).connectInput({ wire: this });
+    }
     this.updatePose();
   }
 
   public updatePose(): void {
-    const headPose = this.__head.$copy(PoseComponent)!;
-    const tailPose = this.__tail.$copy(PoseComponent)!;
+    const headPose = this.input.$copy(PoseComponent)!;
+    const tailPose = this.output.$copy(PoseComponent)!;
     const x = (headPose.x + tailPose.x) / 2;
     const y = (headPose.y + tailPose.y) / 2;
     // atan2 is the secret sauce: https://en.wikipedia.org/wiki/Atan2
@@ -46,5 +51,11 @@ export default class Wire extends UIEntity {
     ]});
   }
 
+  public $destroy(): void {
+    super.$destroy();
+    if (this.input.$parent) {
+      (this.input.$parent as Gate).removeInput({ wire: this });
+    }
+  }
 
 }

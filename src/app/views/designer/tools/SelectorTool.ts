@@ -1,4 +1,5 @@
 import Gate from 'digital-logic/entities/Gate';
+import Wire from 'digital-logic/entities/Wire';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
@@ -7,7 +8,6 @@ import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import DesignerTool from '../abstracts/DesignerTool';
 import MoverBox from './MoverBox';
 import SelectionBox from './SelectionBox';
-import { WIRES } from './WireTool';
 
 export default class SelectorTool extends DesignerTool {
 
@@ -39,16 +39,14 @@ export default class SelectorTool extends DesignerTool {
     }
     if (this.__target) {
       this.__target?.$moveTo(mouseEvent!);
-      WIRES.for(this.__target).do((wire) => {
+      ENTITIES.forEvery(Wire)((wire) => {
         wire.updatePose();
       });
     }
   }
 
   public [MOUSE_EVENT.MOUSE_UP](): void {
-    if (this.__target) {
-      // goto dispose
-    } else if (this.__selectionBox && this.__selectionBox.selections.size > 0) {
+  if (!this.target && this.__selectionBox && this.__selectionBox.selections.size > 0) {
       this.__selectionBox.$destroy();
       this.__moverBox = new MoverBox({ selectionBox: this.__selectionBox });
       this.__selectionBox = undefined;

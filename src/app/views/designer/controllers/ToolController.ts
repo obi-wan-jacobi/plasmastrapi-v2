@@ -9,6 +9,7 @@ import DefaultTool from '../tools/DefaultTool';
 import DestructorTool from '../tools/DestructorTool';
 import MoverTool from '../tools/MoverTool';
 import SelectorTool from '../tools/SelectorTool';
+import WireCutterTool from '../tools/WireCutterTool';
 import WireTool from '../tools/WireTool';
 
 export default class ToolController {
@@ -22,58 +23,46 @@ export default class ToolController {
     [DESIGNER_EVENT.SELECTION_MODE]: SelectorTool,
     [DESIGNER_EVENT.MOVER_MODE]: MoverTool,
     [DESIGNER_EVENT.WIRING_MODE]: WireTool,
+    [DESIGNER_EVENT.CUTTER_MODE]: WireCutterTool,
   };
 
   public handleEvents({ mouseEvent, keyboardEvent, designerEvent }: { mouseEvent?: IMouseEvent; keyboardEvent?: IKeyboardEvent; designerEvent?: IPipeEvent }): void {
-    if (keyboardEvent) {
-      this.__lastDefinedKeyboardEvent = keyboardEvent;
-      // console.log(keyboardEvent);
-    }
-    if (mouseEvent) {
-      this.__lastDefinedMouseEvent = mouseEvent;
-      // console.log(mouseEvent.name);
-    }
-    if (designerEvent && this.__fromDesignerEventToDesignerTool[designerEvent.name]) {
-      this.__tool.dispose();
-      this.__equipTool({
-        ToolConstructor: this.__fromDesignerEventToDesignerTool[designerEvent.name],
-        mouseEvent,
-        keyboardEvent,
-        designerEvent,
-      });
-      console.log(designerEvent.name);
-    }
-    if (designerEvent && this.__tool[designerEvent.name]) {
-      this.__tool[designerEvent.name]({
-        mouseEvent: mouseEvent || this.__lastDefinedMouseEvent,
-        keyboardEvent: keyboardEvent || this.__lastDefinedKeyboardEvent,
-        designerEvent,
-      });
-    }
-    if (mouseEvent && this.__tool[mouseEvent.name]) {
-      this.__tool[mouseEvent.name]({
-        mouseEvent: mouseEvent || this.__lastDefinedMouseEvent,
-        keyboardEvent: keyboardEvent || this.__lastDefinedKeyboardEvent,
-      });
-    }
-    if (keyboardEvent && this.__tool[keyboardEvent.name]) {
-      this.__tool[keyboardEvent.name]({
-        mouseEvent: mouseEvent || this.__lastDefinedMouseEvent,
-        keyboardEvent: keyboardEvent || this.__lastDefinedKeyboardEvent,
-      });
-    }
-    if (!this.__tool || this.__tool.isDisposed) {
-      this.__equipTool({ ToolConstructor: DefaultTool, mouseEvent, keyboardEvent, designerEvent });
-    }
-  }
-
-  private __equipTool<T extends IDesignerTool>({ ToolConstructor, mouseEvent, keyboardEvent, designerEvent }: { ToolConstructor: Constructor<T, void>; mouseEvent?: IMouseEvent; keyboardEvent?: IKeyboardEvent; designerEvent?: IPipeEvent }) {
-    this.__tool = new ToolConstructor();
-    this.__tool.equip({
+    this.__lastDefinedKeyboardEvent = keyboardEvent || this.__lastDefinedKeyboardEvent;
+    this.__lastDefinedMouseEvent = mouseEvent || this.__lastDefinedMouseEvent;
+    const payload = {
       mouseEvent: mouseEvent || this.__lastDefinedMouseEvent,
       keyboardEvent: keyboardEvent || this.__lastDefinedKeyboardEvent,
       designerEvent,
+    };
+    if (designerEvent && this.__fromDesignerEventToDesignerTool[designerEvent.name] && (designerEvent.name !== DESIGNER_EVENT.SELECTION_MODE || this.__tool instanceof DefaultTool)) {
+      this.__tool.dispose();
+      this.__equipTool({
+        ToolConstructor: this.__fromDesignerEventToDesignerTool[designerEvent.name],
+        payload,
+      });
+      console.log(designerEvent.name);
+    }
+    this.__handleEvent({ event: designerEvent, payload });
+    this.__handleEvent({ event: mouseEvent, payload });
+    this.__handleEvent({ event: keyboardEvent, payload });
+    if (!this.__tool || this.__tool.isDisposed) {
+      this.__equipTool({ ToolConstructor: DefaultTool, payload });
+    }
+  }
+
+  private __equipTool<T extends IDesignerTool>({ ToolConstructor, payload }: { ToolConstructor: Constructor<T, void>; payload: { mouseEvent?: IMouseEvent; keyboardEvent?: IKeyboardEvent; designerEvent?: IPipeEvent }}) {
+    this.__tool = new ToolConstructor();
+    this.__tool.equip({
+      mouseEvent: payload.mouseEvent || this.__lastDefinedMouseEvent,
+      keyboardEvent: payload.keyboardEvent || this.__lastDefinedKeyboardEvent,
+      designerEvent: payload.designerEvent,
     });
+  }
+
+  private __handleEvent({ event, payload }: { event?: IPipeEvent; payload: { mouseEvent?: IMouseEvent; keyboardEvent?: IKeyboardEvent; designerEvent?: IPipeEvent }}) {
+    if (this.__tool && event && this.__tool[event.name]) {
+      this.__tool[event.name](payload);
+    }
   }
 
 }

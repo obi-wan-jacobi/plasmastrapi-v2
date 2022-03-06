@@ -6,7 +6,6 @@ import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import DesignerTool from '../abstracts/DesignerTool';
 import MoverBox from './MoverBox';
-import { WIRES } from './WireTool';
 
 export default class MoverTool extends DesignerTool {
 
@@ -30,10 +29,8 @@ export default class MoverTool extends DesignerTool {
     };
     ENTITIES.forEvery(MoverBox)((moverBox) => {
       moverBox.moveBy({ dx, dy });
-      moverBox.items.forEach((gate) => {
-        WIRES.for(gate).do((wire) => {
-          wire.updatePose();
-        });
+      ENTITIES.forEvery(Wire)((wire) => {
+        wire.updatePose();
       });
     });
     const { x, y } = mouseEvent!;

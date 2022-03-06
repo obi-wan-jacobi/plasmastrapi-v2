@@ -1,4 +1,7 @@
 import UIEntity from 'ui/abstracts/UIEntity';
+import CreateAndGateButton from 'app/CreateAndGateButton';
+import DeleteGateButton from 'app/DeleteGateButton';
+import WireCutterButton from 'app/WireCutterButton';
 
 export default class DesignerView extends UIEntity {
 
@@ -13,6 +16,10 @@ export default class DesignerView extends UIEntity {
         zIndex: 0,
       },
     });
+    this.$appendChild(new CreateAndGateButton({ x: 25, y: 25 }));
+    this.$appendChild(new CreateAndGateButton({ x: 75, y: 25 }));
+    this.$appendChild(new DeleteGateButton({ x: 125, y: 25 }));
+    this.$appendChild(new WireCutterButton({ x: 175, y: 25 }));
   }
 
 }

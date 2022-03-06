@@ -3,51 +3,41 @@ import IEngine from './interfaces/IEngine';
 import IEntityMaster from './interfaces/IEntityMaster';
 import ISystem from './interfaces/ISystem';
 import IViewport from './interfaces/IViewport';
-import Dictionary from 'base/concretes/Dictionary';
-import IDictionary from 'base/interfaces/IDictionary';
 import { Stor } from './types';
 import { ENTITIES } from './concretes/EntityMaster';
 import { COMPONENTS } from './concretes/ComponentMaster';
 import IPipe from './interfaces/IPipe';
 import IPipeEvent from './interfaces/IPipeEvent';
 import { Dict } from 'base/types';
+import ISystemMaster from './interfaces/ISystemMaster';
+import SystemMaster from './concretes/SystemMaster';
 
 export default class Engine<TImageSource, TPipes extends Dict<IPipe<IPipeEvent>>> implements IEngine<TImageSource, TPipes> {
 
   public entities: IEntityMaster;
   public components: IComponentMaster;
+  public systems: ISystemMaster<TPipes>;
 
   private __viewport: IViewport<TImageSource>;
   private __pipes: TPipes;
-  private __systems: IDictionary<ISystem<TPipes>> = new Dictionary();
   private __t: Date;
   private __delta: number;
 
   constructor({ viewport, pipes, systems }: { viewport: IViewport<TImageSource>; pipes: TPipes; systems: Stor<TPipes>[] }) {
     this.entities = ENTITIES;
     this.components = COMPONENTS;
+    this.systems = new SystemMaster();
     this.__viewport = viewport;
     this.__pipes = pipes;
     this.__initSystems(systems);
   }
 
   private __initSystems(systems: Stor<TPipes>[]): void {
-    systems.forEach((SystemCtor) => this.add(SystemCtor));
+    systems.forEach((SystemCtor) => this.systems.add(SystemCtor));
   }
 
   public load(src: string): TImageSource {
     return this.__viewport.load(src);
-  }
-
-  public add(SystemCtor: Stor<TPipes>): void {
-    this.__systems.write({
-      key: SystemCtor.name,
-      value: new SystemCtor(),
-    });
-  }
-
-  public remove(SystemCtor: Stor<TPipes>): void {
-    this.__systems.delete(SystemCtor.name);
   }
 
   public start(): void {
@@ -73,9 +63,10 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IPipeEvent>>
   }
 
   private __doSystems(): void {
-    this.__systems.forEach((system: ISystem<TPipes>) => system.once({
+    this.systems.forEach((system: ISystem<TPipes>) => system.once({
         entities: this.entities,
         components: this.components,
+        systems: this.systems,
         pipes: this.__pipes,
         delta: this.__delta,
       })
@@ -88,7 +79,7 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IPipeEvent>>
   }
 
   private __doRender(): void {
-    this.__systems.forEach((system: ISystem<TPipes>) => system.draw({
+    this.systems.forEach((system: ISystem<TPipes>) => system.draw({
         viewport: this.__viewport,
         components: this.components,
       })

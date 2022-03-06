@@ -9,12 +9,7 @@ import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import UIEntity from 'ui/abstracts/UIEntity';
 import DesignerTool from '../abstracts/DesignerTool';
-import Wire from '../../../../digital-logic/entities/Wire';
-import WireFactory from './WireFactory';
-
-const WIRES = new WireFactory();
-
-export { WIRES };
+import Wire from 'digital-logic/entities/Wire';
 
 export default class WireTool extends DesignerTool {
 
@@ -42,7 +37,10 @@ export default class WireTool extends DesignerTool {
         zIndex: 0,
       },
     });
-    this.__tempWire = new Wire({ head: this.__target, tail: this.__tempHandle });
+    const payload = this.__target instanceof InputTerminal
+      ? { input: this.__target, output: this.__tempHandle as OutputTerminal }
+      : { input: this.__tempHandle as OutputTerminal, output: this.__target };
+    this.__tempWire = new Wire(payload);
   }
 
   public [MOUSE_EVENT.MOUSE_MOVE]({ mouseEvent }: { mouseEvent?: IMouseEvent }): void {
@@ -66,13 +64,18 @@ export default class WireTool extends DesignerTool {
     if (!terminal) {
       return;
     }
-    if (terminal instanceof InputTerminal) {
-      WIRES.add({ input: terminal, output: this.__target });
-      return;
-    } else {
-      WIRES.add({ input: this.__target, output: terminal });
+    const isWireAlreadyExists = ENTITIES.find(Wire)((wire) => {
+      return (wire.input === terminal || wire.output === terminal) && (wire.output === this.__target || wire.input === this.__target);
+    });
+    if (isWireAlreadyExists) {
       return;
     }
+    if (terminal instanceof InputTerminal) {
+      new Wire({ input: terminal, output: this.__target });
+    } else {
+      new Wire({ input: this.__target, output: terminal });
+    }
+    return;
   }
 
 }
