@@ -4,14 +4,15 @@ import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import { KEYBOARD_EVENT } from 'html5-canvas/enums/KEYBOARD_EVENT';
+import IPipeEvent from 'engine/interfaces/IPipeEvent';
 
 export default class CreatorTool extends DesignerTool {
 
   private __target?: Gate;
 
-  public equip({ mouseEvent, keyboardEvent }: { mouseEvent?: IMouseEvent; keyboardEvent?: IKeyboardEvent }): void {
-    super.equip({ mouseEvent, keyboardEvent });
-    this.__preview({ mouseEvent });
+  public equip({ mouseEvent, keyboardEvent, designerEvent }: { mouseEvent?: IMouseEvent; keyboardEvent?: IKeyboardEvent; designerEvent?: IPipeEvent }): void {
+    super.equip({ mouseEvent, keyboardEvent, designerEvent });
+    this.__preview({ mouseEvent, designerEvent });
   }
 
   public [MOUSE_EVENT.MOUSE_MOVE]({ mouseEvent }: { mouseEvent?: IMouseEvent }): void {
@@ -38,9 +39,9 @@ export default class CreatorTool extends DesignerTool {
     this.__target?.$destroy();
   }
 
-  private __preview({ mouseEvent }: { mouseEvent?: IMouseEvent; keyboardEvent?: IKeyboardEvent }): void {
+  private __preview({ mouseEvent, designerEvent }: { mouseEvent?: IMouseEvent; designerEvent?: IPipeEvent }): void {
     const { x, y } = mouseEvent || { x: 0, y: 0 };
-    this.__target = new Gate({ x, y, src: './AndGate.png' });
+    this.__target = (designerEvent?.target as any).create({ x, y });
   }
 
 }

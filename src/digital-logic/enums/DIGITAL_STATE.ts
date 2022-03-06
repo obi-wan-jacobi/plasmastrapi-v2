@@ -1,6 +1,6 @@
 
 export enum DIGITAL_STATE {
-  HIGH,
-  LOW,
-  OFF,
+  HIGH = 'HIGH',
+  LOW = 'LOW',
+  OFF = 'OFF',
 }

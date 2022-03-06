@@ -1,7 +1,12 @@
+import Gate from 'digital-logic/entities/Gate';
+import PowerSource from 'digital-logic/entities/PowerSource';
+import Wire from 'digital-logic/entities/Wire';
 import System from 'engine/abstracts/System';
+import { ENTITIES } from 'engine/concretes/EntityMaster';
 import IPipe from 'engine/interfaces/IPipe';
 import IPipeEvent from 'engine/interfaces/IPipeEvent';
 import ISystemMaster from 'engine/interfaces/ISystemMaster';
+import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import { PLAYER_EVENT } from '../enums/PLAYER_EVENT';
 import DesignerSystem from './DesignerSystem';
 import GateSystem from './GateSystem';
@@ -14,16 +19,20 @@ export default class PlayerSystem<TPipes extends { player: IPipe<IPipeEvent> }> 
     if (!event) {
       return;
     }
-    if (event.name === PLAYER_EVENT.START) {
+    if (event?.name === PLAYER_EVENT.START) {
       systems.remove(DesignerSystem);
       systems.add(GateSystem);
       systems.add(WireSystem);
+      ENTITIES.forEvery(PowerSource)((ps) => ps.high());
       return;
     }
-    if (event.name === PLAYER_EVENT.STOP) {
+    if (event?.name === PLAYER_EVENT.STOP) {
       systems.add(DesignerSystem);
       systems.remove(GateSystem);
       systems.remove(WireSystem);
+      ENTITIES.forEvery(PowerSource)((ps) => ps.off());
+      ENTITIES.forEvery(Gate)((gate) => gate.off());
+      ENTITIES.forEvery(Wire)((wire) => wire.$patch(StyleComponent)({ colour: 'WHITE' }));
       return;
     }
   }
