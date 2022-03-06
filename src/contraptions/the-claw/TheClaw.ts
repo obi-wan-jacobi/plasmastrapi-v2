@@ -52,7 +52,7 @@ export default class TheClaw extends UIEntity {
         ],
       },
       style: { colour: 'WHITE', opacity: 1, fill: 'rgba(0,0,0,0)', zIndex: 0 },
-      // labelText: 'left-sensor',
+      // label: { text: 'l-sensor', fontSize: 10, offset: { x: -14, y: 3 } },
     }));
     this.__rightSensor = this.$appendChild(new UIEntity({
       pose: { x: x + 170, y, a: 0 },
@@ -105,9 +105,9 @@ export default class TheClaw extends UIEntity {
     this.__bottomMotor = this.$appendChild(new UIEntity({
       // labelText: 'move-down',
     }));
-    this.__claw = this.$appendChild(new Claw({
-      x: x - 130, y: y + 130,
-    }));
+    // this.__claw = this.$appendChild(new Claw({
+    //   x: x - 130, y: y + 130,
+    // }));
     this.__prize = this.$appendChild(new UIEntity({
       pose: { x: x + 130, y: y + 250, a: 0 },
       shape: {

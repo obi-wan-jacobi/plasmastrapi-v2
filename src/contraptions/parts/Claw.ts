@@ -1,9 +1,23 @@
 import HorizontalThreadedAxle from './HorizontalThreadedAxle';
 import UIEntity from 'ui/abstracts/UIEntity';
+import MachinePart from './MachinePart';
+import MachineInput from './MachineInput';
+import MachineOutput from './MachineOutput';
+
+export interface IClawIO {
+  inputs: {
+    open: MachineInput;
+    close: MachineInput;
+  };
+  outputs: {
+    open: MachineOutput;
+    closed: MachineOutput;
+  };
+}
 
 export default class Claw extends UIEntity {
 
-  private __wrist: UIEntity;
+  private __wrist: MachinePart;
   private __palm: UIEntity;
   private __leftHub: UIEntity;
   private __rightHub: UIEntity;
@@ -14,7 +28,7 @@ export default class Claw extends UIEntity {
   private __openMotor: UIEntity;
   private __closeMotor: UIEntity;
 
-  public constructor({ x, y }: { x: number; y: number }) {
+  public constructor({ x, y, io }: { x: number; y: number; io: IClawIO }) {
     super(arguments[0]);
     this.__wrist = this.$appendChild(new UIEntity({
       pose: { x, y: y - 15, a: 0 },

@@ -53,7 +53,7 @@ export default class PowerSource extends UIEntity {
 
   public $destroy(): void {
     ENTITIES.forEvery(Wire)((wire) => {
-      if (wire.input.$parent === this) {
+      if (wire.output.$parent === this) {
         wire.$destroy();
       }
     });
