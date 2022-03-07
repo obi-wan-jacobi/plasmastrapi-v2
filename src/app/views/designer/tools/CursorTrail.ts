@@ -1,6 +1,6 @@
 import LineComponent from 'foundation/geometry/components/LineComponent';
 import { IPoint } from 'foundation/geometry/components/PoseComponent';
-import UIEntity from 'ui/abstracts/UIEntity';
+import UIEntity from 'ui/UIEntity';
 
 export default class CursorTrail extends UIEntity {
 

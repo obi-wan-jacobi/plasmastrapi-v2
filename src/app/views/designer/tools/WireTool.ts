@@ -7,7 +7,7 @@ import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import IHTML5CanvasEntity from 'html5-canvas/interfaces/IHTML5CanvasEntity';
 import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
-import UIEntity from 'ui/abstracts/UIEntity';
+import UIEntity from 'ui/UIEntity';
 import DesignerTool from '../abstracts/DesignerTool';
 import Wire from 'digital-logic/entities/Wire';
 

@@ -1,5 +1,5 @@
 import HorizontalThreadedAxle from './HorizontalThreadedAxle';
-import UIEntity from 'ui/abstracts/UIEntity';
+import UIEntity from 'ui/UIEntity';
 import MachinePart from './MachinePart';
 import MachineInput from './MachineInput';
 import MachineOutput from './MachineOutput';

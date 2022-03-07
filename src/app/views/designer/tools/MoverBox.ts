@@ -3,7 +3,7 @@ import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import IHTML5CanvasEntity from 'html5-canvas/interfaces/IHTML5CanvasEntity';
-import UIEntity from 'ui/abstracts/UIEntity';
+import UIEntity from 'ui/UIEntity';
 import { DESIGNER_EVENT } from '../enums/DESIGNER_EVENT';
 import SelectionBox from './SelectionBox';
 

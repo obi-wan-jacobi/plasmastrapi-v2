@@ -4,7 +4,7 @@ import { Etor } from 'engine/types';
 import PoseComponent, { IPoint } from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import { entitiesTouch } from 'foundation/helpers/entities';
-import UIEntity from 'ui/abstracts/UIEntity';
+import UIEntity from 'ui/UIEntity';
 
 export default class SelectionBox<T extends IEntity> extends UIEntity {
 

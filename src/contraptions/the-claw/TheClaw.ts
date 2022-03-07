@@ -1,7 +1,7 @@
 import Claw from '../parts/Claw';
 import HorizontalThreadedAxle from '../parts/HorizontalThreadedAxle';
 import VerticalThreadedAxle from '../parts/VerticalThreadedAxle';
-import UIEntity from 'ui/abstracts/UIEntity';
+import UIEntity from 'ui/UIEntity';
 
 export default class TheClaw extends UIEntity {
 

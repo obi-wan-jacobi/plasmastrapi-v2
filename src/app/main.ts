@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import App from './App';
-import EditorView from './views/EditorView';
 import TheClaw from '../contraptions/the-claw/TheClaw';
 import HorizontalThreadedAxle from '../contraptions/parts/HorizontalThreadedAxle';
 import MouseSystem from 'html5-canvas/systems/MouseSystem';
@@ -8,10 +7,7 @@ import ShapeSystem from 'foundation/presentation/systems/ShapeSystem';
 import LabelSystem from 'foundation/presentation/systems/LabelSystem';
 import ImageSystem from 'foundation/presentation/systems/ImageSystem';
 import AnimationSystem from 'foundation/presentation/systems/AnimationSystem';
-import Pipe from 'engine/concretes/Pipe';
-import DesignerSystem from './views/designer/systems/DesignerSystem';
 import LineSystem from 'foundation/presentation/systems/LineSystem';
-import PlayerSystem from './views/designer/systems/PlayerSystem';
 
 const canvas = document.getElementById('app-target') as HTMLCanvasElement;
 canvas.width = 1280;
@@ -26,13 +22,7 @@ const app = new App({ canvas,
     LabelSystem,
     ImageSystem,
     AnimationSystem,
-    PlayerSystem,
-    DesignerSystem,
   ],
-  pipes: {
-    designer: new Pipe(),
-    player: new Pipe(),
-  },
 });
 
 [
@@ -55,7 +45,6 @@ const outputs = {
 
 };
 const claw = new TheClaw({ x: 1040, y: 340 });
-new EditorView();
 app.start();
 
 

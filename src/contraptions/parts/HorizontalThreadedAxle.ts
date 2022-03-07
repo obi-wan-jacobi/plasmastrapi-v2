@@ -1,4 +1,4 @@
-import UIEntity from 'ui/abstracts/UIEntity';
+import UIEntity from 'ui/UIEntity';
 import { IImage } from 'foundation/presentation/components/ImageComponent';
 
 export default class HorizontalThreadedAxle extends UIEntity {
