@@ -17,18 +17,18 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IPipeEvent>>
   public entities: IEntityMaster;
   public components: IComponentMaster;
   public systems: ISystemMaster<TPipes>;
+  public pipes: TPipes;
 
   private __viewport: IViewport<TImageSource>;
-  private __pipes: TPipes;
   private __t: Date;
   private __delta: number;
 
   constructor({ viewport, pipes, systems }: { viewport: IViewport<TImageSource>; pipes: TPipes; systems: Stor<TPipes>[] }) {
     this.entities = ENTITIES;
     this.components = COMPONENTS;
+    this.pipes = pipes;
     this.systems = new SystemMaster();
     this.__viewport = viewport;
-    this.__pipes = pipes;
     this.__initSystems(systems);
   }
 
@@ -59,7 +59,7 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IPipeEvent>>
   }
 
   private __doPipes(): void {
-    Object.keys(this.__pipes).forEach((key) => this.__pipes[key].next());
+    Object.keys(this.pipes).forEach((key) => this.pipes[key].next());
   }
 
   private __doSystems(): void {
@@ -67,7 +67,7 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IPipeEvent>>
         entities: this.entities,
         components: this.components,
         systems: this.systems,
-        pipes: this.__pipes,
+        pipes: this.pipes,
         delta: this.__delta,
       })
     );

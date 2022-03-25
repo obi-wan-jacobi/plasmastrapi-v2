@@ -25,7 +25,7 @@ export default class HTML5Pipe<
     private __bindEvents({ element, eventNames, eventMapper }: IHTML5EventTransform<TElement, TSourceEvent, TAdaptedEvent>): void {
         eventNames.forEach((name) => {
             // why do we have to cast element when it's already constrained???
-            (element as Dict<Void<TSourceEvent>>)[`on${name}`] = (event: TSourceEvent): void => {
+            (element as unknown as Dict<Void<TSourceEvent>>)[`on${name}`] = (event: TSourceEvent): void => {
                 const adaptedEvent = eventMapper({
                     event,
                     element,
