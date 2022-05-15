@@ -33,10 +33,22 @@ export default class Dictionary<T extends {}> implements IDictionary<T> {
     return this.__data[key || -1];
   }
 
+  public filter(fn: (value: T) => boolean): T[] {
+    return Object.keys(this.__data).filter((k) => fn(this.__data[k])).map((k) => this.__data[k]);
+  }
+
   public forEach(fn: Void<T>): void {
     Object.keys(this.__data).forEach((key) => {
       if (!isNullOrUndefined(this.__data[key])) {
         fn(this.__data[key]);
+      }
+    });
+  }
+
+  public every(fn: (value: T) => boolean): void {
+    Object.keys(this.__data).every((key) => {
+      if (!isNullOrUndefined(this.__data[key])) {
+        return fn(this.__data[key]);
       }
     });
   }

@@ -12,18 +12,18 @@ import { Dict } from 'base/types';
 import ISystemMaster from './interfaces/ISystemMaster';
 import SystemMaster from './concretes/SystemMaster';
 
-export default class Engine<TImageSource, TPipes extends Dict<IPipe<IPipeEvent>>> implements IEngine<TImageSource, TPipes> {
+export default class Engine<TImageSource, TPipes extends Dict<IPipe<IPipeEvent>>> implements IEngine<TImageSource> {
 
   public entities: IEntityMaster;
   public components: IComponentMaster;
-  public systems: ISystemMaster<TPipes>;
+  public systems: ISystemMaster;
   public pipes: TPipes;
 
   private __viewport: IViewport<TImageSource>;
   private __t: Date;
   private __delta: number;
 
-  constructor({ viewport, pipes, systems }: { viewport: IViewport<TImageSource>; pipes: TPipes; systems: Stor<TPipes>[] }) {
+  constructor({ viewport, pipes, systems }: { viewport: IViewport<TImageSource>; pipes: TPipes; systems: Stor[] }) {
     this.entities = ENTITIES;
     this.components = COMPONENTS;
     this.pipes = pipes;
@@ -32,7 +32,7 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IPipeEvent>>
     this.__initSystems(systems);
   }
 
-  private __initSystems(systems: Stor<TPipes>[]): void {
+  private __initSystems(systems: Stor[]): void {
     systems.forEach((SystemCtor) => this.systems.add(SystemCtor));
   }
 
@@ -63,7 +63,7 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IPipeEvent>>
   }
 
   private __doSystems(): void {
-    this.systems.forEach((system: ISystem<TPipes>) => system.once({
+    this.systems.forEach((system: ISystem) => system.once({
         entities: this.entities,
         components: this.components,
         systems: this.systems,
@@ -79,7 +79,7 @@ export default class Engine<TImageSource, TPipes extends Dict<IPipe<IPipeEvent>>
   }
 
   private __doRender(): void {
-    this.systems.forEach((system: ISystem<TPipes>) => system.draw({
+    this.systems.forEach((system: ISystem) => system.draw({
         viewport: this.__viewport,
         components: this.components,
       })

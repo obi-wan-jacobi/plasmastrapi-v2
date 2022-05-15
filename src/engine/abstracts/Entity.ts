@@ -69,7 +69,7 @@ export default abstract class Entity extends Unique implements IEntity {
     };
   };
 
-  public readonly $patch = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Void<TArg | {}> => {
+  public $patch<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Void<TArg | {}> {
     return (data: TArg): void => {
       const component = this.__components.read(ComponentClass.name);
       if (!component) {
@@ -77,7 +77,7 @@ export default abstract class Entity extends Unique implements IEntity {
       }
       return component.patch(data);
     };
-  };
+  }
 
   public readonly $forEach = (fn: Void<IComponent<any>>): void => {
     return this.__components.forEach(fn);

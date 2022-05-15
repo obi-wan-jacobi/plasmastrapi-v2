@@ -1,7 +1,6 @@
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
-import MouseComponent from 'html5-canvas/components/MouseComponent';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 
 export default class UIPane extends HTML5CanvasElement {
@@ -23,7 +22,6 @@ export default class UIPane extends HTML5CanvasElement {
       opacity: 1,
       zIndex: 0,
     });
-    this.$add(MouseComponent)({ x: 0, y: 0, isHovered: false });
   }
 
 }

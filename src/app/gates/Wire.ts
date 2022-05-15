@@ -1,4 +1,5 @@
 import Gate from 'app/abstracts/Gate';
+import { RGBA_0 } from 'app/ui/COLOUR';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import { getEuclideanDistanceBetweenPoints } from 'foundation/helpers/geometry';
@@ -29,7 +30,7 @@ export default class Wire extends HTML5CanvasElement {
     });
     this.$add(StyleComponent)({
       colour: 'WHITE',
-      fill: '',
+      fill: RGBA_0,
       opacity: 1,
       zIndex: 3,
     });
@@ -52,6 +53,18 @@ export default class Wire extends HTML5CanvasElement {
         { x: -length / 2, y: -wireHalfHeight },
         { x: length / 2, y: -wireHalfHeight },
     ]});
+  }
+
+  public high(): void {
+    this.$patch(StyleComponent)({ colour: 'GREEN' });
+  }
+
+  public low(): void {
+    this.$patch(StyleComponent)({ colour: 'PINK' });
+  }
+
+  public off(): void {
+    this.$patch(StyleComponent)({ colour: 'WHITE' });
   }
 
   public $destroy(): void {

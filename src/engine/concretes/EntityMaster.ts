@@ -69,8 +69,9 @@ class EntityMaster implements IEntityMaster {
   private __doPurgation(): void {
     while (this.__purgeTargets.length) {
       let target = this.__purgeTargets.shift()!;
+      const id = target.$id;
       while (target) {
-        this.__entityMap.read(target.constructor.name)!.delete(target.$id);
+        this.__entityMap.read(target.constructor.name)!.delete(id);
         target = (target as Dict<any>).__proto__;
       }
     }

@@ -8,49 +8,58 @@ import SelectorTool from 'app/tools/SelectorTool';
 import MoverTool from 'app/tools/MoverTool';
 import WireTool from 'app/tools/WireTool';
 import WireCutterTool from 'app/tools/WireCutterTool';
+import { Constructor, Dict } from 'base/types';
+import IInputHandler from 'app/interfaces/IInputHandler';
+import IEntity from 'engine/interfaces/IEntity';
+import StyleComponent, { IStyle } from 'foundation/presentation/components/StyleComponent';
 
 export default class ToolController {
 
   private __inputController: InputController;
+  private __currentToolInitiator?: IEntity;
+  private __initiatorStyle?: IStyle;
+
+  private __toolingMap = {
+    [TOOL_EVENT.DEFAULT]: DefaultTool,
+    [TOOL_EVENT.CREATE_GATE]: CreatorTool,
+    [TOOL_EVENT.DELETE_GATE]: DestructorTool,
+    [TOOL_EVENT.BEGIN_SELECTION]: SelectorTool,
+    [TOOL_EVENT.MOVE_SELECTION]: MoverTool,
+    [TOOL_EVENT.CREATE_WIRE]: WireTool,
+    [TOOL_EVENT.DELETE_WIRE]: WireCutterTool,
+  } as Dict<Constructor<IInputHandler, any>>;
 
   public constructor(inputController: InputController) {
     this.__inputController = inputController;
-    EVENT_BUS.subscribe({
-      topic: TOOL_EVENT.DEFAULT,
-      id: this.constructor.name,
-      fn: () => this.__inputController.setHandler(new DefaultTool()),
-    });
-    EVENT_BUS.subscribe({
-      topic: TOOL_EVENT.CREATE_GATE,
-      id: this.constructor.name,
-      fn: (arg) => this.__inputController.setHandler(new CreatorTool({ target: arg })),
-    });
-    EVENT_BUS.subscribe({
-      topic: TOOL_EVENT.DELETE_GATE,
-      id: this.constructor.name,
-      fn: () => this.__inputController.setHandler(new DestructorTool()),
-    });
-    EVENT_BUS.subscribe({
-      topic: TOOL_EVENT.BEGIN_SELECTION,
-      id: this.constructor.name,
-      fn: (arg) => this.__inputController.setHandler(new SelectorTool(arg)),
-    });
-    EVENT_BUS.subscribe({
-      topic: TOOL_EVENT.MOVE_SELECTION,
-      id: this.constructor.name,
-      fn: (arg) => this.__inputController.setHandler(new MoverTool(arg)),
-    });
-    EVENT_BUS.subscribe({
-      topic: TOOL_EVENT.CREATE_WIRE,
-      id: this.constructor.name,
-      fn: (arg) => this.__inputController.setHandler(new WireTool({ target: arg })),
-    });
-    EVENT_BUS.subscribe({
-      topic: TOOL_EVENT.DELETE_WIRE,
-      id: this.constructor.name,
-      fn: () => this.__inputController.setHandler(new WireCutterTool()),
+    Object.keys(this.__toolingMap).forEach((toolEvent: string) => {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      const ToolConstructor = this.__toolingMap[toolEvent];
+      EVENT_BUS.subscribe({
+        topic: toolEvent,
+        id: this.constructor.name,
+        fn: (args?: IToolCommand) => {
+          this.__highlightCurrentToolInitiator(args?.initiator);
+          this.__inputController.setHandler(new ToolConstructor(args));
+        },
+      });
     });
   }
 
+  private __highlightCurrentToolInitiator(toolInitiator?: IEntity): void {
+    if (this.__currentToolInitiator && this.__initiatorStyle) {
+      this.__currentToolInitiator.$remove(StyleComponent);
+      this.__currentToolInitiator.$add(StyleComponent)(this.__initiatorStyle);
+    }
+    if (!toolInitiator) {
+      return;
+    }
+    this.__currentToolInitiator = toolInitiator;
+    this.__initiatorStyle = toolInitiator.$copy(StyleComponent);
+    this.__currentToolInitiator.$patch(StyleComponent)({ colour: 'YELLOW' });
+  }
 
+}
+
+interface IToolCommand {
+  initiator?: IEntity;
 }

@@ -4,7 +4,7 @@ import IViewport from 'engine/interfaces/IViewport';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';
 import LineComponent from 'foundation/geometry/components/LineComponent';
 
-export default class LineSystem extends System<any> {
+export default class LineSystem extends System {
 
     public draw({ viewport, components }: { viewport: IViewport<any>; components: IComponentMaster }): void {
         components.forEvery(LineComponent)((line) => {

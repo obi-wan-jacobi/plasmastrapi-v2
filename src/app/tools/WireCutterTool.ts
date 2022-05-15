@@ -1,4 +1,5 @@
 import InputHandler from 'app/abstracts/InputHandler';
+import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import EVENT_BUS from 'app/EVENT_BUS';
 import Wire from 'app/gates/Wire';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
@@ -32,7 +33,7 @@ export default class WireCutterTool extends InputHandler {
         wire.$destroy();
       }
     });
-    EVENT_BUS.publish({ topic: 'DEFAULT' });
+    EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
   }
 
   public dispose(): void {

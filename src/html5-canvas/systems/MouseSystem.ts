@@ -1,7 +1,6 @@
 import System from 'engine/abstracts/System';
 import { entityContainsPoint } from '../../foundation/helpers/entities';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
-import IPipe from 'engine/interfaces/IPipe';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';
 import MouseComponent from '../components/MouseComponent';
 import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
@@ -9,9 +8,9 @@ import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 
-export default class MouseSystem<TPipes extends { mouse: IPipe<IMouseEvent> }> extends System<TPipes> {
+export default class MouseSystem extends System {
 
-  public once({ components, pipes }: { components: IComponentMaster; pipes: TPipes }): void {
+  public once({ components, pipes }: { components: IComponentMaster; pipes: any }): void {
     const event = pipes.mouse.event;
     if (!event) {
       return;

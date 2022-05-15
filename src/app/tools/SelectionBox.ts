@@ -1,3 +1,4 @@
+import { RGBA_0 } from 'app/ui/COLOUR';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import IEntity from 'engine/interfaces/IEntity';
 import { EntityClass } from 'engine/types';
@@ -29,7 +30,7 @@ export default class SelectionBox<T extends IEntity> extends HTML5CanvasElement 
     });
     this.$add(StyleComponent)({
       colour: 'WHITE',
-      fill: 'rgba(0,0,0,0)',
+      fill: RGBA_0,
       opacity: 1,
       zIndex: 2,
     });
@@ -57,6 +58,9 @@ export default class SelectionBox<T extends IEntity> extends HTML5CanvasElement 
 
   private __getSelections(): void {
     ENTITIES.forEvery(this.__SelectionType)((selection) => {
+      if (!selection.$copy(PoseComponent)) {
+        return;
+      }
       if (entitiesTouch(this, selection)) {
         this.selections.add(selection);
         return;

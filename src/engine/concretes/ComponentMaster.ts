@@ -43,6 +43,12 @@ class ComponentMaster implements IComponentMaster {
     this.__doPurgation();
   }
 
+  public toArray<T extends IComponent<TArg>, TArg>(ComponentCls: ComponentClass<T, TArg>): IComponent<TArg>[] {
+    return this.__componentMap.read(ComponentCls.name)
+      ? this.__componentMap.read(ComponentCls.name)!.toArray()
+      : [];
+  }
+
   private __doRegistrations(): void {
     while (this.__registerTargets.length) {
       const target = this.__registerTargets.shift()!;

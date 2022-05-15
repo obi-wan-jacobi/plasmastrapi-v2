@@ -1,4 +1,4 @@
-import { Volatile } from 'base/types';
+import { Void, Volatile } from 'base/types';
 
 export default interface IDictionary<T extends {}> {
 
@@ -12,7 +12,11 @@ export default interface IDictionary<T extends {}> {
 
   find(fn: (value: T) => boolean): Volatile<T>;
 
-  forEach(fn: (value: T) => void): void;
+  filter(fn: (value: T) => boolean): T[];
+
+  forEach(fn: Void<T>): void;
+
+  every(fn: (value: T) => boolean): void;
 
   toArray(): T[];
 

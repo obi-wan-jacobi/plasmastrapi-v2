@@ -6,7 +6,7 @@ import { transformShape } from '../../helpers/geometry';
 import IViewport from 'engine/interfaces/IViewport';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';
 
-export default class ShapeSystem extends System<any> {
+export default class ShapeSystem extends System {
 
     public draw({ viewport, components }: { viewport: IViewport<any>; components: IComponentMaster }): void {
         components.forEvery(ShapeComponent)((shape) => {

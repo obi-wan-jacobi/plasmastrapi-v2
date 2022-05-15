@@ -1,8 +1,10 @@
 import InputHandler from 'app/abstracts/InputHandler';
+import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import EVENT_BUS from 'app/EVENT_BUS';
 import InputTerminal from 'app/gates/InputTerminal';
 import OutputTerminal from 'app/gates/OutputTerminal';
 import Wire from 'app/gates/Wire';
+import { RGBA_0 } from 'app/ui/COLOUR';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
@@ -12,7 +14,7 @@ import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
-import { triggerEventsOnClosestTarget } from './DefaultTool';
+import { triggerMouseEventsOnClosestTarget } from './DefaultTool';
 
 export default class WireTool extends InputHandler {
 
@@ -37,18 +39,18 @@ export default class WireTool extends InputHandler {
     });
     this.__tempHandle.$add(StyleComponent)({
       colour: 'WHITE',
-      fill: 'rgba(0,0,0,0)',
+      fill: RGBA_0,
       opacity: 1,
       zIndex: 0,
     });
-    this.__tempHandle.$parent = {
+    this.__tempHandle.$parent = Object.assign(new HTML5CanvasElement(), {
       connectInput: () => {},
       connectOutput: () => {},
       disconnect: () => {},
-      $removeChild: () => {}} as any;
+    });
     const payload = this.__target instanceof InputTerminal
-      ? { input: this.__target, output: this.__tempHandle as OutputTerminal }
-      : { input: this.__tempHandle as OutputTerminal, output: this.__target };
+      ? { input: this.__tempHandle as OutputTerminal, output: this.__target }
+      : { input: this.__target, output: this.__tempHandle as OutputTerminal };
     this.__tempWire = new Wire(payload);
   }
 
@@ -58,8 +60,8 @@ export default class WireTool extends InputHandler {
   }
 
   public [MOUSE_EVENT.MOUSE_UP](mouseEvent: IMouseEvent): void {
-    EVENT_BUS.publish({ topic: 'DEFAULT' });
-    triggerEventsOnClosestTarget({ event: mouseEvent });
+    EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
+    triggerMouseEventsOnClosestTarget({ event: mouseEvent });
     this.__createWireAsNeeded();
   }
 
@@ -79,9 +81,9 @@ export default class WireTool extends InputHandler {
       return;
     }
     if (terminal instanceof InputTerminal) {
-      new Wire({ input: terminal, output: this.__target });
-    } else {
       new Wire({ input: this.__target, output: terminal });
+    } else {
+      new Wire({ input: terminal, output: this.__target });
     }
     return;
   }

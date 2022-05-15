@@ -9,7 +9,7 @@ import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
 
 export default class App extends Engine<CanvasImageSource, { mouse: IPipe<IMouseEvent>; keyboard: IPipe<IKeyboardEvent> }> {
 
-    public constructor({ canvas, systems }: { canvas: HTMLCanvasElement; systems: Stor<{ mouse: IPipe<IMouseEvent>; keyboard: IPipe<IKeyboardEvent> }>[] }) {
+    public constructor({ canvas, systems }: { canvas: HTMLCanvasElement; systems: Stor[] }) {
         super({
             viewport: new HTML5CanvasViewport({ canvas }),
             pipes: {

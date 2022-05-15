@@ -10,4 +10,6 @@ export default interface IComponentMaster {
 
   forEvery<T extends IComponent<TArg>, TArg>(ComponentCls: ComponentClass<T, TArg>): Void<Void<T>>;
 
+  toArray<T extends IComponent<TArg>, TArg>(ComponentCls: ComponentClass<T, TArg>): IComponent<TArg>[];
+
 }

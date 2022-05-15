@@ -131,9 +131,13 @@ export default class HTML5CanvasViewport implements IViewport<CanvasImageSource>
   private __drawCircle({ position, radius, style }: {
     position: IPoint; radius: number; style: IStyle;
   }): void {
+    this.ctx.globalAlpha = style.opacity;
     this.ctx.strokeStyle = style.colour;
+    this.ctx.fillStyle = style.fill;
     this.ctx.beginPath();
     this.ctx.arc(position.x, position.y, radius, 0, 2 * Math.PI);
+    this.ctx.fill();
+    this.ctx.closePath();
     this.ctx.stroke();
   }
 

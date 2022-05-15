@@ -15,13 +15,6 @@ export default class HTML5Pipe<
         this.__bindEvents({ element, eventNames, eventMapper });
     }
 
-    public push(event: TAdaptedEvent): void {
-        super.push(event);
-        if (this._buffer.length > 2) {
-            this._buffer.shift();
-        }
-    }
-
     private __bindEvents({ element, eventNames, eventMapper }: IHTML5EventTransform<TElement, TSourceEvent, TAdaptedEvent>): void {
         eventNames.forEach((name) => {
             // why do we have to cast element when it's already constrained???

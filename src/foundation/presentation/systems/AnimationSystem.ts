@@ -4,7 +4,7 @@ import IViewport from 'engine/interfaces/IViewport';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import AnimationComponent, { IAnimation } from '../components/AnimationComponent';
 
-export default class AnimationSystem extends System<any> {
+export default class AnimationSystem extends System {
 
   public draw({ viewport, components }: { viewport: IViewport<any>; components: IComponentMaster }): void {
       components.forEvery(AnimationComponent)((animation) => {
@@ -32,7 +32,7 @@ export default class AnimationSystem extends System<any> {
           } else if (!animationData.isPaused) {
               animationData.idur++;
           }
-          animation.patch({ data: animation.copy() });
+          animation.patch(animationData);
           viewport.drawImage({
               pose,
               image: animationData.images[animationData.frame],

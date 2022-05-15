@@ -1,6 +1,6 @@
 import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import EVENT_BUS from 'app/EVENT_BUS';
-import PoseComponent, { IPoint } from 'foundation/geometry/components/PoseComponent';
+import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import MouseComponent from 'html5-canvas/components/MouseComponent';

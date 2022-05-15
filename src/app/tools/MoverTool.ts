@@ -1,4 +1,5 @@
 import InputHandler from 'app/abstracts/InputHandler';
+import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import EVENT_BUS from 'app/EVENT_BUS';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import { IPoint } from 'foundation/geometry/components/PoseComponent';
@@ -35,7 +36,7 @@ export default class MoverTool extends InputHandler {
 
   public [MOUSE_EVENT.MOUSE_UP](): void {
     ENTITIES.forEvery(MoverBox)((moverBox) => moverBox.$destroy());
-    EVENT_BUS.publish({ topic: 'DEFAULT' });
+    EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
   }
 
   public dispose(): void {}

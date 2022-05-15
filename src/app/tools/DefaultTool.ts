@@ -11,26 +11,22 @@ import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 export default class DefaultTool extends InputHandler {
 
   [MOUSE_EVENT.MOUSE_DOWN](event: IMouseEvent): void {
-    triggerEventsOnClosestTarget({ event });
+    triggerMouseEventsOnClosestTarget({ event });
   }
 
   [MOUSE_EVENT.MOUSE_UP](event: IMouseEvent): void {
-    triggerEventsOnClosestTarget({ event });
+    triggerMouseEventsOnClosestTarget({ event });
   }
 
   [MOUSE_EVENT.CLICK](event: IMouseEvent): void {
-    triggerEventsOnClosestTarget({ event });
-  }
-
-  [MOUSE_EVENT.MOUSE_MOVE](event: IMouseEvent): void {
-    triggerEventsOnClosestTarget({ event });
+    triggerMouseEventsOnClosestTarget({ event });
   }
 
   public dispose(): void {}
 
 }
 
-export const triggerEventsOnClosestTarget = ({ event }: { event: IMouseEvent  }): void => {
+export const triggerMouseEventsOnClosestTarget = ({ event }: { event: IMouseEvent  }): void => {
   const unordered = new Array<HTML5CanvasElement>();
   COMPONENTS.forEvery(MouseComponent)((mouse) => {
     patchIsHovered({ mouse, event });

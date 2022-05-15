@@ -3,7 +3,7 @@ import System from '../../../engine/abstracts/System';
 import VelocityComponent from '../components/VelocityComponent';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';
 
-export default class AccelerationSystem extends System<any> {
+export default class AccelerationSystem extends System {
 
   public once({ components, delta }: { components: IComponentMaster; delta: number }): void {
     components.forEvery(AccelerationComponent)((acceleration) => {

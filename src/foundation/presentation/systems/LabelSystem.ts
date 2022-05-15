@@ -5,7 +5,7 @@ import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import LabelComponent from '../components/LabelComponent';
 import StyleComponent from '../components/StyleComponent';
 
-export default class LabelSystem extends System<any> {
+export default class LabelSystem extends System {
 
   public draw({ viewport, components }: { viewport: IViewport<any>; components: IComponentMaster }): void {
       components.forEvery(LabelComponent)((label) => {

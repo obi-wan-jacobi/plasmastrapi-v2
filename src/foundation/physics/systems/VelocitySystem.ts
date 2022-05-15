@@ -3,7 +3,7 @@ import System from 'engine/abstracts/System';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';
 
-export default class VelocitySystem extends System<any> {
+export default class VelocitySystem extends System {
 
   public once({ components, delta }: { components: IComponentMaster; delta: number }): void {
     components.forEvery(VelocityComponent)((velocity) => {

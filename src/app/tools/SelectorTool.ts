@@ -1,10 +1,11 @@
 import Gate from 'app/abstracts/Gate';
 import InputHandler from 'app/abstracts/InputHandler';
+import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import EVENT_BUS from 'app/EVENT_BUS';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
-import { triggerEventsOnClosestTarget } from './DefaultTool';
+import { triggerMouseEventsOnClosestTarget } from './DefaultTool';
 import MoverBox from './MoverBox';
 import SelectionBox from './SelectionBox';
 
@@ -46,15 +47,15 @@ export default class SelectorTool extends InputHandler {
       this.__selectionBox = undefined;
       return;
     }
-    EVENT_BUS.publish({ topic: 'DEFAULT' });
+    EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
   }
 
   public [MOUSE_EVENT.MOUSE_DOWN](mouseEvent: IMouseEvent): void {
-    triggerEventsOnClosestTarget({ event: mouseEvent });
+    triggerMouseEventsOnClosestTarget({ event: mouseEvent });
     const mouse = this.__moverBox?.$copy(MouseComponent);
     if (!mouse?.isHovered) {
       this.__moverBox?.$destroy();
-      EVENT_BUS.publish({ topic: 'DEFAULT' });
+      EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
       return;
     }
   }
