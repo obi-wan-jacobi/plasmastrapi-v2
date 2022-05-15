@@ -27,7 +27,6 @@ import Claw from 'contraptions/parts/Claw';
 import TheClaw from 'contraptions/the-claw/TheClaw';
 import RuleSystem from 'contraptions/systems/RuleSystem';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
-import TranslationSystem from 'foundation/geometry/systems/TranslationSystem';
 import VelocitySystem from 'foundation/physics/systems/VelocitySystem';
 import CollisionSystem from 'foundation/physics/systems/CollisionSystem';
 

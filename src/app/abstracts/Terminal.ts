@@ -7,7 +7,6 @@ import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
-import DigitalElement from './DigitalElement';
 
 export default class Terminal extends HTML5CanvasElement {
 

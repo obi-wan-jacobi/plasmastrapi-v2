@@ -80,3 +80,15 @@ export const getAngleBetweenPoints = (p1: IPoint, p2: IPoint): number => {
 export const pow2 = (target: number): number => {
     return Math.pow(target, 2);
 };
+
+export const getDirectionVectorAB = (a: IPoint, b: IPoint): { x: number; y: number } => {
+    const v = {
+        x: b.x - a.x,
+        y: b.y - a.y,
+    };
+    const magnitude = getEuclideanDistanceBetweenPoints(b, a);
+    return {
+        x: v.x/magnitude,
+        y: v.y/magnitude,
+    };
+};
