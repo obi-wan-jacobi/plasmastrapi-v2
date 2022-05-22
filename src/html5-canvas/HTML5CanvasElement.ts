@@ -4,7 +4,6 @@ import { Dict, Volatile } from 'base/types';
 import Dictionary from 'base/concretes/Dictionary';
 import IDictionary from 'base/interfaces/IDictionary';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
-import OffsetComponent from './components/OffsetComponent';
 import IMouseEvent from './interfaces/IMouseEvent';
 import { MOUSE_EVENT } from './enums/MOUSE_EVENT';
 
@@ -132,11 +131,6 @@ export default class HTML5CanvasElement extends Entity implements IHTML5CanvasEl
 
   @hereditary
   public $moveTo({ x, y }: { x: number; y: number }): void {
-    const offset = this.$copy(OffsetComponent);
-    if (offset) {
-      x += offset.xOffset;
-      y += offset.yOffset;
-    }
     this.$patch(PoseComponent)({ x, y });
   }
 }

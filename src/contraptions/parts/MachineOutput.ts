@@ -1,11 +1,11 @@
-import HiddenGate from 'app/gates/HiddenGate';
+import MachineOutputGate from 'app/gates/MachineOutputGate';
 import OutputTerminal from 'app/gates/OutputTerminal';
 
 export default class MachineOutput extends OutputTerminal {
 
-  public constructor({ x, y }: { x: number; y: number }) {
-    super({ x, y });
-    this.$parent = new HiddenGate();
+  public constructor() {
+    super();
+    this.$parent = new MachineOutputGate();
   }
 
 }

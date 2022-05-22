@@ -1,3 +1,4 @@
+import Gate from 'app/abstracts/Gate';
 import MachineOutput from 'contraptions/parts/MachineOutput';
 import IEntity from 'engine/interfaces/IEntity';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
@@ -8,15 +9,13 @@ import Trigger from './Trigger';
 
 export default class ProximityTrigger extends Trigger {
 
-  private __target: IEntity;
   private __output: MachineOutput;
-  private __proximity: number;
+  private __target: IEntity;
 
-  public constructor({ target, proximity, output }: { target: IEntity; proximity: number; output: MachineOutput }) {
+  public constructor({ output, target }: { output: MachineOutput; target: IEntity }) {
     super();
-    this.__target = target;
-    this.__proximity;
     this.__output = output;
+    this.__target = target;
   }
 
   public invoke(): void {
@@ -30,8 +29,10 @@ export default class ProximityTrigger extends Trigger {
     });
     if (entitiesTouch(this.$parent!, this.__target)) {
       this.$parent!.$patch(StyleComponent)({ colour: 'GREEN' });
+      (this.__output.$parent as Gate).high();
     } else {
       this.$parent!.$patch(StyleComponent)({ colour: 'WHITE' });
+      (this.__output.$parent as Gate).low();
     }
     this.$parent!.$patch(PoseComponent)(originalPose);
   }

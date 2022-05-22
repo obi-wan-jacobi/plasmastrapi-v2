@@ -1,4 +1,9 @@
+import App from 'app/App';
 import PowerSource from 'app/gates/PowerSource';
+import { app } from 'app/main';
+import DigitalSystem from 'app/systems/DigitalSystem';
+import WireSystem from 'app/systems/WireSystem';
+import RuleSystem from 'contraptions/systems/RuleSystem';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
@@ -41,6 +46,9 @@ export default class PlayButton extends HTML5CanvasElement {
       ps.high();
       ps.next();
     });
+    app.systems.add(DigitalSystem);
+    app.systems.add(WireSystem);
+    app.systems.add(RuleSystem);
   }
 
 }

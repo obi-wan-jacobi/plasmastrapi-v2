@@ -30,8 +30,8 @@ export default abstract class Gate extends DigitalElement {
       zIndex: 2,
     });
     this.$add(MouseComponent)({ x: 0, y: 0, isHovered: false });
-    this.$appendChild(new InputTerminal({ x, y }));
-    this.$appendChild(new OutputTerminal({ x, y }));
+    this.$appendChild(new InputTerminal());
+    this.$appendChild(new OutputTerminal());
   }
 
   public abstract compute(): void;

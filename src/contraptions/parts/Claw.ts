@@ -25,15 +25,10 @@ export default class Claw extends HTML5CanvasElement {
   private __rightThread: HorizontalThreadedAxle;
   private __leftTooth: HTML5CanvasElement;
   private __rightTooth: HTML5CanvasElement;
-  private __openMotor: HTML5CanvasElement;
-  private __closeMotor: HTML5CanvasElement;
 
   public constructor({ x, y }: { x: number; y: number }) {
     super();
     this.$add(PoseComponent)({ x, y, a: 0 });
-    const iClose = new MachineInput({ x: 0, y: 0 });
-    const iOpen = new MachineInput({ x: 0, y: 0 });
-    const oClose = new MachineOutput({ x: 0, y: 0 });
     this.__wrist = this.$appendChild(new HTML5CanvasElement());
     this.__wrist.$add(PoseComponent)({ x, y: y - 15, a: 0 });
     this.__wrist.$add(ShapeComponent)({
@@ -45,7 +40,6 @@ export default class Claw extends HTML5CanvasElement {
       ],
     });
     this.__wrist.$add(StyleComponent)({ colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
-    //touchactivator
     this.__palm = this.$appendChild(new HTML5CanvasElement());
     this.__palm.$add(PoseComponent)({ x, y: y + 10, a: 0 });
     this.__palm.$add(ShapeComponent)({
@@ -58,7 +52,6 @@ export default class Claw extends HTML5CanvasElement {
     });
     this.__palm.$add(StyleComponent)({ colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
     this.__palm.$add(RigidBodyComponent)({});
-    // touchsensor
     this.__leftHub = this.$appendChild(new HTML5CanvasElement());
     this.__leftHub.$add(PoseComponent)({ x: x - 52, y: y + 10, a: 0 });
     this.__leftHub.$add(ShapeComponent)({
@@ -71,7 +64,6 @@ export default class Claw extends HTML5CanvasElement {
     });
     this.__leftHub.$add(StyleComponent)({ colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
     this.__leftHub.$add(RigidBodyComponent)({});
-    //
     this.__rightHub = this.$appendChild(new HTML5CanvasElement());
     this.__rightHub.$add(PoseComponent)({ x: x + 52, y: y + 10, a: 0 });
     this.__rightHub.$add(ShapeComponent)({
@@ -87,16 +79,9 @@ export default class Claw extends HTML5CanvasElement {
     this.__leftThread = this.$appendChild(new HorizontalThreadedAxle({
       x: x - 30, y: y + 10, width: 40, height: 20,
     }));
-    this.__leftThread.$appendChild(new AnimationTrigger({ inputs: [iClose], high: { isPaused: false, isReversed: true } }));
-    this.__leftThread.$appendChild(new AnimationTrigger({ inputs: [iOpen], high: { isPaused: false, isReversed: false } }));
-    this.__leftThread.$appendChild(new AnimationTrigger({ inputs: [iClose, iOpen], high: { isPaused: true }, low: { isPaused: true }, off: { isPaused: true } }));
     this.__rightThread = this.$appendChild(new HorizontalThreadedAxle({
       x: x + 30, y: y + 10, width: 40, height: 20,
     }));
-    this.__rightThread.$appendChild(new AnimationTrigger({ inputs: [iClose], high: { isPaused: false, isReversed: false } }));
-    this.__rightThread.$appendChild(new AnimationTrigger({ inputs: [iOpen], high: { isPaused: false, isReversed: true } }));
-    this.__rightThread.$appendChild(new AnimationTrigger({ inputs: [iClose, iOpen], high: { isPaused: true }, low: { isPaused: true }, off: { isPaused: true } }));
-    // touchactivator
     this.__leftTooth = this.$appendChild(new HTML5CanvasElement());
     this.__leftTooth.$add(PoseComponent)({ x: x - 35, y: y + 10, a: 0 });
     this.__leftTooth.$add(ShapeComponent)({
@@ -111,12 +96,6 @@ export default class Claw extends HTML5CanvasElement {
     this.__leftTooth.$add(StyleComponent)({ colour: 'WHITE', opacity: 1, fill: 'BLACK', zIndex: 3 });
     this.__leftTooth.$add(VelocityComponent)({ x: 0, y: 0, w: 0 });
     this.__leftTooth.$add(RigidBodyComponent)({});
-    this.__leftTooth.$appendChild(new VelocityTrigger({ inputs: [iClose], high: { x: 0.1 }}));
-    this.__leftTooth.$appendChild(new VelocityTrigger({ inputs: [iOpen], high: { x: -0.1 }}));
-    this.__leftTooth.$appendChild(new VelocityTrigger({ inputs: [iClose, iOpen], high: { x: 0 }, low: { x: 0 }, off: { x: 0 } }));
-    this.__leftTooth.$appendChild(new ProximityTrigger({ target: this.__palm, proximity: 1, output: oClose }));
-    this.__leftTooth.$appendChild(new ProximityTrigger({ target: this.__leftHub, proximity: 1, output: oClose }));
-    // touchsensor
     this.__rightTooth = this.$appendChild(new HTML5CanvasElement());
     this.__rightTooth.$add(PoseComponent)({ x: x + 35, y: y + 10, a: 0 });
     this.__rightTooth.$add(ShapeComponent)({
@@ -131,10 +110,27 @@ export default class Claw extends HTML5CanvasElement {
     this.__rightTooth.$add(StyleComponent)({ colour: 'WHITE', opacity: 1, fill: 'BLACK', zIndex: 3 });
     this.__rightTooth.$add(VelocityComponent)({ x: 0, y: 0, w: 0 });
     this.__rightTooth.$add(RigidBodyComponent)({});
-    this.__rightTooth.$appendChild(new VelocityTrigger({ inputs: [iClose], high: { x: -0.1 }}));
-    this.__rightTooth.$appendChild(new VelocityTrigger({ inputs: [iOpen], high: { x: 0.1 }}));
+    // rules
+    const iClose = new MachineInput();
+    const iOpen = new MachineInput();
+    const oClose = new MachineOutput();
+    const oOpen = new MachineOutput();
+    this.__leftThread.$appendChild(new AnimationTrigger({ inputs: [iClose], high: { isPaused: false, isReversed: true } }));
+    this.__leftThread.$appendChild(new AnimationTrigger({ inputs: [iOpen], high: { isPaused: false, isReversed: false } }));
+    this.__leftThread.$appendChild(new AnimationTrigger({ inputs: [iClose, iOpen], high: { isPaused: true }, low: { isPaused: true }, off: { isPaused: true } }));
+    this.__rightThread.$appendChild(new AnimationTrigger({ inputs: [iClose], high: { isPaused: false, isReversed: false } }));
+    this.__rightThread.$appendChild(new AnimationTrigger({ inputs: [iOpen], high: { isPaused: false, isReversed: true } }));
+    this.__rightThread.$appendChild(new AnimationTrigger({ inputs: [iClose, iOpen], high: { isPaused: true }, low: { isPaused: true }, off: { isPaused: true } }));
+    this.__leftTooth.$appendChild(new VelocityTrigger({ inputs: [iClose], high: { x: 0.01 }}));
+    this.__leftTooth.$appendChild(new VelocityTrigger({ inputs: [iOpen], high: { x: -0.01 }}));
+    this.__leftTooth.$appendChild(new VelocityTrigger({ inputs: [iClose, iOpen], high: { x: 0 }, low: { x: 0 }, off: { x: 0 } }));
+    this.__rightTooth.$appendChild(new VelocityTrigger({ inputs: [iClose], high: { x: -0.01 }}));
+    this.__rightTooth.$appendChild(new VelocityTrigger({ inputs: [iOpen], high: { x: 0.01 }}));
     this.__rightTooth.$appendChild(new VelocityTrigger({ inputs: [iClose, iOpen], high: { x: 0 }, low: { x: 0 }, off: { x: 0 } }));
+    this.__palm.$appendChild(new ProximityTrigger({ output: oClose, target: this.__leftTooth }));
+    this.__leftHub.$appendChild(new ProximityTrigger({ output: oOpen, target: this.__leftTooth }));
+    // io
     this.inputs = [iClose, iOpen];
-    this.outputs = [];
+    this.outputs = [oClose, oOpen];
   }
 }

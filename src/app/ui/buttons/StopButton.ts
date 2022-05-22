@@ -1,4 +1,8 @@
 import DigitalElement from 'app/abstracts/DigitalElement';
+import { app } from 'app/main';
+import DigitalSystem from 'app/systems/DigitalSystem';
+import WireSystem from 'app/systems/WireSystem';
+import RuleSystem from 'contraptions/systems/RuleSystem';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
@@ -41,6 +45,10 @@ export default class StopButton extends HTML5CanvasElement {
       ps.off();
       ps.next();
     });
+    app.once();
+    app.systems.remove(DigitalSystem);
+    app.systems.remove(WireSystem);
+    app.systems.remove(RuleSystem);
   }
 
 }

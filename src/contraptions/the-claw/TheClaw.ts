@@ -1,6 +1,13 @@
 import { RGBA_0 } from 'app/ui/COLOUR';
+import MachineInput from 'contraptions/parts/MachineInput';
+import MachineOutput from 'contraptions/parts/MachineOutput';
+import AnimationTrigger from 'contraptions/triggers/AnimationTrigger';
+import ProximityTrigger from 'contraptions/triggers/ProximityTrigger';
+import VelocityTrigger from 'contraptions/triggers/VelocityTrigger';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
+import RigidBodyComponent from 'foundation/physics/components/RigidBodyComponent';
+import VelocityComponent from 'foundation/physics/components/VelocityComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 import Claw from '../parts/Claw';
@@ -9,14 +16,12 @@ import VerticalThreadedAxle from '../parts/VerticalThreadedAxle';
 
 export default class TheClaw extends HTML5CanvasElement {
 
+  public inputs: MachineInput[];
+  public outputs: MachineOutput[];
+
   private __horizontalRail: HorizontalThreadedAxle;
   private __verticalRail: VerticalThreadedAxle;
   private __carriage: HTML5CanvasElement;
-
-  private __leftMotor: HTML5CanvasElement;
-  private __rightMotor: HTML5CanvasElement;
-  private __topMotor: HTML5CanvasElement;
-  private __bottomMotor: HTML5CanvasElement;
 
   private __leftSensor: HTML5CanvasElement;
   private __rightSensor: HTML5CanvasElement;
@@ -32,7 +37,7 @@ export default class TheClaw extends HTML5CanvasElement {
     this.$add(PoseComponent)({ x, y, a: 0 });
     this.__horizontalRail = this.$appendChild(new HorizontalThreadedAxle({ x, y, width: 300, height: 20 }));
     this.__carriage = this.$appendChild(new HTML5CanvasElement());
-    this.__carriage.$add(PoseComponent)({ x: x - 130, y, a: 0 });
+    this.__carriage.$add(PoseComponent)({ x: x, y, a: 0 });
     this.__carriage.$add(ShapeComponent)({
       vertices: [
         { x: 20, y: 30 },
@@ -42,9 +47,8 @@ export default class TheClaw extends HTML5CanvasElement {
       ],
     });
     this.__carriage.$add(StyleComponent)({ colour: 'WHITE', opacity: 1, fill: 'BLACK', zIndex: 3 });
-    this.__verticalRail = this.$appendChild(new VerticalThreadedAxle({
-      x: x - 130, y, width: 20, height: 200,
-    }));
+    this.__carriage.$add(VelocityComponent)({ x: 0, y: 0, w: 0 });
+    this.__carriage.$add(RigidBodyComponent)({});
     this.__leftSensor = this.$appendChild(new HTML5CanvasElement());
     this.__leftSensor.$add(PoseComponent)({ x: x - 170, y, a: 0 });
     this.__leftSensor.$add(ShapeComponent)({
@@ -56,6 +60,7 @@ export default class TheClaw extends HTML5CanvasElement {
       ],
     });
     this.__leftSensor.$add(StyleComponent)({ colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
+    this.__leftSensor.$add(RigidBodyComponent)({});
     this.__rightSensor = this.$appendChild(new HTML5CanvasElement());
     this.__rightSensor.$add(PoseComponent)({ x: x + 170, y, a: 0 });
     this.__rightSensor.$add(ShapeComponent)({
@@ -67,8 +72,12 @@ export default class TheClaw extends HTML5CanvasElement {
       ],
     });
     this.__rightSensor.$add(StyleComponent)({ colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
-    this.__topSensor = this.$appendChild(new HTML5CanvasElement());
-    this.__topSensor.$add(PoseComponent)({ x: x - 130, y: y - 105, a: 0 });
+    this.__rightSensor.$add(RigidBodyComponent)({});
+    this.__verticalRail = this.__carriage.$appendChild(new VerticalThreadedAxle({
+      x, y, width: 20, height: 200,
+    }));
+    this.__topSensor = this.__verticalRail.$appendChild(new HTML5CanvasElement());
+    this.__topSensor.$add(PoseComponent)({ x: x, y: y - 105, a: 0 });
     this.__topSensor.$add(ShapeComponent)({
       vertices: [
         { x: 20, y: 5 },
@@ -78,8 +87,9 @@ export default class TheClaw extends HTML5CanvasElement {
       ],
     });
     this.__topSensor.$add(StyleComponent)({ colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
-    this.__bottomSensor = this.$appendChild(new HTML5CanvasElement());
-    this.__bottomSensor.$add(PoseComponent)({ x: x - 130, y: y + 105, a: 0 });
+    this.__topSensor.$add(RigidBodyComponent)({});
+    this.__bottomSensor = this.__verticalRail.$appendChild(new HTML5CanvasElement());
+    this.__bottomSensor.$add(PoseComponent)({ x: x, y: y + 105, a: 0 });
     this.__bottomSensor.$add(ShapeComponent)({
       vertices: [
         { x: 20, y: 5 },
@@ -89,124 +99,25 @@ export default class TheClaw extends HTML5CanvasElement {
       ],
     });
     this.__bottomSensor.$add(StyleComponent)({ colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
-    this.__claw = this.$appendChild(new Claw({
-      x: x - 130, y: y + 130,
+    this.__bottomSensor.$add(RigidBodyComponent)({});
+    this.__claw = this.__verticalRail.$appendChild(new Claw({
+      x: x, y: y + 130,
     }));
-    // this.inputs = [
-    //   this.__leftMotor,
-    //   this.__topMotor,
-    //   this.__claw.inputs[0],
-    //   this.__rightMotor,
-    //   this.__bottomMotor,
-    //   this.__claw.inputs[1],
-    // ];
-    // this.outputs = [
-    //   this.__leftSensor.output,
-    //   this.__bottomSensor.output,
-    //   this.__claw.outputs[1],
-    //   this.__rightSensor.output,
-    //   this.__topSensor.output,
-    //   this.__claw.outputs[0],
-    // ];
+    // rules
+    const iMoveLeft = new MachineInput();
+    const iMoveRight = new MachineInput();
+    const oIsLeft = new MachineOutput();
+    const oIsRight = new MachineOutput();
+    this.__horizontalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveRight], high: { isPaused: false, isReversed: true } }));
+    this.__horizontalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveLeft], high: { isPaused: false, isReversed: false } }));
+    this.__horizontalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveRight, iMoveLeft], high: { isPaused: true }, low: { isPaused: true }, off: { isPaused: true } }));
+    this.__carriage.$appendChild(new VelocityTrigger({ inputs: [iMoveRight], high: { x: 0.01 }}));
+    this.__carriage.$appendChild(new VelocityTrigger({ inputs: [iMoveLeft], high: { x: -0.01 }}));
+    this.__carriage.$appendChild(new VelocityTrigger({ inputs: [iMoveRight, iMoveRight], high: { x: 0 }, low: { x: 0 }, off: { x: 0 } }));
+    this.__rightSensor.$appendChild(new ProximityTrigger({ output: oIsRight, target: this.__carriage }));
+    this.__leftSensor.$appendChild(new ProximityTrigger({ output: oIsLeft, target: this.__carriage }));
+    // io
+    this.inputs = [iMoveLeft, iMoveRight].concat(this.__claw.inputs);
+    this.outputs = [oIsLeft, oIsRight].concat(this.__claw.outputs);
   }
-
-  // public once(): void {
-  //   this.__updateHorizontalState();
-  //   this.__updateVerticalState();
-  // }
-
-  // private __updateHorizontalState(): void {
-  //   if (this.__leftMotor.isHigh && this.__rightMotor.isHigh) {
-  //     return this.__offX();
-  //   }
-  //   if (this.__leftMotor.isLow && this.__rightMotor.isLow) {
-  //     return this.__offX();
-  //   }
-  //   if (this.__leftMotor.isHigh) {
-  //     if (this.__leftSensor.isHigh) {
-  //       return this.__offX();
-  //     }
-  //     return this.__left();
-  //   }
-  //   if (this.__rightMotor.isHigh) {
-  //     if (this.__rightSensor.isHigh) {
-  //       return this.__offX();
-  //     }
-  //     return this.__right();
-  //   }
-  //   return this.__offX();
-  // }
-
-  // private __updateVerticalState(): void {
-  //   if (this.__topMotor.isHigh && this.__bottomMotor.isHigh) {
-  //     return this.__offY();
-  //   }
-  //   if (this.__topMotor.isLow && this.__bottomMotor.isLow) {
-  //     return this.__offY();
-  //   }
-  //   if (this.__topMotor.isHigh) {
-  //     if (this.__bottomSensor.isHigh) {
-  //       return this.__offY();
-  //     }
-  //     return this.__up();
-  //   }
-  //   if (this.__bottomMotor.isHigh) {
-  //     if (this.__topSensor.isHigh) {
-  //       return this.__offY();
-  //     }
-  //     return this.__down();
-  //   }
-  //   return this.__offY();
-  // }
-
-  // private __left(): void {
-  //   this.__carriage.translate({ x: -1 });
-  //   this.__verticalRail.translate({ x: -1 });
-  //   this.__topSensor.translate({ x: -1 });
-  //   this.__bottomSensor.translate({ x: -1 });
-  //   this.__horizontalRail.left();
-  //   this.__claw.step({ x: -1 });
-  // }
-
-  // private __right(): void {
-  //   this.__carriage.translate({ x: 1 });
-  //   this.__verticalRail.translate({ x: 1 });
-  //   this.__topSensor.translate({ x: 1 });
-  //   this.__bottomSensor.translate({ x: 1 });
-  //   this.__horizontalRail.right();
-  //   this.__claw.step({ x: 1 });
-  // }
-
-  // private __up(): void {
-  //   this.__verticalRail.translate({ y: -1 });
-  //   this.__topSensor.translate({ y: -1 });
-  //   this.__bottomSensor.translate({ y: -1 });
-  //   this.__verticalRail.up();
-  //   this.__claw.step({ y: -1 });
-  // }
-
-  // private __down(): void {
-  //   this.__verticalRail.translate({ y: 1 });
-  //   this.__topSensor.translate({ y: 1 });
-  //   this.__bottomSensor.translate({ y: 1 });
-  //   this.__verticalRail.down();
-  //   this.__claw.step({ y: 1 });
-  // }
-
-  // private __offX(): void {
-  //   this.__carriage.translate({ x: 0 });
-  //   this.__verticalRail.translate({ x: 0 });
-  //   this.__topSensor.translate({ x: 0 });
-  //   this.__bottomSensor.translate({ x: 0 });
-  //   this.__horizontalRail.off();
-  //   this.__claw.step({ x: 0 });
-  // }
-
-  // private __offY(): void {
-  //   this.__verticalRail.translate({ y: 0 });
-  //   this.__topSensor.translate({ y: 0 });
-  //   this.__bottomSensor.translate({ y: 0 });
-  //   this.__verticalRail.off();
-  //   this.__claw.step({ y: 0 });
-  // }
 }

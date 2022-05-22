@@ -6,9 +6,6 @@ import Trigger from './Trigger';
 
 export default abstract class DigitalTrigger<TPatch> extends Trigger {
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  protected _ComponentToPatch: Ctor<IComponent<TPatch>, TPatch>;
-
   private __inputs: InputTerminal[];
   private __patchOnHigh: TPatch | any;
   private __patchOnLow: TPatch | any;
@@ -20,7 +17,6 @@ export default abstract class DigitalTrigger<TPatch> extends Trigger {
     this.__patchOnHigh = high;
     this.__patchOnLow = low;
     this.__patchOnOff = off;
-    this._initComponentToPatch();
   }
 
   public invoke(): void {
@@ -28,19 +24,19 @@ export default abstract class DigitalTrigger<TPatch> extends Trigger {
       throw new Error(`${this.constructor.name} has no parent!`);
     }
     if (this.__patchOnHigh && this.__inputs.filter((input) => (input.$parent as Gate).isHigh).length === this.__inputs.length) {
-      this.$parent.$patch(this._ComponentToPatch)(this.__patchOnHigh);
+      this.$parent.$patch(this._getComponentToPatch())(this.__patchOnHigh);
       return;
     }
     if (this.__patchOnLow && this.__inputs.filter((input) => (input.$parent as Gate).isLow).length === this.__inputs.length) {
-      this.$parent.$patch(this._ComponentToPatch)(this.__patchOnLow);
+      this.$parent.$patch(this._getComponentToPatch())(this.__patchOnLow);
       return;
     }
     if (this.__patchOnOff && this.__inputs.filter((input) => (input.$parent as Gate).isOff).length === this.__inputs.length) {
-      this.$parent.$patch(this._ComponentToPatch)(this.__patchOnOff);
+      this.$parent.$patch(this._getComponentToPatch())(this.__patchOnOff);
       return;
     }
   }
 
-  protected abstract _initComponentToPatch(): void;
+  protected abstract _getComponentToPatch(): Ctor<IComponent<TPatch>, TPatch>;
 
 }
