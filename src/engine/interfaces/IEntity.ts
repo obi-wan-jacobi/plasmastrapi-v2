@@ -7,15 +7,15 @@ export default interface IEntity extends IUnique {
 
   $destroy(): void;
 
-  $add<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Void<TArg>;
+  $add<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>, data: TArg): void;
 
   $remove<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): void;
 
   $copy<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Volatile<TArg>;
 
-  $mutate<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Void<TArg>;
+  $mutate<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>, data: TArg): void;
 
-  $patch<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Void<TArg | {}>;
+  $patch<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>, data: TArg | {}): void;
 
   $forEach(fn: Void<IComponent<any>>): void;
 

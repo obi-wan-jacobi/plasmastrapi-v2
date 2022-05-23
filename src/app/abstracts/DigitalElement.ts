@@ -1,7 +1,8 @@
 import { DIGITAL_STATE } from 'app/enums/DIGITAL_STATE';
+import Wire from 'app/gates/Wire';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 
-export default class DigitalElement extends HTML5CanvasElement {
+export default abstract class DigitalElement extends HTML5CanvasElement {
 
   private __state = DIGITAL_STATE.OFF;
   private __nextState = DIGITAL_STATE.OFF;
@@ -32,6 +33,14 @@ export default class DigitalElement extends HTML5CanvasElement {
 
   public get isOff(): boolean {
     return this.__state === DIGITAL_STATE.OFF;
+  }
+
+  public abstract compute(): void;
+
+  protected get _inputs(): Wire[] {
+    return this.$children.filter((child) => {
+      return child instanceof Wire && (child as Wire).output.$parent === this;
+    }) as Wire[];
   }
 
 }

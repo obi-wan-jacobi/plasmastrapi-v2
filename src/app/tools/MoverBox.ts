@@ -19,10 +19,10 @@ export default class MoverBox<T extends IHTML5CanvasElement> extends HTML5Canvas
     const shape = selectionBox.$copy(ShapeComponent)!;
     const style = selectionBox.$copy(StyleComponent)!;
     super();
-    this.$add(PoseComponent)(pose);
-    this.$add(ShapeComponent)(shape);
-    this.$add(StyleComponent)(style);
-    this.$add(MouseComponent)({ x: 0, y: 0, isHovered: false });
+    this.$add(PoseComponent, pose);
+    this.$add(ShapeComponent, shape);
+    this.$add(StyleComponent, style);
+    this.$add(MouseComponent, { x: 0, y: 0, isHovered: false });
     this.items = selectionBox.selections;
   }
 
@@ -30,7 +30,7 @@ export default class MoverBox<T extends IHTML5CanvasElement> extends HTML5Canvas
     const targets = [this, ...this.items];
     targets.forEach((target) => {
       const pose = target.$copy(PoseComponent)!;
-      target.$moveTo({
+      (target as IHTML5CanvasElement).$patch(PoseComponent, {
         x: pose.x + dx,
         y: pose.y + dy,
       });

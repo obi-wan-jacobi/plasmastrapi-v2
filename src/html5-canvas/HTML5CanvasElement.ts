@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-boolean-cast */
 import Entity from 'engine/abstracts/Entity';
 import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 import { Dict, Volatile } from 'base/types';
@@ -6,6 +7,10 @@ import IDictionary from 'base/interfaces/IDictionary';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import IMouseEvent from './interfaces/IMouseEvent';
 import { MOUSE_EVENT } from './enums/MOUSE_EVENT';
+import IComponent from 'engine/interfaces/IComponent';
+import { Ctor } from 'engine/types';
+import RelativePoseComponent from 'foundation/geometry/components/RelativePoseComponent';
+import clone from 'base/helpers/clone';
 
 export function observable({}: {}, {}: {}, descriptor: PropertyDescriptor): void {
   const fn = descriptor.value;
@@ -23,8 +28,8 @@ export function hereditary({}: {}, {}: {}, descriptor: PropertyDescriptor): void
   const fn = descriptor.value;
   //https://stackoverflow.com/questions/5905492/dynamic-function-name-in-javascript
   descriptor.value = { [fn.name]() {
-    this.__children.forEach((child: IHTML5CanvasElement) => (child as Dict<any>)[fn.name](...arguments));
     fn.apply(this, arguments);
+    this.__children.forEach((child: IHTML5CanvasElement) => (child as Dict<any>)[fn.name](...arguments));
   }}[fn.name];
 }
 
@@ -39,9 +44,6 @@ export default class HTML5CanvasElement extends Entity implements IHTML5CanvasEl
   }
 
   public set $parent(parent: Volatile<IHTML5CanvasElement>) {
-    if (this.__parent) {
-      this.__parent.$removeChild(this);
-    }
     this.__parent = parent;
   }
 
@@ -80,11 +82,21 @@ export default class HTML5CanvasElement extends Entity implements IHTML5CanvasEl
   public $appendChild<T extends IHTML5CanvasElement>(child: T): T {
     this.__children.write({ key: child.$id, value: child });
     if (child.$parent) {
-      throw new Error(
-        `${child.constructor.name} already has a parent: ${child.$parent.constructor.name}`
-      );
+      console.warn(`${child.constructor.name} already has a parent: ${child.$parent.constructor.name}`);
+      // throw new Error(
+      //   `${child.constructor.name} already has a parent: ${child.$parent.constructor.name}`
+      // );
     }
     (child as unknown as HTML5CanvasElement).$parent = this;
+    const parentPose = this.$copy(PoseComponent);
+    const relativeChildPose = child.$copy(RelativePoseComponent);
+        if (!!parentPose && !!relativeChildPose) {
+          child.$add(PoseComponent, {
+            x: parentPose.x + relativeChildPose.x,
+            y: parentPose.y + relativeChildPose.y,
+            a: parentPose.a + relativeChildPose.a,
+          });
+        }
     return child;
   }
 
@@ -126,11 +138,20 @@ export default class HTML5CanvasElement extends Entity implements IHTML5CanvasEl
   @hereditary
   @observable
   public $destroy(): void {
+    this.$parent?.$removeChild(this);
     super.$destroy();
   }
 
-  @hereditary
-  public $moveTo({ x, y }: { x: number; y: number }): void {
-    this.$patch(PoseComponent)({ x, y });
+  public $patch<T extends IComponent<any>>(ComponentClass: Ctor<T, any>, data: T | any): void {
+    if (ComponentClass.name === PoseComponent.name) {
+        const relativePose = this.$copy(RelativePoseComponent);
+        if (!!this.$parent && relativePose) {
+          if (!!data.x) data.x += relativePose.x;
+          if (!!data.y) data.y += relativePose.y;
+          if (!!data.a) data.a += relativePose.a;
+        }
+        this.$children.forEach((child) => child.$patch(PoseComponent, clone(data)));
+      }
+    super.$patch(ComponentClass, data);
   }
 }

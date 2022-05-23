@@ -1,4 +1,3 @@
-import Gate from 'app/abstracts/Gate';
 import MachineOutput from 'contraptions/parts/MachineOutput';
 import IEntity from 'engine/interfaces/IEntity';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
@@ -23,18 +22,18 @@ export default class ProximityTrigger extends Trigger {
     const b = this.__target.$copy(PoseComponent)!;
     const u = getDirectionVectorAB(a, b);
     const originalPose = this.$parent!.$copy(PoseComponent)!;
-    this.$parent!.$patch(PoseComponent)({
+    this.$parent!.$patch(PoseComponent, {
       x: a.x + u.x,
       y: a.y + u.y,
     });
     if (entitiesTouch(this.$parent!, this.__target)) {
-      this.$parent!.$patch(StyleComponent)({ colour: 'GREEN' });
-      (this.__output.$parent as Gate).high();
+      this.$parent!.$patch(StyleComponent, { colour: 'GREEN' });
+      this.__output.high();
     } else {
-      this.$parent!.$patch(StyleComponent)({ colour: 'WHITE' });
-      (this.__output.$parent as Gate).low();
+      this.$parent!.$patch(StyleComponent, { colour: 'WHITE' });
+      this.__output.low();
     }
-    this.$parent!.$patch(PoseComponent)(originalPose);
+    this.$parent!.$patch(PoseComponent, originalPose);
   }
 
 }

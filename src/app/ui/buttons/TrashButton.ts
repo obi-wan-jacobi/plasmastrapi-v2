@@ -12,9 +12,9 @@ export default class TrashButton extends HTML5CanvasElement {
 
   public constructor({ x, y }: { x: number; y: number }) {
     super();
-    this.$add(PoseComponent)({ x, y, a: 0 });
+    this.$add(PoseComponent, { x, y, a: 0 });
     const width = 40, height = 40;
-    this.$add(ShapeComponent)({
+    this.$add(ShapeComponent, {
       vertices: [
         { x: -width/2, y: -height/2 },
         { x: -width/2, y: height/2 },
@@ -22,14 +22,14 @@ export default class TrashButton extends HTML5CanvasElement {
         { x: width/2, y: -height/2 },
       ],
     });
-    this.$add(ImageComponent)({ src: './TRASHCAN.png', zIndex: 1 });
-    this.$add(StyleComponent)({
+    this.$add(ImageComponent, { src: './TRASHCAN.png', zIndex: 1 });
+    this.$add(StyleComponent, {
       colour: 'WHITE',
       fill: '',
       opacity: 1,
       zIndex: 1,
     });
-    this.$add(MouseComponent)({ x: 0, y: 0, isHovered: false });
+    this.$add(MouseComponent, { x: 0, y: 0, isHovered: false });
   }
 
   public [MOUSE_EVENT.CLICK](): void {

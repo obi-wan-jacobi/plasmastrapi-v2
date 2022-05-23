@@ -51,5 +51,5 @@ function rollEntityPose(entity: IEntity, delta: number, sign: 1 | -1) {
     y: pose.y + sign * velocity.y * delta,
     a: pose.a + sign * velocity.w * delta,
   };
-  entity.$mutate(PoseComponent)(pose);
+  entity.$mutate(PoseComponent, pose);
 }

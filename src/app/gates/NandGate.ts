@@ -10,7 +10,6 @@ export default class NandGate extends Gate {
 
   public compute(): void {
     let state;
-    this.off();
     this._inputs.every((wire) => {
       if ((wire.input.$parent as DigitalElement).isHigh) {
         state = DIGITAL_STATE.HIGH;
@@ -30,6 +29,7 @@ export default class NandGate extends Gate {
       this.high();
       return;
     }
+    this.off();
   }
 
 }

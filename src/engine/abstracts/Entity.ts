@@ -31,18 +31,16 @@ export default abstract class Entity extends Unique implements IEntity {
     this.$forEach((component) => IOC.components.purge(component));
   }
 
-  public readonly $add = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Void<TArg> => {
-    return (data: TArg): void => {
-      if (!this.__components.read(ComponentClass.name)) {
-        const component = new ComponentClass({ data, entity: this });
-        this.__components.write({
-          key: ComponentClass.name,
-          value: IOC.components.register(component),
-        });
-        return;
-      }
-      return this.$mutate(ComponentClass)(data);
-    };
+  public readonly $add = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>, data: TArg): void => {
+    if (!this.__components.read(ComponentClass.name)) {
+      const component = new ComponentClass({ data, entity: this });
+      this.__components.write({
+        key: ComponentClass.name,
+        value: IOC.components.register(component),
+      });
+      return;
+    }
+    return this.$mutate(ComponentClass, data);
   };
 
   public readonly $remove = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): void => {
@@ -59,24 +57,20 @@ export default abstract class Entity extends Unique implements IEntity {
     return component ? component.copy() : undefined;
   };
 
-  public readonly $mutate = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Void<TArg> => {
-    return (data: TArg): void => {
-      const component = this.__components.read(ComponentClass.name);
-      if (!component) {
-        return this.$add(ComponentClass)(data);
-      }
-      return component.mutate(data);
-    };
+  public readonly $mutate = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>, data: TArg): void => {
+    const component = this.__components.read(ComponentClass.name);
+    if (!component) {
+      return this.$add(ComponentClass, data);
+    }
+    return component.mutate(data);
   };
 
-  public $patch<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Void<TArg | {}> {
-    return (data: TArg): void => {
-      const component = this.__components.read(ComponentClass.name);
-      if (!component) {
-        return;
-      }
-      return component.patch(data);
-    };
+  public $patch<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>, data: TArg | {}): void {
+    const component = this.__components.read(ComponentClass.name);
+    if (!component) {
+      return;
+    }
+    return component.patch(data);
   }
 
   public readonly $forEach = (fn: Void<IComponent<any>>): void => {

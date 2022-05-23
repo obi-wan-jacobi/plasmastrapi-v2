@@ -48,14 +48,14 @@ export default class ToolController {
   private __highlightCurrentToolInitiator(toolInitiator?: IEntity): void {
     if (this.__currentToolInitiator && this.__initiatorStyle) {
       this.__currentToolInitiator.$remove(StyleComponent);
-      this.__currentToolInitiator.$add(StyleComponent)(this.__initiatorStyle);
+      this.__currentToolInitiator.$add(StyleComponent, this.__initiatorStyle);
     }
     if (!toolInitiator) {
       return;
     }
     this.__currentToolInitiator = toolInitiator;
     this.__initiatorStyle = toolInitiator.$copy(StyleComponent);
-    this.__currentToolInitiator.$patch(StyleComponent)({ colour: 'YELLOW' });
+    this.__currentToolInitiator.$patch(StyleComponent, { colour: 'YELLOW' });
   }
 
 }

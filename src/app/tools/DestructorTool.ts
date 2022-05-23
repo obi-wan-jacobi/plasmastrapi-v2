@@ -21,7 +21,7 @@ export default class DestructorTool extends InputHandler {
 
   public [MOUSE_EVENT.MOUSE_DOWN](mouseEvent: IMouseEvent): void {
     this.__selectionBox = new SelectionBox({ x: mouseEvent.x, y: mouseEvent.y, SelectionType: Gate });
-    this.__selectionBox.$patch(StyleComponent)({ colour: 'RED' });
+    this.__selectionBox.$patch(StyleComponent, { colour: 'RED' });
   }
 
   public [MOUSE_EVENT.MOUSE_UP](): void {

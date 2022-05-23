@@ -5,6 +5,7 @@ import Gate from 'app/abstracts/Gate';
 import EVENT_BUS from 'app/EVENT_BUS';
 import { Etor } from 'engine/types';
 import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
+import PoseComponent from 'foundation/geometry/components/PoseComponent';
 
 export default class CreatorTool extends InputHandler {
 
@@ -16,7 +17,7 @@ export default class CreatorTool extends InputHandler {
   }
 
   public [MOUSE_EVENT.MOUSE_MOVE](mouseEvent: IMouseEvent): void {
-    this.__target?.$moveTo({ x: mouseEvent!.x, y: mouseEvent!.y });
+    this.__target.$patch(PoseComponent, { x: mouseEvent.x, y: mouseEvent.y });
   }
 
   public [MOUSE_EVENT.CLICK](): void {

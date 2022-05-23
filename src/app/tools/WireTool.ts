@@ -28,8 +28,8 @@ export default class WireTool extends InputHandler {
     const pose = target.$copy(PoseComponent)!;
     const width = 10, height = 10;
     this.__tempHandle = new HTML5CanvasElement();
-    this.__tempHandle.$add(PoseComponent)(pose);
-    this.__tempHandle.$add(ShapeComponent)({
+    this.__tempHandle.$add(PoseComponent, pose);
+    this.__tempHandle.$add(ShapeComponent, {
       vertices: [
         { x: -width/2, y: -height/2 },
         { x: -width/2, y: height/2 },
@@ -37,15 +37,14 @@ export default class WireTool extends InputHandler {
         { x: width/2, y: -height/2 },
       ],
     });
-    this.__tempHandle.$add(StyleComponent)({
+    this.__tempHandle.$add(StyleComponent, {
       colour: 'WHITE',
       fill: RGBA_0,
       opacity: 1,
       zIndex: 0,
     });
     this.__tempHandle.$parent = Object.assign(new HTML5CanvasElement(), {
-      connectInput: () => {},
-      connectOutput: () => {},
+      connect: () => {},
       disconnect: () => {},
     });
     const payload = this.__target instanceof InputTerminal
@@ -55,8 +54,8 @@ export default class WireTool extends InputHandler {
   }
 
   public [MOUSE_EVENT.MOUSE_MOVE](mouseEvent: IMouseEvent): void {
-    this.__tempHandle.$moveTo(mouseEvent!);
-    this.__tempWire.updatePose();
+    this.__tempHandle.$patch(PoseComponent, mouseEvent!);
+    this.__tempWire.$patch(PoseComponent, mouseEvent!);
   }
 
   public [MOUSE_EVENT.MOUSE_UP](mouseEvent: IMouseEvent): void {

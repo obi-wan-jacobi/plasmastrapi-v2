@@ -75,12 +75,16 @@ root.$appendChild(new StopButton({ x: 1100, y: 660 }));
 
 // root.$appendChild(new HorizontalThreadedAxle({ x: 200, y: 200, width: 100, height: 50 }));
 // root.$appendChild(new VerticalThreadedAxle({ x: 200, y: 200, width: 50, height: 100 }));
-// const claw = root.$appendChild(new Claw({ x: 200, y: 200 }));
-// claw.inputs[0].$patch(PoseComponent)({ x: 100, y: 75 });
-// claw.inputs[1].$patch(PoseComponent)({ x: 200, y: 75 });
-// claw.outputs[0].$patch(PoseComponent)({ x: 100, y: 600 });
-// claw.outputs[1].$patch(PoseComponent)({ x: 200, y: 600 });
-root.$appendChild(new TheClaw({ x: 200, y: 200 }));
+const claw = root.$appendChild(new Claw({ x: 1050, y: 200 }));
+claw.inputs[0].$patch(PoseComponent, { x: 100, y: 75 });
+claw.inputs[1].$patch(PoseComponent, { x: 200, y: 75 });
+claw.outputs[0].$patch(PoseComponent, { x: 100, y: 600 });
+claw.outputs[1].$patch(PoseComponent, { x: 200, y: 600 });
+// const theClaw = root.$appendChild(new TheClaw({ x: 1050, y: 200 }));
+// theClaw.inputs[0].$patch(PoseComponent, { x: 100, y: 75 });
+// theClaw.inputs[1].$patch(PoseComponent, { x: 200, y: 75 });
+// theClaw.outputs[0].$patch(PoseComponent, { x: 100, y: 600 });
+// theClaw.outputs[1].$patch(PoseComponent, { x: 200, y: 600 });
 
 
 

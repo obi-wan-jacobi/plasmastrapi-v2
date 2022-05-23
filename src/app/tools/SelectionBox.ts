@@ -18,9 +18,9 @@ export default class SelectionBox<T extends IEntity> extends HTML5CanvasElement 
 
   public constructor({ x, y, SelectionType } : { x: number; y: number; SelectionType: EntityClass<T> }) {
     super();
-    this.$add(PoseComponent)({ x, y, a: 0 });
+    this.$add(PoseComponent, { x, y, a: 0 });
     const width = 2, height = 2;
-    this.$add(ShapeComponent)({
+    this.$add(ShapeComponent, {
       vertices: [
         { x: -width/2, y: -height/2 },
         { x: -width/2, y: height/2 },
@@ -28,7 +28,7 @@ export default class SelectionBox<T extends IEntity> extends HTML5CanvasElement 
         { x: width/2, y: -height/2 },
       ],
     });
-    this.$add(StyleComponent)({
+    this.$add(StyleComponent, {
       colour: 'WHITE',
       fill: RGBA_0,
       opacity: 1,
@@ -42,7 +42,7 @@ export default class SelectionBox<T extends IEntity> extends HTML5CanvasElement 
   public stretchTo({ x, y }: IPoint): void {
     const dx = (x - this.__start.x) / 2;
     const dy = (y - this.__start.y) / 2;
-    this.$patch(PoseComponent)({
+    this.$patch(PoseComponent, {
       x: this.__start.x + dx,
       y: this.__start.y + dy,
     });
@@ -52,7 +52,7 @@ export default class SelectionBox<T extends IEntity> extends HTML5CanvasElement 
       { x: dx, y: dy },
       { x: dx, y: -dy },
     ];
-    this.$patch(ShapeComponent)({ vertices });
+    this.$patch(ShapeComponent, { vertices });
     this.__getSelections();
   }
 

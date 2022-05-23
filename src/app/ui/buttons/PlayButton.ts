@@ -1,4 +1,3 @@
-import App from 'app/App';
 import PowerSource from 'app/gates/PowerSource';
 import { app } from 'app/main';
 import DigitalSystem from 'app/systems/DigitalSystem';
@@ -17,9 +16,9 @@ export default class PlayButton extends HTML5CanvasElement {
 
   public constructor({ x, y }: { x: number; y: number }) {
     super();
-    this.$add(PoseComponent)({ x, y, a: 0 });
+    this.$add(PoseComponent, { x, y, a: 0 });
     const width = 40, height = 20;
-    this.$add(ShapeComponent)({
+    this.$add(ShapeComponent, {
       vertices: [
         { x: -width/2, y: -height/2 },
         { x: -width/2, y: height/2 },
@@ -27,18 +26,18 @@ export default class PlayButton extends HTML5CanvasElement {
         { x: width/2, y: -height/2 },
       ],
     });
-    this.$add(LabelComponent)({
+    this.$add(LabelComponent, {
       text: 'PLAY',
       fontSize: 14,
       offset: { x: -17, y: 5 },
     });
-    this.$add(StyleComponent)({
+    this.$add(StyleComponent, {
       colour: 'WHITE',
       fill: '',
       opacity: 1,
       zIndex: 1,
     });
-    this.$add(MouseComponent)({ x: 0, y: 0, isHovered: false });
+    this.$add(MouseComponent, { x: 0, y: 0, isHovered: false });
   }
 
   public [MOUSE_EVENT.CLICK](): void {

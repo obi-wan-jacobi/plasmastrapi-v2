@@ -8,13 +8,13 @@ export default class CursorTrail extends HTML5CanvasElement {
 
   public constructor() {
     super();
-    this.$add(StyleComponent)({
+    this.$add(StyleComponent, {
       colour: 'RED',
       fill: RGBA_0,
       opacity: 1,
       zIndex: 2,
     });
-    this.$add(LineComponent)({
+    this.$add(LineComponent, {
       path: [],
     });
   }
@@ -22,7 +22,7 @@ export default class CursorTrail extends HTML5CanvasElement {
   public addNewPoint({ x, y }: IPoint): void {
     const { path } = this.$copy(LineComponent)!;
     path.push({ x, y });
-    this.$patch(LineComponent)({ path });
+    this.$patch(LineComponent, { path });
   }
 
 }

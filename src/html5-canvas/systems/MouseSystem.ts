@@ -33,7 +33,7 @@ export default class MouseSystem extends System {
           (element as any)[event.name](event);
           break;
         }
-        element.$patch(MouseComponent)({
+        element.$patch(MouseComponent, {
           isHovered: true,
         });
         (element as IHTML5CanvasElement)[MOUSE_EVENT.MOUSE_ENTER](event);

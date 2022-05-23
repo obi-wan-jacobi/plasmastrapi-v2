@@ -2,6 +2,7 @@ import Gate from 'app/abstracts/Gate';
 import InputHandler from 'app/abstracts/InputHandler';
 import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import EVENT_BUS from 'app/EVENT_BUS';
+import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
@@ -32,11 +33,11 @@ export default class SelectorTool extends InputHandler {
 
   public [MOUSE_EVENT.MOUSE_MOVE](mouseEvent: IMouseEvent): void {
     if (this.__selectionBox) {
-      this.__selectionBox.stretchTo(mouseEvent!);
+      this.__selectionBox.stretchTo(mouseEvent);
       return;
     }
     if (this.__target) {
-      this.__target?.$moveTo(mouseEvent!);
+      this.__target.$patch(PoseComponent, { x: mouseEvent.x, y: mouseEvent.y });
     }
   }
 
