@@ -31,7 +31,7 @@ export default abstract class Entity extends Unique implements IEntity {
     this.$forEach((component) => IOC.components.purge(component));
   }
 
-  public readonly $add = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>, data: TArg): void => {
+  public $add<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>, data: TArg): void {
     if (!this.__components.read(ComponentClass.name)) {
       const component = new ComponentClass({ data, entity: this });
       this.__components.write({
@@ -41,7 +41,7 @@ export default abstract class Entity extends Unique implements IEntity {
       return;
     }
     return this.$mutate(ComponentClass, data);
-  };
+  }
 
   public readonly $remove = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): void => {
     const component = this.__components.read(ComponentClass.name);
@@ -65,9 +65,10 @@ export default abstract class Entity extends Unique implements IEntity {
     return component.mutate(data);
   };
 
-  public $patch<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>, data: TArg | {}): void {
+  public $patch<T extends IComponent<TArg>, TArg extends {}>(ComponentClass: Ctor<T, TArg>, data: TArg | {}): void {
     const component = this.__components.read(ComponentClass.name);
     if (!component) {
+      // console.warn(`${this.constructor.name} does not have a ${ComponentClass.name} to $patch.`);
       return;
     }
     return component.patch(data);

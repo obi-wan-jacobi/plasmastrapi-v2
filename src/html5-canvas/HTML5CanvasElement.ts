@@ -10,7 +10,6 @@ import { MOUSE_EVENT } from './enums/MOUSE_EVENT';
 import IComponent from 'engine/interfaces/IComponent';
 import { Ctor } from 'engine/types';
 import RelativePoseComponent from 'foundation/geometry/components/RelativePoseComponent';
-import clone from 'base/helpers/clone';
 
 export function observable({}: {}, {}: {}, descriptor: PropertyDescriptor): void {
   const fn = descriptor.value;
@@ -79,6 +78,18 @@ export default class HTML5CanvasElement extends Entity implements IHTML5CanvasEl
     subscribers.delete(id);
   }
 
+  public $add<T>(ComponentClass: Ctor<IComponent<T>, T>, data: T | any): void {
+    super.$add(ComponentClass, data);
+    if (ComponentClass.name === RelativePoseComponent.name && this.$parent) {
+      const parentPose = this.$parent.$copy(PoseComponent)!;
+      super.$add(PoseComponent, {
+        x: parentPose.x + data.x,
+        y: parentPose.y + data.y,
+        a: parentPose.a + data.a,
+      });
+    }
+  }
+
   public $appendChild<T extends IHTML5CanvasElement>(child: T): T {
     this.__children.write({ key: child.$id, value: child });
     if (child.$parent) {
@@ -140,18 +151,5 @@ export default class HTML5CanvasElement extends Entity implements IHTML5CanvasEl
   public $destroy(): void {
     this.$parent?.$removeChild(this);
     super.$destroy();
-  }
-
-  public $patch<T extends IComponent<any>>(ComponentClass: Ctor<T, any>, data: T | any): void {
-    if (ComponentClass.name === PoseComponent.name) {
-        const relativePose = this.$copy(RelativePoseComponent);
-        if (!!this.$parent && relativePose) {
-          if (!!data.x) data.x += relativePose.x;
-          if (!!data.y) data.y += relativePose.y;
-          if (!!data.a) data.a += relativePose.a;
-        }
-        this.$children.forEach((child) => child.$patch(PoseComponent, clone(data)));
-      }
-    super.$patch(ComponentClass, data);
   }
 }

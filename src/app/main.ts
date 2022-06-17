@@ -22,8 +22,7 @@ import PoseSystem from './systems/PoseSystem';
 import Claw from 'contraptions/parts/Claw';
 import TheClaw from 'contraptions/the-claw/TheClaw';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
-import VelocitySystem from 'foundation/physics/systems/VelocitySystem';
-import CollisionSystem from 'foundation/physics/systems/CollisionSystem';
+import RelativePoseSystem from './systems/RelativePoseSystem';
 
 const canvas = document.getElementById('app-target') as HTMLCanvasElement;
 canvas.width = 1280;
@@ -33,13 +32,12 @@ canvas.focus();
 export const app = new App({ canvas,
   systems: [
     PoseSystem,
+    RelativePoseSystem,
     ShapeSystem,
     LineSystem,
     LabelSystem,
     ImageSystem,
     AnimationSystem,
-    VelocitySystem,
-    CollisionSystem,
   ],
 });
 
@@ -75,16 +73,18 @@ root.$appendChild(new StopButton({ x: 1100, y: 660 }));
 
 // root.$appendChild(new HorizontalThreadedAxle({ x: 200, y: 200, width: 100, height: 50 }));
 // root.$appendChild(new VerticalThreadedAxle({ x: 200, y: 200, width: 50, height: 100 }));
-const claw = root.$appendChild(new Claw({ x: 1050, y: 200 }));
-claw.inputs[0].$patch(PoseComponent, { x: 100, y: 75 });
-claw.inputs[1].$patch(PoseComponent, { x: 200, y: 75 });
-claw.outputs[0].$patch(PoseComponent, { x: 100, y: 600 });
-claw.outputs[1].$patch(PoseComponent, { x: 200, y: 600 });
-// const theClaw = root.$appendChild(new TheClaw({ x: 1050, y: 200 }));
-// theClaw.inputs[0].$patch(PoseComponent, { x: 100, y: 75 });
-// theClaw.inputs[1].$patch(PoseComponent, { x: 200, y: 75 });
-// theClaw.outputs[0].$patch(PoseComponent, { x: 100, y: 600 });
-// theClaw.outputs[1].$patch(PoseComponent, { x: 200, y: 600 });
+// const claw = root.$appendChild(new Claw({ x: 1050, y: 200 }));
+// claw.inputs[0].$patch(PoseComponent, { x: 100, y: 75 });
+// claw.inputs[1].$patch(PoseComponent, { x: 200, y: 75 });
+// claw.outputs[0].$patch(PoseComponent, { x: 100, y: 600 });
+// claw.outputs[1].$patch(PoseComponent, { x: 200, y: 600 });
+const theClaw = root.$appendChild(new TheClaw({ x: 1050, y: 200 }));
+theClaw.inputs[0].$patch(PoseComponent, { x: 100, y: 75 });
+theClaw.inputs[1].$patch(PoseComponent, { x: 200, y: 75 });
+theClaw.inputs[2].$patch(PoseComponent, { x: 300, y: 75 });
+theClaw.inputs[3].$patch(PoseComponent, { x: 400, y: 200 });
+theClaw.outputs[0].$patch(PoseComponent, { x: 100, y: 600 });
+theClaw.outputs[1].$patch(PoseComponent, { x: 200, y: 600 });
 
 
 
