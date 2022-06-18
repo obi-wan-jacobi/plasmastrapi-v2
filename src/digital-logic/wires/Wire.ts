@@ -74,6 +74,14 @@ export default class Wire extends HTML5CanvasElement {
   public $destroy(): void {
     this.input.$parent?.$removeChild(this);
     this.output.$parent?.$removeChild(this);
+    this.input.$parent?.$unsubscribe({
+      method: this.$patch.name,
+      id: this.$id,
+    });
+    this.output.$parent?.$unsubscribe({
+      method: this.$patch.name,
+      id: this.$id,
+    });
     super.$destroy();
   }
 
