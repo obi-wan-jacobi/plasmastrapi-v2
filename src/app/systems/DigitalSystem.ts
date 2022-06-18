@@ -1,4 +1,4 @@
-import DigitalElement from 'app/abstracts/DigitalElement';
+import DigitalElement from 'digital-logic/abstracts/DigitalElement';
 import System from 'engine/abstracts/System';
 import IEntityMaster from 'engine/interfaces/IEntityMaster';
 

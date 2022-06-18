@@ -1,5 +1,5 @@
-import DigitalElement from 'app/abstracts/DigitalElement';
-import Wire from 'app/gates/Wire';
+import DigitalElement from 'digital-logic/abstracts/DigitalElement';
+import Wire from 'digital-logic/wires/Wire';
 import System from 'engine/abstracts/System';
 import IEntityMaster from 'engine/interfaces/IEntityMaster';
 

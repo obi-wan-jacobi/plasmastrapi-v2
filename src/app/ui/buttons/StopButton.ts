@@ -1,4 +1,4 @@
-import DigitalElement from 'app/abstracts/DigitalElement';
+import DigitalElement from 'digital-logic/abstracts/DigitalElement';
 import { app } from 'app/main';
 import DigitalSystem from 'app/systems/DigitalSystem';
 import WireSystem from 'app/systems/WireSystem';
@@ -12,6 +12,7 @@ import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
+import { RGBA_0 } from '../COLOUR';
 
 export default class StopButton extends HTML5CanvasElement {
 
@@ -34,7 +35,7 @@ export default class StopButton extends HTML5CanvasElement {
     });
     this.$add(StyleComponent, {
       colour: 'WHITE',
-      fill: '',
+      fill: RGBA_0,
       opacity: 1,
       zIndex: 1,
     });
@@ -50,7 +51,6 @@ export default class StopButton extends HTML5CanvasElement {
     app.systems.remove(DigitalSystem);
     app.systems.remove(WireSystem);
     app.systems.remove(TriggerSystem);
-    app.systems.remove(ConstraintSystem);
   }
 
 }

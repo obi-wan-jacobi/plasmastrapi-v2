@@ -1,7 +1,7 @@
 import InputHandler from 'app/abstracts/InputHandler';
 import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import EVENT_BUS from 'app/EVENT_BUS';
-import Wire from 'app/gates/Wire';
+import Wire from 'digital-logic/wires/Wire';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import LineComponent from 'foundation/geometry/components/LineComponent';
 import { entityTouchesLine } from 'foundation/helpers/entities';

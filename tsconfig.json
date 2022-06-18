@@ -20,6 +20,8 @@
         ],
         "paths": {
             "app/*": [ "app/*" ],
+            "contraptions/*": [ "contraptions/*" ],
+            "digital-logic/*": [ "digital-logic/*" ],
             "engine/*": [ "engine/*" ],
             "foundation/*": [ "foundation/*" ],
             "framework/*": [ "framework/*" ],

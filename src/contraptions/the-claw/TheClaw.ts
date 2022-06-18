@@ -6,38 +6,37 @@ import ProximityTrigger from 'contraptions/triggers/ProximityTrigger';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
-import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 import Claw from '../parts/Claw';
 import HorizontalThreadedAxle from '../parts/HorizontalThreadedAxle';
 import VerticalThreadedAxle from '../parts/VerticalThreadedAxle';
-import RelativePoseComponent from 'foundation/geometry/components/RelativePoseComponent';
 import TranslationTrigger from 'contraptions/triggers/TranslationTrigger';
 import XAxisConstraint from 'contraptions/constraints/XAxisConstraint';
+import Part from 'contraptions/abstracts/Part';
 
-export default class TheClaw extends HTML5CanvasElement {
+export default class TheClaw extends Part {
 
   public inputs: MachineInput[];
   public outputs: MachineOutput[];
 
   private __horizontalRail: HorizontalThreadedAxle;
   private __verticalRail: VerticalThreadedAxle;
-  private __carriage: HTML5CanvasElement;
+  private __carriage: Part;
 
-  private __leftSensor: HTML5CanvasElement;
-  private __rightSensor: HTML5CanvasElement;
-  private __topSensor: HTML5CanvasElement;
-  private __bottomSensor: HTML5CanvasElement;
+  private __leftSensor: Part;
+  private __rightSensor: Part;
+  private __topSensor: Part;
+  private __bottomSensor: Part;
 
   private __claw: Claw;
 
-  private __prize: HTML5CanvasElement;
+  private __prize: Part;
 
   public constructor({ x, y }: { x: number; y: number }) {
     super();
-    this.$add(PoseComponent, { x, y, a: 0 });
-    this.__horizontalRail = this.$appendChild(new HorizontalThreadedAxle({ x, y, width: 300, height: 20 }));
-    this.__carriage = this.__horizontalRail.$appendChild(new HTML5CanvasElement());
-    this.__carriage.$add(PoseComponent, { x: x, y, a: 0 });
+    this.$add(PoseComponent, { x, y, a: 0});
+    this.__horizontalRail = this.$appendChild(new HorizontalThreadedAxle({ x: 0, y: 0, width: 300, height: 20 }));
+    this.__carriage = this.__horizontalRail.$appendChild(new Part());
+    this.__carriage.$add(PoseComponent, { x: 0, y: 0, a: 0 });
     this.__carriage.$add(ShapeComponent, {
       vertices: [
         { x: 20, y: 30 },
@@ -47,8 +46,8 @@ export default class TheClaw extends HTML5CanvasElement {
       ],
     });
     this.__carriage.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: 'BLACK', zIndex: 3 });
-    this.__leftSensor = this.__horizontalRail.$appendChild(new HTML5CanvasElement());
-    this.__leftSensor.$add(RelativePoseComponent, { x: -170, y: 0, a: 0 });
+    this.__leftSensor = this.__horizontalRail.$appendChild(new Part());
+    this.__leftSensor.$add(PoseComponent, { x: -170, y: 0, a: 0 });
     this.__leftSensor.$add(ShapeComponent, {
       vertices: [
         { x: 20, y: 20 },
@@ -58,8 +57,8 @@ export default class TheClaw extends HTML5CanvasElement {
       ],
     });
     this.__leftSensor.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
-    this.__rightSensor = this.__horizontalRail.$appendChild(new HTML5CanvasElement());
-    this.__rightSensor.$add(RelativePoseComponent, { x: 170, y: 0, a: 0 });
+    this.__rightSensor = this.__horizontalRail.$appendChild(new Part());
+    this.__rightSensor.$add(PoseComponent, { x: 170, y: 0, a: 0 });
     this.__rightSensor.$add(ShapeComponent, {
       vertices: [
         { x: 20, y: 20 },
@@ -70,10 +69,10 @@ export default class TheClaw extends HTML5CanvasElement {
     });
     this.__rightSensor.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
     this.__verticalRail = this.__carriage.$appendChild(new VerticalThreadedAxle({
-      x, y, width: 20, height: 200,
+      x: 0, y: 0, width: 20, height: 200,
     }));
-    this.__topSensor = this.__verticalRail.$appendChild(new HTML5CanvasElement());
-    this.__topSensor.$add(RelativePoseComponent, { x: 0, y: -105, a: 0 });
+    this.__topSensor = this.__verticalRail.$appendChild(new Part());
+    this.__topSensor.$add(PoseComponent, { x: 0, y: -105, a: 0 });
     this.__topSensor.$add(ShapeComponent, {
       vertices: [
         { x: 20, y: 5 },
@@ -83,8 +82,8 @@ export default class TheClaw extends HTML5CanvasElement {
       ],
     });
     this.__topSensor.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
-    this.__bottomSensor = this.__verticalRail.$appendChild(new HTML5CanvasElement());
-    this.__bottomSensor.$add(RelativePoseComponent, { x: 0, y: 105, a: 0 });
+    this.__bottomSensor = this.__verticalRail.$appendChild(new Part());
+    this.__bottomSensor.$add(PoseComponent, { x: 0, y: 105, a: 0 });
     this.__bottomSensor.$add(ShapeComponent, {
       vertices: [
         { x: 20, y: 5 },
@@ -95,7 +94,7 @@ export default class TheClaw extends HTML5CanvasElement {
     });
     this.__bottomSensor.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
     this.__claw = this.__verticalRail.$appendChild(new Claw({
-      x: x, y: y + 130,
+      x: 0, y: 130,
     }));
     // constraints
     this.__verticalRail.$appendChild(new XAxisConstraint());

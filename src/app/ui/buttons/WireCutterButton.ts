@@ -7,6 +7,7 @@ import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 import EVENT_BUS from '../../EVENT_BUS';
 import { TOOL_EVENT } from '../../enums/TOOL_EVENT';
+import { RGBA_0 } from '../COLOUR';
 
 export default class WireCutterButton extends HTML5CanvasElement {
 
@@ -25,7 +26,7 @@ export default class WireCutterButton extends HTML5CanvasElement {
     this.$add(ImageComponent, { src: './CUTTER_OPEN.png', zIndex: 1 });
     this.$add(StyleComponent, {
       colour: 'WHITE',
-      fill: '',
+      fill: RGBA_0,
       opacity: 1,
       zIndex: 1,
     });

@@ -8,7 +8,7 @@ import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import EVENT_BUS from '../../EVENT_BUS';
-import Gate from '../../abstracts/Gate';
+import Gate from '../../../digital-logic/abstracts/Gate';
 import { TOOL_EVENT } from '../../enums/TOOL_EVENT';
 
 export default class GateButton extends HTML5CanvasElement {

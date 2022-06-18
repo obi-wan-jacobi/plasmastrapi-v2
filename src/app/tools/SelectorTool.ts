@@ -1,4 +1,4 @@
-import Gate from 'app/abstracts/Gate';
+import Gate from 'digital-logic/abstracts/Gate';
 import InputHandler from 'app/abstracts/InputHandler';
 import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import EVENT_BUS from 'app/EVENT_BUS';

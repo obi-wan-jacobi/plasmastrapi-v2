@@ -1,9 +1,9 @@
 import InputHandler from 'app/abstracts/InputHandler';
 import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import EVENT_BUS from 'app/EVENT_BUS';
-import InputTerminal from 'app/gates/InputTerminal';
-import OutputTerminal from 'app/gates/OutputTerminal';
-import Wire from 'app/gates/Wire';
+import InputTerminal from 'digital-logic/terminals/InputTerminal';
+import OutputTerminal from 'digital-logic/terminals/OutputTerminal';
+import Wire from 'digital-logic/wires/Wire';
 import { RGBA_0 } from 'app/ui/COLOUR';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
@@ -15,6 +15,7 @@ import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import { triggerMouseEventsOnClosestTarget } from './DefaultTool';
+import { getAbsolutePose } from 'foundation/helpers/entities';
 
 export default class WireTool extends InputHandler {
 
@@ -25,7 +26,7 @@ export default class WireTool extends InputHandler {
   public constructor({ target }: { target: IHTML5CanvasElement }) {
     super();
     this.__target = target as InputTerminal | OutputTerminal;
-    const pose = target.$copy(PoseComponent)!;
+    const pose = getAbsolutePose(target);
     const width = 10, height = 10;
     this.__tempHandle = new HTML5CanvasElement();
     this.__tempHandle.$add(PoseComponent, pose);
@@ -42,10 +43,6 @@ export default class WireTool extends InputHandler {
       fill: RGBA_0,
       opacity: 1,
       zIndex: 0,
-    });
-    this.__tempHandle.$parent = Object.assign(new HTML5CanvasElement(), {
-      connect: () => {},
-      disconnect: () => {},
     });
     const payload = this.__target instanceof InputTerminal
       ? { input: this.__tempHandle as OutputTerminal, output: this.__target }

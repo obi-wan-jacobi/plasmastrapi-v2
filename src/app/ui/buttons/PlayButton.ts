@@ -1,4 +1,4 @@
-import PowerSource from 'app/gates/PowerSource';
+import PowerSource from 'digital-logic/digital-elements/PowerSource';
 import { app } from 'app/main';
 import DigitalSystem from 'app/systems/DigitalSystem';
 import WireSystem from 'app/systems/WireSystem';
@@ -12,6 +12,7 @@ import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
+import { RGBA_0 } from '../COLOUR';
 
 export default class PlayButton extends HTML5CanvasElement {
 
@@ -34,7 +35,7 @@ export default class PlayButton extends HTML5CanvasElement {
     });
     this.$add(StyleComponent, {
       colour: 'WHITE',
-      fill: '',
+      fill: RGBA_0,
       opacity: 1,
       zIndex: 1,
     });
@@ -49,7 +50,6 @@ export default class PlayButton extends HTML5CanvasElement {
     app.systems.add(DigitalSystem);
     app.systems.add(WireSystem);
     app.systems.add(TriggerSystem);
-    app.systems.add(ConstraintSystem);
   }
 
 }

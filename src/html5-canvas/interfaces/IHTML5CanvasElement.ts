@@ -7,6 +7,8 @@ import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 export default interface IHTML5CanvasElement extends IEntity {
     $parent: Volatile<IHTML5CanvasElement>;
     readonly $children: IDictionary<IHTML5CanvasElement>;
+    $subscribe({ method, id, callback }: { method: string; id: string; callback: () => void }): void;
+    $unsubscribe({ method, id }: { method: string; id: string }): void;
     $appendChild<T extends IHTML5CanvasElement>(child: T): T;
     $removeChild<T extends IHTML5CanvasElement>(child: T): void;
     [MOUSE_EVENT.MOUSE_DOWN](event: IMouseEvent): void;

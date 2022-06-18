@@ -7,6 +7,7 @@ import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import { entitiesTouch } from 'foundation/helpers/entities';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
+import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 
 export default class SelectionBox<T extends IEntity> extends HTML5CanvasElement {
 
@@ -61,7 +62,7 @@ export default class SelectionBox<T extends IEntity> extends HTML5CanvasElement 
       if (!selection.$copy(PoseComponent)) {
         return;
       }
-      if (entitiesTouch(this, selection)) {
+      if (entitiesTouch(this, selection as unknown as IHTML5CanvasElement)) {
         this.selections.add(selection);
         return;
       }

@@ -4,6 +4,7 @@ import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import { entitiesTouch } from 'foundation/helpers/entities';
 import { getDirectionVectorAB } from 'foundation/helpers/geometry';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
+import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 import Trigger from './Trigger';
 
 export default class ProximityTrigger extends Trigger {
@@ -26,7 +27,7 @@ export default class ProximityTrigger extends Trigger {
       x: a.x + u.x,
       y: a.y + u.y,
     });
-    if (entitiesTouch(this.$parent!, this.__target)) {
+    if (entitiesTouch(this.$parent!, this.__target as IHTML5CanvasElement)) {
       this.$parent!.$patch(StyleComponent, { colour: 'GREEN' });
       this.__output.high();
     } else {

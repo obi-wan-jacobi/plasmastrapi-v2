@@ -53,7 +53,7 @@ const patchIsHovered = ({ mouse, event }: {
     y: event.y,
   });
   const { isHovered } = mouse.copy();
-  if (!entityContainsPoint(mouse.$entity, event)) {
+  if (!entityContainsPoint(mouse.$entity as IHTML5CanvasElement, event)) {
     // no longer hovered
     if (isHovered) {
       mouse.patch({

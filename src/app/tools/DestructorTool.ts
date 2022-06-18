@@ -3,7 +3,7 @@ import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import SelectionBox from './SelectionBox';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import InputHandler from 'app/abstracts/InputHandler';
-import Gate from 'app/abstracts/Gate';
+import Gate from 'digital-logic/abstracts/Gate';
 import EVENT_BUS from 'app/EVENT_BUS';
 import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 

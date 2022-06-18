@@ -1,7 +1,7 @@
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import InputHandler from 'app/abstracts/InputHandler';
-import Gate from 'app/abstracts/Gate';
+import Gate from 'digital-logic/abstracts/Gate';
 import EVENT_BUS from 'app/EVENT_BUS';
 import { Etor } from 'engine/types';
 import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';

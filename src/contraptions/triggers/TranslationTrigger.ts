@@ -1,4 +1,4 @@
-import DigitalElement from 'app/abstracts/DigitalElement';
+import DigitalElement from 'digital-logic/abstracts/DigitalElement';
 import IComponent from 'engine/interfaces/IComponent';
 import { Ctor } from 'engine/types';
 import PoseComponent, { IPose } from 'foundation/geometry/components/PoseComponent';
@@ -23,7 +23,7 @@ export default class TranslationTrigger extends DigitalTrigger<IPose> {
       throw new Error(`${this.constructor.name} has no parent!`);
     }
     const root = this.$parent;
-    const oldPose = this.$parent!.$copy(PoseComponent)!;
+    const oldPose = this.$parent!.$copy(this._getComponentToPatch())!;
     if (!(this._patchOnHigh && this._inputs.filter((input) => input.isHigh).length === this._inputs.length)) {
       return;
     }
@@ -34,7 +34,7 @@ export default class TranslationTrigger extends DigitalTrigger<IPose> {
         if (!entitiesTouch(body, blocker)) {
           return true;
         }
-        root.$patch(PoseComponent, oldPose);
+        root.$patch(this._getComponentToPatch(), oldPose);
         return false;
       });
     });

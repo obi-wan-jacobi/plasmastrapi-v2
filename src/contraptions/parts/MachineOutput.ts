@@ -1,6 +1,6 @@
-import DigitalElement from 'app/abstracts/DigitalElement';
+import DigitalElement from 'digital-logic/abstracts/DigitalElement';
+import OutputTerminal from 'digital-logic/terminals/OutputTerminal';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
-import OutputTerminal from '../../app/gates/OutputTerminal';
 
 export default class MachineOutput extends DigitalElement {
 

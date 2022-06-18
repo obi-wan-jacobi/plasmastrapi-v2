@@ -40,7 +40,7 @@ export default abstract class Entity extends Unique implements IEntity {
       });
       return;
     }
-    return this.$mutate(ComponentClass, data);
+    return this.$patch(ComponentClass, data);
   }
 
   public readonly $remove = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): void => {
@@ -57,18 +57,10 @@ export default abstract class Entity extends Unique implements IEntity {
     return component ? component.copy() : undefined;
   };
 
-  public readonly $mutate = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>, data: TArg): void => {
-    const component = this.__components.read(ComponentClass.name);
-    if (!component) {
-      return this.$add(ComponentClass, data);
-    }
-    return component.mutate(data);
-  };
-
   public $patch<T extends IComponent<TArg>, TArg extends {}>(ComponentClass: Ctor<T, TArg>, data: TArg | {}): void {
     const component = this.__components.read(ComponentClass.name);
     if (!component) {
-      // console.warn(`${this.constructor.name} does not have a ${ComponentClass.name} to $patch.`);
+      console.warn(`${this.constructor.name} does not have a ${ComponentClass.name} to $patch.`);
       return;
     }
     return component.patch(data);

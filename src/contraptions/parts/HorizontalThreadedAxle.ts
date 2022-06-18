@@ -1,12 +1,11 @@
+import Part from 'contraptions/abstracts/Part';
 import IComponent from 'engine/interfaces/IComponent';
 import { Ctor } from 'engine/types';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
-import RelativePoseComponent from 'foundation/geometry/components/RelativePoseComponent';
 import AnimationComponent from 'foundation/presentation/components/AnimationComponent';
 import { IImage } from 'foundation/presentation/components/ImageComponent';
-import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 
-export default class HorizontalThreadedAxle extends HTML5CanvasElement {
+export default class HorizontalThreadedAxle extends Part {
 
   public constructor({ x, y, width, height }: { x: number; y: number; width: number; height: number }) {
     super();
@@ -24,8 +23,8 @@ export default class HorizontalThreadedAxle extends HTML5CanvasElement {
       './threaded-axle-10.png',
     ].map((src) => ({ src, width: 10, height, zIndex: 2 }));
     for (let i = 0, L = width / 10; i < L; i++) {
-      const segment = new HTML5CanvasElement();
-      segment.$add(RelativePoseComponent, {
+      const segment = new Part();
+      segment.$add(PoseComponent, {
         x: -width / 2 + i * 10 + 5,
         y: 0,
         a: 0,

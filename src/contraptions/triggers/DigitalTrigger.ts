@@ -1,4 +1,4 @@
-import DigitalElement from 'app/abstracts/DigitalElement';
+import DigitalElement from 'digital-logic/abstracts/DigitalElement';
 import IComponent from 'engine/interfaces/IComponent';
 import { Ctor } from 'engine/types';
 import Trigger from './Trigger';

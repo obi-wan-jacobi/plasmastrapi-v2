@@ -2,7 +2,6 @@ import System from 'engine/abstracts/System';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';
 import IEntity from 'engine/interfaces/IEntity';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
-import RelativePoseComponent from 'foundation/geometry/components/RelativePoseComponent';
 import { entitiesTouch } from 'foundation/helpers/entities';
 import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 import VelocityComponent from '../components/VelocityComponent';
@@ -33,7 +32,7 @@ export default class CollisionSystem extends System {
 function rollBackEntityPoses(entityA: IEntity, entityB: IEntity, delta: number) {
   rollBackEntityPose(entityA, delta);
   rollBackEntityPose(entityB, delta);
-  if (entitiesTouch(entityA, entityB)) {
+  if (entitiesTouch(entityA as IHTML5CanvasElement, entityB as IHTML5CanvasElement)) {
     rollBackEntityPoses(entityA, entityB, delta);
   }
 }
@@ -59,9 +58,9 @@ function rollEntityPose(entity: IEntity, delta: number, sign: 1 | -1) {
 
 function rollBackParents(entity: IHTML5CanvasElement) {
   let target: IHTML5CanvasElement | undefined = entity;
-  while(!!target && target.$copy(RelativePoseComponent) && target.$parent) {
+  while(!!target && target.$copy(PoseComponent) && target.$parent) {
     const childPose = target.$copy(PoseComponent)!;
-    const childRelativePose = target.$copy(RelativePoseComponent)!;
+    const childRelativePose = target.$copy(PoseComponent)!;
     target.$parent.$patch(PoseComponent, {
       x: childPose.x - childRelativePose.x,
       y: childPose.y - childRelativePose.y,
