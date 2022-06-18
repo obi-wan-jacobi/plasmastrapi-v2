@@ -32,7 +32,7 @@ export default class VerticalThreadedAxle extends Part {
       segment.$add(AnimationComponent, {
         images,
         frame: 0,
-        duration: 50,
+        duration: 5,
         isPaused: true,
         isReversed: false,
       });

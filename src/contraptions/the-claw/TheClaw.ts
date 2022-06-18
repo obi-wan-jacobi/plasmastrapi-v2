@@ -110,6 +110,9 @@ export default class TheClaw extends Part {
     this.__horizontalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveRight], high: { isPaused: false, isReversed: true } }));
     this.__horizontalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveLeft], high: { isPaused: false, isReversed: false } }));
     this.__horizontalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveRight, iMoveLeft], high: { isPaused: true }, low: { isPaused: true }, off: { isPaused: true } }));
+    this.__verticalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveUp], high: { isPaused: false, isReversed: true } }));
+    this.__verticalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveDown], high: { isPaused: false, isReversed: false } }));
+    this.__verticalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveUp, iMoveDown], high: { isPaused: true }, low: { isPaused: true }, off: { isPaused: true } }));
     this.__carriage.$appendChild(new TranslationTrigger({ inputs: [iMoveRight], high: { x: 0.5 }, blockers: [this.__rightSensor]}));
     this.__carriage.$appendChild(new TranslationTrigger({ inputs: [iMoveLeft], high: { x: -0.5 }, blockers: [this.__leftSensor]}));
     this.__rightSensor.$appendChild(new ProximityTrigger({ output: oIsRight, target: this.__carriage }));

@@ -32,7 +32,7 @@ export default class HorizontalThreadedAxle extends Part {
       segment.$add(AnimationComponent, {
         images,
         frame: 0,
-        duration: 10,
+        duration: 5,
         isPaused: true,
         isReversed: false,
       });
