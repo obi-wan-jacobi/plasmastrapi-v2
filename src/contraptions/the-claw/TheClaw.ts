@@ -10,7 +10,6 @@ import Claw from '../parts/Claw';
 import HorizontalThreadedAxle from '../parts/HorizontalThreadedAxle';
 import VerticalThreadedAxle from '../parts/VerticalThreadedAxle';
 import TranslationTrigger from 'contraptions/triggers/TranslationTrigger';
-import XAxisConstraint from 'contraptions/constraints/XAxisConstraint';
 import Part from 'contraptions/abstracts/Part';
 
 export default class TheClaw extends Part {
@@ -36,7 +35,7 @@ export default class TheClaw extends Part {
     this.$add(PoseComponent, { x, y, a: 0});
     this.__horizontalRail = this.$appendChild(new HorizontalThreadedAxle({ x: 0, y: 0, width: 300, height: 20 }));
     this.__carriage = this.__horizontalRail.$appendChild(new Part());
-    this.__carriage.$add(PoseComponent, { x: 0, y: 0, a: 0 });
+    this.__carriage.$add(PoseComponent, { x: -129.99, y: 0, a: 0 });
     this.__carriage.$add(ShapeComponent, {
       vertices: [
         { x: 20, y: 30 },
@@ -69,7 +68,7 @@ export default class TheClaw extends Part {
     });
     this.__rightSensor.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
     this.__verticalRail = this.__carriage.$appendChild(new VerticalThreadedAxle({
-      x: 0, y: 0, width: 20, height: 200,
+      x: 0, y: 69.99, width: 20, height: 200,
     }));
     this.__topSensor = this.__verticalRail.$appendChild(new Part());
     this.__topSensor.$add(PoseComponent, { x: 0, y: -105, a: 0 });
@@ -96,17 +95,15 @@ export default class TheClaw extends Part {
     this.__claw = this.__verticalRail.$appendChild(new Claw({
       x: 0, y: 130,
     }));
-    // constraints
-    this.__verticalRail.$appendChild(new XAxisConstraint());
     // triggers
-    const iMoveLeft = new MachineInput();
-    const iMoveRight = new MachineInput();
-    const iMoveDown = new MachineInput();
-    const iMoveUp = new MachineInput();
-    const oIsLeft = new MachineOutput();
-    const oIsRight = new MachineOutput();
-    const oIsTop = new MachineOutput();
-    const oIsBottom = new MachineOutput();
+    const iMoveLeft = new MachineInput({ labelText: 'Left' });
+    const iMoveRight = new MachineInput({ labelText: 'Right' });
+    const iMoveDown = new MachineInput({ labelText: 'Down' });
+    const iMoveUp = new MachineInput({ labelText: 'Up' });
+    const oIsLeft = new MachineOutput({ labelText: 'isLeft' });
+    const oIsRight = new MachineOutput({ labelText: 'isRight' });
+    const oIsTop = new MachineOutput({ labelText: 'isTop' });
+    const oIsBottom = new MachineOutput({ labelText: 'isBottom' });
     this.__horizontalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveRight], high: { isPaused: false, isReversed: true } }));
     this.__horizontalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveLeft], high: { isPaused: false, isReversed: false } }));
     this.__horizontalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveRight, iMoveLeft], high: { isPaused: true }, low: { isPaused: true }, off: { isPaused: true } }));
@@ -124,5 +121,11 @@ export default class TheClaw extends Part {
     // io
     this.inputs = [iMoveLeft, iMoveRight, iMoveDown, iMoveUp].concat(this.__claw.inputs);
     this.outputs = [oIsLeft, oIsRight, oIsTop, oIsBottom].concat(this.__claw.outputs);
+  }
+
+  public reset(): void {
+    this.__carriage.$patch(PoseComponent, { x: -129.99, y: 0, a: 0 });
+    this.__verticalRail.$patch(PoseComponent, { x: 0, y: 69.99, a: 0 });
+    this.__claw.reset();
   }
 }

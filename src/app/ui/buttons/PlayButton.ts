@@ -2,7 +2,6 @@ import PowerSource from 'digital-logic/digital-elements/PowerSource';
 import { app } from 'app/main';
 import DigitalSystem from 'app/systems/DigitalSystem';
 import WireSystem from 'app/systems/WireSystem';
-import ConstraintSystem from 'contraptions/systems/ConstraintSystem';
 import TriggerSystem from 'contraptions/systems/TriggerSystem';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';

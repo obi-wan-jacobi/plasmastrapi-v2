@@ -12,8 +12,10 @@ import MouseComponent from 'html5-canvas/components/MouseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 import { RGBA_0 } from '../COLOUR';
+import EVENT_BUS from 'app/EVENT_BUS';
+import { DESIGNER_EVENT } from 'app/enums/DESIGNER_EVENT';
 
-export default class StopButton extends HTML5CanvasElement {
+export default class ResetButton extends HTML5CanvasElement {
 
   public constructor({ x, y }: { x: number; y: number }) {
     super();
@@ -28,7 +30,7 @@ export default class StopButton extends HTML5CanvasElement {
       ],
     });
     this.$add(LabelComponent, {
-      text: 'STOP',
+      text: 'RESET',
       fontSize: 14,
       offset: { x: -17, y: 5 },
     });
@@ -50,6 +52,7 @@ export default class StopButton extends HTML5CanvasElement {
     app.systems.remove(DigitalSystem);
     app.systems.remove(WireSystem);
     app.systems.remove(TriggerSystem);
+    EVENT_BUS.publish({ topic: DESIGNER_EVENT.RESET });
   }
 
 }

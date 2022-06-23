@@ -44,9 +44,11 @@ export default class WireTool extends InputHandler {
       opacity: 1,
       zIndex: 0,
     });
+    const mockTerminal = this.__tempHandle.$appendChild(new HTML5CanvasElement());
+    mockTerminal.$add(PoseComponent, { x: 0, y: 0, a: 0 });
     const payload = this.__target instanceof InputTerminal
-      ? { input: this.__tempHandle as OutputTerminal, output: this.__target }
-      : { input: this.__target, output: this.__tempHandle as OutputTerminal };
+      ? { input: mockTerminal as OutputTerminal, output: this.__target }
+      : { input: this.__target, output: mockTerminal as OutputTerminal };
     this.__tempWire = new Wire(payload);
   }
 

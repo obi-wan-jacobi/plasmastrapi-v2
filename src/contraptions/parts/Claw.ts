@@ -9,8 +9,9 @@ import HorizontalThreadedAxle from './HorizontalThreadedAxle';
 import TranslationTrigger from 'contraptions/triggers/TranslationTrigger';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import Part from 'contraptions/abstracts/Part';
+import Contraption from 'contraptions/abstracts/Contraption';
 
-export default class Claw extends Part {
+export default class Claw extends Contraption {
 
   public inputs: MachineInput[];
   public outputs: MachineOutput[];
@@ -78,7 +79,7 @@ export default class Claw extends Part {
       x: 30, y: 10, width: 40, height: 20,
     }));
     this.__leftTooth = this.$appendChild(new Part());
-    this.__leftTooth.$add(PoseComponent, { x: -35, y: 10, a: 0 });
+    this.__leftTooth.$add(PoseComponent, { x: -39.99, y: 10, a: 0 });
     this.__leftTooth.$add(ShapeComponent, {
     vertices: [
       { x: 10, y: 60 },
@@ -90,7 +91,7 @@ export default class Claw extends Part {
     ]});
     this.__leftTooth.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: 'BLACK', zIndex: 3 });
     this.__rightTooth = this.$appendChild(new Part());
-    this.__rightTooth.$add(PoseComponent, { x: 35, y: 10, a: 0 });
+    this.__rightTooth.$add(PoseComponent, { x: 39.99, y: 10, a: 0 });
     this.__rightTooth.$add(ShapeComponent, {
       vertices: [
         { x: 0, y: 20 },
@@ -102,10 +103,10 @@ export default class Claw extends Part {
       ]});
     this.__rightTooth.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: 'BLACK', zIndex: 3 });
     // rules
-    const iClose = new MachineInput();
-    const iOpen = new MachineInput();
-    const oClose = new MachineOutput();
-    const oOpen = new MachineOutput();
+    const iClose = new MachineInput({ labelText: 'Close' });
+    const iOpen = new MachineInput({ labelText: 'Open' });
+    const oClose = new MachineOutput({ labelText: 'isClosed' });
+    const oOpen = new MachineOutput({ labelText: 'isOpen' });
     this.__leftThread.$appendChild(new AnimationTrigger({ inputs: [iClose], high: { isPaused: false, isReversed: true } }));
     this.__leftThread.$appendChild(new AnimationTrigger({ inputs: [iOpen], high: { isPaused: false, isReversed: false } }));
     this.__leftThread.$appendChild(new AnimationTrigger({ inputs: [iClose, iOpen], high: { isPaused: true }, low: { isPaused: true }, off: { isPaused: true } }));
@@ -121,5 +122,10 @@ export default class Claw extends Part {
     // io
     this.inputs = [iClose, iOpen];
     this.outputs = [oClose, oOpen];
+  }
+
+  public reset(): void {
+    this.__rightTooth.$patch(PoseComponent, { x: 39.99, y: 10, a: 0 });
+    this.__leftTooth.$patch(PoseComponent, { x: -39.99, y: 10, a: 0 });
   }
 }
