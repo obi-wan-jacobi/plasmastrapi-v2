@@ -8,7 +8,7 @@ export default class HTML5CanvasMouseEventPipe extends HTML5Pipe<HTMLCanvasEleme
   constructor({ canvas }: { canvas: HTMLCanvasElement }) {
     super({
       element: canvas as HTMLCanvasElement & Dict<Void<MouseEvent>>,
-      eventNames: Object.keys(MOUSE_EVENT),
+      eventNames: Object.keys(MOUSE_EVENT).map((event) => (MOUSE_EVENT as Dict<string>)[event]),
       eventMapper: adaptCanvasMouseEvent,
     });
   }

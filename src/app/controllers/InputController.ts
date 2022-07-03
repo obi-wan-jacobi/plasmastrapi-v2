@@ -12,7 +12,7 @@ export default class InputController {
     this.__handler = handler as IInputHandler & Dict<Void<IMouseEvent>>;
     this.__bindEvents({
       element: canvas,
-      eventNames: Object.keys(MOUSE_EVENT),
+      eventNames: Object.keys(MOUSE_EVENT).map((event) => (MOUSE_EVENT as Dict<string>)[event]),
       eventMapper: adaptCanvasMouseEvent,
     });
   }
