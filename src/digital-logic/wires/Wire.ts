@@ -1,4 +1,4 @@
-import { RGBA_0 } from 'app/ui/COLOUR';
+import { RGBA_0, RGBA_GREEN, RGBA_PINK, RGBA_WHITE } from 'app/ui/COLOUR';
 import InputTerminal from 'digital-logic/terminals/InputTerminal';
 import OutputTerminal from 'digital-logic/terminals/OutputTerminal';
 import IComponent from 'engine/interfaces/IComponent';
@@ -33,7 +33,7 @@ export default class Wire extends HTML5CanvasElement {
       ],
     });
     this.$add(StyleComponent, {
-      colour: 'WHITE',
+      colour: RGBA_WHITE,
       fill: RGBA_0,
       opacity: 1,
       zIndex: 3,
@@ -52,15 +52,15 @@ export default class Wire extends HTML5CanvasElement {
   }
 
   public high(): void {
-    this.$patch(StyleComponent, { colour: 'GREEN' });
+    this.$patch(StyleComponent, { colour: RGBA_GREEN });
   }
 
   public low(): void {
-    this.$patch(StyleComponent, { colour: 'PINK' });
+    this.$patch(StyleComponent, { colour: RGBA_PINK });
   }
 
   public off(): void {
-    this.$patch(StyleComponent, { colour: 'WHITE' });
+    this.$patch(StyleComponent, { colour: RGBA_WHITE });
   }
 
   public $patch<T extends IComponent<any>>(ComponentClass: Ctor<T, any>, data: T | any): void {

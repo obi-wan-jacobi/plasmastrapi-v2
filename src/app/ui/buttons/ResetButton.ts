@@ -11,7 +11,7 @@ import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
-import { RGBA_0 } from '../COLOUR';
+import { RGBA_0, RGBA_WHITE } from '../COLOUR';
 import EVENT_BUS from 'app/EVENT_BUS';
 import { DESIGNER_EVENT } from 'app/enums/DESIGNER_EVENT';
 
@@ -35,7 +35,7 @@ export default class ResetButton extends HTML5CanvasElement {
       offset: { x: -17, y: 5 },
     });
     this.$add(StyleComponent, {
-      colour: 'WHITE',
+      colour: RGBA_WHITE,
       fill: RGBA_0,
       opacity: 1,
       zIndex: 1,

@@ -4,7 +4,7 @@ import EVENT_BUS from 'app/EVENT_BUS';
 import InputTerminal from 'digital-logic/terminals/InputTerminal';
 import OutputTerminal from 'digital-logic/terminals/OutputTerminal';
 import Wire from 'digital-logic/wires/Wire';
-import { RGBA_0 } from 'app/ui/COLOUR';
+import { RGBA_0, RGBA_WHITE } from 'app/ui/COLOUR';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
@@ -39,7 +39,7 @@ export default class WireTool extends InputHandler {
       ],
     });
     this.__tempHandle.$add(StyleComponent, {
-      colour: 'WHITE',
+      colour: RGBA_WHITE,
       fill: RGBA_0,
       opacity: 1,
       zIndex: 0,

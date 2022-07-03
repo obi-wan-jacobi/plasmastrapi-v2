@@ -2,7 +2,7 @@ import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
-import { RGBA_0 } from './COLOUR';
+import { RGBA_0, RGBA_WHITE } from './COLOUR';
 
 export default class UIPane extends HTML5CanvasElement {
 
@@ -18,7 +18,7 @@ export default class UIPane extends HTML5CanvasElement {
       ],
     });
     this.$add(StyleComponent, {
-      colour: 'WHITE',
+      colour: RGBA_WHITE,
       fill: RGBA_0,
       opacity: 1,
       zIndex: 0,

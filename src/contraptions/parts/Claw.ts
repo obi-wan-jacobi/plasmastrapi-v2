@@ -1,6 +1,6 @@
 import MachineInput from 'contraptions/parts/MachineInput';
 import MachineOutput from 'contraptions/parts/MachineOutput';
-import { RGBA_0 } from 'app/ui/COLOUR';
+import { RGBA_0, RGBA_BLACK, RGBA_WHITE } from 'app/ui/COLOUR';
 import AnimationTrigger from 'contraptions/triggers/AnimationTrigger';
 import ProximityTrigger from 'contraptions/triggers/ProximityTrigger';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
@@ -38,7 +38,7 @@ export default class Claw extends Contraption {
         { x: 20, y: -5 },
       ],
     });
-    this.__wrist.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
+    this.__wrist.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
     this.__palm = this.$appendChild(new Part());
     this.__palm.$add(PoseComponent, { x: 0, y: 10, a: 0 });
     this.__palm.$add(ShapeComponent, {
@@ -49,7 +49,7 @@ export default class Claw extends Contraption {
         { x: 10, y: -20 },
       ],
     });
-    this.__palm.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
+    this.__palm.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
     this.__leftHub = this.$appendChild(new Part());
     this.__leftHub.$add(PoseComponent, { x: -52, y: 10, a: 0 });
     this.__leftHub.$add(ShapeComponent, {
@@ -60,7 +60,7 @@ export default class Claw extends Contraption {
         { x: 2, y: -10 },
       ],
     });
-    this.__leftHub.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
+    this.__leftHub.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
     this.__rightHub = this.$appendChild(new Part());
     this.__rightHub.$add(PoseComponent, { x: 52, y: 10, a: 0 });
     this.__rightHub.$add(ShapeComponent, {
@@ -71,7 +71,7 @@ export default class Claw extends Contraption {
         { x: 2, y: -10 },
       ],
     });
-    this.__rightHub.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
+    this.__rightHub.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
     this.__leftThread = this.$appendChild(new HorizontalThreadedAxle({
       x: -30, y: 10, width: 40, height: 20,
     }));
@@ -89,7 +89,7 @@ export default class Claw extends Contraption {
       { x: -10, y: -20 },
       { x: 10, y: -20},
     ]});
-    this.__leftTooth.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: 'BLACK', zIndex: 3 });
+    this.__leftTooth.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_BLACK, zIndex: 3 });
     this.__rightTooth = this.$appendChild(new Part());
     this.__rightTooth.$add(PoseComponent, { x: 39.99, y: 10, a: 0 });
     this.__rightTooth.$add(ShapeComponent, {
@@ -101,7 +101,7 @@ export default class Claw extends Contraption {
         { x: 10, y: -20 },
         { x: 10, y: 20 },
       ]});
-    this.__rightTooth.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: 'BLACK', zIndex: 3 });
+    this.__rightTooth.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_BLACK, zIndex: 3 });
     // rules
     const iClose = new MachineInput({ labelText: 'Close' });
     const iOpen = new MachineInput({ labelText: 'Open' });

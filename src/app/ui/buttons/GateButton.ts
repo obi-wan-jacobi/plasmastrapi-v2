@@ -10,6 +10,7 @@ import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import EVENT_BUS from '../../EVENT_BUS';
 import Gate from '../../../digital-logic/abstracts/Gate';
 import { TOOL_EVENT } from '../../enums/TOOL_EVENT';
+import { RGBA_WHITE } from '../COLOUR';
 
 export default class GateButton extends HTML5CanvasElement {
 
@@ -30,7 +31,7 @@ export default class GateButton extends HTML5CanvasElement {
     });
     this.$add(ImageComponent, { src, zIndex: 1 });
     this.$add(StyleComponent, {
-      colour: 'WHITE',
+      colour: RGBA_WHITE,
       fill: '',
       opacity: 1,
       zIndex: 1,

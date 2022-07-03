@@ -1,6 +1,6 @@
 import MachineInput from 'contraptions/parts/MachineInput';
 import MachineOutput from 'contraptions/parts/MachineOutput';
-import { RGBA_0 } from 'app/ui/COLOUR';
+import { RGBA_0, RGBA_BLACK, RGBA_WHITE } from 'app/ui/COLOUR';
 import AnimationTrigger from 'contraptions/triggers/AnimationTrigger';
 import ProximityTrigger from 'contraptions/triggers/ProximityTrigger';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
@@ -44,7 +44,7 @@ export default class TheClaw extends Part {
         { x: 20, y: -30 },
       ],
     });
-    this.__carriage.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: 'BLACK', zIndex: 3 });
+    this.__carriage.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_BLACK, zIndex: 3 });
     this.__leftSensor = this.__horizontalRail.$appendChild(new Part());
     this.__leftSensor.$add(PoseComponent, { x: -170, y: 0, a: 0 });
     this.__leftSensor.$add(ShapeComponent, {
@@ -55,7 +55,7 @@ export default class TheClaw extends Part {
         { x: 20, y: -20 },
       ],
     });
-    this.__leftSensor.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
+    this.__leftSensor.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
     this.__rightSensor = this.__horizontalRail.$appendChild(new Part());
     this.__rightSensor.$add(PoseComponent, { x: 170, y: 0, a: 0 });
     this.__rightSensor.$add(ShapeComponent, {
@@ -66,7 +66,7 @@ export default class TheClaw extends Part {
         { x: 20, y: -20 },
       ],
     });
-    this.__rightSensor.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
+    this.__rightSensor.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
     this.__verticalRail = this.__carriage.$appendChild(new VerticalThreadedAxle({
       x: 0, y: 69.99, width: 20, height: 200,
     }));
@@ -80,7 +80,7 @@ export default class TheClaw extends Part {
         { x: 20, y: -5 },
       ],
     });
-    this.__topSensor.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
+    this.__topSensor.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
     this.__bottomSensor = this.__verticalRail.$appendChild(new Part());
     this.__bottomSensor.$add(PoseComponent, { x: 0, y: 105, a: 0 });
     this.__bottomSensor.$add(ShapeComponent, {
@@ -91,7 +91,7 @@ export default class TheClaw extends Part {
         { x: 20, y: -5 },
       ],
     });
-    this.__bottomSensor.$add(StyleComponent, { colour: 'WHITE', opacity: 1, fill: RGBA_0, zIndex: 2 });
+    this.__bottomSensor.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
     this.__claw = this.__verticalRail.$appendChild(new Claw({
       x: 0, y: 130,
     }));

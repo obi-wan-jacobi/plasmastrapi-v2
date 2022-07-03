@@ -1,6 +1,6 @@
 import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import EVENT_BUS from 'app/EVENT_BUS';
-import { RGBA_0 } from 'app/ui/COLOUR';
+import { RGBA_0, RGBA_WHITE } from 'app/ui/COLOUR';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import { addWidthAndHeightAsShapeComponent } from 'foundation/helpers/entities';
 import ImageComponent from 'foundation/presentation/components/ImageComponent';
@@ -17,7 +17,7 @@ export default class Terminal extends HTML5CanvasElement {
     addWidthAndHeightAsShapeComponent({ entity: this, width: 20, height: 20 });
     this.$add(ImageComponent, { src, zIndex: 3 });
     this.$add(StyleComponent, {
-      colour: 'WHITE',
+      colour: RGBA_WHITE,
       fill: RGBA_0,
       opacity: 1,
       zIndex: 3,

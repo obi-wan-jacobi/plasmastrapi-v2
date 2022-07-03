@@ -1,3 +1,4 @@
+import { RGBA_GREEN, RGBA_WHITE } from 'app/ui/COLOUR';
 import MachineOutput from 'contraptions/parts/MachineOutput';
 import IEntity from 'engine/interfaces/IEntity';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
@@ -28,10 +29,10 @@ export default class ProximityTrigger extends Trigger {
       y: a.y + u.y,
     });
     if (entitiesTouch(this.$parent!, this.__target as IHTML5CanvasElement)) {
-      this.$parent!.$patch(StyleComponent, { colour: 'GREEN' });
+      this.$parent!.$patch(StyleComponent, { colour: RGBA_GREEN });
       this.__output.high();
     } else {
-      this.$parent!.$patch(StyleComponent, { colour: 'WHITE' });
+      this.$parent!.$patch(StyleComponent, { colour: RGBA_WHITE });
       this.__output.low();
     }
     this.$parent!.$patch(PoseComponent, originalPose);

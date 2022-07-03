@@ -1,4 +1,4 @@
-import { RGBA_0 } from 'app/ui/COLOUR';
+import { RGBA_0, RGBA_WHITE } from 'app/ui/COLOUR';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import IEntity from 'engine/interfaces/IEntity';
 import { EntityClass } from 'engine/types';
@@ -30,7 +30,7 @@ export default class SelectionBox<T extends IEntity> extends HTML5CanvasElement 
       ],
     });
     this.$add(StyleComponent, {
-      colour: 'WHITE',
+      colour: RGBA_WHITE,
       fill: RGBA_0,
       opacity: 1,
       zIndex: 2,
