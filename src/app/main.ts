@@ -59,11 +59,6 @@ const root = new HTML5CanvasElement();
 root.$add(PoseComponent, { x: 0, y: 0, a: 0 });
 root.$appendChild(new UIPane({ x: 640, y: 340, width: 1280, height: 680 }));
 
-root.$appendChild(new GateButton({ x: 25, y: 25, src: './AndGate.png', GateEtor: AndGate }));
-root.$appendChild(new GateButton({ x: 75, y: 25, src: './NandGate.png', GateEtor: NandGate }));
-root.$appendChild(new TrashButton({ x: 125, y: 25 }));
-root.$appendChild(new WireCutterButton({ x: 175, y: 25 }));
-
 root.$appendChild(new DesignPane({ x: 405, y: 340, width: 800, height: 580 }));
 root.$appendChild(new PowerSource({ x: 25, y: 610 }));
 
@@ -71,13 +66,6 @@ root.$appendChild(new UIPane({ x: 1050, y: 340, width: 400, height: 580}));
 root.$appendChild(new PlayButton({ x: 1050, y: 660 }));
 root.$appendChild(new StopButton({ x: 1100, y: 660 }));
 root.$appendChild(new ResetButton({ x: 1150, y: 660 }));
-
-// const gate = root.$appendChild(new AndGate({ x: 1000, y: 150 }));
-// const claw = gate.$appendChild(new Claw({ x: 1050, y: 200 }));
-// claw.inputs[0].$patch(PoseComponent, { x: 100, y: 75 });
-// claw.inputs[1].$patch(PoseComponent, { x: 200, y: 75 });
-// claw.outputs[0].$patch(PoseComponent, { x: 100, y: 600 });
-// claw.outputs[1].$patch(PoseComponent, { x: 200, y: 600 });
 
 const theClaw = root.$appendChild(new TheClaw({ x: 1050, y: 200 }));
 for (let i = 0; i < theClaw.inputs.length; i++) {
@@ -88,7 +76,16 @@ for (let i = 0; i < theClaw.outputs.length; i++) {
 }
 
 const inputController = new InputController({ canvas, handler: new DefaultTool() });
-new ToolController(inputController);
+new ToolController({
+  inputController,
+  buttons: [
+    new GateButton({ x: 25, y: 25, src: './AndGate.png', GateEtor: AndGate }),
+    new GateButton({ x: 75, y: 25, src: './NandGate.png', GateEtor: NandGate }),
+    new TrashButton({ x: 125, y: 25 }),
+    new WireCutterButton({ x: 175, y: 25 }),
+  ],
+});
+
 new ContraptionController(theClaw);
 
 app.start();

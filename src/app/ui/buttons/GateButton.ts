@@ -14,11 +14,12 @@ import { RGBA_WHITE } from '../COLOUR';
 
 export default class GateButton extends HTML5CanvasElement {
 
-  private __etor: Etor<Gate, IMouseEvent>;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  private __Etor: Etor<Gate, IMouseEvent>;
 
   public constructor({ x, y, src, GateEtor }: { x: number; y: number; src: string; GateEtor: Etor<Gate, IMouseEvent> }) {
     super();
-    this.__etor = GateEtor;
+    this.__Etor = GateEtor;
     this.$add(PoseComponent, { x, y, a: 0 });
     const width = 40, height = 40;
     this.$add(ShapeComponent, {
@@ -40,7 +41,7 @@ export default class GateButton extends HTML5CanvasElement {
   }
 
   public [MOUSE_EVENT.CLICK](event: IMouseEvent): void {
-    EVENT_BUS.publish({ topic: TOOL_EVENT.CREATE_GATE, arg: { etor: this.__etor, event } });
+    EVENT_BUS.publish({ topic: TOOL_EVENT.CREATE_GATE, arg: { Etor: this.__Etor, event } });
   }
 
 }

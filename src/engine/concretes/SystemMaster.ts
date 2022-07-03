@@ -1,4 +1,4 @@
-import Dictionary from 'base/concretes/Dictionary';
+import Dictionary from 'base/data-structures/Dictionary';
 import IDictionary from 'base/interfaces/IDictionary';
 import { Void } from 'base/types';
 import ISystem from 'engine/interfaces/ISystem';

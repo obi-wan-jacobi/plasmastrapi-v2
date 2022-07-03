@@ -1,4 +1,4 @@
-import { RGBA_0 } from 'app/ui/COLOUR';
+import { RGBA_0, RGBA_RED } from 'app/ui/COLOUR';
 import LineComponent from 'foundation/geometry/components/LineComponent';
 import { IPoint } from 'foundation/geometry/components/PoseComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
@@ -9,7 +9,7 @@ export default class CursorTrail extends HTML5CanvasElement {
   public constructor() {
     super();
     this.$add(StyleComponent, {
-      colour: 'RED',
+      colour: RGBA_RED,
       fill: RGBA_0,
       opacity: 1,
       zIndex: 2,

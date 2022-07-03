@@ -1,7 +1,7 @@
 import IComponent from '../interfaces/IComponent';
 import IEntity from '../interfaces/IEntity';
 import Unique from 'base/abstracts/Unique';
-import Dictionary from 'base/concretes/Dictionary';
+import Dictionary from 'base/data-structures/Dictionary';
 import IDictionary from 'base/interfaces/IDictionary';
 import { Ctor } from '../types';
 import { Void, Volatile } from 'base/types';

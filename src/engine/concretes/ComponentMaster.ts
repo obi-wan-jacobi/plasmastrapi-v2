@@ -2,7 +2,7 @@ import { IOC } from 'engine/abstracts/Entity';
 import IComponent from 'engine/interfaces/IComponent';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';
 import { ComponentClass } from 'engine/types';
-import Dictionary from 'base/concretes/Dictionary';
+import Dictionary from 'base/data-structures/Dictionary';
 import IDictionary from 'base/interfaces/IDictionary';
 import { Void, Volatile } from 'base/types';
 

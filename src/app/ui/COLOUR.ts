@@ -5,3 +5,4 @@ export const RGBA_BLACK = 'BLACK';
 export const RGBA_GREEN = 'GREEN';
 export const RGBA_RED = 'RED';
 export const RGBA_PINK = 'PINK';
+export const RGBA_YELLOW = 'YELLOW';

@@ -1,4 +1,3 @@
-import fromObjectToPropertyValues from 'base/helpers/fromObjectToPropertyValues';
 import { Dict, Void } from 'base/types';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import IHTML5EventTransform from 'html5-canvas/interfaces/IHTML5EventTransform';
@@ -13,7 +12,7 @@ export default class InputController {
     this.__handler = handler as IInputHandler & Dict<Void<IMouseEvent>>;
     this.__bindEvents({
       element: canvas,
-      eventNames: fromObjectToPropertyValues(MOUSE_EVENT),
+      eventNames: Object.keys(MOUSE_EVENT),
       eventMapper: adaptCanvasMouseEvent,
     });
   }

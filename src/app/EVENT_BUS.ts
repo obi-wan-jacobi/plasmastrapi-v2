@@ -1,4 +1,4 @@
-import Dictionary from 'base/concretes/Dictionary';
+import Dictionary from 'base/data-structures/Dictionary';
 import { Void } from 'base/types';
 
 class EventBus {

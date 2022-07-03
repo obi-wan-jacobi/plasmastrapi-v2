@@ -2,7 +2,7 @@
 import Entity from 'engine/abstracts/Entity';
 import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 import { Volatile } from 'base/types';
-import Dictionary from 'base/concretes/Dictionary';
+import Dictionary from 'base/data-structures/Dictionary';
 import IDictionary from 'base/interfaces/IDictionary';
 import IMouseEvent from './interfaces/IMouseEvent';
 import { MOUSE_EVENT } from './enums/MOUSE_EVENT';

@@ -12,6 +12,7 @@ import { Constructor, Dict } from 'base/types';
 import IInputHandler from 'app/interfaces/IInputHandler';
 import IEntity from 'engine/interfaces/IEntity';
 import StyleComponent, { IStyle } from 'foundation/presentation/components/StyleComponent';
+import { RGBA_YELLOW } from 'app/ui/COLOUR';
 
 export default class ToolController {
 
@@ -29,8 +30,12 @@ export default class ToolController {
     [TOOL_EVENT.DELETE_WIRE]: WireCutterTool,
   } as Dict<Constructor<IInputHandler, any>>;
 
-  public constructor(inputController: InputController) {
+  public constructor({ inputController, buttons }: { inputController: InputController; buttons: any[] }) {
     this.__inputController = inputController;
+    this.__mapToolEventsToInputHandler();
+  }
+
+  private __mapToolEventsToInputHandler() {
     Object.keys(this.__toolingMap).forEach((toolEvent: string) => {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       const ToolConstructor = this.__toolingMap[toolEvent];
@@ -55,7 +60,7 @@ export default class ToolController {
     }
     this.__currentToolInitiator = toolInitiator;
     this.__initiatorStyle = toolInitiator.$copy(StyleComponent);
-    this.__currentToolInitiator.$patch(StyleComponent, { colour: 'YELLOW' });
+    this.__currentToolInitiator.$patch(StyleComponent, { colour: RGBA_YELLOW });
   }
 
 }

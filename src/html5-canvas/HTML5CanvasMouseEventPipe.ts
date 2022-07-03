@@ -1,4 +1,3 @@
-import fromObjectToPropertyValues from 'base/helpers/fromObjectToPropertyValues';
 import { Dict, Void } from 'base/types';
 import HTML5Pipe from 'html5-canvas/abstracts/HTML5Pipe';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
@@ -9,7 +8,7 @@ export default class HTML5CanvasMouseEventPipe extends HTML5Pipe<HTMLCanvasEleme
   constructor({ canvas }: { canvas: HTMLCanvasElement }) {
     super({
       element: canvas as HTMLCanvasElement & Dict<Void<MouseEvent>>,
-      eventNames: fromObjectToPropertyValues(MOUSE_EVENT),
+      eventNames: Object.keys(MOUSE_EVENT),
       eventMapper: adaptCanvasMouseEvent,
     });
   }
