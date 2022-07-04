@@ -17,10 +17,9 @@ export default class GateButton extends HTML5CanvasElement {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   private __Etor: Etor<Gate, IMouseEvent>;
 
-  public constructor({ x, y, src, GateEtor }: { x: number; y: number; src: string; GateEtor: Etor<Gate, IMouseEvent> }) {
+  public constructor({ src, GateEtor }: { src: string; GateEtor: Etor<Gate, IMouseEvent> }) {
     super();
     this.__Etor = GateEtor;
-    this.$add(PoseComponent, { x, y, a: 0 });
     const width = 40, height = 40;
     this.$add(ShapeComponent, {
       vertices: [

@@ -1,8 +1,11 @@
 import IContraption from 'contraptions/interfaces/IContraption';
-import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
+import MachineInput from 'contraptions/parts/MachineInput';
+import MachineOutput from 'contraptions/parts/MachineOutput';
+import Part from './Part';
 
-export default abstract class Contraption extends HTML5CanvasElement implements IContraption {
+export default abstract class Contraption extends Part implements IContraption {
 
-  public abstract reset(): void;
+  public inputs: MachineInput[] = [];
+  public outputs: MachineOutput[] = [];
 
 }

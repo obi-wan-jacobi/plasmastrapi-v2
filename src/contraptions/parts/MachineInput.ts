@@ -1,5 +1,4 @@
 import DigitalElement from 'digital-logic/abstracts/DigitalElement';
-import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import LabelComponent from 'foundation/presentation/components/LabelComponent';
 import InputTerminal from '../../digital-logic/terminals/InputTerminal';
 
@@ -7,7 +6,6 @@ export default class MachineInput extends DigitalElement {
 
   public constructor({ labelText }: { labelText: string}) {
     super();
-    this.$add(PoseComponent, { x: 0, y: 0, a: 0 });
     const input = this.$appendChild(new InputTerminal());
     input.$add(LabelComponent, {
       text: labelText,

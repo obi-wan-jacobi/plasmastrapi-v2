@@ -6,8 +6,11 @@ import IPipe from 'engine/interfaces/IPipe';
 import { Stor } from 'engine/types';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
+import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 
 export default class App extends Engine<CanvasImageSource, { mouse: IPipe<IMouseEvent>; keyboard: IPipe<IKeyboardEvent> }> {
+
+    public readonly root = new HTML5CanvasElement();
 
     public constructor({ canvas, systems }: { canvas: HTMLCanvasElement; systems: Stor[] }) {
         super({

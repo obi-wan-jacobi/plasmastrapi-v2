@@ -13,6 +13,8 @@ import IInputHandler from 'app/interfaces/IInputHandler';
 import IEntity from 'engine/interfaces/IEntity';
 import StyleComponent, { IStyle } from 'foundation/presentation/components/StyleComponent';
 import { RGBA_YELLOW } from 'app/ui/COLOUR';
+import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
+import PoseComponent from 'foundation/geometry/components/PoseComponent';
 
 export default class ToolController {
 
@@ -30,8 +32,15 @@ export default class ToolController {
     [TOOL_EVENT.DELETE_WIRE]: WireCutterTool,
   } as Dict<Constructor<IInputHandler, any>>;
 
-  public constructor({ inputController, buttons }: { inputController: InputController; buttons: any[] }) {
+  public constructor({ inputController, buttons }: { inputController: InputController; buttons: IHTML5CanvasElement[] }) {
     this.__inputController = inputController;
+    for (let i = 0; i < buttons.length; i++) {
+      if (i === 0) {
+        buttons[0].$patch(PoseComponent, { x: 25, y: 25 });
+        continue;
+      }
+      buttons[i].$patch(PoseComponent, { x: 25 + 50*i, y: 25 });
+    }
     this.__mapToolEventsToInputHandler();
   }
 

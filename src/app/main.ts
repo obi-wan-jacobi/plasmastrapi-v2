@@ -15,16 +15,12 @@ import NandGate from '../digital-logic/digital-elements/NandGate';
 import TrashButton from './ui/buttons/TrashButton';
 import DesignPane from './ui/DesignPane';
 import WireCutterButton from './ui/buttons/WireCutterButton';
-import PlayButton from './ui/buttons/PlayButton';
 import PowerSource from '../digital-logic/digital-elements/PowerSource';
-import StopButton from './ui/buttons/StopButton';
-import Claw from 'contraptions/parts/Claw';
 import TheClaw from 'contraptions/the-claw/TheClaw';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import PoseSystem from 'foundation/presentation/systems/PoseSystem';
-import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 import ContraptionController from './controllers/ContraptionController';
-import ResetButton from './ui/buttons/ResetButton';
+import DesignerController from './controllers/DesignerController';
 
 const canvas = document.getElementById('app-target') as HTMLCanvasElement;
 canvas.width = 1280;
@@ -55,34 +51,23 @@ export const app = new App({ canvas,
   './threaded-axle-10.png',
 ].forEach((src) => app.load(src));
 
-const root = new HTML5CanvasElement();
-root.$add(PoseComponent, { x: 0, y: 0, a: 0 });
-root.$appendChild(new UIPane({ x: 640, y: 340, width: 1280, height: 680 }));
+app.root.$appendChild(new UIPane({ x: 640, y: 340, width: 1280, height: 680 }));
+app.root.$appendChild(new DesignPane({ x: 405, y: 340, width: 800, height: 580 }));
+app.root.$appendChild(new PowerSource({ x: 25, y: 610 }));
 
-root.$appendChild(new DesignPane({ x: 405, y: 340, width: 800, height: 580 }));
-root.$appendChild(new PowerSource({ x: 25, y: 610 }));
+const theClaw = app.root.$appendChild(new TheClaw({ x: 1050, y: 200 }));
 
-root.$appendChild(new UIPane({ x: 1050, y: 340, width: 400, height: 580}));
-root.$appendChild(new PlayButton({ x: 1050, y: 660 }));
-root.$appendChild(new StopButton({ x: 1100, y: 660 }));
-root.$appendChild(new ResetButton({ x: 1150, y: 660 }));
-
-const theClaw = root.$appendChild(new TheClaw({ x: 1050, y: 200 }));
-for (let i = 0; i < theClaw.inputs.length; i++) {
-  theClaw.inputs[i].$patch(PoseComponent, { x: 100*(i + 1), y: 75 });
-}
-for (let i = 0; i < theClaw.outputs.length; i++) {
-  theClaw.outputs[i].$patch(PoseComponent, { x: 100*(i + 1), y: 600 });
-}
+const designerController = new DesignerController();
+designerController.setContraptionIO(theClaw);
 
 const inputController = new InputController({ canvas, handler: new DefaultTool() });
 new ToolController({
   inputController,
   buttons: [
-    new GateButton({ x: 25, y: 25, src: './AndGate.png', GateEtor: AndGate }),
-    new GateButton({ x: 75, y: 25, src: './NandGate.png', GateEtor: NandGate }),
-    new TrashButton({ x: 125, y: 25 }),
-    new WireCutterButton({ x: 175, y: 25 }),
+    new GateButton({ src: './AndGate.png', GateEtor: AndGate }),
+    new GateButton({ src: './NandGate.png', GateEtor: NandGate }),
+    new TrashButton(),
+    new WireCutterButton(),
   ],
 });
 

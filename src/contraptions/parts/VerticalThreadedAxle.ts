@@ -8,8 +8,7 @@ import { IImage } from 'foundation/presentation/components/ImageComponent';
 export default class VerticalThreadedAxle extends Part {
 
   public constructor({ x, y, width, height }: { x: number; y: number; width: number; height: number }) {
-    super();
-    this.$add(PoseComponent, { x, y, a: 0 });
+    super({ x, y, a: 0 });
     const images: IImage[] = [
       './threaded-axle-1.png',
       './threaded-axle-2.png',
@@ -23,8 +22,7 @@ export default class VerticalThreadedAxle extends Part {
       './threaded-axle-10.png',
     ].map((src) => ({ src, width: 10, height: width, rotate: -Math.PI / 2, zIndex: 2 }));
     for (let i = 0, L = height / 10; i < L; i++) {
-      const segment = new Part();
-      segment.$add(PoseComponent, {
+      const segment = new Part({
         x: 0,
         y: -height / 2 + i * 10 + 5,
         a: 0,

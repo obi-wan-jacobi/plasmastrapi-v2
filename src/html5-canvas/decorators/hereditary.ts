@@ -7,9 +7,14 @@ export function hereditary({}: {}, {}: {}, descriptor: PropertyDescriptor): void
   //https://stackoverflow.com/questions/5905492/dynamic-function-name-in-javascript
   descriptor.value = { [fn.name]() {
     if (!this._children) {
-      throw new Error(`${this.constructor.name} is missing a lineage!`);
+      throw new Error(`${this.constructor.name} has no lineage!`);
     }
     fn.apply(this, arguments);
-    this._children.forEach((child: IHTML5CanvasElement) => (child as Dict<any>)[fn.name](...arguments));
+    this._children.forEach((child: IHTML5CanvasElement) => {
+      if (!(child as Dict<any>)[fn.name]) {
+        return;
+      }
+      return (child as Dict<any>)[fn.name](...arguments);
+    });
   }}[fn.name];
 }

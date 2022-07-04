@@ -23,7 +23,6 @@ export default class Wire extends HTML5CanvasElement {
     // let's keep input gate as parent
     this.input.$parent?.$appendChild(this);
     const width = 10, height = 4;
-    this.$add(PoseComponent, { x: 0, y: 0, a: 0});
     this.$add(ShapeComponent, {
       vertices: [
         { x: -width/2, y: -height/2 },

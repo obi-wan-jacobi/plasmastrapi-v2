@@ -11,9 +11,8 @@ import { RGBA_0, RGBA_WHITE } from '../COLOUR';
 
 export default class TrashButton extends HTML5CanvasElement {
 
-  public constructor({ x, y }: { x: number; y: number }) {
+  public constructor() {
     super();
-    this.$add(PoseComponent, { x, y, a: 0 });
     const width = 40, height = 40;
     this.$add(ShapeComponent, {
       vertices: [

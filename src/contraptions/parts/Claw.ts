@@ -7,14 +7,10 @@ import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import HorizontalThreadedAxle from './HorizontalThreadedAxle';
 import TranslationTrigger from 'contraptions/triggers/TranslationTrigger';
-import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import Part from 'contraptions/abstracts/Part';
 import Contraption from 'contraptions/abstracts/Contraption';
 
 export default class Claw extends Contraption {
-
-  public inputs: MachineInput[];
-  public outputs: MachineOutput[];
 
   private __wrist: Part;
   private __palm: Part;
@@ -26,10 +22,8 @@ export default class Claw extends Contraption {
   private __rightTooth: Part;
 
   public constructor({ x, y }: { x: number; y: number }) {
-    super();
-    this.$add(PoseComponent, { x, y, a: 0 });
-    this.__wrist = this.$appendChild(new Part());
-    this.__wrist.$add(PoseComponent, { x: 0, y: -15, a: 0 });
+    super({ x, y, a: 0 });
+    this.__wrist = this.$appendChild(new Part({ x: 0, y: -15, a: 0 }));
     this.__wrist.$add(ShapeComponent, {
       vertices: [
         { x: 10, y: 5 },
@@ -39,8 +33,7 @@ export default class Claw extends Contraption {
       ],
     });
     this.__wrist.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
-    this.__palm = this.$appendChild(new Part());
-    this.__palm.$add(PoseComponent, { x: 0, y: 10, a: 0 });
+    this.__palm = this.$appendChild(new Part({ x: 0, y: 10, a: 0 }));
     this.__palm.$add(ShapeComponent, {
       vertices: [
         { x: 10, y: 10 },
@@ -50,8 +43,7 @@ export default class Claw extends Contraption {
       ],
     });
     this.__palm.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
-    this.__leftHub = this.$appendChild(new Part());
-    this.__leftHub.$add(PoseComponent, { x: -52, y: 10, a: 0 });
+    this.__leftHub = this.$appendChild(new Part({ x: -52, y: 10, a: 0 }));
     this.__leftHub.$add(ShapeComponent, {
       vertices: [
         { x: 2, y: 10 },
@@ -61,8 +53,7 @@ export default class Claw extends Contraption {
       ],
     });
     this.__leftHub.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
-    this.__rightHub = this.$appendChild(new Part());
-    this.__rightHub.$add(PoseComponent, { x: 52, y: 10, a: 0 });
+    this.__rightHub = this.$appendChild(new Part({ x: 52, y: 10, a: 0 }));
     this.__rightHub.$add(ShapeComponent, {
       vertices: [
         { x: 2, y: 10 },
@@ -78,8 +69,7 @@ export default class Claw extends Contraption {
     this.__rightThread = this.$appendChild(new HorizontalThreadedAxle({
       x: 30, y: 10, width: 40, height: 20,
     }));
-    this.__leftTooth = this.$appendChild(new Part());
-    this.__leftTooth.$add(PoseComponent, { x: -39.99, y: 10, a: 0 });
+    this.__leftTooth = this.$appendChild(new Part({ x: -39.99, y: 10, a: 0 }));
     this.__leftTooth.$add(ShapeComponent, {
     vertices: [
       { x: 10, y: 60 },
@@ -90,8 +80,7 @@ export default class Claw extends Contraption {
       { x: 10, y: -20},
     ]});
     this.__leftTooth.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_BLACK, zIndex: 3 });
-    this.__rightTooth = this.$appendChild(new Part());
-    this.__rightTooth.$add(PoseComponent, { x: 39.99, y: 10, a: 0 });
+    this.__rightTooth = this.$appendChild(new Part({ x: 39.99, y: 10, a: 0 }));
     this.__rightTooth.$add(ShapeComponent, {
       vertices: [
         { x: 0, y: 20 },
@@ -124,8 +113,4 @@ export default class Claw extends Contraption {
     this.outputs = [oClose, oOpen];
   }
 
-  public reset(): void {
-    this.__rightTooth.$patch(PoseComponent, { x: 39.99, y: 10, a: 0 });
-    this.__leftTooth.$patch(PoseComponent, { x: -39.99, y: 10, a: 0 });
-  }
 }

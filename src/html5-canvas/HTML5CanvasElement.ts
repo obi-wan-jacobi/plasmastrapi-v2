@@ -1,7 +1,7 @@
 /* eslint-disable no-extra-boolean-cast */
 import Entity from 'engine/abstracts/Entity';
 import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
-import { Volatile } from 'base/types';
+import { Void, Volatile } from 'base/types';
 import Dictionary from 'base/data-structures/Dictionary';
 import IDictionary from 'base/interfaces/IDictionary';
 import IMouseEvent from './interfaces/IMouseEvent';
@@ -10,12 +10,28 @@ import { hereditary } from './decorators/hereditary';
 import { observable } from './decorators/observable';
 import { Ctor } from 'engine/types';
 import IComponent from 'engine/interfaces/IComponent';
+import PoseComponent from 'foundation/geometry/components/PoseComponent';
+import StyleComponent from 'foundation/presentation/components/StyleComponent';
+import { RGBA_BLACK, RGBA_WHITE } from 'app/ui/COLOUR';
 
 export default class HTML5CanvasElement extends Entity implements IHTML5CanvasElement {
 
   protected _parent: Volatile<IHTML5CanvasElement>;
-  protected _children: IDictionary<IHTML5CanvasElement> = new Dictionary();
-  protected _observedMethods = new Dictionary<Dictionary<() => void>>();
+  protected _children: IDictionary<IHTML5CanvasElement>;
+  protected _observedMethods: IDictionary<IDictionary<Void<any>>>;
+
+  public constructor() {
+    super();
+    this._children = new Dictionary();
+    this._observedMethods = new Dictionary<Dictionary<() => void>>();
+    this.$add(PoseComponent, { x: 0, y: 0, a: 0 });
+    this.$add(StyleComponent, {
+      colour: RGBA_WHITE,
+      fill: RGBA_BLACK,
+      opacity: 1,
+      zIndex: 0,
+    });
+  }
 
   public get $parent(): Volatile<IHTML5CanvasElement> {
     return this._parent;
