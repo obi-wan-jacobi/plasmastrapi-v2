@@ -1,17 +1,23 @@
+import IController from 'app/interfaces/IController';
 import { Dict, Void } from 'base/types';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import IHTML5EventTransform from 'html5-canvas/interfaces/IHTML5EventTransform';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import IInputHandler from '../interfaces/IInputHandler';
 
-export default class InputController {
+export default class InputController implements IController {
 
-  private __handler: IInputHandler & Dict<Void<IMouseEvent>>;
+  private __canvas: HTMLCanvasElement;
+  private __handler: IInputHandler;
 
   public constructor({ canvas, handler }: { canvas: HTMLCanvasElement; handler: IInputHandler }) {
-    this.__handler = handler as IInputHandler & Dict<Void<IMouseEvent>>;
+    this.__canvas = canvas;
+    this.__handler = handler;
+  }
+
+  public init(): void {
     this.__bindEvents({
-      element: canvas,
+      element: this.__canvas,
       eventNames: Object.keys(MOUSE_EVENT).map((event) => (MOUSE_EVENT as Dict<string>)[event]),
       eventMapper: adaptCanvasMouseEvent,
     });

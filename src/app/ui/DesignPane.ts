@@ -15,7 +15,7 @@ export default class DesignPane extends UIPane {
   }
 
   public [MOUSE_EVENT.MOUSE_DOWN](mouseEvent: IMouseEvent): void {
-    EVENT_BUS.publish({ topic: TOOL_EVENT.BEGIN_SELECTION, arg: mouseEvent });
+    EVENT_BUS.publish({ topic: TOOL_EVENT.SELECTION_BEGIN, arg: mouseEvent });
   }
 
 }

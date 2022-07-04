@@ -38,6 +38,6 @@ export default class MoverBox<T extends IHTML5CanvasElement> extends HTML5Canvas
   }
 
   public [MOUSE_EVENT.MOUSE_DOWN](mouseEvent: IMouseEvent): void {
-    EVENT_BUS.publish({ topic: TOOL_EVENT.MOVE_SELECTION, arg: mouseEvent });
+    EVENT_BUS.publish({ topic: TOOL_EVENT.SELECTION_MOVE, arg: mouseEvent });
   }
 }

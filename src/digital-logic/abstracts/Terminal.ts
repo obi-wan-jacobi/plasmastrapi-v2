@@ -26,7 +26,7 @@ export default class Terminal extends HTML5CanvasElement {
   }
 
   public [MOUSE_EVENT.MOUSE_DOWN](): void {
-    EVENT_BUS.publish({ topic: TOOL_EVENT.CREATE_WIRE, arg: { target: this }});
+    EVENT_BUS.publish({ topic: TOOL_EVENT.WIRE_CREATE, arg: { target: this }});
   }
 
 }

@@ -33,7 +33,7 @@ export default class TrashButton extends HTML5CanvasElement {
   }
 
   public [MOUSE_EVENT.CLICK](): void {
-    EVENT_BUS.publish({ topic: TOOL_EVENT.DELETE_GATE });
+    EVENT_BUS.publish({ topic: TOOL_EVENT.GATE_DELETE });
   }
 
 }

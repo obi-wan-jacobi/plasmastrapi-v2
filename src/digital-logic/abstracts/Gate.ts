@@ -31,7 +31,7 @@ export default abstract class Gate extends DigitalElement {
   }
 
   public [MOUSE_EVENT.MOUSE_DOWN](event: IMouseEvent): void {
-    EVENT_BUS.publish({ topic: TOOL_EVENT.BEGIN_SELECTION, arg: event });
+    EVENT_BUS.publish({ topic: TOOL_EVENT.SELECTION_BEGIN, arg: event });
   }
 
 }

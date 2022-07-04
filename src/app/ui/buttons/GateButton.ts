@@ -40,7 +40,7 @@ export default class GateButton extends HTML5CanvasElement {
   }
 
   public [MOUSE_EVENT.CLICK](event: IMouseEvent): void {
-    EVENT_BUS.publish({ topic: TOOL_EVENT.CREATE_GATE, arg: { Etor: this.__Etor, event } });
+    EVENT_BUS.publish({ topic: TOOL_EVENT.GATE_CREATE, arg: { Etor: this.__Etor, event } });
   }
 
 }

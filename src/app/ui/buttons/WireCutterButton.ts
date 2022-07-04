@@ -33,7 +33,7 @@ export default class WireCutterButton extends HTML5CanvasElement {
   }
 
   public [MOUSE_EVENT.CLICK](): void {
-    EVENT_BUS.publish({ topic: TOOL_EVENT.DELETE_WIRE });
+    EVENT_BUS.publish({ topic: TOOL_EVENT.WIRE_DELETE });
   }
 
 }
