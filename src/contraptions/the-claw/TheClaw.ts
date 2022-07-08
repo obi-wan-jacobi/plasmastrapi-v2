@@ -1,7 +1,6 @@
 import MachineInput from 'contraptions/parts/MachineInput';
 import MachineOutput from 'contraptions/parts/MachineOutput';
 import { RGBA_0, RGBA_BLACK, RGBA_WHITE } from 'app/ui/COLOUR';
-import AnimationTrigger from 'contraptions/triggers/AnimationTrigger';
 import ProximityTrigger from 'contraptions/triggers/ProximityTrigger';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
@@ -11,6 +10,8 @@ import VerticalThreadedAxle from '../parts/VerticalThreadedAxle';
 import TranslationTrigger from 'contraptions/triggers/TranslationTrigger';
 import Part from 'contraptions/abstracts/Part';
 import Contraption from 'contraptions/abstracts/Contraption';
+import TwoWayAnimationTrigger from 'contraptions/triggers/TwoWayAnimationTrigger';
+import RigidBodyComponent from 'foundation/physics/components/RigidBodyComponent';
 
 export default class TheClaw extends Contraption {
 
@@ -40,6 +41,7 @@ export default class TheClaw extends Contraption {
       ],
     });
     this.__carriage.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_BLACK, zIndex: 3 });
+    this.__carriage.$add(RigidBodyComponent, {});
     this.__leftSensor = this.__horizontalRail.$appendChild(new Part({ x: -170, y: 0, a: 0 }));
     this.__leftSensor.$add(ShapeComponent, {
       vertices: [
@@ -93,20 +95,16 @@ export default class TheClaw extends Contraption {
     const oIsRight = new MachineOutput({ labelText: 'isRight' });
     const oIsTop = new MachineOutput({ labelText: 'isTop' });
     const oIsBottom = new MachineOutput({ labelText: 'isBottom' });
-    this.__horizontalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveRight], high: { isPaused: false, isReversed: true } }));
-    this.__horizontalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveLeft], high: { isPaused: false, isReversed: false } }));
-    this.__horizontalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveRight, iMoveLeft], high: { isPaused: true }, low: { isPaused: true }, off: { isPaused: true } }));
-    this.__verticalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveUp], high: { isPaused: false, isReversed: true } }));
-    this.__verticalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveDown], high: { isPaused: false, isReversed: false } }));
-    this.__verticalRail.$appendChild(new AnimationTrigger({ inputs: [iMoveUp, iMoveDown], high: { isPaused: true }, low: { isPaused: true }, off: { isPaused: true } }));
+    this.__horizontalRail.$appendChild(new TwoWayAnimationTrigger({ input1: iMoveLeft, input2: iMoveRight }));
+    this.__verticalRail.$appendChild(new TwoWayAnimationTrigger({ input1: iMoveUp, input2: iMoveDown }));
     this.__carriage.$appendChild(new TranslationTrigger({ inputs: [iMoveRight], high: { x: 0.5 }, blockers: [this.__rightSensor]}));
     this.__carriage.$appendChild(new TranslationTrigger({ inputs: [iMoveLeft], high: { x: -0.5 }, blockers: [this.__leftSensor]}));
-    this.__rightSensor.$appendChild(new ProximityTrigger({ output: oIsRight, target: this.__carriage }));
-    this.__leftSensor.$appendChild(new ProximityTrigger({ output: oIsLeft, target: this.__carriage }));
+    this.__rightSensor.$appendChild(new ProximityTrigger(oIsRight));
+    this.__leftSensor.$appendChild(new ProximityTrigger(oIsLeft));
     this.__verticalRail.$appendChild(new TranslationTrigger({ inputs: [iMoveDown], high: { y: 0.5 }, bodies: [this.__topSensor], blockers: [this.__carriage]}));
     this.__verticalRail.$appendChild(new TranslationTrigger({ inputs: [iMoveUp], high: { y: -0.5 }, bodies: [this.__bottomSensor], blockers: [this.__carriage]}));
-    this.__topSensor.$appendChild(new ProximityTrigger({ output: oIsTop, target: this.__carriage }));
-    this.__bottomSensor.$appendChild(new ProximityTrigger({ output: oIsBottom, target: this.__carriage }));
+    this.__topSensor.$appendChild(new ProximityTrigger(oIsTop));
+    this.__bottomSensor.$appendChild(new ProximityTrigger(oIsBottom));
     // io
     this.inputs = [iMoveLeft, iMoveRight, iMoveDown, iMoveUp].concat(this.__claw.inputs);
     this.outputs = [oIsLeft, oIsRight, oIsTop, oIsBottom].concat(this.__claw.outputs);

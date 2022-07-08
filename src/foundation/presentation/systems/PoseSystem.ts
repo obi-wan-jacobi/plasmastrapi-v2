@@ -1,3 +1,4 @@
+import { RGBA_0, RGBA_GREEN } from 'app/ui/COLOUR';
 import System from 'engine/abstracts/System';
 import IComponentMaster from 'engine/interfaces/IComponentMaster';
 import IViewport from 'engine/interfaces/IViewport';
@@ -13,7 +14,7 @@ export default class PoseSystem extends System {
       viewport.drawCircle({
         position: { x, y },
         radius: 2,
-        style: { fill: '', opacity: 1, zIndex: 9999, colour: 'GREEN' },
+        style: { fill: RGBA_0, opacity: 1, zIndex: 9999, colour: RGBA_GREEN },
       });
     });
   }

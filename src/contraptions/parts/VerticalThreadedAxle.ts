@@ -1,7 +1,4 @@
 import Part from 'contraptions/abstracts/Part';
-import IComponent from 'engine/interfaces/IComponent';
-import { Ctor } from 'engine/types';
-import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import AnimationComponent from 'foundation/presentation/components/AnimationComponent';
 import { IImage } from 'foundation/presentation/components/ImageComponent';
 
@@ -36,12 +33,5 @@ export default class VerticalThreadedAxle extends Part {
       });
       this.$appendChild(segment);
     }
-  }
-
-  public $patch<T extends IComponent<any>>(ComponentClass: Ctor<T, any>, data: T | any): void {
-    if (ComponentClass.name === AnimationComponent.name) {
-      this.$children.forEach((child) => child.$patch(AnimationComponent, data));
-    }
-    super.$patch(ComponentClass, data);
   }
 }

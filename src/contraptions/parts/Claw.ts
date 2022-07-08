@@ -1,7 +1,6 @@
 import MachineInput from 'contraptions/parts/MachineInput';
 import MachineOutput from 'contraptions/parts/MachineOutput';
 import { RGBA_0, RGBA_BLACK, RGBA_WHITE } from 'app/ui/COLOUR';
-import AnimationTrigger from 'contraptions/triggers/AnimationTrigger';
 import ProximityTrigger from 'contraptions/triggers/ProximityTrigger';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
@@ -9,6 +8,8 @@ import HorizontalThreadedAxle from './HorizontalThreadedAxle';
 import TranslationTrigger from 'contraptions/triggers/TranslationTrigger';
 import Part from 'contraptions/abstracts/Part';
 import Contraption from 'contraptions/abstracts/Contraption';
+import TwoWayAnimationTrigger from 'contraptions/triggers/TwoWayAnimationTrigger';
+import RigidBodyComponent from 'foundation/physics/components/RigidBodyComponent';
 
 export default class Claw extends Contraption {
 
@@ -80,6 +81,7 @@ export default class Claw extends Contraption {
       { x: 10, y: -20},
     ]});
     this.__leftTooth.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_BLACK, zIndex: 3 });
+    this.__leftTooth.$add(RigidBodyComponent, {});
     this.__rightTooth = this.$appendChild(new Part({ x: 39.99, y: 10, a: 0 }));
     this.__rightTooth.$add(ShapeComponent, {
       vertices: [
@@ -96,18 +98,14 @@ export default class Claw extends Contraption {
     const iOpen = new MachineInput({ labelText: 'Open' });
     const oClose = new MachineOutput({ labelText: 'isClosed' });
     const oOpen = new MachineOutput({ labelText: 'isOpen' });
-    this.__leftThread.$appendChild(new AnimationTrigger({ inputs: [iClose], high: { isPaused: false, isReversed: true } }));
-    this.__leftThread.$appendChild(new AnimationTrigger({ inputs: [iOpen], high: { isPaused: false, isReversed: false } }));
-    this.__leftThread.$appendChild(new AnimationTrigger({ inputs: [iClose, iOpen], high: { isPaused: true }, low: { isPaused: true }, off: { isPaused: true } }));
-    this.__rightThread.$appendChild(new AnimationTrigger({ inputs: [iClose], high: { isPaused: false, isReversed: false } }));
-    this.__rightThread.$appendChild(new AnimationTrigger({ inputs: [iOpen], high: { isPaused: false, isReversed: true } }));
-    this.__rightThread.$appendChild(new AnimationTrigger({ inputs: [iClose, iOpen], high: { isPaused: true }, low: { isPaused: true }, off: { isPaused: true } }));
+    this.__leftThread.$appendChild(new TwoWayAnimationTrigger({ input1: iOpen, input2: iClose }));
+    this.__rightThread.$appendChild(new TwoWayAnimationTrigger({ input1: iClose, input2: iOpen }));
     this.__leftTooth.$appendChild(new TranslationTrigger({ inputs: [iClose], high: { x: 0.5 }, blockers: [this.__palm]}));
     this.__leftTooth.$appendChild(new TranslationTrigger({ inputs: [iOpen], high: { x: -0.5 }, blockers: [this.__leftHub]}));
     this.__rightTooth.$appendChild(new TranslationTrigger({ inputs: [iClose], high: { x: -0.5 }, blockers: [this.__palm]}));
     this.__rightTooth.$appendChild(new TranslationTrigger({ inputs: [iOpen], high: { x: 0.5 }, blockers: [this.__rightHub]}));
-    this.__palm.$appendChild(new ProximityTrigger({ output: oClose, target: this.__leftTooth }));
-    this.__leftHub.$appendChild(new ProximityTrigger({ output: oOpen, target: this.__leftTooth }));
+    this.__palm.$appendChild(new ProximityTrigger(oClose));
+    this.__leftHub.$appendChild(new ProximityTrigger(oOpen));
     // io
     this.inputs = [iClose, iOpen];
     this.outputs = [oClose, oOpen];

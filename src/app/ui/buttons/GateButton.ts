@@ -1,5 +1,4 @@
 import { Etor } from 'engine/types';
-import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import ImageComponent from 'foundation/presentation/components/ImageComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
@@ -10,7 +9,7 @@ import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import EVENT_BUS from '../../EVENT_BUS';
 import Gate from '../../../digital-logic/abstracts/Gate';
 import { TOOL_EVENT } from '../../enums/TOOL_EVENT';
-import { RGBA_WHITE } from '../COLOUR';
+import { RGBA_0, RGBA_WHITE } from '../COLOUR';
 
 export default class GateButton extends HTML5CanvasElement {
 
@@ -32,7 +31,7 @@ export default class GateButton extends HTML5CanvasElement {
     this.$add(ImageComponent, { src, zIndex: 1 });
     this.$add(StyleComponent, {
       colour: RGBA_WHITE,
-      fill: '',
+      fill: RGBA_0,
       opacity: 1,
       zIndex: 1,
     });

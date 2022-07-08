@@ -1,4 +1,3 @@
-import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import ImageComponent from 'foundation/presentation/components/ImageComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
