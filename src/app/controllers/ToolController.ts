@@ -1,5 +1,4 @@
 import EVENT_BUS from '../EVENT_BUS';
-import InputController from './InputController';
 import CreatorTool from '../tools/CreatorTool';
 import DefaultTool from '../tools/DefaultTool';
 import { TOOL_EVENT } from '../enums/TOOL_EVENT';
@@ -21,6 +20,7 @@ import WireCutterButton from 'app/ui/buttons/WireCutterButton';
 import AndGate from 'digital-logic/digital-elements/AndGate';
 import NandGate from 'digital-logic/digital-elements/NandGate';
 import IController from 'app/interfaces/IController';
+import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 
 export default class ToolController implements IController {
 
@@ -38,7 +38,7 @@ export default class ToolController implements IController {
   } as Dict<Constructor<IInputHandler, any>>;
 
   public init(): void {
-    const buttons = [
+    const buttons: IHTML5CanvasElement[] = [
       new GateButton({ src: './AndGate.png', GateEtor: AndGate }),
       new GateButton({ src: './NandGate.png', GateEtor: NandGate }),
       new TrashButton(),

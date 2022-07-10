@@ -31,60 +31,70 @@ export default class TheClaw extends Contraption {
   public constructor({ x, y }: { x: number; y: number }) {
     super({ x, y, a: 0 });
     this.__horizontalRail = this.$appendChild(new HorizontalThreadedAxle({ x: 0, y: 0, width: 300, height: 20 }));
-    this.__carriage = this.__horizontalRail.$appendChild(new Part({ x: -129.99, y: 0, a: 0 }));
-    this.__carriage.$add(ShapeComponent, {
-      vertices: [
-        { x: 20, y: 30 },
-        { x: -20, y: 30 },
-        { x: -20, y: -30 },
-        { x: 20, y: -30 },
-      ],
-    });
-    this.__carriage.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_BLACK, zIndex: 3 });
-    this.__carriage.$add(RigidBodyComponent, {});
-    this.__leftSensor = this.__horizontalRail.$appendChild(new Part({ x: -170, y: 0, a: 0 }));
-    this.__leftSensor.$add(ShapeComponent, {
-      vertices: [
-        { x: 20, y: 20 },
-        { x: -20, y: 20 },
-        { x: -20, y: -20 },
-        { x: 20, y: -20 },
-      ],
-    });
-    this.__leftSensor.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
-    this.__rightSensor = this.__horizontalRail.$appendChild(new Part({ x: 170, y: 0, a: 0 }));
-    this.__rightSensor.$add(ShapeComponent, {
-      vertices: [
-        { x: 20, y: 20 },
-        { x: -20, y: 20 },
-        { x: -20, y: -20 },
-        { x: 20, y: -20 },
-      ],
-    });
-    this.__rightSensor.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
+    this.__carriage = this.__horizontalRail.$appendChild(
+      new Part({ x: -129.99, y: 0, a: 0 })
+        .$add(ShapeComponent, {
+          vertices: [
+            { x: 20, y: 30 },
+            { x: -20, y: 30 },
+            { x: -20, y: -30 },
+            { x: 20, y: -30 },
+          ],
+        })
+        .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_BLACK, zIndex: 3 })
+        .$add(RigidBodyComponent, {})
+    );
+    this.__leftSensor = this.__horizontalRail.$appendChild(
+      new Part({ x: -170, y: 0, a: 0 })
+        .$add(ShapeComponent, {
+          vertices: [
+            { x: 20, y: 20 },
+            { x: -20, y: 20 },
+            { x: -20, y: -20 },
+            { x: 20, y: -20 },
+          ],
+        })
+        .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 })
+    );
+    this.__rightSensor = this.__horizontalRail.$appendChild(
+      new Part({ x: 170, y: 0, a: 0 })
+        .$add(ShapeComponent, {
+          vertices: [
+            { x: 20, y: 20 },
+            { x: -20, y: 20 },
+            { x: -20, y: -20 },
+            { x: 20, y: -20 },
+          ],
+        })
+        .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 })
+    );
     this.__verticalRail = this.__carriage.$appendChild(new VerticalThreadedAxle({
       x: 0, y: 69.99, width: 20, height: 200,
     }));
-    this.__topSensor = this.__verticalRail.$appendChild(new Part({ x: 0, y: -105, a: 0 }));
-    this.__topSensor.$add(ShapeComponent, {
-      vertices: [
-        { x: 20, y: 5 },
-        { x: -20, y: 5 },
-        { x: -20, y: -5 },
-        { x: 20, y: -5 },
-      ],
-    });
-    this.__topSensor.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
-    this.__bottomSensor = this.__verticalRail.$appendChild(new Part({ x: 0, y: 105, a: 0 }));
-    this.__bottomSensor.$add(ShapeComponent, {
-      vertices: [
-        { x: 20, y: 5 },
-        { x: -20, y: 5 },
-        { x: -20, y: -5 },
-        { x: 20, y: -5 },
-      ],
-    });
-    this.__bottomSensor.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
+    this.__topSensor = this.__verticalRail.$appendChild(
+      new Part({ x: 0, y: -105, a: 0 })
+        .$add(ShapeComponent, {
+          vertices: [
+            { x: 20, y: 5 },
+            { x: -20, y: 5 },
+            { x: -20, y: -5 },
+            { x: 20, y: -5 },
+          ],
+        })
+        .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 })
+    );
+    this.__bottomSensor = this.__verticalRail.$appendChild(
+      new Part({ x: 0, y: 105, a: 0 })
+        .$add(ShapeComponent, {
+          vertices: [
+            { x: 20, y: 5 },
+            { x: -20, y: 5 },
+            { x: -20, y: -5 },
+            { x: 20, y: -5 },
+          ],
+        })
+        .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 })
+    );
     this.__claw = this.__verticalRail.$appendChild(new Claw({ x: 0, y: 130 }));
     // triggers
     const iMoveLeft = new MachineInput({ labelText: 'Left' });

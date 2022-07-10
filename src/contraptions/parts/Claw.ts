@@ -24,76 +24,90 @@ export default class Claw extends Contraption {
 
   public constructor({ x, y }: { x: number; y: number }) {
     super({ x, y, a: 0 });
-    this.__wrist = this.$appendChild(new Part({ x: 0, y: -15, a: 0 }));
-    this.__wrist.$add(ShapeComponent, {
-      vertices: [
-        { x: 10, y: 5 },
-        { x: -10, y: 5 },
-        { x: -20, y: -5 },
-        { x: 20, y: -5 },
-      ],
-    });
-    this.__wrist.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
-    this.__palm = this.$appendChild(new Part({ x: 0, y: 10, a: 0 }));
-    this.__palm.$add(ShapeComponent, {
-      vertices: [
-        { x: 10, y: 10 },
-        { x: -10, y: 10 },
-        { x: -10, y: -20 },
-        { x: 10, y: -20 },
-      ],
-    });
-    this.__palm.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
-    this.__leftHub = this.$appendChild(new Part({ x: -52, y: 10, a: 0 }));
-    this.__leftHub.$add(ShapeComponent, {
-      vertices: [
-        { x: 2, y: 10 },
-        { x: -2, y: 10 },
-        { x: -2, y: -10 },
-        { x: 2, y: -10 },
-      ],
-    });
-    this.__leftHub.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
-    this.__rightHub = this.$appendChild(new Part({ x: 52, y: 10, a: 0 }));
-    this.__rightHub.$add(ShapeComponent, {
-      vertices: [
-        { x: 2, y: 10 },
-        { x: -2, y: 10 },
-        { x: -2, y: -10 },
-        { x: 2, y: -10 },
-      ],
-    });
-    this.__rightHub.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 });
+    this.__wrist = this.$appendChild(
+      new Part({ x: 0, y: -15, a: 0 })
+        .$add(ShapeComponent, {
+          vertices: [
+            { x: 10, y: 5 },
+            { x: -10, y: 5 },
+            { x: -20, y: -5 },
+            { x: 20, y: -5 },
+          ],
+        })
+        .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 })
+    );
+    this.__palm = this.$appendChild(
+      new Part({ x: 0, y: 10, a: 0 })
+        .$add(ShapeComponent, {
+          vertices: [
+            { x: 10, y: 10 },
+            { x: -10, y: 10 },
+            { x: -10, y: -20 },
+            { x: 10, y: -20 },
+          ],
+        })
+        .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 })
+    );
+    this.__leftHub = this.$appendChild(
+      new Part({ x: -52, y: 10, a: 0 })
+        .$add(ShapeComponent, {
+          vertices: [
+            { x: 2, y: 10 },
+            { x: -2, y: 10 },
+            { x: -2, y: -10 },
+            { x: 2, y: -10 },
+          ],
+        })
+        .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 })
+    );
+    this.__rightHub = this.$appendChild(
+      new Part({ x: 52, y: 10, a: 0 })
+        .$add(ShapeComponent, {
+          vertices: [
+            { x: 2, y: 10 },
+            { x: -2, y: 10 },
+            { x: -2, y: -10 },
+            { x: 2, y: -10 },
+          ],
+        })
+        .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 })
+    );
     this.__leftThread = this.$appendChild(new HorizontalThreadedAxle({
       x: -30, y: 10, width: 40, height: 20,
     }));
     this.__rightThread = this.$appendChild(new HorizontalThreadedAxle({
       x: 30, y: 10, width: 40, height: 20,
     }));
-    this.__leftTooth = this.$appendChild(new Part({ x: -39.99, y: 10, a: 0 }));
-    this.__leftTooth.$add(ShapeComponent, {
-    vertices: [
-      { x: 10, y: 60 },
-      { x: -0, y: 60 },
-      { x: -0, y: 20 },
-      { x: -10, y: 20 },
-      { x: -10, y: -20 },
-      { x: 10, y: -20},
-    ]});
-    this.__leftTooth.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_BLACK, zIndex: 3 });
-    this.__leftTooth.$add(RigidBodyComponent, {});
-    this.__rightTooth = this.$appendChild(new Part({ x: 39.99, y: 10, a: 0 }));
-    this.__rightTooth.$add(ShapeComponent, {
-      vertices: [
-        { x: 0, y: 20 },
-        { x: 0, y: 60 },
-        { x: -10, y: 60 },
-        { x: -10, y: -20 },
-        { x: 10, y: -20 },
-        { x: 10, y: 20 },
-      ]});
-    this.__rightTooth.$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_BLACK, zIndex: 3 });
-    // rules
+    this.__leftTooth = this.$appendChild(
+      new Part({ x: -39.99, y: 10, a: 0 })
+        .$add(ShapeComponent, {
+          vertices: [
+            { x: 10, y: 60 },
+            { x: -0, y: 60 },
+            { x: -0, y: 20 },
+            { x: -10, y: 20 },
+            { x: -10, y: -20 },
+            { x: 10, y: -20},
+          ],
+        })
+        .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_BLACK, zIndex: 3 })
+        .$add(RigidBodyComponent, {})
+    );
+    this.__rightTooth = this.$appendChild(
+      new Part({ x: 39.99, y: 10, a: 0 })
+        .$add(ShapeComponent, {
+          vertices: [
+            { x: 0, y: 20 },
+            { x: 0, y: 60 },
+            { x: -10, y: 60 },
+            { x: -10, y: -20 },
+            { x: 10, y: -20 },
+            { x: 10, y: 20 },
+          ],
+        })
+        .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_BLACK, zIndex: 3 })
+    );
+    // triggers
     const iClose = new MachineInput({ labelText: 'Close' });
     const iOpen = new MachineInput({ labelText: 'Open' });
     const oClose = new MachineOutput({ labelText: 'isClosed' });

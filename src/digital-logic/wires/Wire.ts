@@ -62,12 +62,12 @@ export default class Wire extends HTML5CanvasElement {
     this.$patch(StyleComponent, { colour: RGBA_WHITE });
   }
 
-  public $patch<T extends IComponent<any>>(ComponentClass: Ctor<T, any>, data: T | any): void {
+  public $patch<T extends IComponent<any>>(ComponentClass: Ctor<T, any>, data: T | any): this {
     if (ComponentClass.name === PoseComponent.name) {
       this.__updatePose();
-      return;
+      return this;
     }
-    super.$patch(ComponentClass, data);
+    return super.$patch(ComponentClass, data);
   }
 
   public $destroy(): void {

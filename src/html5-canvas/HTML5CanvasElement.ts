@@ -12,7 +12,7 @@ import { Ctor } from 'engine/types';
 import IComponent from 'engine/interfaces/IComponent';
 import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
-import { RGBA_BLACK, RGBA_WHITE } from 'app/ui/COLOUR';
+import { RGBA_0, RGBA_WHITE } from 'app/ui/COLOUR';
 
 export default class HTML5CanvasElement extends Entity implements IHTML5CanvasElement {
 
@@ -27,7 +27,7 @@ export default class HTML5CanvasElement extends Entity implements IHTML5CanvasEl
     this.$add(PoseComponent, { x: 0, y: 0, a: 0 });
     this.$add(StyleComponent, {
       colour: RGBA_WHITE,
-      fill: RGBA_BLACK,
+      fill: RGBA_0,
       opacity: 1,
       zIndex: 0,
     });
@@ -82,7 +82,7 @@ export default class HTML5CanvasElement extends Entity implements IHTML5CanvasEl
   }
 
   @observable
-  public $patch<T extends IComponent<TArg>, TArg extends {}>(ComponentClass: Ctor<T, TArg>, data: TArg | {}): void {
+  public $patch<T extends IComponent<TArg>, TArg extends {}>(ComponentClass: Ctor<T, TArg>, data: TArg | {}): this {
     return super.$patch(ComponentClass, data);
   }
 

@@ -25,11 +25,11 @@ export default class Part extends HTML5CanvasElement implements IPart {
     this.$patch(PoseComponent, this.__initPose);
   }
 
-  public $patch<T extends IComponent<any>>(ComponentClass: Ctor<T, any>, data: T | any): void {
+  public $patch<T extends IComponent<any>>(ComponentClass: Ctor<T, any>, data: T | any): this {
     if (ComponentClass.name === AnimationComponent.name) {
       this.$children.forEach((child) => child.$patch(AnimationComponent, data));
     }
-    super.$patch(ComponentClass, data);
+    return super.$patch(ComponentClass, data);
   }
 
 }

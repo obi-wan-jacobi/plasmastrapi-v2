@@ -1,6 +1,5 @@
 import StyleComponent from '../components/StyleComponent';
 import System from '../../../engine/abstracts/System';
-import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import { transformShape } from '../../helpers/geometry';
 import IViewport from 'engine/interfaces/IViewport';
