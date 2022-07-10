@@ -111,12 +111,12 @@ export default class TheClaw extends Contraption {
     const oIsBottom = new MachineOutput({ labelText: 'isBottom' });
     this.__horizontalRail.$appendChild(new TwoWayAnimationTrigger({ input1: iMoveLeft, input2: iMoveRight }));
     this.__verticalRail.$appendChild(new TwoWayAnimationTrigger({ input1: iMoveUp, input2: iMoveDown }));
-    this.__carriage.$appendChild(new TranslationTrigger({ inputs: [iMoveRight], translation: { x: 0.5 } }));
-    this.__carriage.$appendChild(new TranslationTrigger({ inputs: [iMoveLeft], translation: { x: -0.5 } }));
+    this.__carriage.$appendChild(new TranslationTrigger({ input: iMoveRight, translation: { x: 0.5 } }));
+    this.__carriage.$appendChild(new TranslationTrigger({ input: iMoveLeft, translation: { x: -0.5 } }));
     this.__rightSensor.$appendChild(new ProximityTrigger(oIsRight));
     this.__leftSensor.$appendChild(new ProximityTrigger(oIsLeft));
-    this.__verticalRail.$appendChild(new TranslationTrigger({ inputs: [iMoveDown], translation: { y: 0.5 } }));
-    this.__verticalRail.$appendChild(new TranslationTrigger({ inputs: [iMoveUp], translation: { y: -0.5 } }));
+    this.__verticalRail.$appendChild(new TranslationTrigger({ input: iMoveDown, translation: { y: 0.5 } }));
+    this.__verticalRail.$appendChild(new TranslationTrigger({ input: iMoveUp, translation: { y: -0.5 } }));
     this.__topSensor.$appendChild(new ProximityTrigger(oIsTop));
     this.__bottomSensor.$appendChild(new ProximityTrigger(oIsBottom));
     // io

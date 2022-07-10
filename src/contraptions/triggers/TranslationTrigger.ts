@@ -1,4 +1,3 @@
-import { RGBA_RED, RGBA_YELLOW } from 'app/ui/COLOUR';
 import DigitalElement from 'digital-logic/abstracts/DigitalElement';
 import { COMPONENTS } from 'engine/concretes/ComponentMaster';
 import IComponent from 'engine/interfaces/IComponent';
@@ -7,16 +6,17 @@ import PoseComponent, { IPose } from 'foundation/geometry/components/PoseCompone
 import { entitiesTouch } from 'foundation/helpers/entities';
 import { toNumber } from 'foundation/helpers/math';
 import RigidBodyComponent from 'foundation/physics/components/RigidBodyComponent';
-import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
-import DigitalTrigger from './DigitalTrigger';
+import Trigger from './Trigger';
 
-export default class TranslationTrigger extends DigitalTrigger<IPose> {
+export default class TranslationTrigger extends Trigger {
 
+  private __input: DigitalElement;
   private __translation: IPose | any;
 
-  public constructor({ inputs, translation }: { inputs: DigitalElement[]; translation: IPose | any }) {
-    super({ inputs });
+  public constructor({ input, translation }: { input: DigitalElement; translation: IPose | any }) {
+    super();
+    this.__input = input;
     this.__translation = translation;
   }
 
@@ -25,7 +25,7 @@ export default class TranslationTrigger extends DigitalTrigger<IPose> {
       throw new Error(`${this.constructor.name} has no parent!`);
     }
     const oldPose = this.$parent!.$copy(this._getComponentToPatch())!;
-    if (!(this._inputs.filter((input) => input.isHigh).length === this._inputs.length)) {
+    if (!this.__input.isHigh) {
       return;
     }
     this.__translate(this.$parent, this.__translation);

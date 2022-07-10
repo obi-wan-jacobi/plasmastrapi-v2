@@ -118,10 +118,10 @@ export default class Claw extends Contraption {
     const oOpen = new MachineOutput({ labelText: 'isOpen' });
     this.__leftThread.$appendChild(new TwoWayAnimationTrigger({ input1: iOpen, input2: iClose }));
     this.__rightThread.$appendChild(new TwoWayAnimationTrigger({ input1: iClose, input2: iOpen }));
-    this.__leftTooth.$appendChild(new TranslationTrigger({ inputs: [iClose], translation: { x: 0.5 } }));
-    this.__leftTooth.$appendChild(new TranslationTrigger({ inputs: [iOpen], translation: { x: -0.5 } }));
-    this.__rightTooth.$appendChild(new TranslationTrigger({ inputs: [iClose], translation: { x: -0.5 } }));
-    this.__rightTooth.$appendChild(new TranslationTrigger({ inputs: [iOpen], translation: { x: 0.5 } }));
+    this.__leftTooth.$appendChild(new TranslationTrigger({ input: iClose, translation: { x: 0.5 } }));
+    this.__leftTooth.$appendChild(new TranslationTrigger({ input: iOpen, translation: { x: -0.5 } }));
+    this.__rightTooth.$appendChild(new TranslationTrigger({ input: iClose, translation: { x: -0.5 } }));
+    this.__rightTooth.$appendChild(new TranslationTrigger({ input: iOpen, translation: { x: 0.5 } }));
     this.__palm.$appendChild(new ProximityTrigger(oClose));
     this.__leftHub.$appendChild(new ProximityTrigger(oOpen));
     // io
