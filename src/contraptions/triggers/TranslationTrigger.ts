@@ -1,21 +1,22 @@
+import { RGBA_RED, RGBA_YELLOW } from 'app/ui/COLOUR';
 import DigitalElement from 'digital-logic/abstracts/DigitalElement';
+import { COMPONENTS } from 'engine/concretes/ComponentMaster';
 import IComponent from 'engine/interfaces/IComponent';
 import { Ctor } from 'engine/types';
 import PoseComponent, { IPose } from 'foundation/geometry/components/PoseComponent';
 import { entitiesTouch } from 'foundation/helpers/entities';
 import { toNumber } from 'foundation/helpers/math';
 import RigidBodyComponent from 'foundation/physics/components/RigidBodyComponent';
+import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 import DigitalTrigger from './DigitalTrigger';
 
 export default class TranslationTrigger extends DigitalTrigger<IPose> {
 
-  private __blockers: IHTML5CanvasElement[];
   private __translation: IPose | any;
 
-  public constructor({ inputs, translation, blockers }: { inputs: DigitalElement[]; translation: IPose | any; blockers: IHTML5CanvasElement[] }) {
+  public constructor({ inputs, translation }: { inputs: DigitalElement[]; translation: IPose | any }) {
     super({ inputs });
-    this.__blockers = blockers;
     this.__translation = translation;
   }
 
@@ -23,22 +24,29 @@ export default class TranslationTrigger extends DigitalTrigger<IPose> {
     if (!this.$parent) {
       throw new Error(`${this.constructor.name} has no parent!`);
     }
-    const root = this.$parent;
     const oldPose = this.$parent!.$copy(this._getComponentToPatch())!;
     if (!(this._inputs.filter((input) => input.isHigh).length === this._inputs.length)) {
       return;
     }
     this.__translate(this.$parent, this.__translation);
-    const bodies = [this.$parent!].concat(this.$parent.$children.toArray()).filter((target) => target.$copy(RigidBodyComponent));
-    bodies.every((body) => {
-      return this.__blockers.every((blocker) => {
-        if (!entitiesTouch(body, blocker)) {
-          return true;
+    const bodies: IHTML5CanvasElement[] = COMPONENTS.toArray(RigidBodyComponent)
+      .map((target) => target.$entity as IHTML5CanvasElement);
+    for (let i = 0; i < bodies.length - 1; i++) {
+      const bodyA = bodies[i];
+      let isCollision = false;
+      for (let j = i + 1; j < bodies.length; j++) {
+        const bodyB = bodies[j];
+        if (!entitiesTouch(bodyA, bodyB)) {
+          continue;
         }
-        root.$patch(this._getComponentToPatch(), oldPose);
-        return false;
-      });
-    });
+        this.$parent.$patch(PoseComponent, oldPose);
+        isCollision = true;
+        break;
+      }
+      if (isCollision) {
+        break;
+      }
+    }
   }
 
   protected _getComponentToPatch(): Ctor<IComponent<IPose>, IPose> {

@@ -109,6 +109,7 @@ export default class Claw extends Contraption {
           ],
         })
         .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_BLACK, zIndex: 3 })
+        .$add(RigidBodyComponent, {})
     );
     // triggers
     const iClose = new MachineInput({ labelText: 'Close' });
@@ -117,10 +118,10 @@ export default class Claw extends Contraption {
     const oOpen = new MachineOutput({ labelText: 'isOpen' });
     this.__leftThread.$appendChild(new TwoWayAnimationTrigger({ input1: iOpen, input2: iClose }));
     this.__rightThread.$appendChild(new TwoWayAnimationTrigger({ input1: iClose, input2: iOpen }));
-    this.__leftTooth.$appendChild(new TranslationTrigger({ inputs: [iClose], translation: { x: 0.5 }, blockers: [this.__palm]}));
-    this.__leftTooth.$appendChild(new TranslationTrigger({ inputs: [iOpen], translation: { x: -0.5 }, blockers: [this.__leftHub]}));
-    this.__rightTooth.$appendChild(new TranslationTrigger({ inputs: [iClose], translation: { x: -0.5 }, blockers: [this.__palm]}));
-    this.__rightTooth.$appendChild(new TranslationTrigger({ inputs: [iOpen], translation: { x: 0.5 }, blockers: [this.__rightHub]}));
+    this.__leftTooth.$appendChild(new TranslationTrigger({ inputs: [iClose], translation: { x: 0.5 } }));
+    this.__leftTooth.$appendChild(new TranslationTrigger({ inputs: [iOpen], translation: { x: -0.5 } }));
+    this.__rightTooth.$appendChild(new TranslationTrigger({ inputs: [iClose], translation: { x: -0.5 } }));
+    this.__rightTooth.$appendChild(new TranslationTrigger({ inputs: [iOpen], translation: { x: 0.5 } }));
     this.__palm.$appendChild(new ProximityTrigger(oClose));
     this.__leftHub.$appendChild(new ProximityTrigger(oOpen));
     // io
