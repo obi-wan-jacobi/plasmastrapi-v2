@@ -55,6 +55,7 @@ export default class TheClaw extends Contraption {
           ],
         })
         .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 })
+        .$add(RigidBodyComponent, {})
     );
     this.__rightSensor = this.__horizontalRail.$appendChild(
       new Part({ x: 170, y: 0, a: 0 })
@@ -67,6 +68,7 @@ export default class TheClaw extends Contraption {
           ],
         })
         .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 })
+        .$add(RigidBodyComponent, {})
     );
     this.__verticalRail = this.__carriage.$appendChild(new VerticalThreadedAxle({
       x: 0, y: 69.99, width: 20, height: 200,
@@ -82,6 +84,7 @@ export default class TheClaw extends Contraption {
           ],
         })
         .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 })
+        .$add(RigidBodyComponent, {})
     );
     this.__bottomSensor = this.__verticalRail.$appendChild(
       new Part({ x: 0, y: 105, a: 0 })
@@ -94,6 +97,7 @@ export default class TheClaw extends Contraption {
           ],
         })
         .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 })
+        .$add(RigidBodyComponent, {})
     );
     this.__claw = this.__verticalRail.$appendChild(new Claw({ x: 0, y: 130 }));
     // triggers
@@ -107,12 +111,12 @@ export default class TheClaw extends Contraption {
     const oIsBottom = new MachineOutput({ labelText: 'isBottom' });
     this.__horizontalRail.$appendChild(new TwoWayAnimationTrigger({ input1: iMoveLeft, input2: iMoveRight }));
     this.__verticalRail.$appendChild(new TwoWayAnimationTrigger({ input1: iMoveUp, input2: iMoveDown }));
-    this.__carriage.$appendChild(new TranslationTrigger({ inputs: [iMoveRight], high: { x: 0.5 }, blockers: [this.__rightSensor]}));
-    this.__carriage.$appendChild(new TranslationTrigger({ inputs: [iMoveLeft], high: { x: -0.5 }, blockers: [this.__leftSensor]}));
+    this.__carriage.$appendChild(new TranslationTrigger({ inputs: [iMoveRight], translation: { x: 0.5 }, blockers: [this.__rightSensor]}));
+    this.__carriage.$appendChild(new TranslationTrigger({ inputs: [iMoveLeft], translation: { x: -0.5 }, blockers: [this.__leftSensor]}));
     this.__rightSensor.$appendChild(new ProximityTrigger(oIsRight));
     this.__leftSensor.$appendChild(new ProximityTrigger(oIsLeft));
-    this.__verticalRail.$appendChild(new TranslationTrigger({ inputs: [iMoveDown], high: { y: 0.5 }, bodies: [this.__topSensor], blockers: [this.__carriage]}));
-    this.__verticalRail.$appendChild(new TranslationTrigger({ inputs: [iMoveUp], high: { y: -0.5 }, bodies: [this.__bottomSensor], blockers: [this.__carriage]}));
+    this.__verticalRail.$appendChild(new TranslationTrigger({ inputs: [iMoveDown], translation: { y: 0.5 }, blockers: [this.__carriage]}));
+    this.__verticalRail.$appendChild(new TranslationTrigger({ inputs: [iMoveUp], translation: { y: -0.5 }, blockers: [this.__carriage]}));
     this.__topSensor.$appendChild(new ProximityTrigger(oIsTop));
     this.__bottomSensor.$appendChild(new ProximityTrigger(oIsBottom));
     // io

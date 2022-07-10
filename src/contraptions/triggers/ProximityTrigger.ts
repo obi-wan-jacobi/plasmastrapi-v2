@@ -17,7 +17,7 @@ export default class ProximityTrigger extends Trigger {
 
   public invoke(): void {
     const a = this.$parent!.$copy(PoseComponent)!;
-      const targets = COMPONENTS.toArray(RigidBodyComponent);
+      const targets = COMPONENTS.toArray(RigidBodyComponent).filter((target) => target.$entity !== this.$parent);
       for (const t of targets) {
         const target = t.$entity;
         const b = target.$copy(PoseComponent)!;

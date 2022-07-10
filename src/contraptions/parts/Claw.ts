@@ -47,6 +47,7 @@ export default class Claw extends Contraption {
           ],
         })
         .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 })
+        .$add(RigidBodyComponent, {})
     );
     this.__leftHub = this.$appendChild(
       new Part({ x: -52, y: 10, a: 0 })
@@ -59,6 +60,7 @@ export default class Claw extends Contraption {
           ],
         })
         .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 })
+        .$add(RigidBodyComponent, {})
     );
     this.__rightHub = this.$appendChild(
       new Part({ x: 52, y: 10, a: 0 })
@@ -71,6 +73,7 @@ export default class Claw extends Contraption {
           ],
         })
         .$add(StyleComponent, { colour: RGBA_WHITE, opacity: 1, fill: RGBA_0, zIndex: 2 })
+        .$add(RigidBodyComponent, {})
     );
     this.__leftThread = this.$appendChild(new HorizontalThreadedAxle({
       x: -30, y: 10, width: 40, height: 20,
@@ -114,10 +117,10 @@ export default class Claw extends Contraption {
     const oOpen = new MachineOutput({ labelText: 'isOpen' });
     this.__leftThread.$appendChild(new TwoWayAnimationTrigger({ input1: iOpen, input2: iClose }));
     this.__rightThread.$appendChild(new TwoWayAnimationTrigger({ input1: iClose, input2: iOpen }));
-    this.__leftTooth.$appendChild(new TranslationTrigger({ inputs: [iClose], high: { x: 0.5 }, blockers: [this.__palm]}));
-    this.__leftTooth.$appendChild(new TranslationTrigger({ inputs: [iOpen], high: { x: -0.5 }, blockers: [this.__leftHub]}));
-    this.__rightTooth.$appendChild(new TranslationTrigger({ inputs: [iClose], high: { x: -0.5 }, blockers: [this.__palm]}));
-    this.__rightTooth.$appendChild(new TranslationTrigger({ inputs: [iOpen], high: { x: 0.5 }, blockers: [this.__rightHub]}));
+    this.__leftTooth.$appendChild(new TranslationTrigger({ inputs: [iClose], translation: { x: 0.5 }, blockers: [this.__palm]}));
+    this.__leftTooth.$appendChild(new TranslationTrigger({ inputs: [iOpen], translation: { x: -0.5 }, blockers: [this.__leftHub]}));
+    this.__rightTooth.$appendChild(new TranslationTrigger({ inputs: [iClose], translation: { x: -0.5 }, blockers: [this.__palm]}));
+    this.__rightTooth.$appendChild(new TranslationTrigger({ inputs: [iOpen], translation: { x: 0.5 }, blockers: [this.__rightHub]}));
     this.__palm.$appendChild(new ProximityTrigger(oClose));
     this.__leftHub.$appendChild(new ProximityTrigger(oOpen));
     // io

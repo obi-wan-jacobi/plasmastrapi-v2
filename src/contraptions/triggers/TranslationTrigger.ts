@@ -4,18 +4,19 @@ import { Ctor } from 'engine/types';
 import PoseComponent, { IPose } from 'foundation/geometry/components/PoseComponent';
 import { entitiesTouch } from 'foundation/helpers/entities';
 import { toNumber } from 'foundation/helpers/math';
+import RigidBodyComponent from 'foundation/physics/components/RigidBodyComponent';
 import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 import DigitalTrigger from './DigitalTrigger';
 
 export default class TranslationTrigger extends DigitalTrigger<IPose> {
 
-  private __bodies?: IHTML5CanvasElement[];
   private __blockers: IHTML5CanvasElement[];
+  private __translation: IPose | any;
 
-  public constructor({ inputs, high, bodies, blockers }: { inputs: DigitalElement[]; high?: IPose | any; bodies?: IHTML5CanvasElement[]; blockers: IHTML5CanvasElement[] }) {
-    super({ inputs, high });
-    this.__bodies = bodies;
+  public constructor({ inputs, translation, blockers }: { inputs: DigitalElement[]; translation: IPose | any; blockers: IHTML5CanvasElement[] }) {
+    super({ inputs });
     this.__blockers = blockers;
+    this.__translation = translation;
   }
 
   public invoke(): void {
@@ -24,12 +25,12 @@ export default class TranslationTrigger extends DigitalTrigger<IPose> {
     }
     const root = this.$parent;
     const oldPose = this.$parent!.$copy(this._getComponentToPatch())!;
-    if (!(this._patchOnHigh && this._inputs.filter((input) => input.isHigh).length === this._inputs.length)) {
+    if (!(this._inputs.filter((input) => input.isHigh).length === this._inputs.length)) {
       return;
     }
-    this.__translate(this.$parent, this._patchOnHigh);
-    this.__bodies = this.__bodies || [this.$parent!];
-    this.__bodies.every((body) => {
+    this.__translate(this.$parent, this.__translation);
+    const bodies = [this.$parent!].concat(this.$parent.$children.toArray()).filter((target) => target.$copy(RigidBodyComponent));
+    bodies.every((body) => {
       return this.__blockers.every((blocker) => {
         if (!entitiesTouch(body, blocker)) {
           return true;
