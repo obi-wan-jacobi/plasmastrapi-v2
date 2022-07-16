@@ -33,7 +33,7 @@ export default class DefaultTool extends InputHandler {
 
 }
 
-export const triggerMouseEventsOnClosestTarget = ({ event }: { event: IMouseEvent  }): void => {
+export const triggerMouseEventsOnClosestTarget = ({ event }: { event: IMouseEvent  }): IHTML5CanvasElement | undefined => {
   COMPONENTS.forEvery(MouseComponent)((mouse) => {
     patchIsHovered({ mouse, event });
   });
@@ -45,13 +45,14 @@ export const triggerMouseEventsOnClosestTarget = ({ event }: { event: IMouseEven
   // hovered
   if (isHovered) {
     (element as any)[event.name](event);
-    return;
+    return element;
   }
   element.$patch(MouseComponent, {
     isHovered: true,
   });
   (element as IHTML5CanvasElement)[MOUSE_EVENT.MOUSE_ENTER](event);
   (element as any)[event.name](event);
+  return element;
 };
 
 const patchIsHovered = ({ mouse, event }: {

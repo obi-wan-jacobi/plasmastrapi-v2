@@ -4,7 +4,6 @@ import DefaultTool from '../tools/DefaultTool';
 import { TOOL_EVENT } from '../enums/TOOL_EVENT';
 import DestructorTool from 'app/tools/DestructorTool';
 import SelectorTool from 'app/tools/SelectorTool';
-import MoverTool from 'app/tools/MoverTool';
 import WireTool from 'app/tools/WireTool';
 import WireCutterTool from 'app/tools/WireCutterTool';
 import { Constructor, Dict } from 'base/types';
@@ -28,7 +27,6 @@ export default class CommandController implements IController {
     [TOOL_EVENT.HOVERGATE_CREATE]: [CreatorTool, { Etor: HoverGate }],
     [TOOL_EVENT.GATE_DELETE]: [DestructorTool, {}],
     [TOOL_EVENT.SELECTION_BEGIN]: [SelectorTool, {}],
-    [TOOL_EVENT.SELECTION_MOVE]: [MoverTool, {}],
     [TOOL_EVENT.WIRE_CREATE]: [WireTool, {}],
     [TOOL_EVENT.WIRE_DELETE]: [WireCutterTool, {}],
   };
