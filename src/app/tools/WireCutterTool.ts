@@ -14,6 +14,8 @@ export default class WireCutterTool extends InputHandler {
   private __isCuttingActive = false;
   private __cuttingPath = new CursorTrail();
 
+  public init(): void {}
+
   public [MOUSE_EVENT.MOUSE_DOWN](mouseEvent: IMouseEvent): void {
     this.__isCuttingActive = true;
     this.__cuttingPath.addNewPoint(mouseEvent!);

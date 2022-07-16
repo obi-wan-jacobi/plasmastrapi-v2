@@ -6,7 +6,7 @@ import OutputTerminal from 'digital-logic/terminals/OutputTerminal';
 import Wire from 'digital-logic/wires/Wire';
 import { RGBA_0, RGBA_WHITE } from 'app/ui/COLOUR';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
-import PoseComponent from 'foundation/geometry/components/PoseComponent';
+import PoseComponent, { IPoint } from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
@@ -14,7 +14,7 @@ import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
-import { triggerMouseEventsOnClosestTarget } from './DefaultTool';
+import { getClosestTarget, triggerMouseEventsOnClosestTarget } from './DefaultTool';
 import { getAbsolutePose } from 'foundation/helpers/entities';
 
 export default class WireTool extends InputHandler {
@@ -23,10 +23,9 @@ export default class WireTool extends InputHandler {
   private __tempHandle: IHTML5CanvasElement;
   private __tempWire: Wire;
 
-  public constructor({ target }: { target: IHTML5CanvasElement }) {
-    super();
-    this.__target = target as InputTerminal | OutputTerminal;
-    const pose = getAbsolutePose(target);
+  public init({ x, y }: IPoint): void {
+    this.__target = getClosestTarget({ x, y })! as (InputTerminal | OutputTerminal);
+    const pose = getAbsolutePose(this.__target);
     const width = 10, height = 10;
     this.__tempHandle = new HTML5CanvasElement();
     this.__tempHandle.$add(PoseComponent, pose);

@@ -1,5 +1,6 @@
 import InputHandler from 'app/abstracts/InputHandler';
 import { COMPONENTS } from 'engine/concretes/ComponentMaster';
+import { IPoint } from 'foundation/geometry/components/PoseComponent';
 import { entityContainsPoint } from 'foundation/helpers/entities';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
@@ -9,6 +10,8 @@ import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 
 export default class DefaultTool extends InputHandler {
+
+  public init(): void {}
 
   [MOUSE_EVENT.MOUSE_DOWN](event: IMouseEvent): void {
     triggerMouseEventsOnClosestTarget({ event });
@@ -31,32 +34,24 @@ export default class DefaultTool extends InputHandler {
 }
 
 export const triggerMouseEventsOnClosestTarget = ({ event }: { event: IMouseEvent  }): void => {
-  const unordered = new Array<HTML5CanvasElement>();
   COMPONENTS.forEvery(MouseComponent)((mouse) => {
     patchIsHovered({ mouse, event });
-    unordered.push(mouse.$entity as HTML5CanvasElement);
   });
-  const zOrdered = unordered.sort((a, b) => {
-    const aZIndex = a.$copy(StyleComponent)?.zIndex;
-    const bZIndex = b.$copy(StyleComponent)?.zIndex;
-    return (bZIndex || -1) - (aZIndex || -1);
-  });
-  for(const element of zOrdered) {
-    const { isHovered } = element.$copy(MouseComponent)!;
-    // hovered
-    if (entityContainsPoint(element, event)) {
-      if (isHovered) {
-        (element as any)[event.name](event);
-        break;
-      }
-      element.$patch(MouseComponent, {
-        isHovered: true,
-      });
-      (element as IHTML5CanvasElement)[MOUSE_EVENT.MOUSE_ENTER](event);
-      (element as any)[event.name](event);
-      break;
-    }
+  const element = getClosestTarget({ ...event });
+  if (!element) {
+    return;
   }
+  const { isHovered } = element.$copy(MouseComponent)!;
+  // hovered
+  if (isHovered) {
+    (element as any)[event.name](event);
+    return;
+  }
+  element.$patch(MouseComponent, {
+    isHovered: true,
+  });
+  (element as IHTML5CanvasElement)[MOUSE_EVENT.MOUSE_ENTER](event);
+  (element as any)[event.name](event);
 };
 
 const patchIsHovered = ({ mouse, event }: {
@@ -78,4 +73,19 @@ const patchIsHovered = ({ mouse, event }: {
       return;
     }
   }
+};
+
+export const getClosestTarget = ({ x, y }: IPoint): IHTML5CanvasElement | undefined => {
+  const zOrdered = COMPONENTS.toArray(MouseComponent).map((c) => c.$entity as HTML5CanvasElement)
+    .sort((a, b) => {
+      const aZIndex = a.$copy(StyleComponent)?.zIndex;
+      const bZIndex = b.$copy(StyleComponent)?.zIndex;
+      return (bZIndex || -1) - (aZIndex || -1);
+    });
+  for(const element of zOrdered) {
+    if (entityContainsPoint(element, { x, y })) {
+      return element;
+    }
+  }
+  return;
 };

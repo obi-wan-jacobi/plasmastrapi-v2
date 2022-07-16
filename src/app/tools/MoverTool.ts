@@ -1,6 +1,7 @@
 import InputHandler from 'app/abstracts/InputHandler';
 import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import EVENT_BUS from 'app/EVENT_BUS';
+import clone from 'base/helpers/clone';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import { IPoint } from 'foundation/geometry/components/PoseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
@@ -11,9 +12,7 @@ export default class MoverTool extends InputHandler {
 
   private __start: IPoint;
 
-  public constructor(mouseEvent: IMouseEvent) {
-    super();
-    const { x, y } = mouseEvent!;
+  public init({ x, y }: IPoint): void {
     this.__start = { x, y };
   }
 

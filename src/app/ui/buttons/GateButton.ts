@@ -1,24 +1,21 @@
-import { Etor } from 'engine/types';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import ImageComponent from 'foundation/presentation/components/ImageComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
-import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import EVENT_BUS from '../../EVENT_BUS';
-import Gate from '../../../digital-logic/abstracts/Gate';
 import { TOOL_EVENT } from '../../enums/TOOL_EVENT';
 import { RGBA_0, RGBA_WHITE } from '../COLOUR';
 
-export default class GateButton extends HTML5CanvasElement {
+export default class ToolButton extends HTML5CanvasElement {
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  private __Etor: Etor<Gate, IMouseEvent>;
+  private __toolEvent: TOOL_EVENT;
 
-  public constructor({ src, GateEtor }: { src: string; GateEtor: Etor<Gate, IMouseEvent> }) {
+  public constructor({ src, toolEvent }: { src: string; toolEvent: TOOL_EVENT }) {
     super();
-    this.__Etor = GateEtor;
+    this.__toolEvent = toolEvent;
     const width = 40, height = 40;
     this.$add(ShapeComponent, {
       vertices: [
@@ -38,8 +35,8 @@ export default class GateButton extends HTML5CanvasElement {
     this.$add(MouseComponent, { x: 0, y: 0, isHovered: false });
   }
 
-  public [MOUSE_EVENT.CLICK](event: IMouseEvent): void {
-    EVENT_BUS.publish({ topic: TOOL_EVENT.GATE_CREATE, arg: { Etor: this.__Etor, event } });
+  public [MOUSE_EVENT.CLICK](): void {
+    EVENT_BUS.publish({ topic: this.__toolEvent });
   }
 
 }

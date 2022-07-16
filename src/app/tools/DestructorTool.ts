@@ -12,6 +12,8 @@ export default class DestructorTool extends InputHandler {
 
   private __selectionBox?: SelectionBox<Gate>;
 
+  public init(): void {}
+
   public dispose(): void {
     this.__selectionBox?.$destroy();
   }

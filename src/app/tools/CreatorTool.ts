@@ -11,9 +11,8 @@ export default class CreatorTool extends InputHandler {
 
   private __target: Gate;
 
-  public constructor(arg: { Etor: Etor<Gate, any>; event: IMouseEvent }) {
-    super();
-    this.__target = new arg.Etor(arg.event);
+  public init(arg: { x: number; y: number; Etor: Etor<Gate, any> }): void {
+    this.__target = new arg.Etor(arg);
   }
 
   public [MOUSE_EVENT.MOUSE_MOVE](mouseEvent: IMouseEvent): void {

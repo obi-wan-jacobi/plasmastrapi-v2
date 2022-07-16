@@ -1,5 +1,6 @@
 import IController from 'app/interfaces/IController';
-import { Dict, Void } from 'base/types';
+import DefaultTool from 'app/tools/DefaultTool';
+import { Constructor, Dict, Void } from 'base/types';
 import IPipeEvent from 'engine/interfaces/IPipeEvent';
 import { KEYBOARD_EVENT } from 'html5-canvas/enums/KEYBOARD_EVENT';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
@@ -12,10 +13,13 @@ export default class InputController implements IController {
 
   private __canvas: HTMLCanvasElement;
   private __handler: IInputHandler;
+  private __handlerArgs: any;
+  private __mouse: IMouseEvent;
+  private __keyboard: IKeyboardEvent;
 
-  public constructor({ canvas, handler }: { canvas: HTMLCanvasElement; handler: IInputHandler }) {
+  public constructor({ canvas }: { canvas: HTMLCanvasElement }) {
     this.__canvas = canvas;
-    this.__handler = handler;
+    this.__handler = new DefaultTool();
   }
 
   public init(): void {
@@ -33,18 +37,22 @@ export default class InputController implements IController {
     });
   }
 
-  public setHandler(handler: IInputHandler): void {
+  public setHandler<TArgs>(Handler: Constructor<IInputHandler, TArgs>, args?: TArgs): void {
     this.__handler.dispose();
-    this.__handler = handler as IInputHandler & Dict<Void<IMouseEvent>>;
+    this.__handlerArgs = args;
+    this.__handler = new Handler(this.__handlerArgs);
+    this.__handler.init({ x: this.__mouse.x, y: this.__mouse.y, ...args });
   }
 
   private __handleMouseEvent(event: IMouseEvent): void {
+    this.__mouse = event;
     if (this.__handler[event.name]) {
       this.__handler[event.name](event);
     }
   }
 
   private __handleKeyboardEvent(event: IKeyboardEvent): void {
+    this.__keyboard = event;
     if (this.__handler[event.name]) {
       this.__handler[event.name](event);
     }

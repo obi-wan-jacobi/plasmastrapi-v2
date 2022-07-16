@@ -2,7 +2,7 @@ import Gate from 'digital-logic/abstracts/Gate';
 import InputHandler from 'app/abstracts/InputHandler';
 import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import EVENT_BUS from 'app/EVENT_BUS';
-import PoseComponent from 'foundation/geometry/components/PoseComponent';
+import PoseComponent, { IPoint } from 'foundation/geometry/components/PoseComponent';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
@@ -16,9 +16,8 @@ export default class SelectorTool extends InputHandler {
   private __selectionBox?: SelectionBox<Gate>;
   private __moverBox?: MoverBox<Gate>;
 
-  public constructor(mouseEvent: IMouseEvent) {
-    super();
-    this.__selectionBox = new SelectionBox({ x: mouseEvent.x, y: mouseEvent.y, SelectionType: Gate });
+  public init({ x, y }: IPoint): void {
+    this.__selectionBox = new SelectionBox({ x, y, SelectionType: Gate });
     this.__target = this.__selectionBox.selections.size ? this.__selectionBox.selections.values().next().value : undefined;
     if (this.__target) {
       this.__selectionBox.$destroy();
