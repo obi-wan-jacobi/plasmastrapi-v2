@@ -19,13 +19,13 @@ export default class InputController implements IController {
   }
 
   public init(): void {
-    this.__bindEvents({
+    bindEvents({
       element: this.__canvas,
       eventNames: Object.keys(MOUSE_EVENT).map((event) => (MOUSE_EVENT as Dict<string>)[event]),
       eventMapper: adaptCanvasMouseEvent,
       callback: this.__handleMouseEvent.bind(this),
     });
-    this.__bindEvents({
+    bindEvents({
       element: this.__canvas,
       eventNames: Object.keys(KEYBOARD_EVENT).map((event) => (KEYBOARD_EVENT as Dict<string>)[event]),
       eventMapper: adaptCanvasKeyboardEvent,
@@ -50,19 +50,19 @@ export default class InputController implements IController {
     }
   }
 
-  private __bindEvents<TSourceEvent extends Event, TAdaptedEvent extends IPipeEvent>({ element, eventNames, eventMapper, callback }: IHTML5EventTransform<HTMLCanvasElement, TSourceEvent, TAdaptedEvent>): void {
-      eventNames.forEach((name) => {
-        (element as unknown as Dict<Void<TSourceEvent>>)[`on${name}`] = (event: TSourceEvent): void => {
-            const adaptedEvent = eventMapper({
-                event,
-                element,
-            });
-            callback(adaptedEvent);
-        };
-    });
-  }
-
 }
+
+const bindEvents = <TSourceEvent extends Event, TAdaptedEvent extends IPipeEvent>({ element, eventNames, eventMapper, callback }: IHTML5EventTransform<HTMLCanvasElement, TSourceEvent, TAdaptedEvent>): void => {
+  eventNames.forEach((name) => {
+    (element as unknown as Dict<Void<TSourceEvent>>)[`on${name}`] = (event: TSourceEvent): void => {
+      const adaptedEvent = eventMapper({
+          event,
+          element,
+      });
+      callback(adaptedEvent);
+    };
+  });
+};
 
 const adaptCanvasMouseEvent = ({ event, element }: { event: MouseEvent; element: HTMLCanvasElement }): IMouseEvent => {
   const boundingClientRect = element.getBoundingClientRect();
