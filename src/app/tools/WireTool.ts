@@ -25,29 +25,13 @@ export default class WireTool extends InputHandler {
 
   public init({ x, y }: IPoint): void {
     this.__target = getClosestTarget({ x, y })! as (InputTerminal | OutputTerminal);
-    const pose = getAbsolutePose(this.__target);
-    const width = 10, height = 10;
-    this.__tempHandle = new HTML5CanvasElement();
-    this.__tempHandle.$add(PoseComponent, pose);
-    this.__tempHandle.$add(ShapeComponent, {
-      vertices: [
-        { x: -width/2, y: -height/2 },
-        { x: -width/2, y: height/2 },
-        { x: width/2, y: height/2 },
-        { x: width/2, y: -height/2 },
-      ],
-    });
-    this.__tempHandle.$add(StyleComponent, {
-      colour: RGBA_WHITE,
-      fill: RGBA_0,
-      opacity: 1,
-      zIndex: 0,
-    });
-    const mockTerminal = this.__tempHandle.$appendChild(new HTML5CanvasElement());
-    const payload = this.__target instanceof InputTerminal
-      ? { input: mockTerminal as OutputTerminal, output: this.__target }
-      : { input: this.__target, output: mockTerminal as OutputTerminal };
-    this.__tempWire = new Wire(payload);
+    this.__createTempHandle();
+    this.__createTempWire();
+  }
+
+  public dispose(): void {
+    this.__tempHandle.$destroy();
+    this.__tempWire.$destroy();
   }
 
   public [MOUSE_EVENT.MOUSE_MOVE](mouseEvent: IMouseEvent): void {
@@ -56,9 +40,16 @@ export default class WireTool extends InputHandler {
   }
 
   public [MOUSE_EVENT.MOUSE_UP](mouseEvent: IMouseEvent): void {
-    EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
     triggerMouseEventsOnClosestTarget({ event: mouseEvent });
     this.__createWireAsNeeded();
+    if (mouseEvent.isShiftDown) {
+      this.__tempHandle.$destroy();
+      this.__tempWire.$destroy();
+      this.__createTempHandle();
+      this.__createTempWire();
+      return;
+    }
+    EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
   }
 
   private __createWireAsNeeded(): void {
@@ -84,9 +75,33 @@ export default class WireTool extends InputHandler {
     return;
   }
 
-  public dispose(): void {
-    this.__tempHandle.$destroy();
-    this.__tempWire.$destroy();
+  private __createTempHandle() {
+    const pose = getAbsolutePose(this.__target);
+    const width = 10, height = 10;
+    this.__tempHandle = new HTML5CanvasElement()
+      .$add(PoseComponent, pose)
+      .$add(ShapeComponent, {
+        vertices: [
+          { x: -width / 2, y: -height / 2 },
+          { x: -width / 2, y: height / 2 },
+          { x: width / 2, y: height / 2 },
+          { x: width / 2, y: -height / 2 },
+        ],
+      })
+      .$add(StyleComponent, {
+        colour: RGBA_WHITE,
+        fill: RGBA_0,
+        opacity: 1,
+        zIndex: 0,
+      });
+  }
+
+  private __createTempWire() {
+    const mockTerminal = this.__tempHandle.$appendChild(new HTML5CanvasElement());
+    const payload = this.__target instanceof InputTerminal
+      ? { input: mockTerminal as OutputTerminal, output: this.__target }
+      : { input: this.__target, output: mockTerminal as OutputTerminal };
+    this.__tempWire = new Wire(payload);
   }
 
 }
