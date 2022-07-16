@@ -14,8 +14,8 @@ export default class InputController implements IController {
   private __canvas: HTMLCanvasElement;
   private __handler: IInputHandler;
   private __handlerArgs: any;
-  private __mouse: IMouseEvent;
-  private __keyboard: IKeyboardEvent;
+  private __mouse: IMouseEvent = {} as IMouseEvent;
+  private __keyboard: IKeyboardEvent = {} as IKeyboardEvent;
 
   public constructor({ canvas }: { canvas: HTMLCanvasElement }) {
     this.__canvas = canvas;
@@ -39,9 +39,11 @@ export default class InputController implements IController {
 
   public setHandler<TArgs>(Handler: Constructor<IInputHandler, TArgs>, args?: TArgs): void {
     this.__handler.dispose();
-    this.__handlerArgs = args;
-    this.__handler = new Handler(this.__handlerArgs);
-    this.__handler.init({ x: this.__mouse.x, y: this.__mouse.y, ...args });
+    if (!(Handler === DefaultTool && this.__keyboard.isShiftKeyDown)) {
+      this.__handlerArgs = args;
+      this.__handler = new Handler(this.__handlerArgs);
+    }
+    this.__handler.init({ x: this.__mouse.x, y: this.__mouse.y, ...this.__handlerArgs });
   }
 
   private __handleMouseEvent(event: IMouseEvent): void {
@@ -53,6 +55,9 @@ export default class InputController implements IController {
 
   private __handleKeyboardEvent(event: IKeyboardEvent): void {
     this.__keyboard = event;
+    if (event.name === KEYBOARD_EVENT.KEY_UP && event.key === 'Shift') {
+      this.setHandler(DefaultTool);
+    }
     if (this.__handler[event.name]) {
       this.__handler[event.name](event);
     }

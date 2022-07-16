@@ -11,10 +11,13 @@ import CursorTrail from './CursorTrail';
 
 export default class WireCutterTool extends InputHandler {
 
-  private __isCuttingActive = false;
-  private __cuttingPath = new CursorTrail();
+  private __isCuttingActive: boolean;
+  private __cuttingPath: CursorTrail;
 
-  public init(): void {}
+  public init(): void {
+    this.__isCuttingActive = false;
+    this.__cuttingPath = new CursorTrail();
+  }
 
   public [MOUSE_EVENT.MOUSE_DOWN](mouseEvent: IMouseEvent): void {
     this.__isCuttingActive = true;

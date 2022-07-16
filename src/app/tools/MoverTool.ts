@@ -1,7 +1,6 @@
 import InputHandler from 'app/abstracts/InputHandler';
 import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import EVENT_BUS from 'app/EVENT_BUS';
-import clone from 'base/helpers/clone';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import { IPoint } from 'foundation/geometry/components/PoseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
@@ -13,11 +12,6 @@ export default class MoverTool extends InputHandler {
   private __start: IPoint;
 
   public init({ x, y }: IPoint): void {
-    this.__start = { x, y };
-  }
-
-  public [MOUSE_EVENT.MOUSE_DOWN](mouseEvent: IMouseEvent): void {
-    const { x, y } = mouseEvent!;
     this.__start = { x, y };
   }
 
@@ -33,8 +27,10 @@ export default class MoverTool extends InputHandler {
     this.__start = { x, y };
   }
 
-  public [MOUSE_EVENT.MOUSE_UP](): void {
-    ENTITIES.forEvery(MoverBox)((moverBox) => moverBox.$destroy());
+  public [MOUSE_EVENT.MOUSE_UP](event: IMouseEvent): void {
+    if (!event.isShiftDown) {
+      ENTITIES.forEvery(MoverBox)((moverBox) => moverBox.$destroy());
+    }
     EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
   }
 

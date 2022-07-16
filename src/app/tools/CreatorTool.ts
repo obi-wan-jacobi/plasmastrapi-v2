@@ -9,21 +9,23 @@ import PoseComponent from 'foundation/geometry/components/PoseComponent';
 
 export default class CreatorTool extends InputHandler {
 
-  private __target: Gate;
+  private __target?: Gate;
 
   public init(arg: { x: number; y: number; Etor: Etor<Gate, any> }): void {
     this.__target = new arg.Etor(arg);
   }
 
   public [MOUSE_EVENT.MOUSE_MOVE](mouseEvent: IMouseEvent): void {
-    this.__target.$patch(PoseComponent, { x: mouseEvent.x, y: mouseEvent.y });
+    this.__target!.$patch(PoseComponent, { x: mouseEvent.x, y: mouseEvent.y });
   }
 
   public [MOUSE_EVENT.CLICK](): void {
+    this.__target = undefined;
     EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
   }
 
   public dispose(): void {
+    this.__target?.$destroy();
   }
 
 }
