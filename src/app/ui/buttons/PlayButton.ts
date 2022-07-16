@@ -12,6 +12,7 @@ import MouseComponent from 'html5-canvas/components/MouseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 import { RGBA_0, RGBA_WHITE } from '../COLOUR';
+import HoverGate from 'digital-logic/digital-elements/HoverGate';
 
 export default class PlayButton extends HTML5CanvasElement {
 
@@ -44,6 +45,10 @@ export default class PlayButton extends HTML5CanvasElement {
   public [MOUSE_EVENT.CLICK](): void {
     ENTITIES.forEvery(PowerSource)((ps) => {
       ps.high();
+      ps.next();
+    });
+    ENTITIES.forEvery(HoverGate)((ps) => {
+      ps.low();
       ps.next();
     });
     app.systems.add(DigitalSystem);

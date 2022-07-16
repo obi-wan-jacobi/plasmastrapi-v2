@@ -21,6 +21,9 @@ import AndGate from 'digital-logic/digital-elements/AndGate';
 import NandGate from 'digital-logic/digital-elements/NandGate';
 import IController from 'app/interfaces/IController';
 import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
+import OrGate from 'digital-logic/digital-elements/OrGate';
+import XorGate from 'digital-logic/digital-elements/XorGate';
+import HoverGate from 'digital-logic/digital-elements/HoverGate';
 
 export default class ToolController implements IController {
 
@@ -41,6 +44,9 @@ export default class ToolController implements IController {
     const buttons: IHTML5CanvasElement[] = [
       new GateButton({ src: './AndGate.png', GateEtor: AndGate }),
       new GateButton({ src: './NandGate.png', GateEtor: NandGate }),
+      new GateButton({ src: './OrGate.png', GateEtor: OrGate }),
+      new GateButton({ src: './XorGate.png', GateEtor: XorGate }),
+      new GateButton({ src: './hoverswitch.png', GateEtor: HoverGate }),
       new TrashButton(),
       new WireCutterButton(),
     ];

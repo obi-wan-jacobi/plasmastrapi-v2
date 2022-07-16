@@ -22,6 +22,10 @@ export default class DefaultTool extends InputHandler {
     triggerMouseEventsOnClosestTarget({ event });
   }
 
+  [MOUSE_EVENT.MOUSE_MOVE](event: IMouseEvent): void {
+    triggerMouseEventsOnClosestTarget({ event });
+  }
+
   public dispose(): void {}
 
 }
