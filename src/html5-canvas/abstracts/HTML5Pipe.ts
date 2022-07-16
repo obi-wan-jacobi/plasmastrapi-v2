@@ -10,9 +10,9 @@ export default class HTML5Pipe<
     TAdaptedEvent extends IPipeEvent,
 > extends Pipe<TAdaptedEvent> {
 
-    constructor({ element, eventNames, eventMapper }: IHTML5EventTransform<TElement, TSourceEvent, TAdaptedEvent>) {
+    constructor({ element, eventNames, eventMapper, callback }: IHTML5EventTransform<TElement, TSourceEvent, TAdaptedEvent>) {
         super();
-        this.__bindEvents({ element, eventNames, eventMapper });
+        this.__bindEvents({ element, eventNames, eventMapper, callback });
     }
 
     private __bindEvents({ element, eventNames, eventMapper }: IHTML5EventTransform<TElement, TSourceEvent, TAdaptedEvent>): void {

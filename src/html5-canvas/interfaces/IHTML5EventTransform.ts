@@ -1,3 +1,4 @@
+import { Void } from 'base/types';
 import IPipeEvent from 'engine/interfaces/IPipeEvent';
 
 export default interface IHTML5EventTransform<
@@ -8,4 +9,5 @@ export default interface IHTML5EventTransform<
     element:  TElement;
     eventNames: string[];
     eventMapper: ({ event, element }: { event: TSourceEvent; element: TElement }) => TAdaptedEvent;
+    callback: Void<TAdaptedEvent>;
 }

@@ -1,5 +1,6 @@
 import IController from 'app/interfaces/IController';
 import { Dict, Void } from 'base/types';
+import IPipeEvent from 'engine/interfaces/IPipeEvent';
 import { KEYBOARD_EVENT } from 'html5-canvas/enums/KEYBOARD_EVENT';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 import IHTML5EventTransform from 'html5-canvas/interfaces/IHTML5EventTransform';
@@ -18,15 +19,17 @@ export default class InputController implements IController {
   }
 
   public init(): void {
-    this.__bindMouseEvents({
+    this.__bindEvents({
       element: this.__canvas,
       eventNames: Object.keys(MOUSE_EVENT).map((event) => (MOUSE_EVENT as Dict<string>)[event]),
       eventMapper: adaptCanvasMouseEvent,
+      callback: this.__handleMouseEvent.bind(this),
     });
-    this.__bindKeyboardEvents({
+    this.__bindEvents({
       element: this.__canvas,
       eventNames: Object.keys(KEYBOARD_EVENT).map((event) => (KEYBOARD_EVENT as Dict<string>)[event]),
       eventMapper: adaptCanvasKeyboardEvent,
+      callback: this.__handleKeyboardEvent.bind(this),
     });
   }
 
@@ -47,26 +50,14 @@ export default class InputController implements IController {
     }
   }
 
-  private __bindMouseEvents({ element, eventNames, eventMapper }: IHTML5EventTransform<HTMLCanvasElement, MouseEvent, IMouseEvent>): void {
-    eventNames.forEach((name) => {
-        (element as unknown as Dict<Void<MouseEvent>>)[`on${name}`] = (event: MouseEvent): void => {
+  private __bindEvents<TSourceEvent extends Event, TAdaptedEvent extends IPipeEvent>({ element, eventNames, eventMapper, callback }: IHTML5EventTransform<HTMLCanvasElement, TSourceEvent, TAdaptedEvent>): void {
+      eventNames.forEach((name) => {
+        (element as unknown as Dict<Void<TSourceEvent>>)[`on${name}`] = (event: TSourceEvent): void => {
             const adaptedEvent = eventMapper({
                 event,
                 element,
             });
-            this.__handleMouseEvent(adaptedEvent);
-        };
-    });
-  }
-
-  private __bindKeyboardEvents({ element, eventNames, eventMapper }: IHTML5EventTransform<HTMLCanvasElement, KeyboardEvent, IKeyboardEvent>): void {
-    eventNames.forEach((name) => {
-        (element as unknown as Dict<Void<KeyboardEvent>>)[`on${name}`] = (event: KeyboardEvent): void => {
-            const adaptedEvent = eventMapper({
-                event,
-                element,
-            });
-            this.__handleKeyboardEvent(adaptedEvent);
+            callback(adaptedEvent);
         };
     });
   }

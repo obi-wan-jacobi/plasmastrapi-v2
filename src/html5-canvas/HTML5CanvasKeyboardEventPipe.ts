@@ -9,6 +9,7 @@ export default class HTML5CanvasKeyboardEventPipe extends HTML5Pipe<HTMLCanvasEl
       element: canvas as HTMLCanvasElement & Dict<any>,
       eventNames: KEYBOARD_EVENTS,
       eventMapper: adaptCanvasKeyboardEvent,
+      callback: () => {},
     });
   }
 
