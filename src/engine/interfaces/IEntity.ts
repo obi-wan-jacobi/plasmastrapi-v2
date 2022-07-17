@@ -13,6 +13,8 @@ export default interface IEntity extends IUnique {
 
   $copy<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Volatile<TArg>;
 
+  $has(ComponentClass: Ctor<IComponent<any>, any> | Ctor<IComponent<any>, any>[]): boolean;
+
   $patch<T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>, data: TArg | {}): IEntity;
 
   $forEach(fn: Void<IComponent<any>>): void;

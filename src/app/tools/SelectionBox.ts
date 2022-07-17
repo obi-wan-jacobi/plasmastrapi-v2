@@ -6,12 +6,13 @@ import PoseComponent, { IPoint } from 'foundation/geometry/components/PoseCompon
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
 import { entitiesTouch } from 'foundation/helpers/entities';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
+import MouseComponent from 'html5-canvas/components/MouseComponent';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 
 export default class SelectionBox<T extends IEntity> extends HTML5CanvasElement {
 
-  public selections: Set<T> = new Set();
+  public selections: Set<T>;
 
   private __start: IPoint;
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -58,8 +59,9 @@ export default class SelectionBox<T extends IEntity> extends HTML5CanvasElement 
   }
 
   private __getSelections(): void {
+    this.selections = new Set<T>();
     ENTITIES.forEvery(this.__SelectionType)((selection) => {
-      if (!selection.$copy(PoseComponent)) {
+      if (!selection.$has([PoseComponent, ShapeComponent, MouseComponent])) {
         return;
       }
       if (entitiesTouch(this, selection as unknown as IHTML5CanvasElement)) {

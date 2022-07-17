@@ -10,18 +10,19 @@ import { triggerMouseEventsOnClosestTarget } from './DefaultTool';
 import MoverBox from './MoverBox';
 import SelectionBox from './SelectionBox';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
+import DigitalElement from 'digital-logic/abstracts/DigitalElement';
 
 export default class SelectorTool extends InputHandler {
 
   private __target?: Gate;
 
-  private __selectionBox?: SelectionBox<Gate>;
+  private __selectionBox?: SelectionBox<DigitalElement>;
 
   private __start: IPoint;
   private __moverBox?: MoverBox<Gate>;
 
   public init({ x, y }: IPoint): void {
-    this.__selectionBox = new SelectionBox({ x, y, SelectionType: Gate });
+    this.__selectionBox = new SelectionBox({ x, y, SelectionType: DigitalElement });
     this.__target = this.__selectionBox.selections.values().next().value;
     if (this.__target) {
       this.__selectionBox.$destroy();

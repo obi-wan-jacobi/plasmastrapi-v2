@@ -17,8 +17,8 @@ export default class ToolController implements IController {
     ['./NandGate.png']: TOOL_EVENT.NANDGATE_CREATE,
     ['./OrGate.png']: TOOL_EVENT.ORGATE_CREATE,
     ['./XorGate.png']: TOOL_EVENT.XORGATE_CREATE,
-    ['./hoverswitch.png']: TOOL_EVENT.HOVERGATE_CREATE,
-    ['./TRASHCAN.png']: TOOL_EVENT.GATE_DELETE,
+    ['./hoverswitch.png']: TOOL_EVENT.HOVERSWITCH_CREATE,
+    ['./TRASHCAN.png']: TOOL_EVENT.ELEMENT_DELETE,
     ['./CUTTER_OPEN.png']: TOOL_EVENT.WIRE_DELETE,
   };
 

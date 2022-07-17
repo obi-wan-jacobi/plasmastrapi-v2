@@ -3,7 +3,7 @@ import { Void } from 'base/types';
 
 class EventBus {
 
-  private __subsByTopic = new Dictionary<Dictionary<Void<any>>>();
+  private __subsByTopic = new Dictionary<Dictionary<Void<void>>>();
 
   public subscribe({ topic, id, fn }: { topic: string; id: string; fn: Void<any> }) {
     let subscribers = this.__subsByTopic.read(topic);
@@ -20,8 +20,8 @@ class EventBus {
     this.__subsByTopic.read(topic)?.delete(id);
   }
 
-  public publish({ topic, arg }: { topic: string; arg?: any }) {
-    this.__subsByTopic.read(topic)?.forEach((fn) => fn(arg));
+  public publish({ topic }: { topic: string }) {
+    this.__subsByTopic.read(topic)?.forEach((fn) => fn());
   }
 
 }

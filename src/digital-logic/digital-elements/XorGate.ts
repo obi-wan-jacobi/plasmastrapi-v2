@@ -4,7 +4,7 @@ import Gate from '../abstracts/Gate';
 export default class XorGate extends Gate {
 
   public constructor({ x, y }: { x: number; y: number }) {
-    super({ x, y, src: './OrGate.png' });
+    super({ x, y, src: './XorGate.png' });
   }
 
   public compute(): void {

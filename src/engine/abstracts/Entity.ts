@@ -53,6 +53,15 @@ export default abstract class Entity extends Unique implements IEntity {
     IOC.components.purge(component);
   };
 
+  public readonly $has = (ComponentClass: Ctor<IComponent<any>, any> | Ctor<IComponent<any>, any>[]): boolean => {
+    if (ComponentClass instanceof Array) {
+      return ComponentClass.reduce((result, component) => {
+        return result && this.$has(component);
+      }, true);
+    }
+    return !!this.$copy(ComponentClass);
+  };
+
   public readonly $copy = <T extends IComponent<TArg>, TArg>(ComponentClass: Ctor<T, TArg>): Volatile<TArg> => {
     const component = this.__components.read(ComponentClass.name);
     return component ? component.copy() : undefined;

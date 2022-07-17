@@ -14,7 +14,7 @@ import AndGate from 'digital-logic/digital-elements/AndGate';
 import NandGate from 'digital-logic/digital-elements/NandGate';
 import OrGate from 'digital-logic/digital-elements/OrGate';
 import XorGate from 'digital-logic/digital-elements/XorGate';
-import HoverGate from 'digital-logic/digital-elements/HoverGate';
+import HoverSwitch from 'digital-logic/digital-elements/HoverSwitch';
 
 export default class CommandController implements IController {
 
@@ -24,8 +24,8 @@ export default class CommandController implements IController {
     [TOOL_EVENT.NANDGATE_CREATE]: [CreatorTool, { Etor: NandGate }],
     [TOOL_EVENT.ORGATE_CREATE]: [CreatorTool, { Etor: OrGate }],
     [TOOL_EVENT.XORGATE_CREATE]: [CreatorTool, { Etor: XorGate }],
-    [TOOL_EVENT.HOVERGATE_CREATE]: [CreatorTool, { Etor: HoverGate }],
-    [TOOL_EVENT.GATE_DELETE]: [DestructorTool, {}],
+    [TOOL_EVENT.HOVERSWITCH_CREATE]: [CreatorTool, { Etor: HoverSwitch }],
+    [TOOL_EVENT.ELEMENT_DELETE]: [DestructorTool, {}],
     [TOOL_EVENT.SELECTION_BEGIN]: [SelectorTool, {}],
     [TOOL_EVENT.WIRE_CREATE]: [WireTool, {}],
     [TOOL_EVENT.WIRE_DELETE]: [WireCutterTool, {}],

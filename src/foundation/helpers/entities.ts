@@ -52,7 +52,7 @@ export const addWidthAndHeightAsShapeComponent = ({ entity, width, height }: { e
 };
 
 export const getAbsolutePose = (entity: IHTML5CanvasElement): IPose => {
-  if (!entity.$copy(PoseComponent)) {
+  if (!entity.$has(PoseComponent)) {
     throw new Error(`${entity.constructor.name} has no ${PoseComponent.name}`);
   }
   const pose = entity.$copy(PoseComponent)!;

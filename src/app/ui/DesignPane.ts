@@ -3,7 +3,6 @@ import EVENT_BUS from 'app/EVENT_BUS';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
-import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import UIPane from './UIPane';
 
 export default class DesignPane extends UIPane {
@@ -14,8 +13,8 @@ export default class DesignPane extends UIPane {
     this.$add(MouseComponent, { x: 0, y: 0, isHovered: false });
   }
 
-  public [MOUSE_EVENT.MOUSE_DOWN](mouseEvent: IMouseEvent): void {
-    EVENT_BUS.publish({ topic: TOOL_EVENT.SELECTION_BEGIN, arg: mouseEvent });
+  public [MOUSE_EVENT.MOUSE_DOWN](): void {
+    EVENT_BUS.publish({ topic: TOOL_EVENT.SELECTION_BEGIN });
   }
 
 }
