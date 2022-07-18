@@ -37,12 +37,10 @@ export default class HoverSwitch extends DigitalElement {
 
   public [MOUSE_EVENT.MOUSE_ENTER](): void {
     this.high();
-    this.next();
   }
 
   public [MOUSE_EVENT.MOUSE_LEAVE](): void {
     this.low();
-    this.next();
   }
 
 }
