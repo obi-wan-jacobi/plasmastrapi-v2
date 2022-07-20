@@ -7,6 +7,7 @@ import EVENT_BUS from 'app/EVENT_BUS';
 import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import { RGBA_RED } from 'app/ui/COLOUR';
 import DigitalElement from 'digital-logic/abstracts/DigitalElement';
+import { getClosestTarget } from './DefaultTool';
 
 export default class DestructorTool extends InputHandler {
 
@@ -27,8 +28,12 @@ export default class DestructorTool extends InputHandler {
     this.__selectionBox.$patch(StyleComponent, { colour: RGBA_RED });
   }
 
-  public [MOUSE_EVENT.MOUSE_UP](): void {
+  public [MOUSE_EVENT.MOUSE_UP](event: IMouseEvent): void {
     this.__selectionBox?.items.forEach((selection: DigitalElement) => selection.$destroy());
+    const target = getClosestTarget(event);
+    if (target instanceof DigitalElement) {
+      target.$destroy();
+    }
     EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
   }
 }
