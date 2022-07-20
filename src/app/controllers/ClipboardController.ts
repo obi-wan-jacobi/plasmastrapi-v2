@@ -12,7 +12,7 @@ import PoseComponent, { IPoint } from 'foundation/geometry/components/PoseCompon
 
 export default class ClipboardController implements IController {
 
-  private __container: IEntityContainer<DigitalElement>;
+  private __container?: IEntityContainer<DigitalElement>;
   private __wires: Wire[] = [];
 
   public init(): void {
@@ -27,6 +27,9 @@ export default class ClipboardController implements IController {
   }
 
   public paste({ x, y }: IPoint): void {
+    if (!this.__container) {
+      return;
+    }
     const moverBox = new MoverBox(this.__container);
     moverBox.items = new Set();
     const ioMap: Dict<Terminal> = {};
