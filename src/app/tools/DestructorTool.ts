@@ -28,7 +28,7 @@ export default class DestructorTool extends InputHandler {
   }
 
   public [MOUSE_EVENT.MOUSE_UP](): void {
-    this.__selectionBox?.selections.forEach((selection: DigitalElement) => selection.$destroy());
+    this.__selectionBox?.items.forEach((selection: DigitalElement) => selection.$destroy());
     EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
   }
 }

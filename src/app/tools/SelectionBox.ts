@@ -1,18 +1,18 @@
+import IEntityContainer from 'app/interfaces/IEntityContainer';
 import { RGBA_0, RGBA_WHITE } from 'app/ui/COLOUR';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import IEntity from 'engine/interfaces/IEntity';
 import { EntityClass } from 'engine/types';
 import PoseComponent, { IPoint } from 'foundation/geometry/components/PoseComponent';
 import ShapeComponent from 'foundation/geometry/components/ShapeComponent';
-import { entitiesTouch } from 'foundation/helpers/entities';
+import { entityContainsPoint } from 'foundation/helpers/entities';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
 import MouseComponent from 'html5-canvas/components/MouseComponent';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
-import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 
-export default class SelectionBox<T extends IEntity> extends HTML5CanvasElement {
+export default class SelectionBox<T extends IEntity> extends HTML5CanvasElement implements IEntityContainer<T> {
 
-  public selections: Set<T>;
+  public items: Set<T>;
 
   private __start: IPoint;
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -59,13 +59,13 @@ export default class SelectionBox<T extends IEntity> extends HTML5CanvasElement 
   }
 
   private __getSelections(): void {
-    this.selections = new Set<T>();
+    this.items = new Set<T>();
     ENTITIES.forEvery(this.__SelectionType)((selection) => {
       if (!selection.$has([PoseComponent, ShapeComponent, MouseComponent])) {
         return;
       }
-      if (entitiesTouch(this, selection as unknown as IHTML5CanvasElement)) {
-        this.selections.add(selection);
+      if (entityContainsPoint(this, selection.$copy(PoseComponent)!)) {
+        this.items.add(selection);
         return;
       }
     });
