@@ -13,6 +13,7 @@ import PoseSystem from 'foundation/presentation/systems/PoseSystem';
 import ContraptionController from './controllers/ContraptionController';
 import DesignerController from './controllers/DesignerController';
 import CommandController from './controllers/CommandController';
+import ClipboardController from './controllers/ClipboardController';
 
 const canvas = document.getElementById('app-target') as HTMLCanvasElement;
 canvas.width = 1280;
@@ -27,6 +28,7 @@ export const app = new App({ canvas,
     toolbar: new ToolController(),
     designer: new DesignerController(),
     contraption: new ContraptionController(),
+    clipboard: new ClipboardController(),
   },
   systems: [
     PoseSystem,

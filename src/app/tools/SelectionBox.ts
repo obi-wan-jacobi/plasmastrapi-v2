@@ -34,7 +34,7 @@ export default class SelectionBox<T extends IEntity> extends HTML5CanvasElement 
       colour: RGBA_WHITE,
       fill: RGBA_0,
       opacity: 1,
-      zIndex: 2,
+      zIndex: 9999,
     });
     this.__start = { x, y };
     this.__SelectionType = SelectionType;

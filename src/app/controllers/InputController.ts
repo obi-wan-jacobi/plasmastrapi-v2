@@ -1,4 +1,5 @@
 import IController from 'app/interfaces/IController';
+import { app } from 'app/main';
 import DefaultTool from 'app/tools/DefaultTool';
 import { Constructor, Dict, Void } from 'base/types';
 import IPipeEvent from 'engine/interfaces/IPipeEvent';
@@ -16,6 +17,8 @@ export default class InputController implements IController {
   private __handlerArgs: any;
   private __mouse: IMouseEvent = {} as IMouseEvent;
   private __keyboard: IKeyboardEvent = {} as IKeyboardEvent;
+
+  private __isCtrlDown = false;
 
   public constructor({ canvas }: { canvas: HTMLCanvasElement }) {
     this.__canvas = canvas;
@@ -39,7 +42,7 @@ export default class InputController implements IController {
 
   public setHandler<TArgs>(Handler: Constructor<IInputHandler, TArgs>, args?: TArgs): void {
     this.__handler.dispose();
-    if (!(Handler === DefaultTool && this.__keyboard.isShiftKeyDown)) {
+    if (!(Handler === DefaultTool && this.__keyboard.isShiftDown)) {
       this.__handlerArgs = args;
       this.__handler = new Handler(this.__handlerArgs);
     }
@@ -55,7 +58,12 @@ export default class InputController implements IController {
 
   private __handleKeyboardEvent(event: IKeyboardEvent): void {
     this.__keyboard = event;
-    if (event.name === KEYBOARD_EVENT.KEY_UP && event.key === 'Shift') {
+    this.__isControlDown(event);
+    if (this.__isPasteAction(event)) {
+      app.controllers.clipboard.paste(this.__mouse);
+      return;
+    }
+    if (this.__isEndOfShiftAction(event) || this.__isEscapeAction(event)) {
       this.setHandler(DefaultTool);
     }
     if (this.__handler[event.name]) {
@@ -63,6 +71,26 @@ export default class InputController implements IController {
     }
   }
 
+  private __isEndOfShiftAction(event: IKeyboardEvent) {
+    return event.name === KEYBOARD_EVENT.KEY_UP && event.key === 'Shift';
+  }
+
+  private __isEscapeAction(event: IKeyboardEvent) {
+    return event.name === KEYBOARD_EVENT.KEY_DOWN && event.key === 'Escape';
+  }
+
+  private __isPasteAction(event: IKeyboardEvent) {
+    return event.name === KEYBOARD_EVENT.KEY_DOWN && event.key === 'v' && this.__isCtrlDown;
+  }
+
+  private __isControlDown(event: IKeyboardEvent) {
+    if (event.name === KEYBOARD_EVENT.KEY_DOWN && event.key === 'Control') {
+      this.__isCtrlDown = true;
+    }
+    else if (event.name === KEYBOARD_EVENT.KEY_UP && event.key === 'Control') {
+      this.__isCtrlDown = false;
+    }
+  }
 }
 
 const bindEvents = <TSourceEvent extends Event, TAdaptedEvent extends IPipeEvent>({ element, eventNames, eventMapper, callback }: IHTML5EventTransform<HTMLCanvasElement, TSourceEvent, TAdaptedEvent>): void => {
@@ -91,6 +119,6 @@ const adaptCanvasMouseEvent = ({ event, element }: { event: MouseEvent; element:
 const adaptCanvasKeyboardEvent = ({ event }: { event: KeyboardEvent }): IKeyboardEvent => ({
   name: event.type,
   key: event.key,
-  isAltKeyDown: event.altKey,
-  isShiftKeyDown: event.shiftKey,
+  isAltDown: event.altKey,
+  isShiftDown: event.shiftKey,
 });

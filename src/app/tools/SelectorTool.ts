@@ -12,9 +12,7 @@ import { ENTITIES } from 'engine/concretes/EntityMaster';
 import DigitalElement from 'digital-logic/abstracts/DigitalElement';
 import { KEYBOARD_EVENT } from 'html5-canvas/enums/KEYBOARD_EVENT';
 import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
-import { Dict } from 'base/types';
-import Wire from 'digital-logic/wires/Wire';
-import Terminal from 'digital-logic/abstracts/Terminal';
+import { app } from 'app/main';
 
 export default class SelectorTool extends InputHandler {
 
@@ -26,6 +24,11 @@ export default class SelectorTool extends InputHandler {
   private __moverBox?: MoverBox<DigitalElement>;
 
   public init({ x, y }: IPoint): void {
+    this.__start = { x, y };
+    this.__moverBox = ENTITIES.find(MoverBox)(() => true);
+    if (this.__moverBox) {
+      return;
+    }
     const target = getClosestTarget({ x, y });
     if (target instanceof DigitalElement) {
       this.__target = target;
@@ -36,7 +39,7 @@ export default class SelectorTool extends InputHandler {
 
   public dispose(): void {
     this.__selectionBox?.$destroy();
-    ENTITIES.forEvery(MoverBox)((moverbox) => moverbox.$destroy());
+    ENTITIES.find(MoverBox)(() => true)?.$destroy();
   }
 
   public [MOUSE_EVENT.MOUSE_MOVE](mouseEvent: IMouseEvent): void {
@@ -92,35 +95,8 @@ export default class SelectorTool extends InputHandler {
       return;
     }
     if (keyboardEvent.key === 'c') {
-      moverBox.$destroy();
-      const pose = moverBox.$copy(PoseComponent)!;
-      this.__moverBox = new MoverBox<DigitalElement>(moverBox);
-      this.__moverBox.items = new Set();
-      const ioMap: Dict<Terminal> = {};
-      for (const item of moverBox.items) {
-        const newElement = new (item as any).constructor(item.$copy(PoseComponent)) as DigitalElement;
-        const newChildren = newElement.$children.toArray();
-        const existingChildren = item.$children.toArray();
-        for (let i = 0; i < existingChildren.length; i++) {
-          if (existingChildren[i] instanceof Terminal) {
-            ioMap[existingChildren[i].$id] = newChildren[i] as Terminal;
-          }
-        }
-        this.__moverBox.items.add(newElement);
-      }
-      const wires = [...moverBox.items].reduce((result, element) => {
-        return result.concat(element.$children.filter((child) => child instanceof Wire) as []);
-      }, []).filter((wire, index, self) => self.indexOf(wire) === index) as Wire[];
-      for (const wire of wires) {
-        new Wire({
-          input: ioMap[wire.input.$id] || wire.input,
-          output: ioMap[wire.output.$id] || wire.output,
-        });
-      }
-      this.__moverBox.moveBy({
-        dx: this.__start.x - pose.x,
-        dy: this.__start.y - pose.y,
-      });
+      app.controllers.clipboard.copy(moverBox);
+      return;
     }
   }
 

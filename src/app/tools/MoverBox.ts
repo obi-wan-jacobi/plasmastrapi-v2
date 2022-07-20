@@ -10,7 +10,7 @@ export default class MoverBox<T extends IHTML5CanvasElement> extends HTML5Canvas
 
   public items: Set<T>;
 
-  public constructor(container: HTML5CanvasElement & IEntityContainer<T>) {
+  public constructor(container: IEntityContainer<T>) {
     const pose = container.$copy(PoseComponent)!;
     const shape = container.$copy(ShapeComponent)!;
     const style = container.$copy(StyleComponent)!;

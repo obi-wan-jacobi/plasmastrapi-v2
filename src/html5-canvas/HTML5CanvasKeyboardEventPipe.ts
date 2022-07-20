@@ -24,6 +24,6 @@ const KEYBOARD_EVENTS = [
 const adaptCanvasKeyboardEvent = ({ event }: { event: KeyboardEvent }): IKeyboardEvent => ({
   name: event.type,
   key: event.key,
-  isAltKeyDown: event.altKey,
-  isShiftKeyDown: event.shiftKey,
+  isAltDown: event.altKey,
+  isShiftDown: event.shiftKey,
 });
