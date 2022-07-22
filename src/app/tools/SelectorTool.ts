@@ -13,6 +13,7 @@ import DigitalElement from 'digital-logic/abstracts/DigitalElement';
 import { KEYBOARD_EVENT } from 'html5-canvas/enums/KEYBOARD_EVENT';
 import IKeyboardEvent from 'html5-canvas/interfaces/IKeyboardEvent';
 import { app } from 'app/main';
+import MoveCommand from 'app/commands/MoveCommand';
 
 export default class SelectorTool extends InputHandler {
 
@@ -21,10 +22,12 @@ export default class SelectorTool extends InputHandler {
   private __selectionBox?: SelectionBox<DigitalElement>;
 
   private __start: IPoint;
+  private __mouse: IPoint;
   private __moverBox?: MoverBox<DigitalElement>;
 
   public init({ x, y }: IPoint): void {
     this.__start = { x, y };
+    this.__mouse = { x, y };
     this.__moverBox = ENTITIES.find(MoverBox)(() => true);
     if (this.__moverBox) {
       return;
@@ -51,18 +54,22 @@ export default class SelectorTool extends InputHandler {
     }
     else if (this.__moverBox) {
       const { dx, dy } = {
-        dx: mouseEvent!.x - this.__start.x,
-        dy: mouseEvent!.y - this.__start.y,
+        dx: mouseEvent!.x - this.__mouse.x,
+        dy: mouseEvent!.y - this.__mouse.y,
       };
       ENTITIES.forEvery(MoverBox)((moverBox) => {
         moverBox.moveBy({ dx, dy });
       });
     }
     const { x, y } = mouseEvent;
-    this.__start = { x, y };
+    this.__mouse = { x, y };
   }
 
   public [MOUSE_EVENT.MOUSE_UP](event: IMouseEvent): void {
+    if (this.__target) {
+      this.__target.$patch(PoseComponent, this.__start);
+      app.controllers.command.invoke(new MoveCommand({ target: this.__target, destination: event }));
+    }
     if (this.__selectionBox && this.__selectionBox.items.size > 0) {
       new MoverBox(this.__selectionBox);
       this.__selectionBox.$destroy();
@@ -77,15 +84,15 @@ export default class SelectorTool extends InputHandler {
   }
 
   public [MOUSE_EVENT.MOUSE_DOWN](mouseEvent: IMouseEvent): void {
-    const target = triggerMouseEventsOnClosestTarget({ event: mouseEvent });
-    if (target instanceof MoverBox) {
-      const mouse = target.$copy(MouseComponent);
+    const moverBox = triggerMouseEventsOnClosestTarget({ event: mouseEvent });
+    if (moverBox instanceof MoverBox) {
+      const mouse = moverBox.$copy(MouseComponent);
       if (!mouse?.isHovered) {
         this.__moverBox?.$destroy();
         EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
         return;
       }
-      this.__moverBox = target;
+      this.__moverBox = moverBox;
     }
   }
 

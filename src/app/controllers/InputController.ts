@@ -63,12 +63,28 @@ export default class InputController implements IController {
       app.controllers.clipboard.paste(this.__mouse);
       return;
     }
-    if (this.__isEndOfShiftAction(event) || this.__isEscapeAction(event)) {
+    else if (this.__isUndoAction(event)) {
+      app.controllers.command.undo();
+    }
+    else if (this.__isRedoAction(event)) {
+      app.controllers.command.redo();
+    }
+    else if (this.__isEndOfShiftAction(event) || this.__isEscapeAction(event)) {
       this.setHandler(DefaultTool);
     }
     if (this.__handler[event.name]) {
       this.__handler[event.name](event);
     }
+  }
+
+  private __isUndoAction(event: IKeyboardEvent) {
+    return this.__isCtrlDown && !event.isShiftDown
+      && event.name === KEYBOARD_EVENT.KEY_DOWN && event.key === 'z';
+  }
+
+  private __isRedoAction(event: IKeyboardEvent) {
+    return this.__isCtrlDown && event.name === KEYBOARD_EVENT.KEY_DOWN
+      && ((event.key === 'Z' && event.isShiftDown) || event.key === 'y');
   }
 
   private __isEndOfShiftAction(event: IKeyboardEvent) {
@@ -80,7 +96,7 @@ export default class InputController implements IController {
   }
 
   private __isPasteAction(event: IKeyboardEvent) {
-    return event.name === KEYBOARD_EVENT.KEY_DOWN && event.key === 'v' && this.__isCtrlDown;
+    return this.__isCtrlDown && event.name === KEYBOARD_EVENT.KEY_DOWN && event.key === 'v';
   }
 
   private __isControlDown(event: IKeyboardEvent) {

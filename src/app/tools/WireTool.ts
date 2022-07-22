@@ -16,6 +16,8 @@ import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import { getClosestTarget, triggerMouseEventsOnClosestTarget } from './DefaultTool';
 import { getAbsolutePose } from 'foundation/helpers/entities';
+import { app } from 'app/main';
+import CreateWireCommand from 'app/commands/CreateWireCommand';
 
 export default class WireTool extends InputHandler {
 
@@ -68,9 +70,19 @@ export default class WireTool extends InputHandler {
       return;
     }
     if (terminal instanceof InputTerminal) {
-      new Wire({ input: this.__target, output: terminal });
+      app.controllers.command.invoke(
+        new CreateWireCommand({
+          input: terminal,
+          output: this.__target,
+        })
+      );
     } else {
-      new Wire({ input: terminal, output: this.__target });
+      app.controllers.command.invoke(
+        new CreateWireCommand({
+          input: this.__target,
+          output: terminal,
+        })
+      );
     }
     return;
   }

@@ -4,7 +4,7 @@ import Dictionary from 'base/data-structures/Dictionary';
 import IDictionary from 'base/interfaces/IDictionary';
 import { Dict, Void, Volatile } from 'base/types';
 import { EntityClass } from '../types';
-import { IOC } from '../abstracts/Entity';
+import Entity, { IOC } from '../abstracts/Entity';
 
 class EntityMaster implements IEntityMaster {
 
@@ -44,39 +44,65 @@ class EntityMaster implements IEntityMaster {
 
   public upkeep(): void {
     this.__doRegistrations();
-    this.__doPurgation();
+    this.__doPurges();
+  }
+
+  public get(id: string): Volatile<IEntity> {
+    return this.__entityMap.read(Entity.name)?.read(id);
+  }
+
+  public reId(id: string, newId: string): void {
+    let target = this.get(id);
+    if (target) {
+      this.__purge(target);
+    } else {
+      target = this.__registerTargets.find((t) => t.$id === id);
+      if (!target) {
+        throw new Error(`Entity with ID <${id}> does not exist!`);
+      }
+      this.__registerTargets.splice(this.__registerTargets.indexOf(target), 1);
+    }
+    (target as any).__id = newId;
+    this.__register(target);
   }
 
   private __doRegistrations(): void {
     while (this.__registerTargets.length) {
       const instance = this.__registerTargets.shift()!;
-      let target: any = instance;
-      while (target) {
-        let collection = this.__entityMap.read(target.constructor.name);
-        if (!collection) {
-          collection = new Dictionary();
-          this.__entityMap.write({
-            key: target.constructor.name,
-            value: collection,
-          });
-        }
-        collection.write({ key: instance.$id, value: instance });
-        target = target.__proto__;
-      }
+      this.__register(instance);
     }
   }
 
-  private __doPurgation(): void {
+  private __register(instance: IEntity) {
+    let target: any = instance;
+    while (target) {
+      let collection = this.__entityMap.read(target.constructor.name);
+      if (!collection) {
+        collection = new Dictionary();
+        this.__entityMap.write({
+          key: target.constructor.name,
+          value: collection,
+        });
+      }
+      collection.write({ key: instance.$id, value: instance });
+      target = target.__proto__;
+    }
+  }
+
+  private __doPurges(): void {
     while (this.__purgeTargets.length) {
-      let target = this.__purgeTargets.shift()!;
-      const id = target.$id;
-      while (target) {
-        this.__entityMap.read(target.constructor.name)!.delete(id);
-        target = (target as Dict<any>).__proto__;
-      }
+      const instance = this.__purgeTargets.shift()!;
+      this.__purge(instance);
     }
   }
 
+  private __purge(instance: IEntity) {
+    const id = instance.$id;
+    while (instance) {
+      this.__entityMap.read(instance.constructor.name)!.delete(id);
+      instance = (instance as Dict<any>).__proto__;
+    }
+  }
 }
 
 export const ENTITIES = new EntityMaster();

@@ -94,6 +94,7 @@ export default class HTML5CanvasElement extends Entity implements IHTML5CanvasEl
 
   public $removeChild<T extends IHTML5CanvasElement>(child: T): T {
     this._children.delete(child.$id);
+    (child as unknown as HTML5CanvasElement).$parent = undefined;
     return child;
   }
 

@@ -5,7 +5,7 @@ import LabelComponent from 'foundation/presentation/components/LabelComponent';
 export default class MachineOutput extends DigitalElement {
 
   public constructor({ labelText }: { labelText: string }) {
-    super();
+    super({ x: 0, y: 0 });
     const output = this.$appendChild(new OutputTerminal());
     output.$add(LabelComponent, {
       text: labelText,

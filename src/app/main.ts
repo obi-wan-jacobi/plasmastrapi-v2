@@ -12,8 +12,9 @@ import TheClaw from 'contraptions/the-claw/TheClaw';
 import PoseSystem from 'foundation/presentation/systems/PoseSystem';
 import ContraptionController from './controllers/ContraptionController';
 import DesignerController from './controllers/DesignerController';
-import CommandController from './controllers/CommandController';
+import ToolEventController from './controllers/ToolEventController';
 import ClipboardController from './controllers/ClipboardController';
+import CommandController from './controllers/CommandController';
 
 const canvas = document.getElementById('app-target') as HTMLCanvasElement;
 canvas.width = 1280;
@@ -24,11 +25,12 @@ canvas.focus();
 export const app = new App({ canvas,
   controllers: {
     input: new InputController({ canvas }),
-    command: new CommandController(),
+    toolEvent: new ToolEventController(),
     toolbar: new ToolController(),
     designer: new DesignerController(),
     contraption: new ContraptionController(),
     clipboard: new ClipboardController(),
+    command: new CommandController(),
   },
   systems: [
     PoseSystem,

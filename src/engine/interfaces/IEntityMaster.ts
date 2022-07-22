@@ -10,4 +10,8 @@ export default interface IEntityMaster {
 
   forEvery<T extends IEntity>(EntityClass: EntityClass<T>): Void<Void<T>>;
 
+  get(id: string): Volatile<IEntity>;
+
+  reId(id: string, newId: string): void;
+
 }

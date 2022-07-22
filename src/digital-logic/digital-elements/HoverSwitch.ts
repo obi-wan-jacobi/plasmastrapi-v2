@@ -3,7 +3,6 @@ import EVENT_BUS from 'app/EVENT_BUS';
 import { RGBA_0 } from 'app/ui/COLOUR';
 import DigitalElement from 'digital-logic/abstracts/DigitalElement';
 import OutputTerminal from 'digital-logic/terminals/OutputTerminal';
-import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import { addWidthAndHeightAsShapeComponent } from 'foundation/helpers/entities';
 import ImageComponent from 'foundation/presentation/components/ImageComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
@@ -13,8 +12,7 @@ import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 export default class HoverSwitch extends DigitalElement {
 
   public constructor({ x, y }: { x: number; y: number }) {
-    super();
-    this.$add(PoseComponent, { x, y, a: 0 });
+    super({ x, y });
     addWidthAndHeightAsShapeComponent({ entity: this, width: 40, height: 40 });
     this.$add(ImageComponent, { src: './hoverswitch.png', zIndex: 1 });
     this.$add(StyleComponent, {

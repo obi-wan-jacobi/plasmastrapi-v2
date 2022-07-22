@@ -5,7 +5,7 @@ import InputTerminal from '../../digital-logic/terminals/InputTerminal';
 export default class MachineInput extends DigitalElement {
 
   public constructor({ labelText }: { labelText: string}) {
-    super();
+    super({ x: 0, y: 0 });
     const input = this.$appendChild(new InputTerminal());
     input.$add(LabelComponent, {
       text: labelText,

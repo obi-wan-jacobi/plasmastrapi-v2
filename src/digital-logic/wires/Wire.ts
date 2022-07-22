@@ -37,17 +37,7 @@ export default class Wire extends HTML5CanvasElement {
       opacity: 1,
       zIndex: 3,
     });
-    this.input.$parent?.$subscribe({
-      method: this.$patch.name,
-      id: this.$id,
-      callback: this.__updatePose.bind(this),
-    });
-    this.output.$parent?.$subscribe({
-      method: this.$patch.name,
-      id: this.$id,
-      callback: this.__updatePose.bind(this),
-    });
-    this.__updatePose();
+    this.updatePose();
   }
 
   public high(): void {
@@ -64,7 +54,7 @@ export default class Wire extends HTML5CanvasElement {
 
   public $patch<T extends IComponent<any>>(ComponentClass: Ctor<T, any>, data: T | any): this {
     if (ComponentClass.name === PoseComponent.name) {
-      this.__updatePose();
+      this.updatePose();
       return this;
     }
     return super.$patch(ComponentClass, data);
@@ -73,18 +63,10 @@ export default class Wire extends HTML5CanvasElement {
   public $destroy(): void {
     this.input.$parent?.$removeChild(this);
     this.output.$parent?.$removeChild(this);
-    this.input.$parent?.$unsubscribe({
-      method: this.$patch.name,
-      id: this.$id,
-    });
-    this.output.$parent?.$unsubscribe({
-      method: this.$patch.name,
-      id: this.$id,
-    });
     super.$destroy();
   }
 
-  private __updatePose(): void {
+  public updatePose(): void {
     const headPose = getAbsolutePose(this.input);
     const tailPose = getAbsolutePose(this.output);
     let x = (headPose.x + tailPose.x) / 2;

@@ -14,8 +14,7 @@ import DigitalElement from './DigitalElement';
 export default abstract class Gate extends DigitalElement {
 
   public constructor({ x, y, src }: { x: number; y: number; src: string }) {
-    super();
-    this.$add(PoseComponent, { x, y, a: 0 });
+    super({ x, y });
     addWidthAndHeightAsShapeComponent({ entity: this, width: 40, height: 40 });
     this.$add(ImageComponent, { src, zIndex: 1 });
     this.$add(StyleComponent, {

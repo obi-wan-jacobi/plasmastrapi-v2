@@ -8,6 +8,8 @@ import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import { RGBA_RED } from 'app/ui/COLOUR';
 import DigitalElement from 'digital-logic/abstracts/DigitalElement';
 import { getClosestTarget } from './DefaultTool';
+import { app } from 'app/main';
+import DestroyDigitalElementCommand from 'app/commands/DestroyDigitalElementCommand';
 
 export default class DestructorTool extends InputHandler {
 
@@ -29,10 +31,14 @@ export default class DestructorTool extends InputHandler {
   }
 
   public [MOUSE_EVENT.MOUSE_UP](event: IMouseEvent): void {
-    this.__selectionBox?.items.forEach((selection: DigitalElement) => selection.$destroy());
-    const target = getClosestTarget(event);
-    if (target instanceof DigitalElement) {
-      target.$destroy();
+    if (this.__selectionBox?.items.size) {
+      this.__selectionBox?.items.forEach((selection: DigitalElement) => selection.$destroy());
+    }
+    else {
+      const target = getClosestTarget(event);
+      if (target instanceof DigitalElement) {
+        app.controllers.command.invoke(new DestroyDigitalElementCommand({ target }));
+      }
     }
     EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
   }

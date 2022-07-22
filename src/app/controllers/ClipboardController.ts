@@ -13,7 +13,7 @@ import PoseComponent, { IPoint } from 'foundation/geometry/components/PoseCompon
 export default class ClipboardController implements IController {
 
   private __container?: IEntityContainer<DigitalElement>;
-  private __wires: Wire[] = [];
+  private __wires: Wire[];
 
   public init(): void {
 
