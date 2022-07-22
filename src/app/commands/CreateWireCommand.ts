@@ -6,7 +6,7 @@ import Wire from 'digital-logic/wires/Wire';
 
 export default class CreateWireCommand extends Command {
 
-  private __wire$: string;
+  private __wire$?: string;
   private __input$: string;
   private __output$: string;
 
@@ -19,11 +19,15 @@ export default class CreateWireCommand extends Command {
   public invoke(): void {
     const input = app.entities.get(this.__input$) as InputTerminal;
     const output = app.entities.get(this.__output$) as OutputTerminal;
-    this.__wire$ = new Wire({ input, output }).$id;
+    if (!this.__wire$) {
+      this.__wire$ = new Wire({ input, output }).$id;
+    } else {
+      app.entities.reId(new Wire({ input, output }).$id, this.__wire$);
+    }
   }
 
   public undo(): void {
-    app.entities.get(this.__wire$)!.$destroy();
+    app.entities.get(this.__wire$!)!.$destroy();
   }
 
 }

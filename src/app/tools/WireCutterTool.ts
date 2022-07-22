@@ -1,6 +1,9 @@
 import InputHandler from 'app/abstracts/InputHandler';
+import BatchCommand from 'app/commands/BatchCommand';
+import DestroyWireCommand from 'app/commands/DestroyWireCommand';
 import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
 import EVENT_BUS from 'app/EVENT_BUS';
+import { app } from 'app/main';
 import Wire from 'digital-logic/wires/Wire';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import LineComponent from 'foundation/geometry/components/LineComponent';
@@ -33,11 +36,13 @@ export default class WireCutterTool extends InputHandler {
 
   public [MOUSE_EVENT.MOUSE_UP](): void {
     const line = this.__cuttingPath.$copy(LineComponent)!;
+    const destroyCommands: DestroyWireCommand[] = [];
     ENTITIES.forEvery(Wire)((wire) => {
       if (entityTouchesLine(wire, line.path)) {
-        wire.$destroy();
+        destroyCommands.push(new DestroyWireCommand({ wire }));
       }
     });
+    app.controllers.command.invoke(new BatchCommand(destroyCommands));
     EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
   }
 

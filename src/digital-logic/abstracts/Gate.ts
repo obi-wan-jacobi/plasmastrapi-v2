@@ -3,7 +3,6 @@ import EVENT_BUS from 'app/EVENT_BUS';
 import InputTerminal from 'digital-logic/terminals/InputTerminal';
 import OutputTerminal from 'digital-logic/terminals/OutputTerminal';
 import { RGBA_0 } from 'app/ui/COLOUR';
-import PoseComponent from 'foundation/geometry/components/PoseComponent';
 import { addWidthAndHeightAsShapeComponent } from 'foundation/helpers/entities';
 import ImageComponent from 'foundation/presentation/components/ImageComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
