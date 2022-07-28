@@ -15,6 +15,9 @@ import NandGate from 'digital-logic/digital-elements/NandGate';
 import OrGate from 'digital-logic/digital-elements/OrGate';
 import XorGate from 'digital-logic/digital-elements/XorGate';
 import HoverSwitch from 'digital-logic/digital-elements/HoverSwitch';
+import PasteTool from 'app/tools/PasteTool';
+import MoveTool from 'app/tools/MoveTool';
+import MoveManyTool from 'app/tools/MoveManyTool';
 
 export default class ToolEventController implements IController {
 
@@ -29,6 +32,9 @@ export default class ToolEventController implements IController {
     [TOOL_EVENT.SELECTION_BEGIN]: [SelectorTool, {}],
     [TOOL_EVENT.WIRE_CREATE]: [WireTool, {}],
     [TOOL_EVENT.WIRE_DELETE]: [WireCutterTool, {}],
+    [TOOL_EVENT.MOVE]: [MoveTool, {}],
+    [TOOL_EVENT.MOVE_MANY]: [MoveManyTool, {}],
+    [TOOL_EVENT.PASTE]: [PasteTool, {}],
   };
 
   public init(): void {

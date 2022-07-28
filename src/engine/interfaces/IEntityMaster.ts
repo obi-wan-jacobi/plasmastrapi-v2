@@ -8,6 +8,8 @@ export default interface IEntityMaster {
 
   find<T extends IEntity>(EntityClass: EntityClass<T>): Fn<Fn<T, Boolean>, Volatile<T>>;
 
+  last<T extends IEntity>(EntityClass: EntityClass<T>): Volatile<T>;
+
   forEvery<T extends IEntity>(EntityClass: EntityClass<T>): Void<Void<T>>;
 
   get(id: string): Volatile<IEntity>;

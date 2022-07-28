@@ -1,15 +1,12 @@
-import { TOOL_EVENT } from 'app/enums/TOOL_EVENT';
-import EVENT_BUS from 'app/EVENT_BUS';
 import { RGBA_0 } from 'app/ui/COLOUR';
-import DigitalElement from 'digital-logic/abstracts/DigitalElement';
+import InteractiveDigitalElement from 'digital-logic/abstracts/InteractiveDigitalElement';
 import OutputTerminal from 'digital-logic/terminals/OutputTerminal';
 import { addWidthAndHeightAsShapeComponent } from 'foundation/helpers/entities';
 import ImageComponent from 'foundation/presentation/components/ImageComponent';
 import StyleComponent from 'foundation/presentation/components/StyleComponent';
-import MouseComponent from 'html5-canvas/components/MouseComponent';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
 
-export default class HoverSwitch extends DigitalElement {
+export default class HoverSwitch extends InteractiveDigitalElement {
 
   public constructor({ x, y }: { x: number; y: number }) {
     super({ x, y });
@@ -21,16 +18,11 @@ export default class HoverSwitch extends DigitalElement {
       opacity: 0,
       zIndex: 2,
     });
-    this.$add(MouseComponent, { x: 0, y: 0, isHovered: false });
     this.$appendChild(new OutputTerminal());
   }
 
   public compute(): void {
     //do nothing
-  }
-
-  public [MOUSE_EVENT.MOUSE_DOWN](): void {
-    EVENT_BUS.publish({ topic: TOOL_EVENT.SELECTION_BEGIN });
   }
 
   public [MOUSE_EVENT.MOUSE_ENTER](): void {

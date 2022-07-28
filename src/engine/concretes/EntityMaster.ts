@@ -42,6 +42,14 @@ class EntityMaster implements IEntityMaster {
     };
   }
 
+  public last<T extends IEntity>(EntityCls: EntityClass<T>): Volatile<T> {
+    const result = this.__entityMap.read(EntityCls.name)?.toArray();
+    if (!result) {
+      return undefined;
+    }
+    return result[result.length - 1] as Volatile<T>;
+  }
+
   public upkeep(): void {
     this.__doRegistrations();
     this.__doPurges();

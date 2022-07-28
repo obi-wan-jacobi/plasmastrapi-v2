@@ -12,10 +12,10 @@ import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 
 export default class Wire extends HTML5CanvasElement {
 
-  public input: InputTerminal;
-  public output: OutputTerminal;
+  public input: OutputTerminal;
+  public output: InputTerminal;
 
-  public constructor({ input, output }: { input: InputTerminal; output: OutputTerminal }) {
+  public constructor({ input, output }: { input: OutputTerminal; output: InputTerminal }) {
     super();
     this.input = input;
     this.output = output;

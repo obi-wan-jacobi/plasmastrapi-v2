@@ -1,7 +1,11 @@
 import IController from 'app/interfaces/IController';
 import { app } from 'app/main';
 import DefaultTool from 'app/tools/DefaultTool';
+import MoveManyTool from 'app/tools/MoveManyTool';
+import MoverBox from 'app/tools/MoverBox';
+import PasteTool from 'app/tools/PasteTool';
 import { Constructor, Dict, Void } from 'base/types';
+import { ENTITIES } from 'engine/concretes/EntityMaster';
 import IPipeEvent from 'engine/interfaces/IPipeEvent';
 import { KEYBOARD_EVENT } from 'html5-canvas/enums/KEYBOARD_EVENT';
 import { MOUSE_EVENT } from 'html5-canvas/enums/MOUSE_EVENT';
@@ -42,6 +46,9 @@ export default class InputController implements IController {
 
   public setHandler<TArgs>(Handler: Constructor<IInputHandler, TArgs>, args?: TArgs): void {
     this.__handler.dispose();
+    if (!(Handler === MoveManyTool || Handler === PasteTool)) {
+      app.entities.forEvery(MoverBox)((moverBox) => moverBox.$destroy());
+    }
     if (!(Handler === DefaultTool && this.__keyboard.isShiftDown)) {
       this.__handlerArgs = args;
       this.__handler = new Handler(this.__handlerArgs);
@@ -59,9 +66,18 @@ export default class InputController implements IController {
   private __handleKeyboardEvent(event: IKeyboardEvent): void {
     this.__keyboard = event;
     this.__isControlDown(event);
-    if (this.__isPasteAction(event)) {
+    // cache handler now because some events will otherwise set a new handler
+    // "before" this one has a chance to execute on this event
+    const handler = this.__handler;
+    if (this.__isCopyAction(event)) {
+      const moverBox = ENTITIES.find(MoverBox)(() => true) as MoverBox<any>;
+      if (moverBox) {
+        app.controllers.clipboard.copy(moverBox);
+      }
+    }
+    else if (this.__isPasteAction(event)) {
+      app.entities.forEvery(MoverBox)((moverBox) => moverBox.$destroy());
       app.controllers.clipboard.paste(this.__mouse);
-      return;
     }
     else if (this.__isUndoAction(event)) {
       app.controllers.command.undo();
@@ -72,8 +88,8 @@ export default class InputController implements IController {
     else if (this.__isEndOfShiftAction(event) || this.__isEscapeAction(event)) {
       this.setHandler(DefaultTool);
     }
-    if (this.__handler[event.name]) {
-      this.__handler[event.name](event);
+    if (handler[event.name]) {
+      handler[event.name](event);
     }
   }
 
@@ -93,6 +109,10 @@ export default class InputController implements IController {
 
   private __isEscapeAction(event: IKeyboardEvent) {
     return event.name === KEYBOARD_EVENT.KEY_DOWN && event.key === 'Escape';
+  }
+
+  private __isCopyAction(event: IKeyboardEvent) {
+    return this.__isCtrlDown && event.name === KEYBOARD_EVENT.KEY_DOWN && event.key === 'c';
   }
 
   private __isPasteAction(event: IKeyboardEvent) {

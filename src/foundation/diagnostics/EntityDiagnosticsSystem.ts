@@ -3,7 +3,7 @@ import IEntityMaster from 'engine/interfaces/IEntityMaster';
 
 export default class EntityDiagnosticsSystem extends System {
 
-  public once({ entities }: { entities: IEntityMaster }): void {
+  public once({  }: { entities: IEntityMaster }): void {
 
   }
 

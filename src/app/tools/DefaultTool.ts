@@ -11,7 +11,11 @@ import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 
 export default class DefaultTool extends InputHandler {
 
-  public init(): void {}
+  public init(): void {
+  }
+
+  public dispose(): void {
+  }
 
   [MOUSE_EVENT.MOUSE_DOWN](event: IMouseEvent): void {
     triggerMouseEventsOnClosestTarget({ event });
@@ -28,9 +32,6 @@ export default class DefaultTool extends InputHandler {
   [MOUSE_EVENT.MOUSE_MOVE](event: IMouseEvent): void {
     triggerMouseEventsOnClosestTarget({ event });
   }
-
-  public dispose(): void {}
-
 }
 
 export const triggerMouseEventsOnClosestTarget = ({ event }: { event: IMouseEvent  }): IHTML5CanvasElement | undefined => {

@@ -5,9 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "pwa-chrome",
+      "name": "C:/Repos/plasmstrapi-v2...",
       "request": "launch",
-      "name": "Launch Chrome against localhost",
+      "type": "chrome",
+      "url": "file:///C:/Repos/plasmastrapi-v2/dist/index.html",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "localhost",
+      "request": "launch",
+      "type": "chrome",
       "url": "http://localhost:8080",
       "webRoot": "${workspaceFolder}"
     }

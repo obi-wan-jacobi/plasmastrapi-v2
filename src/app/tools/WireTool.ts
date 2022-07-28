@@ -72,15 +72,15 @@ export default class WireTool extends InputHandler {
     if (terminal instanceof InputTerminal) {
       app.controllers.command.invoke(
         new CreateWireCommand({
-          input: terminal,
-          output: this.__target,
+          input$: terminal.$id,
+          output$: this.__target.$id,
         })
       );
     } else {
       app.controllers.command.invoke(
         new CreateWireCommand({
-          input: this.__target,
-          output: terminal,
+          input$: this.__target.$id,
+          output$: (terminal as OutputTerminal).$id,
         })
       );
     }
@@ -112,7 +112,7 @@ export default class WireTool extends InputHandler {
     const mockTerminal = this.__tempHandle.$appendChild(new HTML5CanvasElement());
     const payload = this.__target instanceof InputTerminal
       ? { input: mockTerminal as OutputTerminal, output: this.__target }
-      : { input: this.__target, output: mockTerminal as OutputTerminal };
+      : { input: this.__target, output: mockTerminal as InputTerminal };
     this.__tempWire = new Wire(payload);
   }
 

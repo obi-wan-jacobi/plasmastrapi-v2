@@ -10,15 +10,15 @@ export default class CreateWireCommand extends Command {
   private __input$: string;
   private __output$: string;
 
-  public constructor({ input, output}: { input: InputTerminal; output: OutputTerminal }) {
+  public constructor({ input$, output$ }: { input$: string; output$: string }) {
     super();
-    this.__input$ = input.$id;
-    this.__output$ = output.$id;
+    this.__input$ = input$;
+    this.__output$ = output$;
   }
 
   public invoke(): void {
-    const input = app.entities.get(this.__input$) as InputTerminal;
-    const output = app.entities.get(this.__output$) as OutputTerminal;
+    const input = app.entities.get(this.__output$) as OutputTerminal;
+    const output = app.entities.get(this.__input$) as InputTerminal;
     if (!this.__wire$) {
       this.__wire$ = new Wire({ input, output }).$id;
     } else {

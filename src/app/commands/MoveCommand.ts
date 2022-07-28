@@ -9,11 +9,11 @@ export default class MoveCommand extends Command {
   private __newLocation: IPoint;
   private __initialLocation: IPoint;
 
-  public constructor({ target, destination }: { target: IEntity; destination: IPoint }) {
+  public constructor({ target, start, destination }: { target: IEntity; start: IPoint; destination: IPoint }) {
     super();
     this.__target$ = target.$id;
+    this.__initialLocation = start;
     this.__newLocation = destination;
-    this.__initialLocation = target.$copy(PoseComponent)!;
   }
 
   public invoke(): void {

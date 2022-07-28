@@ -50,13 +50,9 @@ export default class ClipboardController implements IController {
         output: ioMap[wire.output.$id] || wire.output,
       });
     }
-    const pose = this.__container.$copy(PoseComponent)!;
-    moverBox.moveBy({
-      dx: x - pose.x,
-      dy: y - pose.y,
-    });
+    moverBox.moveTo({ x, y });
     app.entities.upkeep();
-    EVENT_BUS.publish({ topic: TOOL_EVENT.SELECTION_BEGIN });
+    EVENT_BUS.publish({ topic: TOOL_EVENT.PASTE });
   }
 
 }
