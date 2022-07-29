@@ -6,7 +6,6 @@ import ImageSystem from 'foundation/presentation/systems/ImageSystem';
 import AnimationSystem from 'foundation/presentation/systems/AnimationSystem';
 import LineSystem from 'foundation/presentation/systems/LineSystem';
 import InputController from './controllers/InputController';
-import DefaultTool from './tools/DefaultTool';
 import ToolController from './controllers/ToolbarController';
 import TheClaw from 'contraptions/the-claw/TheClaw';
 import PoseSystem from 'foundation/presentation/systems/PoseSystem';
