@@ -14,7 +14,7 @@ export default class PasteCommand extends Command {
   private __tuples: [Etor<DigitalElement, IPoint>, IPoint, string, string[]][] = [];
   private __createWireCommands: CreateWireCommand[];
 
-  public constructor(container: IEntityContainer<DigitalElement>, wires: Wire[]) {
+  public constructor(container: IEntityContainer<DigitalElement>) {
     super();
     const childMap$: Dict<string> = {};
     container.items.forEach((element) => {
@@ -30,10 +30,13 @@ export default class PasteCommand extends Command {
           }),
       ]);
     });
+    const wires = [...container.items].reduce((result, element) => {
+      return result.concat(element.$children.filter((child) => child instanceof Wire) as []);
+    }, []).filter((wire, index, self) => self.indexOf(wire) === index) as Wire[];
     this.__createWireCommands = wires.map((wire) =>
       new CreateWireCommand({
-        input$: childMap$[wire.input.$id],
-        output$: childMap$[wire.output.$id],
+        input$: childMap$[wire.input.$id] || wire.input.$id,
+        output$: childMap$[wire.output.$id] || wire.output.$id,
       })
     );
   }

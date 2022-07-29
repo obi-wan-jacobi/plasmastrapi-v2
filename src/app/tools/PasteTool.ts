@@ -6,6 +6,8 @@ import IMouseEvent from 'html5-canvas/interfaces/IMouseEvent';
 import MoverBox from './MoverBox';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import { IPoint } from 'foundation/geometry/components/PoseComponent';
+import { app } from 'app/main';
+import PasteCommand from 'app/commands/PasteCommand';
 
 export default class PasteTool extends InputHandler {
 
@@ -18,6 +20,7 @@ export default class PasteTool extends InputHandler {
 
   public dispose(): void {
     this.__moverBox.$destroy();
+    this.__moverBox.items.forEach((item) => item.$destroy());
   }
 
   public [MOUSE_EVENT.MOUSE_MOVE](mouseEvent: IMouseEvent): void {
@@ -25,10 +28,12 @@ export default class PasteTool extends InputHandler {
   }
 
   public [MOUSE_EVENT.MOUSE_DOWN](): void {
+    app.controllers.command.invoke(new PasteCommand(this.__moverBox));
     EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
   }
 
   public [MOUSE_EVENT.MOUSE_UP](): void {
+    app.controllers.command.invoke(new PasteCommand(this.__moverBox));
     EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
   }
 

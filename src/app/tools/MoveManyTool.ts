@@ -7,6 +7,8 @@ import MoverBox from './MoverBox';
 import { ENTITIES } from 'engine/concretes/EntityMaster';
 import DigitalElement from 'digital-logic/abstracts/DigitalElement';
 import { IPoint } from 'foundation/geometry/components/PoseComponent';
+import { app } from 'app/main';
+import MoverBoxCommand from 'app/commands/MoverBoxCommand';
 
 export default class MoveManyTool extends InputHandler {
 
@@ -27,6 +29,7 @@ export default class MoveManyTool extends InputHandler {
   }
 
   public [MOUSE_EVENT.MOUSE_UP](): void {
+    app.controllers.command.invoke(new MoverBoxCommand({ moverBox: this.__moverBox }));
     EVENT_BUS.publish({ topic: TOOL_EVENT.DEFAULT});
   }
 
