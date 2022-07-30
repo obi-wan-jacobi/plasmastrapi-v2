@@ -42,12 +42,20 @@ class EntityMaster implements IEntityMaster {
     };
   }
 
+  public first<T extends IEntity>(EntityCls: EntityClass<T>): Volatile<T> {
+    const result = this.__entityMap.read(EntityCls.name)?.toArray();
+    if (!result) {
+      return undefined;
+    }
+    return result[0] as T;
+  }
+
   public last<T extends IEntity>(EntityCls: EntityClass<T>): Volatile<T> {
     const result = this.__entityMap.read(EntityCls.name)?.toArray();
     if (!result) {
       return undefined;
     }
-    return result[result.length - 1] as Volatile<T>;
+    return result[result.length - 1] as T;
   }
 
   public upkeep(): void {
@@ -72,6 +80,13 @@ class EntityMaster implements IEntityMaster {
     }
     (target as any).__id = newId;
     this.__register(target);
+    this.forEvery(Entity)((entity) => {
+      const child = entity.$children.read(id);
+      if (child) {
+        entity.$children.delete(id);
+        entity.$children.write({ key: newId, value: child });
+      }
+    });
   }
 
   private __doRegistrations(): void {

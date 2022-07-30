@@ -32,8 +32,8 @@ export default class WireTool extends InputHandler {
   }
 
   public dispose(): void {
-    this.__tempHandle.$destroy();
     this.__tempWire.$destroy();
+    this.__tempHandle.$destroy();
   }
 
   public [MOUSE_EVENT.MOUSE_MOVE](mouseEvent: IMouseEvent): void {
@@ -72,15 +72,15 @@ export default class WireTool extends InputHandler {
     if (terminal instanceof InputTerminal) {
       app.controllers.command.invoke(
         new CreateWireCommand({
-          input$: terminal.$id,
-          output$: this.__target.$id,
+          input$: this.__target.$id,
+          output$: terminal.$id,
         })
       );
     } else {
       app.controllers.command.invoke(
         new CreateWireCommand({
-          input$: this.__target.$id,
-          output$: (terminal as OutputTerminal).$id,
+          input$: (terminal as OutputTerminal).$id,
+          output$: this.__target.$id,
         })
       );
     }

@@ -16,7 +16,7 @@ export default class MoveManyTool extends InputHandler {
 
   public init({ x, y }: IPoint): void {
     this.__start = { x, y };
-    this.__moverBox = ENTITIES.find(MoverBox)(() => true)!;
+    this.__moverBox = ENTITIES.first(MoverBox)!;
     this.__moverBox.init({ x, y });
   }
 

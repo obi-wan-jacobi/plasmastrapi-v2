@@ -5,16 +5,15 @@ import ShapeComponent from '../geometry/components/ShapeComponent';
 import IEntity from 'engine/interfaces/IEntity';
 import { fromPointsToGeoJSON, fromShapeToGeoJSON, transformShape } from './geometry';
 import turf from 'turf';
-import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 const booleanOverlaps = require('@turf/boolean-overlap').default;
 const lineIntersect = require('@turf/line-intersect').default;
 
-export const entityContainsPoint = (entity: IHTML5CanvasElement, point: IPoint): boolean => {
+export const entityContainsPoint = (entity: IEntity, point: IPoint): boolean => {
   const shape = transformShape(entity.$copy(ShapeComponent)!, getAbsolutePose(entity));
   return booleanPointInPolygon(turf.point([point.x, point.y]), fromShapeToGeoJSON(shape));
 };
 
-export const entitiesTouch = (entity1: IHTML5CanvasElement, entity2: IHTML5CanvasElement): boolean => {
+export const entitiesTouch = (entity1: IEntity, entity2: IEntity): boolean => {
   const shape1 = transformShape(entity1.$copy(ShapeComponent)!, getAbsolutePose(entity1));
   const shape2 = transformShape(entity2.$copy(ShapeComponent)!, getAbsolutePose(entity2));
   const geoJSON1 = fromShapeToGeoJSON(shape1);
@@ -25,7 +24,7 @@ export const entitiesTouch = (entity1: IHTML5CanvasElement, entity2: IHTML5Canva
   booleanOverlaps(geoJSON2, geoJSON1);
 };
 
-export const entityContainsEntity = (entity1: IHTML5CanvasElement, entity2: IHTML5CanvasElement): boolean => {
+export const entityContainsEntity = (entity1: IEntity, entity2: IEntity): boolean => {
   const shape1 = transformShape(entity1.$copy(ShapeComponent)!, getAbsolutePose(entity1));
   const shape2 = transformShape(entity2.$copy(ShapeComponent)!, getAbsolutePose(entity2));
   const geoJSON1 = fromShapeToGeoJSON(shape1);
@@ -33,7 +32,7 @@ export const entityContainsEntity = (entity1: IHTML5CanvasElement, entity2: IHTM
   return booleanContains(geoJSON1, geoJSON2) || booleanContains(geoJSON2, geoJSON1);
 };
 
-export const entityTouchesLine = (entity: IHTML5CanvasElement, points: IPoint[]): boolean => {
+export const entityTouchesLine = (entity: IEntity, points: IPoint[]): boolean => {
   const shape = transformShape(entity.$copy(ShapeComponent)!, getAbsolutePose(entity));
   const polygon = fromShapeToGeoJSON(shape);
   const line = fromPointsToGeoJSON(points);
@@ -51,7 +50,7 @@ export const addWidthAndHeightAsShapeComponent = ({ entity, width, height }: { e
   });
 };
 
-export const getAbsolutePose = (entity: IHTML5CanvasElement): IPose => {
+export const getAbsolutePose = (entity: IEntity): IPose => {
   if (!entity.$has(PoseComponent)) {
     throw new Error(`${entity.constructor.name} has no ${PoseComponent.name}`);
   }

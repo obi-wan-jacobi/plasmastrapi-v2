@@ -11,51 +11,70 @@ import CreateWireCommand from './CreateWireCommand';
 
 export default class PasteCommand extends Command {
 
-  private __tuples: [Etor<DigitalElement, IPoint>, IPoint, string, string[]][] = [];
-  private __createWireCommands: CreateWireCommand[];
+  private __ingredients: PasteIngredients;
 
   public constructor(container: IEntityContainer<DigitalElement>) {
     super();
-    const childMap$: Dict<string> = {};
-    container.items.forEach((element) => {
-      this.__tuples.push([
-        element.constructor as Etor<DigitalElement, IPoint>,
-        element.$copy(PoseComponent)!,
-        Unique.generateUuid(),
-        element.$children.toArray()
-          .filter((child) => !(child instanceof Wire)).map((child) => {
-            const id$ = Unique.generateUuid();
-            childMap$[child.$id] = id$;
-            return id$;
-          }),
-      ]);
-    });
-    const wires = [...container.items].reduce((result, element) => {
-      return result.concat(element.$children.filter((child) => child instanceof Wire) as []);
-    }, []).filter((wire, index, self) => self.indexOf(wire) === index) as Wire[];
-    this.__createWireCommands = wires.map((wire) =>
-      new CreateWireCommand({
-        input$: childMap$[wire.input.$id] || wire.input.$id,
-        output$: childMap$[wire.output.$id] || wire.output.$id,
-      })
-    );
+    this.__ingredients = fromContainerToPasteIngredients(container);
   }
 
   public invoke(): void {
-    this.__tuples.forEach(([Etor, point, $id, children$]) => {
-      const instance = new Etor(point);
-      app.entities.reId(instance.$id, $id);
-      const children = instance.$children.toArray();
-      children$.forEach((child$, i) => {
-        app.entities.reId(children[i].$id, child$);
-      });
-    });
-    this.__createWireCommands.forEach((command) => command.invoke());
+    fromPasteIngredientsToPasta(this.__ingredients);
   }
 
   public undo(): void {
-    this.__createWireCommands.forEach((command) => command.undo());
-    this.__tuples.forEach(([,,$id]) => app.entities.get($id)!.$destroy());
+    const [tuples, createWireCommands] = this.__ingredients;
+    createWireCommands.forEach((command) => command.undo());
+    tuples.forEach(([,,$id]) => app.entities.get($id)!.$destroy());
   }
 
 }
+
+export type PasteIngredients = [
+  [Etor<DigitalElement, IPoint>, IPoint, string, string[]][],
+  CreateWireCommand[],
+];
+
+
+export const fromContainerToPasteIngredients = (container: IEntityContainer<DigitalElement>): PasteIngredients => {
+  const tuples: PasteIngredients[0] = [];
+  const childMap$: Dict<string> = {};
+  container.items.forEach((element) => {
+    tuples.push([
+      element.constructor as Etor<DigitalElement, IPoint>,
+      element.$copy(PoseComponent)!,
+      Unique.generateUuid(),
+      element.$children.toArray()
+        .filter((child) => !(child instanceof Wire)).map((child) => {
+          const id$ = Unique.generateUuid();
+          childMap$[child.$id] = id$;
+          return id$;
+        }),
+    ]);
+  });
+  const wires = [...container.items].reduce((result, element) => {
+    return result.concat(element.$children.filter((child) => child instanceof Wire) as []);
+  }, []).filter((wire, index, self) => self.indexOf(wire) === index) as Wire[];
+  const createWireCommands = wires.map((wire) =>
+    new CreateWireCommand({
+      input$: childMap$[wire.input.$id] || wire.input.$id,
+      output$: childMap$[wire.output.$id] || wire.output.$id,
+    })
+  );
+  return [tuples, createWireCommands];
+};
+
+export const fromPasteIngredientsToPasta = ([tuples, createWireCommands]: PasteIngredients): DigitalElement[] => {
+  const pasta: DigitalElement[] = [];
+  tuples.forEach(([Etor, point, id$, children$]) => {
+    const instance = new Etor(point);
+    app.entities.reId(instance.$id, id$);
+    const children = instance.$children.toArray();
+    children$.forEach((child$, i) => {
+      app.entities.reId(children[i].$id, child$);
+    });
+    pasta.push(instance);
+  });
+  createWireCommands.forEach((command) => command.invoke());
+  return pasta;
+};

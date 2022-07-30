@@ -17,8 +17,8 @@ export default class CreateWireCommand extends Command {
   }
 
   public invoke(): void {
-    const input = app.entities.get(this.__output$) as OutputTerminal;
-    const output = app.entities.get(this.__input$) as InputTerminal;
+    const input = app.entities.get(this.__input$) as OutputTerminal;
+    const output = app.entities.get(this.__output$) as InputTerminal;
     if (!this.__wire$) {
       this.__wire$ = new Wire({ input, output }).$id;
     } else {

@@ -55,8 +55,8 @@ export default abstract class DigitalElement extends HTML5CanvasElement {
   }
 
   protected get _inputs(): Wire[] {
-    return this.$children.filter((child) => {
-      return child instanceof Wire && (child as Wire).output.$parent === this;
+    return this.$children.filter((child: Wire) => {
+      return child instanceof Wire && child.output.$parent === this;
     }) as Wire[];
   }
 

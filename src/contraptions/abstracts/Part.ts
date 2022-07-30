@@ -3,7 +3,7 @@ import IComponent from 'engine/interfaces/IComponent';
 import { Ctor } from 'engine/types';
 import PoseComponent, { IPose } from 'foundation/geometry/components/PoseComponent';
 import AnimationComponent from 'foundation/presentation/components/AnimationComponent';
-import { hereditary } from 'html5-canvas/decorators/hereditary';
+import { hereditary } from 'engine/decorators/hereditary';
 import HTML5CanvasElement from 'html5-canvas/HTML5CanvasElement';
 
 export default class Part extends HTML5CanvasElement implements IPart {

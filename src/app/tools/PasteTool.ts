@@ -15,7 +15,7 @@ export default class PasteTool extends InputHandler {
 
   public init({ x, y }: IPoint): void {
     this.__start = { x, y };
-    this.__moverBox = ENTITIES.find(MoverBox)(() => true)!;
+    this.__moverBox = ENTITIES.first(MoverBox)!;
   }
 
   public dispose(): void {

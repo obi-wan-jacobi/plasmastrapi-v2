@@ -70,7 +70,7 @@ export default class InputController implements IController {
     // "before" this one has a chance to execute on this event
     const handler = this.__handler;
     if (this.__isCopyAction(event)) {
-      const moverBox = ENTITIES.find(MoverBox)(() => true) as MoverBox<any>;
+      const moverBox = ENTITIES.first(MoverBox);
       if (moverBox) {
         app.controllers.clipboard.copy(moverBox);
       }

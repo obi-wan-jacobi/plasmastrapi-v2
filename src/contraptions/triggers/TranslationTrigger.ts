@@ -1,12 +1,12 @@
 import DigitalElement from 'digital-logic/abstracts/DigitalElement';
 import { COMPONENTS } from 'engine/concretes/ComponentMaster';
 import IComponent from 'engine/interfaces/IComponent';
+import IEntity from 'engine/interfaces/IEntity';
 import { Ctor } from 'engine/types';
 import PoseComponent, { IPose } from 'foundation/geometry/components/PoseComponent';
 import { entitiesTouch } from 'foundation/helpers/entities';
 import { toNumber } from 'foundation/helpers/math';
 import RigidBodyComponent from 'foundation/physics/components/RigidBodyComponent';
-import IHTML5CanvasElement from 'html5-canvas/interfaces/IHTML5CanvasElement';
 import Trigger from './Trigger';
 
 export default class TranslationTrigger extends Trigger {
@@ -29,8 +29,8 @@ export default class TranslationTrigger extends Trigger {
       return;
     }
     this.__translate(this.$parent, this.__translation);
-    const bodies: IHTML5CanvasElement[] = COMPONENTS.toArray(RigidBodyComponent)
-      .map((target) => target.$entity as IHTML5CanvasElement);
+    const bodies: IEntity[] = COMPONENTS.toArray(RigidBodyComponent)
+      .map((target) => target.$entity as IEntity);
     for (let i = 0; i < bodies.length - 1; i++) {
       const bodyA = bodies[i];
       let isCollision = false;
@@ -53,7 +53,7 @@ export default class TranslationTrigger extends Trigger {
     return PoseComponent;
   }
 
-  private __translate(entity: IHTML5CanvasElement, pose: IPose): void {
+  private __translate(entity: IEntity, pose: IPose): void {
     const oldPose = entity.$copy(this._getComponentToPatch())!;
     const newPose = {
       x: oldPose.x + toNumber(pose.x),
